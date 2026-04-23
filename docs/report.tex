@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+
+\title{Numerov Method for Bound States in the Schrödinger Equation}
+\author{[Your Name]}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+The time-independent Schrödinger equation in one dimension is a central equation in quantum mechanics. In dimensionless units ($\hbar = m = 1$), it can be written as
+
+\begin{equation}
+\psi''(x) = 2\,[V(x) - E]\,\psi(x),
+\end{equation}
+
+where $V(x)$ is the potential and $E$ is the energy eigenvalue.
+
+Finding bound states corresponds to solving a boundary value problem where only specific values of $E$ produce physically acceptable (normalizable) solutions. This project implements a numerical approach based on the Numerov method combined with a shooting technique to compute these eigenvalues and eigenfunctions.
+
+\section{Numerical Method}
+
+\subsection{Numerov Algorithm}
+
+The Numerov method is a finite-difference scheme designed for second-order differential equations of the form
+
+\begin{equation}
+\psi''(x) = q(x)\psi(x).
+\end{equation}
+
+It achieves higher accuracy by incorporating information from neighboring points. For a uniform grid with spacing $h$, the recurrence relation is
+
+\begin{equation}
+\psi_{n+1} = \frac{2(1 + \frac{5h^2}{12}q_n)\psi_n - (1 - \frac{h^2}{12}q_{n-1})\psi_{n-1}}{1 - \frac{h^2}{12}q_{n+1}}.
+\end{equation}
+
+This method is well-suited for the Schrödinger equation due to its stability and accuracy.
+
+\subsection{Shooting Method}
+
+To determine eigenvalues, a shooting method is used. For symmetric potentials:
+
+\begin{itemize}
+    \item Even states satisfy $\psi'(0) = 0$
+    \item Odd states satisfy $\psi(0) = 0$
+\end{itemize}
+
+Starting from $x=0$, the wavefunction is propagated outward using the Numerov method. The correct energy eigenvalue is found by requiring the wavefunction to decay at large $x$.
+
+A bisection method is used to locate energies where the boundary condition at the edge changes sign.
+
+\section{Results}
+
+\subsection{Infinite Square Well}
+
+The infinite square well provides a benchmark since the exact energies are
+
+\begin{equation}
+E_n = \frac{n^2 \pi^2}{8a^2}.
+\end{equation}
+
+The numerical results show excellent agreement with the analytical solution, with relative errors decreasing as the grid is refined.
+
+\subsection{Harmonic Oscillator}
+
+For the harmonic oscillator,
+
+\begin{equation}
+V(x) = \frac{1}{2}\omega^2 x^2,
+\end{equation}
+
+the exact energies are
+
+\begin{equation}
+E_n = \omega\left(n + \frac{1}{2}\right).
+\end{equation}
+
+The computed eigenvalues match the expected spectrum, and the wavefunctions exhibit the correct number of nodes and symmetry.
+
+\subsection{Double Well Potential}
+
+A quartic double-well potential was also studied:
+
+\begin{equation}
+V(x) = ax^4 - bx^2.
+\end{equation}
+
+The results show pairs of nearly degenerate states, corresponding to tunneling between the wells. This behavior has no simple analytical solution and demonstrates the power of the numerical approach.
+
+\section{Convergence and Accuracy}
+
+Two main sources of numerical error were analyzed:
+
+\begin{itemize}
+    \item Grid spacing ($h$): smaller spacing improves accuracy
+    \item Domain size ($x_{\max}$): insufficient domain truncates wavefunctions
+\end{itemize}
+
+The results show systematic convergence as $h \to 0$ and $x_{\max}$ increases, consistent with expectations for finite-difference methods.
+
+\section{Conclusion}
+
+This project demonstrates that the Numerov method, combined with a shooting technique, provides an efficient and accurate way to solve quantum bound-state problems.
+
+The implementation successfully reproduces known analytical results and extends naturally to more complex potentials. The method is robust, easy to implement, and well-suited for computational physics applications.
+
+\end{document}
