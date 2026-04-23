@@ -11,13 +11,17 @@ import numpy as np
 
 from src.analysis import exact_harmonic_oscillator_energies, exact_square_well_energies
 from src.numerov import normalize_wavefunction
-from src.potentials import harmonic_oscillator, infinite_square_well_numeric, quartic_double_well
+from src.potentials import (
+    harmonic_oscillator,
+    infinite_square_well_numeric,
+    quartic_double_well,
+)
 from src.shooting import solve_symmetric_potential
 
 
 def test_normalization() -> None:
     x = np.linspace(-1.0, 1.0, 1001)
-    psi = np.exp(-x**2)
+    psi = np.exp(-(x**2))
     psi_n = normalize_wavefunction(x, psi)
     val = np.trapezoid(np.abs(psi_n) ** 2, x)
     assert abs(val - 1.0) < 1e-10

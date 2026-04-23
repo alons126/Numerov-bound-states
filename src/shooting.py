@@ -4,7 +4,12 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from src.numerov import derivative_at_right_edge, normalize_wavefunction, numerov_outward, q_from_energy
+from src.numerov import (
+    derivative_at_right_edge,
+    normalize_wavefunction,
+    numerov_outward,
+    q_from_energy,
+)
 
 
 @dataclass
@@ -25,7 +30,9 @@ def initial_conditions(x_half: np.ndarray, parity: str) -> tuple[float, float]:
     raise ValueError("parity must be 'even' or 'odd'")
 
 
-def half_domain_wavefunction(x_half: np.ndarray, V_half: np.ndarray, energy: float, parity: str) -> np.ndarray:
+def half_domain_wavefunction(
+    x_half: np.ndarray, V_half: np.ndarray, energy: float, parity: str
+) -> np.ndarray:
     q = q_from_energy(V_half, energy)
     psi0, psi1 = initial_conditions(x_half, parity)
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
@@ -58,7 +65,9 @@ def find_brackets(
     n_scan: int = 2000,
 ) -> list[tuple[float, float]]:
     energies = np.linspace(e_min, e_max, n_scan)
-    vals = np.array([boundary_mismatch(x_half, V_half, e, parity, mode="value") for e in energies])
+    vals = np.array(
+        [boundary_mismatch(x_half, V_half, e, parity, mode="value") for e in energies]
+    )
 
     brackets: list[tuple[float, float]] = []
     for i in range(len(energies) - 1):
@@ -113,7 +122,9 @@ def bisect_energy(
     return mid, boundary_mismatch(x_half, V_half, mid, parity, mode="value")
 
 
-def build_full_wavefunction(x_half: np.ndarray, psi_half: np.ndarray, parity: str) -> tuple[np.ndarray, np.ndarray]:
+def build_full_wavefunction(
+    x_half: np.ndarray, psi_half: np.ndarray, parity: str
+) -> tuple[np.ndarray, np.ndarray]:
     if parity == "even":
         x_left = -x_half[:0:-1]
         psi_left = psi_half[:0:-1]
@@ -175,14 +186,18 @@ def solve_symmetric_potential(
     solutions: list[StateSolution] = []
 
     for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
-        brackets = find_brackets(x_half, V_half, parity, e_min=e_min, e_max=e_max, n_scan=scan_points)
+        brackets = find_brackets(
+            x_half, V_half, parity, e_min=e_min, e_max=e_max, n_scan=scan_points
+        )
         if len(brackets) < n_needed:
             raise RuntimeError(
                 f"Found only {len(brackets)} {parity} brackets, needed {n_needed}. "
                 "Increase x_max, e_max, or scan_points."
             )
         for bracket in brackets[:n_needed]:
-            solutions.append(solve_state_from_bracket(x_half, V_half, parity, bracket, tol=tol))
+            solutions.append(
+                solve_state_from_bracket(x_half, V_half, parity, bracket, tol=tol)
+            )
 
     solutions.sort(key=lambda s: s.energy)
     return solutions

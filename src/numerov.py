@@ -12,7 +12,9 @@ def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     return 2.0 * (V - energy)
 
 
-def numerov_outward(x: np.ndarray, q: np.ndarray, psi0: float, psi1: float) -> np.ndarray:
+def numerov_outward(
+    x: np.ndarray, q: np.ndarray, psi0: float, psi1: float
+) -> np.ndarray:
     """
     Numerov integration on a uniform grid for y'' = q(x) y.
     """

@@ -62,9 +62,20 @@ def run_square_well(results_dir: Path) -> None:
 
     x = states[0].x_full
     V = infinite_square_well_numeric(x, a=a, wall_height=1e6)
-    plot_potential_and_states(x, V, states, results_dir / "square_well_states.png", "Infinite square well")
-    plot_probability_densities(states, results_dir / "square_well_densities.png", "Infinite square well densities")
-    plot_energy_comparison(numerical, exact, results_dir / "square_well_energy_comparison.png", "Square well energies")
+    plot_potential_and_states(
+        x, V, states, results_dir / "square_well_states.png", "Infinite square well"
+    )
+    plot_probability_densities(
+        states,
+        results_dir / "square_well_densities.png",
+        "Infinite square well densities",
+    )
+    plot_energy_comparison(
+        numerical,
+        exact,
+        results_dir / "square_well_energy_comparison.png",
+        "Square well energies",
+    )
 
     conv = convergence_vs_grid(
         potential_fn=infinite_square_well_numeric,
@@ -77,7 +88,13 @@ def run_square_well(results_dir: Path) -> None:
         e_max=60.0,
         reference_energies=exact[:3],
     )
-    plot_error_curve(conv["h"], conv["energy_errors"], "grid spacing h", results_dir / "square_well_convergence_vs_h.png", "Square well convergence")
+    plot_error_curve(
+        conv["h"],
+        conv["energy_errors"],
+        "grid spacing h",
+        results_dir / "square_well_convergence_vs_h.png",
+        "Square well convergence",
+    )
 
 
 def run_harmonic_oscillator(results_dir: Path) -> None:
@@ -113,9 +130,24 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
 
     x = states[0].x_full
     V = harmonic_oscillator(x, omega=omega)
-    plot_potential_and_states(x, V, states, results_dir / "harmonic_oscillator_states.png", "Harmonic oscillator")
-    plot_probability_densities(states, results_dir / "harmonic_oscillator_densities.png", "Harmonic oscillator densities")
-    plot_energy_comparison(numerical, exact, results_dir / "harmonic_oscillator_energy_comparison.png", "Harmonic oscillator energies")
+    plot_potential_and_states(
+        x,
+        V,
+        states,
+        results_dir / "harmonic_oscillator_states.png",
+        "Harmonic oscillator",
+    )
+    plot_probability_densities(
+        states,
+        results_dir / "harmonic_oscillator_densities.png",
+        "Harmonic oscillator densities",
+    )
+    plot_energy_comparison(
+        numerical,
+        exact,
+        results_dir / "harmonic_oscillator_energy_comparison.png",
+        "Harmonic oscillator energies",
+    )
 
     conv_h = convergence_vs_grid(
         potential_fn=harmonic_oscillator,
@@ -128,7 +160,13 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_max=5.0,
         reference_energies=exact[:3],
     )
-    plot_error_curve(conv_h["h"], conv_h["energy_errors"], "grid spacing h", results_dir / "harmonic_convergence_vs_h.png", "HO convergence vs h")
+    plot_error_curve(
+        conv_h["h"],
+        conv_h["energy_errors"],
+        "grid spacing h",
+        results_dir / "harmonic_convergence_vs_h.png",
+        "HO convergence vs h",
+    )
 
     conv_box = convergence_vs_box_size(
         potential_fn=harmonic_oscillator,
@@ -141,7 +179,13 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_max=5.0,
         reference_energies=exact[:3],
     )
-    plot_error_curve(conv_box["x_max"], conv_box["energy_errors"], "box size x_max", results_dir / "harmonic_convergence_vs_xmax.png", "HO convergence vs box size")
+    plot_error_curve(
+        conv_box["x_max"],
+        conv_box["energy_errors"],
+        "box size x_max",
+        results_dir / "harmonic_convergence_vs_xmax.png",
+        "HO convergence vs box size",
+    )
 
 
 def run_double_well(results_dir: Path) -> None:
@@ -173,8 +217,12 @@ def run_double_well(results_dir: Path) -> None:
 
     x = states[0].x_full
     V = quartic_double_well(x, **base_kwargs)
-    plot_potential_and_states(x, V, states, results_dir / "double_well_states.png", "Quartic double well")
-    plot_probability_densities(states, results_dir / "double_well_densities.png", "Double well densities")
+    plot_potential_and_states(
+        x, V, states, results_dir / "double_well_states.png", "Quartic double well"
+    )
+    plot_probability_densities(
+        states, results_dir / "double_well_densities.png", "Double well densities"
+    )
 
     sweep_rows = splitting_vs_parameter(
         potential_fn=quartic_double_well,
@@ -191,7 +239,15 @@ def run_double_well(results_dir: Path) -> None:
     e0 = np.array([r["E0"] for r in sweep_rows], dtype=float)
     e1 = np.array([r["E1"] for r in sweep_rows], dtype=float)
     splitting = np.array([r["splitting"] for r in sweep_rows], dtype=float)
-    plot_splitting_curve(b_vals, e0, e1, splitting, "double-well parameter b", results_dir / "double_well_splitting.png", "Double-well splitting")
+    plot_splitting_curve(
+        b_vals,
+        e0,
+        e1,
+        splitting,
+        "double-well parameter b",
+        results_dir / "double_well_splitting.png",
+        "Double-well splitting",
+    )
 
 
 def run_extra_potential(results_dir: Path) -> None:
@@ -224,8 +280,18 @@ def run_extra_potential(results_dir: Path) -> None:
 
     x = states[0].x_full
     V = finite_square_well(x, **kwargs)
-    plot_potential_and_states(x, V, states, results_dir / "finite_square_well_states.png", "Finite square well")
-    plot_probability_densities(states, results_dir / "finite_square_well_densities.png", "Finite square well densities")
+    plot_potential_and_states(
+        x,
+        V,
+        states,
+        results_dir / "finite_square_well_states.png",
+        "Finite square well",
+    )
+    plot_probability_densities(
+        states,
+        results_dir / "finite_square_well_densities.png",
+        "Finite square well densities",
+    )
 
 
 def run_quartic_oscillator_demo(results_dir: Path) -> None:
@@ -246,4 +312,10 @@ def run_quartic_oscillator_demo(results_dir: Path) -> None:
     )
     x = states[0].x_full
     V = quartic_oscillator(x, **kwargs)
-    plot_potential_and_states(x, V, states, results_dir / "quartic_oscillator_states.png", "Quartic oscillator")
+    plot_potential_and_states(
+        x,
+        V,
+        states,
+        results_dir / "quartic_oscillator_states.png",
+        "Quartic oscillator",
+    )

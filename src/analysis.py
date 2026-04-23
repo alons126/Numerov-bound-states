@@ -13,7 +13,9 @@ def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarr
     return (n_values * np.pi / (2.0 * a)) ** 2 / 2.0
 
 
-def exact_harmonic_oscillator_energies(n_values: np.ndarray, omega: float = 1.0) -> np.ndarray:
+def exact_harmonic_oscillator_energies(
+    n_values: np.ndarray, omega: float = 1.0
+) -> np.ndarray:
     n_values = np.asarray(n_values, dtype=float)
     return omega * (n_values + 0.5)
 
@@ -35,7 +37,9 @@ def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
         writer.writerows(rows)
 
 
-def energies_from_states(states: list[StateSolution], n_states: int | None = None) -> np.ndarray:
+def energies_from_states(
+    states: list[StateSolution], n_states: int | None = None
+) -> np.ndarray:
     if n_states is None:
         return np.array([s.energy for s in states], dtype=float)
     return np.array([s.energy for s in states[:n_states]], dtype=float)
