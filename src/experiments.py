@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+"""
+High-level numerical experiments used in the project report.
+
+Each function in this module runs one physical case study, writes tabulated data
+to CSV, and saves the associated figures into the results directory.
+"""
+
 from pathlib import Path
 
 import numpy as np
@@ -12,7 +19,6 @@ from src.analysis import (
     save_csv_rows,
     splitting_vs_parameter,
 )
-
 from src.plotting import (
     plot_energy_comparison,
     plot_error_curve,
@@ -20,7 +26,6 @@ from src.plotting import (
     plot_probability_densities,
     plot_splitting_curve,
 )
-
 from src.potentials import (
     finite_square_well,
     harmonic_oscillator,
@@ -28,11 +33,16 @@ from src.potentials import (
     quartic_double_well,
     quartic_oscillator,
 )
-
 from src.shooting import solve_symmetric_potential
 
 
 def run_square_well(results_dir: Path) -> None:
+    """
+    Run the infinite square well benchmark case.
+
+    This experiment validates the solver against exact energies and produces
+    the square-well convergence plot used in the report.
+    """
     a = 1.0
     x_max = 1.2
     n_grid = 2500
@@ -47,12 +57,11 @@ def run_square_well(results_dir: Path) -> None:
         e_min=0.1,
         e_max=80.0,
     )
-    
+
     numerical = np.array([s.energy for s in states[:4]])
     exact = exact_square_well_energies(np.arange(1, 5), a=a)
 
     rows = []
-    
     for i, (en, ex) in enumerate(zip(numerical, exact)):
         rows.append(
             {
@@ -63,22 +72,22 @@ def run_square_well(results_dir: Path) -> None:
                 "relative_error": abs((en - ex) / ex),
             }
         )
-        
     save_csv_rows(results_dir / "1_infinite_square_well_energies.csv", rows)
 
     x = states[0].x_full
     V = infinite_square_well_numeric(x, a=a, wall_height=1e6)
-    
     plot_potential_and_states(
-        x, V, states, results_dir / "1_infinite_square_well_states.png", "Infinite well"
+        x,
+        V,
+        states,
+        results_dir / "1_infinite_square_well_states.png",
+        "Infinite well",
     )
-    
     plot_probability_densities(
         states,
         results_dir / "1_infinite_square_well_densities.png",
         "Infinite well densities",
     )
-    
     plot_energy_comparison(
         numerical,
         exact,
@@ -97,7 +106,6 @@ def run_square_well(results_dir: Path) -> None:
         e_max=60.0,
         reference_energies=exact[:3],
     )
-    
     plot_error_curve(
         conv["h"],
         conv["energy_errors"],
@@ -108,6 +116,12 @@ def run_square_well(results_dir: Path) -> None:
 
 
 def run_harmonic_oscillator(results_dir: Path) -> None:
+    """
+    Run the harmonic-oscillator benchmark case.
+
+    This experiment validates the solver against the exact ladder spectrum and
+    produces both grid-refinement and box-size convergence studies.
+    """
     omega = 1.0
     x_max = 8.0
     n_grid = 2500
@@ -122,13 +136,11 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_min=0.1,
         e_max=6.5,
     )
-    
+
     numerical = np.array([s.energy for s in states[:4]])
-    
     exact = exact_harmonic_oscillator_energies(np.arange(4), omega=omega)
 
     rows = []
-    
     for i, (en, ex) in enumerate(zip(numerical, exact)):
         rows.append(
             {
@@ -139,12 +151,10 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
                 "relative_error": abs((en - ex) / ex),
             }
         )
-        
     save_csv_rows(results_dir / "2_harmonic_oscillator_energies.csv", rows)
 
     x = states[0].x_full
     V = harmonic_oscillator(x, omega=omega)
-    
     plot_potential_and_states(
         x,
         V,
@@ -152,13 +162,11 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         results_dir / "2_harmonic_oscillator_states.png",
         "Harmonic oscillator states",
     )
-    
     plot_probability_densities(
         states,
         results_dir / "2_harmonic_oscillator_densities.png",
         "Harmonic oscillator densities",
     )
-    
     plot_energy_comparison(
         numerical,
         exact,
@@ -177,7 +185,6 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_max=5.0,
         reference_energies=exact[:3],
     )
-    
     plot_error_curve(
         conv_h["h"],
         conv_h["energy_errors"],
@@ -197,7 +204,6 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_max=5.0,
         reference_energies=exact[:3],
     )
-    
     plot_error_curve(
         conv_box["x_max"],
         conv_box["energy_errors"],
@@ -208,6 +214,12 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
 
 
 def run_double_well(results_dir: Path) -> None:
+    """
+    Run the quartic double-well study.
+
+    In addition to plotting the low-lying states, this experiment sweeps the
+    double-well parameter b and records the tunneling splitting E1 - E0.
+    """
     base_kwargs = {"a": 1.0, "b": 6.0, "shift_min_to_zero": True}
     x_max = 3.0
     n_grid = 3000
@@ -222,9 +234,8 @@ def run_double_well(results_dir: Path) -> None:
         e_min=0.0,
         e_max=20.0,
     )
-    
+
     rows = []
-    
     for i, s in enumerate(states[:4]):
         rows.append(
             {
@@ -234,18 +245,21 @@ def run_double_well(results_dir: Path) -> None:
                 "mismatch": s.mismatch,
             }
         )
-    
     save_csv_rows(results_dir / "3_double_well_energies.csv", rows)
 
     x = states[0].x_full
     V = quartic_double_well(x, **base_kwargs)
-    
     plot_potential_and_states(
-        x, V, states, results_dir / "3_double_well_states.png", "Quartic double well"
+        x,
+        V,
+        states,
+        results_dir / "3_double_well_states.png",
+        "Quartic double well",
     )
-    
     plot_probability_densities(
-        states, results_dir / "3_double_well_densities.png", "Quartic double well densities"
+        states,
+        results_dir / "3_double_well_densities.png",
+        "Quartic double well densities",
     )
 
     sweep_rows = splitting_vs_parameter(
@@ -258,14 +272,12 @@ def run_double_well(results_dir: Path) -> None:
         e_min=0.0,
         e_max=25.0,
     )
-    
     save_csv_rows(results_dir / "3_double_well_splitting_vs_b.csv", sweep_rows)
-    
+
     b_vals = np.array([r["b"] for r in sweep_rows], dtype=float)
     e0 = np.array([r["E0"] for r in sweep_rows], dtype=float)
     e1 = np.array([r["E1"] for r in sweep_rows], dtype=float)
     splitting = np.array([r["splitting"] for r in sweep_rows], dtype=float)
-    
     plot_splitting_curve(
         b_vals,
         e0,
@@ -278,7 +290,12 @@ def run_double_well(results_dir: Path) -> None:
 
 
 def run_finite_square_well(results_dir: Path) -> None:
-    # Finite square well: a good extra potential with easy physical interpretation.
+    """
+    Run the finite square well as an additional nontrivial potential.
+
+    This case demonstrates that the same solver handles a finite number of bound
+    states when the confining walls have finite height.
+    """
     x_max = 4.0
     n_grid = 3000
     kwargs = {"V0": 12.0, "a": 1.0}
@@ -295,7 +312,6 @@ def run_finite_square_well(results_dir: Path) -> None:
     )
 
     rows = []
-    
     for i, s in enumerate(states[:4]):
         rows.append(
             {
@@ -304,12 +320,10 @@ def run_finite_square_well(results_dir: Path) -> None:
                 "energy": s.energy,
             }
         )
-        
     save_csv_rows(results_dir / "4_finite_square_well_energies.csv", rows)
 
     x = states[0].x_full
     V = finite_square_well(x, **kwargs)
-    
     plot_potential_and_states(
         x,
         V,
@@ -317,7 +331,6 @@ def run_finite_square_well(results_dir: Path) -> None:
         results_dir / "4_finite_square_well_states.png",
         "Finite square well states",
     )
-    
     plot_probability_densities(
         states,
         results_dir / "4_finite_square_well_densities.png",
@@ -326,7 +339,12 @@ def run_finite_square_well(results_dir: Path) -> None:
 
 
 def run_quartic_oscillator_demo(results_dir: Path) -> None:
-    # Optional second extra potential if you want one more clean figure.
+    """
+    Run an optional anharmonic quartic-oscillator demonstration.
+
+    This figure is not required for the core project, but it is useful if you want
+    one extra example showing that the solver is reusable beyond the main cases.
+    """
     x_max = 6.0
     n_grid = 2400
     kwargs = {"lam": 0.1}
@@ -341,10 +359,9 @@ def run_quartic_oscillator_demo(results_dir: Path) -> None:
         e_min=0.0,
         e_max=10.0,
     )
-    
+
     x = states[0].x_full
     V = quartic_oscillator(x, **kwargs)
-    
     plot_potential_and_states(
         x,
         V,

@@ -1,5 +1,16 @@
 from __future__ import annotations
 
+"""
+Parity-based shooting solver for symmetric 1D potentials.
+
+For a symmetric potential, low-lying eigenstates can be separated into:
+- even states, with psi'(0) = 0,
+- odd states, with psi(0) = 0.
+
+This module exploits that symmetry to solve the bound-state problem on the
+half-domain x in [0, x_max], then reconstructs the full wavefunction.
+"""
+
 from dataclasses import dataclass
 
 import numpy as np
@@ -14,6 +25,23 @@ from src.numerov import (
 
 @dataclass
 class StateSolution:
+    """
+    Container for a single bound-state solution.
+
+    Attributes
+    ----------
+    energy : float
+        Computed eigenvalue.
+    parity : str
+        Either "even" or "odd".
+    x_full : ndarray
+        Full spatial grid on [-x_max, x_max].
+    psi_full : ndarray
+        Normalized full-domain wavefunction.
+    mismatch : float
+        Residual value of the boundary mismatch at the final eigenvalue.
+    """
+
     energy: float
     parity: str
     x_full: np.ndarray
@@ -22,22 +50,60 @@ class StateSolution:
 
 
 def initial_conditions(x_half: np.ndarray, parity: str) -> tuple[float, float]:
+    """
+    Construct parity-consistent starting values near x = 0.
+
+    Parameters
+    ----------
+    x_half : ndarray
+        Half-domain grid beginning at x = 0.
+    parity : str
+        State parity, either "even" or "odd".
+
+    Returns
+    -------
+    tuple[float, float]
+        Starting values (psi0, psi1) for Numerov integration.
+    """
     h = x_half[1] - x_half[0]
-    
+
     if parity == "even":
+        # psi(0) = 1 and psi'(0) = 0 imply psi(h) = 1 + O(h^2).
         return 1.0, 1.0
     if parity == "odd":
+        # psi(0) = 0 and psi'(0) = 1 imply psi(h) = h + O(h^3).
         return 0.0, h
-    
+
     raise ValueError("parity must be 'even' or 'odd'")
 
 
 def half_domain_wavefunction(
-    x_half: np.ndarray, V_half: np.ndarray, energy: float, parity: str
+    x_half: np.ndarray,
+    V_half: np.ndarray,
+    energy: float,
+    parity: str,
 ) -> np.ndarray:
+    """
+    Compute the half-domain trial wavefunction for a given energy.
+
+    Parameters
+    ----------
+    x_half : ndarray
+        Half-domain grid.
+    V_half : ndarray
+        Potential sampled on the half-domain.
+    energy : float
+        Trial energy.
+    parity : str
+        State parity.
+
+    Returns
+    -------
+    ndarray
+        Unnormalized half-domain wavefunction.
+    """
     q = q_from_energy(V_half, energy)
     psi0, psi1 = initial_conditions(x_half, parity)
-    
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
 
 
@@ -48,8 +114,30 @@ def boundary_mismatch(
     parity: str,
     mode: str = "value",
 ) -> float:
+    """
+    Evaluate the mismatch used for eigenvalue shooting.
+
+    Parameters
+    ----------
+    x_half : ndarray
+        Half-domain grid.
+    V_half : ndarray
+        Half-domain potential.
+    energy : float
+        Trial energy.
+    parity : str
+        State parity.
+    mode : str, optional
+        Type of mismatch to compute. "value" uses psi(x_max), while
+        "logder" uses psi'(x_max)/psi(x_max).
+
+    Returns
+    -------
+    float
+        Scalar mismatch value used in bracketing or diagnostics.
+    """
     psi = half_domain_wavefunction(x_half, V_half, energy, parity)
-    
+
     if mode == "value":
         return float(psi[-1])
     if mode == "logder":
@@ -57,7 +145,7 @@ def boundary_mismatch(
         if abs(denom) < 1e-14:
             return np.sign(denom) * np.inf if denom != 0.0 else np.inf
         return float(derivative_at_right_edge(x_half, psi) / denom)
-    
+
     raise ValueError("mode must be 'value' or 'logder'")
 
 
@@ -69,13 +157,32 @@ def find_brackets(
     e_max: float,
     n_scan: int = 2000,
 ) -> list[tuple[float, float]]:
+    """
+    Scan an energy interval and locate sign-changing brackets.
+
+    Parameters
+    ----------
+    x_half, V_half : ndarray
+        Half-domain grid and potential.
+    parity : str
+        Target parity sector.
+    e_min, e_max : float
+        Search interval in energy.
+    n_scan : int, optional
+        Number of scan points used to build trial energies.
+
+    Returns
+    -------
+    list[tuple[float, float]]
+        Brackets suitable for bisection.
+    """
     energies = np.linspace(e_min, e_max, n_scan)
     vals = np.array(
         [boundary_mismatch(x_half, V_half, e, parity, mode="value") for e in energies]
     )
 
     brackets: list[tuple[float, float]] = []
-    
+
     for i in range(len(energies) - 1):
         a, b = vals[i], vals[i + 1]
         if not np.isfinite(a) or not np.isfinite(b):
@@ -85,7 +192,7 @@ def find_brackets(
             brackets.append((energies[i] - eps, energies[i] + eps))
         elif np.signbit(a) != np.signbit(b):
             brackets.append((energies[i], energies[i + 1]))
-    
+
     return brackets
 
 
@@ -97,6 +204,27 @@ def bisect_energy(
     tol: float = 1e-12,
     max_iter: int = 200,
 ) -> tuple[float, float]:
+    """
+    Refine a sign-changing eigenvalue bracket with bisection.
+
+    Parameters
+    ----------
+    x_half, V_half : ndarray
+        Half-domain grid and potential.
+    parity : str
+        Target parity sector.
+    bracket : tuple[float, float]
+        Initial sign-changing energy interval.
+    tol : float, optional
+        Bisection termination tolerance.
+    max_iter : int, optional
+        Maximum number of bisection iterations.
+
+    Returns
+    -------
+    tuple[float, float]
+        Refined eigenvalue estimate and final mismatch.
+    """
     lo, hi = bracket
     flo = boundary_mismatch(x_half, V_half, lo, parity, mode="value")
     fhi = boundary_mismatch(x_half, V_half, hi, parity, mode="value")
@@ -116,7 +244,6 @@ def bisect_energy(
 
         if not np.isfinite(fmid):
             raise ValueError("Non-finite mismatch during bisection.")
-
         if abs(fmid) < tol or abs(hi - lo) < tol:
             return mid, fmid
 
@@ -126,13 +253,31 @@ def bisect_energy(
             lo, flo = mid, fmid
 
     mid = 0.5 * (lo + hi)
-    
     return mid, boundary_mismatch(x_half, V_half, mid, parity, mode="value")
 
 
 def build_full_wavefunction(
-    x_half: np.ndarray, psi_half: np.ndarray, parity: str
+    x_half: np.ndarray,
+    psi_half: np.ndarray,
+    parity: str,
 ) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Reconstruct the full wavefunction from its half-domain representation.
+
+    Parameters
+    ----------
+    x_half : ndarray
+        Half-domain grid.
+    psi_half : ndarray
+        Half-domain wavefunction.
+    parity : str
+        State parity.
+
+    Returns
+    -------
+    tuple[ndarray, ndarray]
+        Full-domain grid and full-domain wavefunction.
+    """
     if parity == "even":
         x_left = -x_half[:0:-1]
         psi_left = psi_half[:0:-1]
@@ -144,7 +289,6 @@ def build_full_wavefunction(
 
     x_full = np.concatenate([x_left, x_half])
     psi_full = np.concatenate([psi_left, psi_half])
-    
     return x_full, psi_full
 
 
@@ -155,11 +299,30 @@ def solve_state_from_bracket(
     bracket: tuple[float, float],
     tol: float = 1e-12,
 ) -> StateSolution:
+    """
+    Compute one bound state starting from a valid energy bracket.
+
+    Parameters
+    ----------
+    x_half, V_half : ndarray
+        Half-domain grid and potential.
+    parity : str
+        Target parity sector.
+    bracket : tuple[float, float]
+        Energy interval containing a single eigenvalue.
+    tol : float, optional
+        Root-finding tolerance.
+
+    Returns
+    -------
+    StateSolution
+        Structured solution object containing energy and wavefunction data.
+    """
     energy, mismatch = bisect_energy(x_half, V_half, parity, bracket, tol=tol)
     psi_half = half_domain_wavefunction(x_half, V_half, energy, parity)
     x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
     psi_full = normalize_wavefunction(x_full, psi_full)
-    
+
     return StateSolution(
         energy=energy,
         parity=parity,
@@ -181,6 +344,33 @@ def solve_symmetric_potential(
     scan_points: int = 1200,
     tol: float = 1e-12,
 ) -> list[StateSolution]:
+    """
+    Solve for multiple bound states of a symmetric potential.
+
+    Parameters
+    ----------
+    x_max : float
+        Right boundary of the half-domain [0, x_max].
+    n_grid : int
+        Number of half-domain grid points.
+    potential_fn : callable
+        Potential function V(x, **kwargs).
+    potential_kwargs : dict, optional
+        Keyword arguments passed to the potential.
+    n_even, n_odd : int, optional
+        Number of even and odd states requested.
+    e_min, e_max : float, optional
+        Energy search interval. If omitted, values are inferred from the potential.
+    scan_points : int, optional
+        Number of scan points used to find sign-changing brackets.
+    tol : float, optional
+        Root-finding tolerance for the bisection step.
+
+    Returns
+    -------
+    list[StateSolution]
+        Bound states sorted by energy.
+    """
     if potential_kwargs is None:
         potential_kwargs = {}
 
@@ -197,19 +387,24 @@ def solve_symmetric_potential(
 
     for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
         brackets = find_brackets(
-            x_half, V_half, parity, e_min=e_min, e_max=e_max, n_scan=scan_points
+            x_half,
+            V_half,
+            parity,
+            e_min=e_min,
+            e_max=e_max,
+            n_scan=scan_points,
         )
-        
+
         if len(brackets) < n_needed:
             raise RuntimeError(
                 f"Found only {len(brackets)} {parity} brackets, needed {n_needed}. "
                 "Increase x_max, e_max, or scan_points."
             )
+
         for bracket in brackets[:n_needed]:
             solutions.append(
                 solve_state_from_bracket(x_half, V_half, parity, bracket, tol=tol)
             )
 
     solutions.sort(key=lambda s: s.energy)
-    
     return solutions

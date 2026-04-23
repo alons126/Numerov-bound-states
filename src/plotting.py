@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+"""
+Plotting helpers for report-ready figures.
+
+The functions in this module keep all Matplotlib logic in one place so the rest
+of the project code can focus on the numerical calculations.
+"""
+
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -7,6 +14,18 @@ import numpy as np
 
 
 def _ensure_parent(path: str | Path) -> None:
+    """
+    Create the parent directory of an output path if it does not exist.
+
+    Parameters
+    ----------
+    path : str or Path
+        Target file path.
+
+    Returns
+    -------
+    None
+    """
     Path(path).parent.mkdir(parents=True, exist_ok=True)
 
 
@@ -19,15 +38,43 @@ def plot_potential_and_states(
     n_show: int = 4,
     scale: float = 0.8,
 ) -> None:
+    """
+    Plot the potential together with several shifted eigenstates.
+
+    Parameters
+    ----------
+    x : ndarray
+        Full spatial grid.
+    V : ndarray
+        Potential on the full grid.
+    states : sequence
+        Sequence of StateSolution objects.
+    path : str or Path
+        Output image path.
+    title : str
+        Figure title.
+    n_show : int, optional
+        Number of states to overlay.
+    scale : float, optional
+        Relative vertical scaling of the wavefunctions.
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    Extremely large wall values are clipped for visualization so that the
+    wavefunctions remain visible in square-well plots.
+    """
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
 
-    V_plot = np.clip(V, None, 50)  # cap huge walls
+    V_plot = np.clip(V, None, 50.0)
     plt.plot(x, V_plot, label="V(x)")
-    
+
     for i, state in enumerate(states[:n_show]):
         psi_scaled = scale * state.psi_full / np.max(np.abs(state.psi_full))
-
         plt.plot(
             state.x_full,
             state.energy + psi_scaled,
@@ -49,16 +96,34 @@ def plot_probability_densities(
     title: str,
     n_show: int = 4,
 ) -> None:
+    """
+    Plot |psi(x)|^2 for several states.
+
+    Parameters
+    ----------
+    states : sequence
+        Sequence of StateSolution objects.
+    path : str or Path
+        Output image path.
+    title : str
+        Figure title.
+    n_show : int, optional
+        Number of states to plot.
+
+    Returns
+    -------
+    None
+    """
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
-    
+
     for i, state in enumerate(states[:n_show]):
         plt.plot(
             state.x_full,
             np.abs(state.psi_full) ** 2,
             label=f"n={i}, E={state.energy:.4f}",
         )
-    
+
     plt.xlabel("x")
     plt.ylabel(r"$|\psi(x)|^2$")
     plt.title(title)
@@ -74,9 +139,27 @@ def plot_energy_comparison(
     path: str | Path,
     title: str,
 ) -> None:
+    """
+    Compare numerical and exact energy levels on the same figure.
+
+    Parameters
+    ----------
+    numerical : ndarray
+        Computed energy levels.
+    exact : ndarray
+        Exact reference values.
+    path : str or Path
+        Output image path.
+    title : str
+        Figure title.
+
+    Returns
+    -------
+    None
+    """
     _ensure_parent(path)
     n = np.arange(len(exact))
-    
+
     plt.figure(figsize=(7, 4.5))
     plt.plot(n, exact, marker="o", label="exact")
     plt.plot(n, numerical, marker="s", label="numerical")
@@ -96,12 +179,32 @@ def plot_error_curve(
     path: str | Path,
     title: str,
 ) -> None:
+    """
+    Plot absolute energy errors on log-log axes.
+
+    Parameters
+    ----------
+    xvals : ndarray
+        Horizontal coordinate, typically h or x_max.
+    errors : ndarray
+        Error array with one column per state.
+    xlabel : str
+        Label for the horizontal axis.
+    path : str or Path
+        Output image path.
+    title : str
+        Figure title.
+
+    Returns
+    -------
+    None
+    """
     _ensure_parent(path)
     plt.figure(figsize=(7, 4.5))
-    
+
     for i in range(errors.shape[1]):
         plt.loglog(xvals, errors[:, i], marker="o", label=f"state {i}")
-    
+
     plt.xlabel(xlabel)
     plt.ylabel("absolute energy error")
     plt.title(title)
@@ -120,6 +223,28 @@ def plot_splitting_curve(
     path: str | Path,
     title: str,
 ) -> None:
+    """
+    Plot the lowest two energies and their splitting versus a parameter.
+
+    Parameters
+    ----------
+    xvals : ndarray
+        Swept parameter values.
+    e0, e1 : ndarray
+        Lowest even/odd energy levels.
+    splitting : ndarray
+        Difference E1 - E0.
+    xlabel : str
+        Label for the horizontal axis.
+    path : str or Path
+        Output image path.
+    title : str
+        Figure title.
+
+    Returns
+    -------
+    None
+    """
     _ensure_parent(path)
     plt.figure(figsize=(7, 4.5))
     plt.plot(xvals, e0, marker="o", label="E0")

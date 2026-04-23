@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+"""
+Analysis utilities for validation and convergence studies.
+
+This module collects functions that turn raw solver output into quantities used
+in the report: exact benchmark spectra, error tables, convergence trends, and
+double-well splitting data.
+"""
+
 import csv
 from pathlib import Path
 
@@ -9,28 +17,90 @@ from src.shooting import StateSolution, solve_symmetric_potential
 
 
 def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarray:
+    """
+    Exact energies for an infinite square well on [-a, a].
+
+    Parameters
+    ----------
+    n_values : ndarray
+        Quantum numbers n = 1, 2, 3, ...
+    a : float, optional
+        Half-width of the well.
+
+    Returns
+    -------
+    ndarray
+        Exact eigenvalues in the dimensionless units used by the project.
+    """
     n_values = np.asarray(n_values, dtype=float)
     return (n_values * np.pi / (2.0 * a)) ** 2 / 2.0
 
 
 def exact_harmonic_oscillator_energies(
-    n_values: np.ndarray, omega: float = 1.0
+    n_values: np.ndarray,
+    omega: float = 1.0,
 ) -> np.ndarray:
+    """
+    Exact harmonic-oscillator spectrum E_n = omega (n + 1/2).
+
+    Parameters
+    ----------
+    n_values : ndarray
+        State indices n = 0, 1, 2, ...
+    omega : float, optional
+        Oscillator frequency.
+
+    Returns
+    -------
+    ndarray
+        Exact eigenvalues.
+    """
     n_values = np.asarray(n_values, dtype=float)
     return omega * (n_values + 0.5)
 
 
 def relative_error(numerical: np.ndarray, exact: np.ndarray) -> np.ndarray:
+    """
+    Compute componentwise relative error.
+
+    Parameters
+    ----------
+    numerical : ndarray
+        Computed values.
+    exact : ndarray
+        Reference values.
+
+    Returns
+    -------
+    ndarray
+        Relative errors |numerical - exact| / |exact|.
+    """
     numerical = np.asarray(numerical, dtype=float)
     exact = np.asarray(exact, dtype=float)
     return np.abs((numerical - exact) / exact)
 
 
 def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
+    """
+    Save a list of dictionaries as a CSV table.
+
+    Parameters
+    ----------
+    path : str or Path
+        Output path.
+    rows : list[dict]
+        Table rows with matching keys.
+
+    Returns
+    -------
+    None
+    """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
+
     if not rows:
         raise ValueError("No rows to save.")
+
     with path.open("w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         writer.writeheader()
@@ -38,8 +108,24 @@ def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
 
 
 def energies_from_states(
-    states: list[StateSolution], n_states: int | None = None
+    states: list[StateSolution],
+    n_states: int | None = None,
 ) -> np.ndarray:
+    """
+    Extract the first n state energies from a list of StateSolution objects.
+
+    Parameters
+    ----------
+    states : list[StateSolution]
+        Solver output.
+    n_states : int, optional
+        Number of energies to extract. If omitted, use all states.
+
+    Returns
+    -------
+    ndarray
+        Extracted energy values.
+    """
     if n_states is None:
         return np.array([s.energy for s in states], dtype=float)
     return np.array([s.energy for s in states[:n_states]], dtype=float)
@@ -56,6 +142,31 @@ def convergence_vs_grid(
     e_max: float,
     reference_energies: np.ndarray,
 ) -> dict[str, np.ndarray]:
+    """
+    Study eigenvalue convergence as the grid is refined.
+
+    Parameters
+    ----------
+    potential_fn : callable
+        Potential function.
+    potential_kwargs : dict
+        Keyword arguments for the potential.
+    x_max : float
+        Computational half-domain size.
+    grid_sizes : list[int]
+        Grid resolutions to test.
+    n_even, n_odd : int
+        Number of even and odd states requested.
+    e_min, e_max : float
+        Energy search interval.
+    reference_energies : ndarray
+        Exact or high-quality reference energies.
+
+    Returns
+    -------
+    dict[str, ndarray]
+        Dictionary with grid spacing h and energy error arrays.
+    """
     hs = []
     errors = []
     n_states = len(reference_energies)
@@ -71,7 +182,6 @@ def convergence_vs_grid(
             e_min=e_min,
             e_max=e_max,
         )
-        
         energies = energies_from_states(states, n_states=n_states)
         hs.append(x_max / (n_grid - 1))
         errors.append(np.abs(energies - reference_energies))
@@ -90,6 +200,31 @@ def convergence_vs_box_size(
     e_max: float,
     reference_energies: np.ndarray,
 ) -> dict[str, np.ndarray]:
+    """
+    Study eigenvalue convergence as the computational box size changes.
+
+    Parameters
+    ----------
+    potential_fn : callable
+        Potential function.
+    potential_kwargs : dict
+        Keyword arguments for the potential.
+    x_max_values : list[float]
+        Domain sizes to test.
+    n_grid : int
+        Fixed grid size used for the box-size study.
+    n_even, n_odd : int
+        Number of even and odd states requested.
+    e_min, e_max : float
+        Energy search interval.
+    reference_energies : ndarray
+        Exact or high-quality reference energies.
+
+    Returns
+    -------
+    dict[str, ndarray]
+        Dictionary with x_max values and energy error arrays.
+    """
     xs = []
     errors = []
     n_states = len(reference_energies)
@@ -105,7 +240,6 @@ def convergence_vs_box_size(
             e_min=e_min,
             e_max=e_max,
         )
-        
         energies = energies_from_states(states, n_states=n_states)
         xs.append(x_max)
         errors.append(np.abs(energies - reference_energies))
@@ -123,8 +257,33 @@ def splitting_vs_parameter(
     e_min: float,
     e_max: float,
 ) -> list[dict]:
+    """
+    Measure double-well ground-state splitting while varying one parameter.
+
+    Parameters
+    ----------
+    potential_fn : callable
+        Potential function to study.
+    base_kwargs : dict
+        Baseline potential parameters.
+    varied_param : str
+        Name of the parameter to sweep.
+    varied_values : list[float]
+        Parameter values used in the sweep.
+    x_max : float
+        Computational half-domain size.
+    n_grid : int
+        Number of half-domain grid points.
+    e_min, e_max : float
+        Energy search interval.
+
+    Returns
+    -------
+    list[dict]
+        Rows containing the varied parameter, E0, E1, and the splitting.
+    """
     rows: list[dict] = []
-    
+
     for value in varied_values:
         kwargs = dict(base_kwargs)
         kwargs[varied_param] = value
@@ -138,10 +297,9 @@ def splitting_vs_parameter(
             e_min=e_min,
             e_max=e_max,
         )
-        
+
         e0 = states[0].energy
         e1 = states[1].energy
-        
         rows.append(
             {
                 varied_param: value,
@@ -150,5 +308,5 @@ def splitting_vs_parameter(
                 "splitting": e1 - e0,
             }
         )
-        
+
     return rows
