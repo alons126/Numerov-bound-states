@@ -81,7 +81,7 @@ def run_square_well(results_dir: Path) -> None:
         V,
         states,
         results_dir / "1_infinite_square_well_states.png",
-        "Infinite well",
+        "Infinite well states",
     )
     plot_probability_densities(
         states,

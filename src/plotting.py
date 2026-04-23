@@ -206,7 +206,7 @@ def plot_error_curve(
         plt.loglog(xvals, errors[:, i], marker="o", label=f"state {i}")
 
     plt.xlabel(xlabel)
-    plt.ylabel("absolute energy error")
+    plt.ylabel("Absolute energy error")
     plt.title(title)
     plt.legend()
     plt.tight_layout()

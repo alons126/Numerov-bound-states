@@ -1,0 +1,8 @@
+# .gitignore file for Python projects
+*__pycache__*
+
+# Virtual environments
+.venv
+
+# Virtual environments
+.vscode
