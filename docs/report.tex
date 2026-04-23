@@ -6,8 +6,8 @@
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 
-\title{Numerov Method for Bound States in the One-Dimensional Schr\"odinger Equation}
-\author{Your Name}
+\title{\textbf{Numerov Method for Bound States in the One-Dimensional Schr\"odinger Equation}}
+\author{Alon Sportes (ID: 204498745)}
 \date{}
 
 \begin{document}
@@ -24,10 +24,30 @@ In dimensionless units, the Schr\"odinger equation is written as
 The wavefunction is integrated with the Numerov scheme on a uniform grid. For symmetric potentials, even and odd states are treated separately using parity conditions at $x=0$. Eigenvalues are found by scanning for sign changes in the boundary mismatch and then refining them with bisection.
 
 \section{Results}
-Validation cases include the infinite square well and harmonic oscillator, where numerical energies are compared against exact results. Convergence is studied by varying both grid spacing and box size. For the quartic double well, the lowest even and odd states form nearly degenerate pairs; the splitting is further analyzed as a function of the barrier parameter. An additional finite square well is included to demonstrate the flexibility of the solver.
+
+\subsection{Infinite square well}
+The infinite square well serves as a benchmark problem. The numerical eigenvalues are compared with the exact analytical spectrum, showing good agreement. Errors decrease systematically as the grid resolution increases.
+
+\subsection{Harmonic oscillator}
+For the harmonic oscillator, the numerical spectrum reproduces the exact energy levels. The wavefunctions exhibit the correct parity and node structure, providing additional validation of the implementation.
+
+\subsection{Double-well potential}
+The quartic double-well potential produces pairs of nearly degenerate states. The lowest even and odd states correspond to symmetric and antisymmetric combinations of localized wavefunctions. The energy splitting between these states is analyzed as a function of the barrier height, illustrating quantum tunneling effects.
+
+\subsection{Finite square well}
+The finite square well demonstrates the flexibility of the solver. Unlike the infinite case, only a finite number of bound states exist, depending on the well depth. The numerical results capture this behavior correctly.
+
+\subsection{Convergence study}
+Convergence is studied by varying both the grid spacing and the size of the computational domain. The results show that the numerical energies approach stable values as the resolution increases, consistent with expectations for finite-difference methods.
+
+Representative plots include wavefunctions, probability densities, convergence curves, and energy splitting as a function of potential parameters.
 
 \section{Discussion}
-The correctness of the code is verified by analytic benchmarks, normalization checks, and physical sanity tests such as the positivity of the double-well splitting. Convergence studies provide direct evidence that the numerical results are stable with respect to discretization choices. The wavefunction plots also show the expected parity and node structure.
+The correctness of the code is verified through multiple checks. Analytical benchmarks confirm the accuracy of the computed eigenvalues, while normalization ensures that the wavefunctions remain physically meaningful. Convergence studies provide strong evidence that the numerical results are stable with respect to discretization parameters.
+
+The double-well analysis highlights a key physical phenomenon: tunneling-induced energy splitting. As the barrier height increases, the splitting decreases, reflecting reduced overlap between the localized states. This demonstrates that the numerical method captures not only correct energies but also meaningful physical behavior.
+
+The results also illustrate typical numerical considerations, such as sensitivity to grid resolution and domain size. These factors must be carefully controlled to obtain reliable solutions.
 
 \section{Conclusion}
 The Numerov method provides an efficient and accurate tool for one-dimensional bound-state problems. In addition to reproducing known spectra, it captures physically interesting effects such as tunneling-induced energy splitting in a double well.

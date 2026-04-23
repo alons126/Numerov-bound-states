@@ -21,18 +21,22 @@ The main objectives are:
     \item Develop a shooting method with bisection to determine eigenvalues.
     \item Solve for bound states in several potentials:
     \begin{itemize}
-        \item Infinite square well (for validation against exact solutions)
-        \item Harmonic oscillator (for validation against exact solutions)
-        \item Double-well potential (to explore tunneling and energy splitting)
+        \item Infinite square well (validation against exact solutions)
+        \item Harmonic oscillator (validation against exact solutions)
+        \item Quartic double-well potential (tunneling and energy splitting)
+        \item Finite square well (additional nontrivial test case)
     \end{itemize}
     \item Normalize and analyze the resulting wavefunctions.
-    \item Study convergence with respect to grid spacing and domain size.
+    \item Perform convergence studies with respect to grid spacing and domain size.
+    \item Analyze physical behavior such as parity, node structure, and tunneling-induced energy splitting.
 \end{itemize}
 
 The project will include:
 \begin{itemize}
     \item A modular Python implementation (Numerov solver, shooting method, potentials).
     \item Visualization of wavefunctions and probability densities.
+    \item Convergence plots demonstrating numerical accuracy.
+    \item Parameter studies (e.g., double-well barrier dependence).
     \item Comparison with analytical solutions where available.
     \item A short report summarizing methods, results, and numerical accuracy.
 \end{itemize}

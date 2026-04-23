@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1776936756.92334 "/Users/alon/Projects/Numerov-bound-states/docs/proposal.tex" "proposal.pdf" "proposal" 1776936757.23609 0
-  "/Users/alon/Projects/Numerov-bound-states/docs/proposal.tex" 1776936608.65623 1952 a762db0cadde737f3c23a8e38eb47606 ""
+["pdflatex"] 1776937244.48403 "/Users/alon/Projects/Numerov-bound-states/docs/proposal.tex" "proposal.pdf" "proposal" 1776937244.75947 0
+  "/Users/alon/Projects/Numerov-bound-states/docs/proposal.tex" 1776937244.24088 2256 91c79bf7e1831c6b312a644b498f2148 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1136768653 1536 02c06700a42be0f5a28664c7273f82e7 ""
@@ -20,8 +20,8 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774538740 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774538681 3636776 dfeaead9e2e9c793969724e130e444cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "proposal.aux" 1776936757.19977 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
-  "proposal.tex" 1776936608.65623 1952 a762db0cadde737f3c23a8e38eb47606 ""
+  "proposal.aux" 1776937244.73884 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "proposal.tex" 1776937244.24088 2256 91c79bf7e1831c6b312a644b498f2148 ""
   (generated)
   "proposal.aux"
   "proposal.log"
