@@ -22,11 +22,9 @@ def plot_potential_and_states(
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
     plt.plot(x, V, label="V(x)")
-
     for i, state in enumerate(states[:n_show]):
         psi_scaled = scale * state.psi_full / np.max(np.abs(state.psi_full))
         plt.plot(state.x_full, state.energy + psi_scaled, label=f"n={i}, {state.parity}, E={state.energy:.4f}")
-
     plt.xlabel("x")
     plt.ylabel("Energy / shifted wavefunction")
     plt.title(title)
@@ -44,10 +42,8 @@ def plot_probability_densities(
 ) -> None:
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
-
     for i, state in enumerate(states[:n_show]):
         plt.plot(state.x_full, np.abs(state.psi_full) ** 2, label=f"n={i}, E={state.energy:.4f}")
-
     plt.xlabel("x")
     plt.ylabel(r"$|\psi(x)|^2$")
     plt.title(title)
@@ -65,7 +61,6 @@ def plot_energy_comparison(
 ) -> None:
     _ensure_parent(path)
     n = np.arange(len(exact))
-
     plt.figure(figsize=(7, 4.5))
     plt.plot(n, exact, marker="o", label="exact")
     plt.plot(n, numerical, marker="s", label="numerical")
@@ -87,12 +82,33 @@ def plot_error_curve(
 ) -> None:
     _ensure_parent(path)
     plt.figure(figsize=(7, 4.5))
-
     for i in range(errors.shape[1]):
         plt.loglog(xvals, errors[:, i], marker="o", label=f"state {i}")
-
     plt.xlabel(xlabel)
     plt.ylabel("absolute energy error")
+    plt.title(title)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(path, dpi=160)
+    plt.close()
+
+
+def plot_splitting_curve(
+    xvals: np.ndarray,
+    e0: np.ndarray,
+    e1: np.ndarray,
+    splitting: np.ndarray,
+    xlabel: str,
+    path: str | Path,
+    title: str,
+) -> None:
+    _ensure_parent(path)
+    plt.figure(figsize=(7, 4.5))
+    plt.plot(xvals, e0, marker="o", label="E0")
+    plt.plot(xvals, e1, marker="s", label="E1")
+    plt.plot(xvals, splitting, marker="^", label="E1 - E0")
+    plt.xlabel(xlabel)
+    plt.ylabel("Energy")
     plt.title(title)
     plt.legend()
     plt.tight_layout()

@@ -1,10 +1,17 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import numpy as np
 
 from src.analysis import exact_harmonic_oscillator_energies, exact_square_well_energies
 from src.numerov import normalize_wavefunction
-from src.potentials import harmonic_oscillator, infinite_square_well_numeric
+from src.potentials import harmonic_oscillator, infinite_square_well_numeric, quartic_double_well
 from src.shooting import solve_symmetric_potential
 
 
@@ -50,10 +57,25 @@ def test_harmonic_oscillator_first_levels() -> None:
     assert np.all(np.abs((numerical - exact) / exact) < 3e-3)
 
 
+def test_double_well_splitting_positive() -> None:
+    states = solve_symmetric_potential(
+        x_max=3.0,
+        n_grid=2400,
+        potential_fn=quartic_double_well,
+        potential_kwargs={"a": 1.0, "b": 6.0, "shift_min_to_zero": True},
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+    )
+    assert states[1].energy > states[0].energy
+
+
 def run_all_tests() -> None:
     test_normalization()
     test_square_well_ground_state()
     test_harmonic_oscillator_first_levels()
+    test_double_well_splitting_positive()
     print("All tests passed.")
 
 

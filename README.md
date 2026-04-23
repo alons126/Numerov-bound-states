@@ -1,39 +1,44 @@
 # numerov-bound-states
 
-A small project for solving the 1D time-independent Schrödinger equation with the Numerov method and a shooting procedure.
+Numerical solution of the 1D time-independent Schrödinger equation with the Numerov method and parity-based shooting.
 
-## Equation
+## Features
 
-In dimensionless units, the code solves
+- Numerov integration for symmetric 1D bound-state problems
+- Shooting + bisection search for eigenvalues
+- Validation on:
+  - infinite square well
+  - harmonic oscillator
+- Physics exploration on:
+  - quartic double well
+  - finite square well
+- Convergence studies versus grid spacing and domain size
+- Double-well tunneling splitting analysis
+- Plots and CSV output for report-ready figures
+- Lightweight automated tests
 
-\[
-\psi''(x) = 2\,[V(x) - E]\,\psi(x)
-\]
+## Project structure
 
-for bound states in symmetric potentials.
-
-## Implemented potentials
-
-- Infinite square well
-- Harmonic oscillator
-- Finite square well
-- Quartic double well
-
-## Main features
-
-- Numerov integration on the half-domain
-- Parity-based shooting for symmetric potentials
-- Bisection search for eigenvalues
-- Wavefunction normalization
-- Exact comparisons for the infinite square well and harmonic oscillator
-- Convergence plots versus grid spacing and box size
+- `src/`: core implementation
+  - `numerov.py`: Numerov stepping and safe normalization
+  - `shooting.py`: parity-based shooting and eigenvalue search
+  - `potentials.py`: potential definitions
+  - `analysis.py`: convergence and parameter-sweep helpers
+  - `plotting.py`: figure generation
+  - `experiments.py`: high-level numerical experiments
+- `scripts/`
+  - `run_solver.py`: runs the full project workflow
+- `tests/`
+  - `test_solver.py`: lightweight numerical sanity checks
+- `docs/`
+  - `report.tex`: project report skeleton
 
 ## Installation
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 ## Run everything
@@ -50,27 +55,23 @@ If you encounter import errors, run with:
 PYTHONPATH=. python3 scripts/run_solver.py
 ```
 
-## Project structure
+## What gets generated
 
-- `src/`: core implementation
-  - `numerov.py`: Numerov stepping and normalization
-  - `shooting.py`: parity-based shooting and eigenvalue search
-  - `potentials.py`: potential definitions
-  - `analysis.py`: exact spectra and convergence helpers
-  - `plotting.py`: figure generation
-- `scripts/`
-  - `run_solver.py`: runs the full project workflow
-- `tests/`
-  - `test_solver.py`: lightweight numerical sanity checks
-- `docs/`
-  - `report.tex`: project report
+Running the solver generates:
+
+- validation tables for square well and harmonic oscillator
+- wavefunction and density plots
+- convergence plots versus `h` and `x_max`
+- double-well splitting versus barrier parameter
+- finite square well bound-state plots
 
 ## Notes
 
-This implementation assumes **symmetric potentials** so that:
+This implementation assumes symmetric potentials, so:
+
 - even states satisfy `psi'(0)=0`
 - odd states satisfy `psi(0)=0`
 
-That makes the shooting problem much simpler and robust for a course project.
+That makes the shooting problem simple and robust for a final project.
 
-For the infinite square well, the code uses a very large outside barrier to mimic the ideal wall numerically.
+The code is written for clarity and analysis rather than maximum performance.

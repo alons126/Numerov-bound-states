@@ -19,10 +19,8 @@ class StateSolution:
 def initial_conditions(x_half: np.ndarray, parity: str) -> tuple[float, float]:
     h = x_half[1] - x_half[0]
     if parity == "even":
-        # psi(0)=1, psi'(0)=0 -> psi(h)=psi(0)+O(h^2)
         return 1.0, 1.0
     if parity == "odd":
-        # psi(0)=0, psi'(0)=1 -> psi(h)=h+O(h^3)
         return 0.0, h
     raise ValueError("parity must be 'even' or 'odd'")
 
@@ -172,7 +170,6 @@ def solve_symmetric_potential(
         e_min = float(np.min(V_half))
     if e_max is None:
         e_max = float(np.max(V_half))
-        # For confined smooth potentials on a box, scan somewhat above the well minimum too.
         e_max = max(e_max, e_min + 30.0)
 
     solutions: list[StateSolution] = []

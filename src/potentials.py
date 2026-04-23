@@ -7,10 +7,6 @@ def harmonic_oscillator(x: np.ndarray, omega: float = 1.0) -> np.ndarray:
     return 0.5 * omega**2 * x**2
 
 
-def finite_square_well(x: np.ndarray, V0: float = 20.0, a: float = 1.0) -> np.ndarray:
-    return np.where(np.abs(x) <= a, 0.0, V0)
-
-
 def infinite_square_well_numeric(
     x: np.ndarray,
     a: float = 1.0,
@@ -19,19 +15,28 @@ def infinite_square_well_numeric(
     return np.where(np.abs(x) <= a, 0.0, wall_height)
 
 
-def double_well_quartic(x: np.ndarray, a: float = 1.0, b: float = 6.0) -> np.ndarray:
-    return a * x**4 - b * x**2
+def finite_square_well(
+    x: np.ndarray,
+    V0: float = 20.0,
+    a: float = 1.0,
+) -> np.ndarray:
+    return np.where(np.abs(x) <= a, 0.0, V0)
 
 
-def shifted_double_well_quartic(
+def quartic_double_well(
     x: np.ndarray,
     a: float = 1.0,
     b: float = 6.0,
+    shift_min_to_zero: bool = True,
 ) -> np.ndarray:
-    v = double_well_quartic(x, a=a, b=b)
-    return v - np.min(v)
+    v = a * x**4 - b * x**2
+    if shift_min_to_zero:
+        v = v - np.min(v)
+    return v
 
 
-def soft_box(x: np.ndarray, a: float = 1.0, k: float = 100.0) -> np.ndarray:
-    z = np.maximum(np.abs(x) - a, 0.0)
-    return k * z**2
+def quartic_oscillator(
+    x: np.ndarray,
+    lam: float = 0.1,
+) -> np.ndarray:
+    return 0.5 * x**2 + lam * x**4
