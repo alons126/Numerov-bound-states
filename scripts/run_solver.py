@@ -1,8 +1,16 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 import numpy as np
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+TESTS_DIR = PROJECT_ROOT / "tests"
+
+for path in (PROJECT_ROOT, TESTS_DIR):
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
 
 from src.analysis import (
     convergence_vs_box_size,
@@ -23,7 +31,7 @@ from src.potentials import (
     shifted_double_well_quartic,
 )
 from src.shooting import solve_symmetric_potential
-from tests.test_solver import run_all_tests
+from test_solver import run_all_tests
 
 
 RESULTS = Path("results")
