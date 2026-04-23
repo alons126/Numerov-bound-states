@@ -18,6 +18,7 @@ from src.experiments import (
     run_quartic_oscillator_demo,
     run_square_well,
 )
+
 from test_solver import run_all_tests
 
 

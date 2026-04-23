@@ -23,10 +23,12 @@ class StateSolution:
 
 def initial_conditions(x_half: np.ndarray, parity: str) -> tuple[float, float]:
     h = x_half[1] - x_half[0]
+    
     if parity == "even":
         return 1.0, 1.0
     if parity == "odd":
         return 0.0, h
+    
     raise ValueError("parity must be 'even' or 'odd'")
 
 
@@ -35,6 +37,7 @@ def half_domain_wavefunction(
 ) -> np.ndarray:
     q = q_from_energy(V_half, energy)
     psi0, psi1 = initial_conditions(x_half, parity)
+    
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
 
 
@@ -46,6 +49,7 @@ def boundary_mismatch(
     mode: str = "value",
 ) -> float:
     psi = half_domain_wavefunction(x_half, V_half, energy, parity)
+    
     if mode == "value":
         return float(psi[-1])
     if mode == "logder":
@@ -53,6 +57,7 @@ def boundary_mismatch(
         if abs(denom) < 1e-14:
             return np.sign(denom) * np.inf if denom != 0.0 else np.inf
         return float(derivative_at_right_edge(x_half, psi) / denom)
+    
     raise ValueError("mode must be 'value' or 'logder'")
 
 
@@ -70,6 +75,7 @@ def find_brackets(
     )
 
     brackets: list[tuple[float, float]] = []
+    
     for i in range(len(energies) - 1):
         a, b = vals[i], vals[i + 1]
         if not np.isfinite(a) or not np.isfinite(b):
@@ -79,6 +85,7 @@ def find_brackets(
             brackets.append((energies[i] - eps, energies[i] + eps))
         elif np.signbit(a) != np.signbit(b):
             brackets.append((energies[i], energies[i + 1]))
+    
     return brackets
 
 
@@ -119,6 +126,7 @@ def bisect_energy(
             lo, flo = mid, fmid
 
     mid = 0.5 * (lo + hi)
+    
     return mid, boundary_mismatch(x_half, V_half, mid, parity, mode="value")
 
 
@@ -136,6 +144,7 @@ def build_full_wavefunction(
 
     x_full = np.concatenate([x_left, x_half])
     psi_full = np.concatenate([psi_left, psi_half])
+    
     return x_full, psi_full
 
 
@@ -150,6 +159,7 @@ def solve_state_from_bracket(
     psi_half = half_domain_wavefunction(x_half, V_half, energy, parity)
     x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
     psi_full = normalize_wavefunction(x_full, psi_full)
+    
     return StateSolution(
         energy=energy,
         parity=parity,
@@ -189,6 +199,7 @@ def solve_symmetric_potential(
         brackets = find_brackets(
             x_half, V_half, parity, e_min=e_min, e_max=e_max, n_scan=scan_points
         )
+        
         if len(brackets) < n_needed:
             raise RuntimeError(
                 f"Found only {len(brackets)} {parity} brackets, needed {n_needed}. "
@@ -200,4 +211,5 @@ def solve_symmetric_potential(
             )
 
     solutions.sort(key=lambda s: s.energy)
+    
     return solutions

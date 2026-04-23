@@ -21,15 +21,19 @@ def plot_potential_and_states(
 ) -> None:
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
+
     V_plot = np.clip(V, None, 50)  # cap huge walls
     plt.plot(x, V_plot, label="V(x)")
+    
     for i, state in enumerate(states[:n_show]):
         psi_scaled = scale * state.psi_full / np.max(np.abs(state.psi_full))
+
         plt.plot(
             state.x_full,
             state.energy + psi_scaled,
             label=f"n={i}, {state.parity}, E={state.energy:.4f}",
         )
+
     plt.xlabel("x")
     plt.ylabel("Energy / shifted wavefunction")
     plt.title(title)
@@ -47,12 +51,14 @@ def plot_probability_densities(
 ) -> None:
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
+    
     for i, state in enumerate(states[:n_show]):
         plt.plot(
             state.x_full,
             np.abs(state.psi_full) ** 2,
             label=f"n={i}, E={state.energy:.4f}",
         )
+    
     plt.xlabel("x")
     plt.ylabel(r"$|\psi(x)|^2$")
     plt.title(title)
@@ -70,6 +76,7 @@ def plot_energy_comparison(
 ) -> None:
     _ensure_parent(path)
     n = np.arange(len(exact))
+    
     plt.figure(figsize=(7, 4.5))
     plt.plot(n, exact, marker="o", label="exact")
     plt.plot(n, numerical, marker="s", label="numerical")
@@ -91,8 +98,10 @@ def plot_error_curve(
 ) -> None:
     _ensure_parent(path)
     plt.figure(figsize=(7, 4.5))
+    
     for i in range(errors.shape[1]):
         plt.loglog(xvals, errors[:, i], marker="o", label=f"state {i}")
+    
     plt.xlabel(xlabel)
     plt.ylabel("absolute energy error")
     plt.title(title)

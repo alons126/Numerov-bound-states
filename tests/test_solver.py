@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -16,6 +17,7 @@ from src.potentials import (
     infinite_square_well_numeric,
     quartic_double_well,
 )
+
 from src.shooting import solve_symmetric_potential
 
 
@@ -24,6 +26,7 @@ def test_normalization() -> None:
     psi = np.exp(-(x**2))
     psi_n = normalize_wavefunction(x, psi)
     val = np.trapezoid(np.abs(psi_n) ** 2, x)
+    
     assert abs(val - 1.0) < 1e-10
 
 
@@ -41,6 +44,7 @@ def test_square_well_ground_state() -> None:
     )
     e0 = states[0].energy
     exact = exact_square_well_energies(np.array([1]), a=a)[0]
+    
     assert abs(e0 - exact) / exact < 5e-3
 
 
@@ -58,6 +62,7 @@ def test_harmonic_oscillator_first_levels() -> None:
     )
     numerical = np.array([s.energy for s in states[:4]])
     exact = exact_harmonic_oscillator_energies(np.arange(4), omega=omega)
+    
     assert np.all(np.abs((numerical - exact) / exact) < 3e-3)
 
 
@@ -72,6 +77,7 @@ def test_double_well_splitting_positive() -> None:
         e_min=0.0,
         e_max=20.0,
     )
+    
     assert states[1].energy > states[0].energy
 
 

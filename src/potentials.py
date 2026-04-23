@@ -30,8 +30,10 @@ def quartic_double_well(
     shift_min_to_zero: bool = True,
 ) -> np.ndarray:
     v = a * x**4 - b * x**2
+    
     if shift_min_to_zero:
         v = v - np.min(v)
+    
     return v
 
 

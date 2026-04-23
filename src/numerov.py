@@ -9,6 +9,7 @@ def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     In the dimensionless Schrödinger equation:
         psi'' = 2 [V(x) - E] psi
     """
+    
     return 2.0 * (V - energy)
 
 
@@ -18,11 +19,14 @@ def numerov_outward(
     """
     Numerov integration on a uniform grid for y'' = q(x) y.
     """
+    
     if x.ndim != 1 or q.ndim != 1 or len(x) != len(q):
         raise ValueError("x and q must be 1D arrays with the same length.")
     if len(x) < 3:
         raise ValueError("Need at least 3 grid points.")
+    
     h = x[1] - x[0]
+    
     if not np.allclose(np.diff(x), h, rtol=1e-12, atol=1e-14):
         raise ValueError("Numerov integration requires a uniform grid.")
 
@@ -50,13 +54,18 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     """
     Safely normalize a wavefunction while avoiding overflow.
     """
+    
     scale = np.max(np.abs(psi))
+    
     if scale == 0.0:
         raise ValueError("Cannot normalize a zero wavefunction.")
+    
     psi_scaled = psi / scale
     norm = scale * np.sqrt(np.trapezoid(np.abs(psi_scaled) ** 2, x))
+    
     if norm == 0.0 or not np.isfinite(norm):
         raise ValueError("Wavefunction normalization failed.")
+    
     return psi / norm
 
 
@@ -64,7 +73,10 @@ def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
     """
     Second-order backward derivative at the last point.
     """
+    
     if len(x) < 3:
         raise ValueError("Need at least 3 points for derivative.")
+    
     h = x[1] - x[0]
+    
     return (3.0 * psi[-1] - 4.0 * psi[-2] + psi[-3]) / (2.0 * h)

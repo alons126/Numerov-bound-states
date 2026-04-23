@@ -12,6 +12,7 @@ from src.analysis import (
     save_csv_rows,
     splitting_vs_parameter,
 )
+
 from src.plotting import (
     plot_energy_comparison,
     plot_error_curve,
@@ -19,6 +20,7 @@ from src.plotting import (
     plot_probability_densities,
     plot_splitting_curve,
 )
+
 from src.potentials import (
     finite_square_well,
     harmonic_oscillator,
@@ -26,6 +28,7 @@ from src.potentials import (
     quartic_double_well,
     quartic_oscillator,
 )
+
 from src.shooting import solve_symmetric_potential
 
 
@@ -44,10 +47,12 @@ def run_square_well(results_dir: Path) -> None:
         e_min=0.1,
         e_max=80.0,
     )
+    
     numerical = np.array([s.energy for s in states[:4]])
     exact = exact_square_well_energies(np.arange(1, 5), a=a)
 
     rows = []
+    
     for i, (en, ex) in enumerate(zip(numerical, exact)):
         rows.append(
             {
@@ -58,23 +63,27 @@ def run_square_well(results_dir: Path) -> None:
                 "relative_error": abs((en - ex) / ex),
             }
         )
+        
     save_csv_rows(results_dir / "1_infinite_square_well_energies.csv", rows)
 
     x = states[0].x_full
     V = infinite_square_well_numeric(x, a=a, wall_height=1e6)
+    
     plot_potential_and_states(
-        x, V, states, results_dir / "1_infinite_square_well_states.png", "Infinite square well"
+        x, V, states, results_dir / "1_infinite_square_well_states.png", "Infinite well"
     )
+    
     plot_probability_densities(
         states,
         results_dir / "1_infinite_square_well_densities.png",
-        "Infinite square well densities",
+        "Infinite well densities",
     )
+    
     plot_energy_comparison(
         numerical,
         exact,
         results_dir / "1_infinite_square_well_energy_comparison.png",
-        "Square well energies",
+        "Infinite well energies",
     )
 
     conv = convergence_vs_grid(
@@ -94,7 +103,7 @@ def run_square_well(results_dir: Path) -> None:
         conv["energy_errors"],
         "grid spacing h",
         results_dir / "1_infinite_square_well_convergence_vs_h.png",
-        "Square well convergence",
+        "Infinite well convergence",
     )
 
 
@@ -113,10 +122,13 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_min=0.1,
         e_max=6.5,
     )
+    
     numerical = np.array([s.energy for s in states[:4]])
+    
     exact = exact_harmonic_oscillator_energies(np.arange(4), omega=omega)
 
     rows = []
+    
     for i, (en, ex) in enumerate(zip(numerical, exact)):
         rows.append(
             {
@@ -127,22 +139,26 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
                 "relative_error": abs((en - ex) / ex),
             }
         )
+        
     save_csv_rows(results_dir / "2_harmonic_oscillator_energies.csv", rows)
 
     x = states[0].x_full
     V = harmonic_oscillator(x, omega=omega)
+    
     plot_potential_and_states(
         x,
         V,
         states,
         results_dir / "2_harmonic_oscillator_states.png",
-        "Harmonic oscillator",
+        "Harmonic oscillator states",
     )
+    
     plot_probability_densities(
         states,
         results_dir / "2_harmonic_oscillator_densities.png",
         "Harmonic oscillator densities",
     )
+    
     plot_energy_comparison(
         numerical,
         exact,
@@ -161,12 +177,13 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_max=5.0,
         reference_energies=exact[:3],
     )
+    
     plot_error_curve(
         conv_h["h"],
         conv_h["energy_errors"],
         "grid spacing h",
         results_dir / "2_harmonic_convergence_vs_h.png",
-        "HO convergence vs h",
+        "Harmonic oscillator convergence vs h",
     )
 
     conv_box = convergence_vs_box_size(
@@ -180,12 +197,13 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_max=5.0,
         reference_energies=exact[:3],
     )
+    
     plot_error_curve(
         conv_box["x_max"],
         conv_box["energy_errors"],
         "box size x_max",
-        results_dir / "2_harmonic_convergence_vs_xmax.png",
-        "HO convergence vs box size",
+        results_dir / "2_harmonic_convergence_vs_x_max.png",
+        "Harmonic oscillator convergence vs box size",
     )
 
 
@@ -204,7 +222,9 @@ def run_double_well(results_dir: Path) -> None:
         e_min=0.0,
         e_max=20.0,
     )
+    
     rows = []
+    
     for i, s in enumerate(states[:4]):
         rows.append(
             {
@@ -214,15 +234,18 @@ def run_double_well(results_dir: Path) -> None:
                 "mismatch": s.mismatch,
             }
         )
+    
     save_csv_rows(results_dir / "3_double_well_energies.csv", rows)
 
     x = states[0].x_full
     V = quartic_double_well(x, **base_kwargs)
+    
     plot_potential_and_states(
         x, V, states, results_dir / "3_double_well_states.png", "Quartic double well"
     )
+    
     plot_probability_densities(
-        states, results_dir / "3_double_well_densities.png", "Double well densities"
+        states, results_dir / "3_double_well_densities.png", "Quartic double well densities"
     )
 
     sweep_rows = splitting_vs_parameter(
@@ -235,11 +258,14 @@ def run_double_well(results_dir: Path) -> None:
         e_min=0.0,
         e_max=25.0,
     )
+    
     save_csv_rows(results_dir / "3_double_well_splitting_vs_b.csv", sweep_rows)
+    
     b_vals = np.array([r["b"] for r in sweep_rows], dtype=float)
     e0 = np.array([r["E0"] for r in sweep_rows], dtype=float)
     e1 = np.array([r["E1"] for r in sweep_rows], dtype=float)
     splitting = np.array([r["splitting"] for r in sweep_rows], dtype=float)
+    
     plot_splitting_curve(
         b_vals,
         e0,
@@ -247,7 +273,7 @@ def run_double_well(results_dir: Path) -> None:
         splitting,
         "double-well parameter b",
         results_dir / "3_double_well_splitting.png",
-        "Double-well splitting",
+        "Quartic double well splitting",
     )
 
 
@@ -269,6 +295,7 @@ def run_finite_square_well(results_dir: Path) -> None:
     )
 
     rows = []
+    
     for i, s in enumerate(states[:4]):
         rows.append(
             {
@@ -277,17 +304,20 @@ def run_finite_square_well(results_dir: Path) -> None:
                 "energy": s.energy,
             }
         )
+        
     save_csv_rows(results_dir / "4_finite_square_well_energies.csv", rows)
 
     x = states[0].x_full
     V = finite_square_well(x, **kwargs)
+    
     plot_potential_and_states(
         x,
         V,
         states,
         results_dir / "4_finite_square_well_states.png",
-        "Finite square well",
+        "Finite square well states",
     )
+    
     plot_probability_densities(
         states,
         results_dir / "4_finite_square_well_densities.png",
@@ -311,8 +341,10 @@ def run_quartic_oscillator_demo(results_dir: Path) -> None:
         e_min=0.0,
         e_max=10.0,
     )
+    
     x = states[0].x_full
     V = quartic_oscillator(x, **kwargs)
+    
     plot_potential_and_states(
         x,
         V,

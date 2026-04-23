@@ -71,6 +71,7 @@ def convergence_vs_grid(
             e_min=e_min,
             e_max=e_max,
         )
+        
         energies = energies_from_states(states, n_states=n_states)
         hs.append(x_max / (n_grid - 1))
         errors.append(np.abs(energies - reference_energies))
@@ -104,6 +105,7 @@ def convergence_vs_box_size(
             e_min=e_min,
             e_max=e_max,
         )
+        
         energies = energies_from_states(states, n_states=n_states)
         xs.append(x_max)
         errors.append(np.abs(energies - reference_energies))
@@ -122,6 +124,7 @@ def splitting_vs_parameter(
     e_max: float,
 ) -> list[dict]:
     rows: list[dict] = []
+    
     for value in varied_values:
         kwargs = dict(base_kwargs)
         kwargs[varied_param] = value
@@ -135,8 +138,10 @@ def splitting_vs_parameter(
             e_min=e_min,
             e_max=e_max,
         )
+        
         e0 = states[0].energy
         e1 = states[1].energy
+        
         rows.append(
             {
                 varied_param: value,
@@ -145,4 +150,5 @@ def splitting_vs_parameter(
                 "splitting": e1 - e0,
             }
         )
+        
     return rows
