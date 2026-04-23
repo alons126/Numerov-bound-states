@@ -4,5 +4,5 @@
 # Virtual environments
 .venv
 
-# Virtual environments
+# IDE specific files
 .vscode
