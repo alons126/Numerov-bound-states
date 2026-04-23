@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import shutil
 import sys
 from pathlib import Path
 
@@ -12,7 +13,7 @@ for path in (PROJECT_ROOT, TESTS_DIR):
 
 from src.experiments import (
     run_double_well,
-    run_extra_potential,
+    run_finite_square_well,
     run_harmonic_oscillator,
     run_quartic_oscillator_demo,
     run_square_well,
@@ -24,13 +25,29 @@ RESULTS = Path("results")
 
 
 def main() -> None:
+    shutil.rmtree(RESULTS, ignore_errors=True)
     RESULTS.mkdir(exist_ok=True)
+    
+    print("Running experiments...")
+    
+    print("\n1. Infinite Square Well...")
     run_square_well(RESULTS)
+    
+    print("\n2. Harmonic Oscillator...")
     run_harmonic_oscillator(RESULTS)
+    
+    print("\n3. Double Well...")
     run_double_well(RESULTS)
-    run_extra_potential(RESULTS)
+    
+    print("\n4. Finite Square Well...")
+    run_finite_square_well(RESULTS)
+    
+    print("\n5. Quartic Oscillator Demo...")
     run_quartic_oscillator_demo(RESULTS)
+    
+    print("\nRunning tests...")
     run_all_tests()
+    
     print(f"\nDone. Results written to: {RESULTS.resolve()}")
 
 
