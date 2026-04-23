@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import numpy as np
 
-from analysis import exact_harmonic_oscillator_energies, exact_square_well_energies
-from numerov import normalize_wavefunction
-from potentials import harmonic_oscillator, infinite_square_well_numeric
-from shooting import solve_symmetric_potential
+from src.analysis import exact_harmonic_oscillator_energies, exact_square_well_energies
+from src.numerov import normalize_wavefunction
+from src.potentials import harmonic_oscillator, infinite_square_well_numeric
+from src.shooting import solve_symmetric_potential
 
 
 def test_normalization() -> None:

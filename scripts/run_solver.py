@@ -4,27 +4,26 @@ from pathlib import Path
 
 import numpy as np
 
-from analysis import (
+from src.analysis import (
     convergence_vs_box_size,
     convergence_vs_grid,
     exact_harmonic_oscillator_energies,
     exact_square_well_energies,
-    relative_error,
     save_energy_table,
 )
-from plotting import (
+from src.plotting import (
     plot_energy_comparison,
     plot_error_curve,
     plot_potential_and_states,
     plot_probability_densities,
 )
-from potentials import (
+from src.potentials import (
     harmonic_oscillator,
     infinite_square_well_numeric,
     shifted_double_well_quartic,
 )
-from shooting import solve_symmetric_potential
-from tests import run_all_tests
+from src.shooting import solve_symmetric_potential
+from tests.test_solver import run_all_tests
 
 
 RESULTS = Path("results")

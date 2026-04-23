@@ -5,7 +5,7 @@ from pathlib import Path
 
 import numpy as np
 
-from shooting import solve_symmetric_potential
+from src.shooting import solve_symmetric_potential
 
 
 def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarray:
@@ -19,6 +19,11 @@ def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarr
 
 
 def exact_harmonic_oscillator_energies(n_values: np.ndarray, omega: float = 1.0) -> np.ndarray:
+    """
+    Harmonic oscillator with frequency omega.
+    In units hbar=m=1:
+        E_n = hbar * omega * (n + 0.5)
+    """
     n_values = np.asarray(n_values, dtype=float)
     return omega * (n_values + 0.5)
 

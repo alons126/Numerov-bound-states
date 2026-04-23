@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from numerov import derivative_at_right_edge, normalize_wavefunction, numerov_outward, q_from_energy
+from src.numerov import derivative_at_right_edge, normalize_wavefunction, numerov_outward, q_from_energy
 
 
 @dataclass
@@ -70,7 +70,7 @@ def find_brackets(
         if a == 0.0:
             eps = 1e-10 * max(1.0, abs(energies[i]))
             brackets.append((energies[i] - eps, energies[i] + eps))
-        elif a * b < 0.0:
+        elif np.signbit(a) != np.signbit(b):
             brackets.append((energies[i], energies[i + 1]))
     return brackets
 
@@ -93,7 +93,7 @@ def bisect_energy(
         return lo, flo
     if fhi == 0.0:
         return hi, fhi
-    if flo * fhi > 0.0:
+    if np.signbit(flo) == np.signbit(fhi):
         raise ValueError("Bisection requires a sign-changing bracket.")
 
     for _ in range(max_iter):
@@ -106,7 +106,7 @@ def bisect_energy(
         if abs(fmid) < tol or abs(hi - lo) < tol:
             return mid, fmid
 
-        if flo * fmid < 0.0:
+        if np.signbit(flo) != np.signbit(fmid):
             hi, fhi = mid, fmid
         else:
             lo, flo = mid, fmid
