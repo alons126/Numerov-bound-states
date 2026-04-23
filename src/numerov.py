@@ -38,9 +38,16 @@ def numerov_outward(x: np.ndarray, q: np.ndarray, psi0: float, psi1: float) -> n
 
 
 def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
-    norm = np.sqrt(np.trapezoid(np.abs(psi) ** 2, x))
-    if norm == 0.0:
+    scale = np.max(np.abs(psi))
+    if scale == 0.0:
         raise ValueError("Cannot normalize a zero wavefunction.")
+
+    psi_scaled = psi / scale
+    norm = scale * np.sqrt(np.trapezoid(np.abs(psi_scaled) ** 2, x))
+
+    if norm == 0.0 or not np.isfinite(norm):
+        raise ValueError("Wavefunction normalization failed.")
+
     return psi / norm
 
 
