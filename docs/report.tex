@@ -23,6 +23,8 @@ In dimensionless units, the Schr\"odinger equation is written as
 \]
 The wavefunction is integrated with the Numerov scheme on a uniform grid. For symmetric potentials, even and odd states are treated separately using parity conditions at $x=0$. Eigenvalues are found by scanning for sign changes in the boundary mismatch and then refining them with bisection.
 
+The overall numerical workflow is implemented in a modular way in the accompanying Python code. The core components include a Numerov integrator for propagating the wavefunction, a shooting module that enforces parity-based boundary conditions and constructs the mismatch function, and analysis utilities for convergence studies and parameter sweeps. This separation of concerns allows each numerical component to be validated independently and makes the implementation easier to interpret.
+
 \subsection{Shooting and root finding}
 The boundary-value eigenproblem is reformulated as a root-finding problem for a mismatch function $M(E)$. For a given trial energy $E$, the Schr\"odinger equation is integrated and a boundary mismatch is evaluated. For symmetric potentials we exploit parity and define
 \begin{align}
@@ -30,6 +32,8 @@ The boundary-value eigenproblem is reformulated as a root-finding problem for a 
 \text{odd states:}\quad M(E) &= \psi_E(0).
 \end{align}
 Eigenvalues correspond to the roots of $M(E)=0$, which are located by bracketing sign changes and refined with bisection. To make the procedure transparent, we plot $M(E)$ versus $E$ and mark the bisection iterates; zero crossings identify the allowed energies.
+
+In the implementation, the mismatch function is evaluated numerically using the propagated wavefunction. For even states, the derivative at the origin is computed using a high-order finite-difference stencil to ensure that the overall accuracy of the method is not limited by the boundary evaluation. This detail is crucial for achieving consistent convergence behavior in the harmonic oscillator case.
 
 \section{Results}
 
@@ -50,6 +54,8 @@ The numerical eigenvalues agree with the analytic values to high precision. Conv
 
 \subsection{Harmonic oscillator}
 For the harmonic oscillator with $V(x)=\tfrac{1}{2}\omega^2 x^2$, the numerical spectrum reproduces the exact levels $E_n=\omega(n+\tfrac{1}{2})$. Since the problem is defined on an unbounded domain, we truncate to $[-x_{\max},x_{\max}]$ and impose decay conditions at the boundaries. To avoid contamination by the exponentially growing solution, we use inward shooting: the solution is initialized in the asymptotic region where it decays and integrated toward the origin. The resulting wavefunctions exhibit the correct parity and node structure without spurious growth near the edges.
+
+A subtle numerical issue arises when enforcing the even-parity condition $\psi'(0)=0$. Although the Numerov method itself is high-order, the accuracy of the eigenvalues can be degraded if the derivative at the origin is evaluated with a low-order finite-difference approximation. In this implementation, a fourth-order one-sided stencil is used when sufficient grid points are available, ensuring that the boundary condition is enforced with comparable accuracy to the integration scheme. This correction was essential for obtaining consistent agreement with alternative methods such as Runge--Kutta integration.
 
 \subsection{Double-well potential}
 The quartic double-well potential produces pairs of nearly degenerate states. The lowest even and odd states correspond to symmetric and antisymmetric combinations of localized wavefunctions. The energy splitting between these states is analyzed as a function of the barrier height, illustrating quantum tunneling effects.
@@ -81,6 +87,8 @@ where $p$ is estimated from log--log fits and reported in the figure legends. Th
 
 \paragraph{Dependence on domain size.}
 For problems on unbounded domains (e.g., the harmonic oscillator), truncation at finite $x_{\max}$ introduces boundary error. For small $x_{\max}$ the wavefunction is artificially cut off, producing large errors. As $x_{\max}$ increases, the error decreases until it reaches a plateau set by discretization, root-finding tolerance, and floating-point precision. Thus this plot measures sensitivity to domain size rather than pure discretization convergence.
+
+A comparison with a fourth-order Runge--Kutta (RK4) integrator was also performed for the harmonic oscillator. Both methods solve the same shooting problem, but RK4 evolves the wavefunction and its derivative simultaneously, whereas Numerov exploits the specific structure of the Schrödinger equation. Initially, RK4 appeared more accurate due to a lower-order derivative approximation in the Numerov boundary condition. After correcting this issue, both methods exhibit comparable convergence behavior, with Numerov achieving similar or better accuracy for the same grid spacing. This highlights the importance of treating boundary conditions with the same order of accuracy as the integration scheme.
 
 Representative plots include wavefunctions, probability densities, root-finding diagnostics, convergence curves, and energy splitting as a function of potential parameters.
 

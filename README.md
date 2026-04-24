@@ -88,6 +88,8 @@ The differential equation is rewritten in the form
 
 and integrated using the Numerov recurrence relation, which is a high-accuracy finite-difference scheme for second-order ODEs.
 
+A key implementation detail is that the accuracy of the method depends not only on the Numerov recurrence itself, but also on how boundary conditions are enforced. In particular, for inward shooting problems such as the harmonic oscillator, the derivative at the origin must be computed with a high-order stencil to preserve the overall accuracy of the scheme.
+
 ### 3. Shooting method
 
 For a given trial energy $E$:
@@ -122,6 +124,7 @@ Additional analysis includes:
 - parameter sweeps (e.g., double-well barrier height)
 - generation of plots and CSV tables for reporting
 - estimation of convergence rates $\Delta E \propto h^p$ from log--log fits
+- comparison between Numerov and RK4 integration methods for the harmonic oscillator
 - conservation check $T + R \approx 1$ for scattering states
 - identification of resonance peaks in double-barrier transmission
 
@@ -150,3 +153,5 @@ That makes the shooting problem simple and robust for a final project.
 For unbounded problems such as the harmonic oscillator, the domain is truncated to a finite interval and inward shooting is used to enforce the physically correct decaying behavior at large $|x|$.
 
 The code is written for clarity and analysis rather than maximum performance.
+
+A subtle but important numerical point is that the accuracy of eigenvalue shooting depends on both the integrator and the boundary mismatch evaluation. In this project, a higher-order derivative approximation was required to ensure that the Numerov method achieves its expected accuracy when compared with RK4. This serves as a practical example of how implementation details can influence the apparent performance of numerical algorithms.

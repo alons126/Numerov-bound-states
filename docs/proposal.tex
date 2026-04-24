@@ -25,9 +25,11 @@ The main objectives are:
         \item Harmonic oscillator (validation against exact solutions)
         \item Quartic double-well potential (tunneling and energy splitting)
         \item Finite square well (additional nontrivial test case)
+        \item Finite rectangular barrier and double-barrier potentials (scattering, transmission, and resonance phenomena)
     \end{itemize}
     \item Normalize and analyze the resulting wavefunctions.
     \item Perform convergence studies with respect to grid spacing and domain size.
+    \item Compare the Numerov method with a fourth-order Runge--Kutta (RK4) integrator for the harmonic oscillator to analyze accuracy and efficiency.
     \item Visualize the root-finding process by plotting the mismatch function as a function of trial energy.
     \item Analyze physical behavior such as parity, node structure, and tunneling-induced energy splitting.
 \end{itemize}
@@ -39,10 +41,12 @@ The project will include:
     \item Convergence plots demonstrating numerical accuracy.
     \item Parameter studies (e.g., double-well barrier dependence).
     \item Comparison with analytical solutions where available.
+    \item Validation of scattering results through comparison with known analytical transmission coefficients.
+    \item Method comparison plots (Numerov vs RK4) highlighting differences in convergence behavior.
     \item A short report summarizing methods, results, and numerical accuracy.
 \end{itemize}
 
-This project connects directly to numerical ODE methods and eigenvalue problems discussed in the course, particularly the use of shooting methods for boundary value problems, convergence analysis, and root-finding techniques.
+This project connects directly to numerical ODE methods and eigenvalue problems discussed in the course, particularly the use of shooting methods for boundary value problems, convergence analysis, root-finding techniques, and the comparison of specialized and general-purpose integrators (Numerov vs Runge--Kutta). It also extends to scattering problems, illustrating transmission, reflection, and resonance phenomena within the same numerical framework.
 
 \vspace{0.5cm}
 
