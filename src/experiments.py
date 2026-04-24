@@ -37,9 +37,13 @@ from src.potentials import (
 )
 from src.shooting import (
     bisection_history,
+    bisection_history_inward_decay,
     find_brackets,
+    find_inward_decay_brackets,
     sample_boundary_mismatch,
+    sample_inward_decay_mismatch,
     solve_symmetric_potential,
+    solve_symmetric_potential_inward_decay,
 )
 
 
@@ -122,11 +126,10 @@ def plot_harmonic_oscillator_root_diagnostics(
     - even sector: global states n=0 and n=2
     - odd sector: global states n=1 and n=3
 
-    The mismatch is sampled as M(E)=psi_E(x_max). The correct eigenvalues are
-    the energies for which this boundary mismatch crosses zero.
+    The mismatch is now sampled with the stable inward-shooting formulation.
+    The roots enforce parity at the origin: M(E)=psi'_E(0) for even states and
+    M(E)=psi_E(0) for odd states.
     """
-    x_half = np.linspace(0.0, x_max, 1200)
-    V_half = harmonic_oscillator(x_half, omega=omega)
 
     diagnostic_specs = [
         {
@@ -138,7 +141,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             "title": "Harmonic oscillator shooting roots, even states",
             "mismatch_label": (
                 r"scaled mismatch: $M(E)/\max |M|$, "
-                r"$M(E)=\psi_E(x_{\max})$"
+                r"$M(E)=\psi'_E(0)$"
             ),
         },
         {
@@ -150,30 +153,42 @@ def plot_harmonic_oscillator_root_diagnostics(
             "title": "Harmonic oscillator shooting roots, odd states",
             "mismatch_label": (
                 r"scaled mismatch: $M(E)/\max |M|$, "
-                r"$M(E)=\psi_E(x_{\max})$"
+                r"$M(E)=\psi_E(0)$"
             ),
         },
     ]
 
     for spec in diagnostic_specs:
-        energies_scan, mismatches_scan = sample_boundary_mismatch(
-            x_half,
-            V_half,
+        energies_scan, mismatches_scan = sample_inward_decay_mismatch(
+            x_max=x_max,
+            n_grid=500,
+            potential_fn=harmonic_oscillator,
+            potential_kwargs={"omega": omega},
             parity=spec["parity"],
             e_min=spec["e_min"],
             e_max=spec["e_max"],
-            n_scan=1800,
+            n_scan=400,
         )
-        brackets = find_brackets(
-            x_half,
-            V_half,
+        brackets = find_inward_decay_brackets(
+            x_max=x_max,
+            n_grid=500,
+            potential_fn=harmonic_oscillator,
+            potential_kwargs={"omega": omega},
             parity=spec["parity"],
             e_min=spec["e_min"],
             e_max=spec["e_max"],
-            n_scan=1800,
+            n_scan=400,
         )
         histories = [
-            bisection_history(x_half, V_half, spec["parity"], bracket, max_iter=30)
+            bisection_history_inward_decay(
+                x_max=x_max,
+                n_grid=1600,
+                potential_fn=harmonic_oscillator,
+                potential_kwargs={"omega": omega},
+                parity=spec["parity"],
+                bracket=bracket,
+                max_iter=30,
+            )
             for bracket in brackets[: len(spec["state_labels"])]
         ]
 
@@ -291,7 +306,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     x_max = 8.0
     n_grid = 2500
 
-    states = solve_symmetric_potential(
+    states = solve_symmetric_potential_inward_decay(
         x_max=x_max,
         n_grid=n_grid,
         potential_fn=harmonic_oscillator,

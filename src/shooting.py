@@ -407,6 +407,372 @@ def solve_state_from_bracket(
     )
 
 
+
+def inward_decay_initial_conditions(
+    x_desc: np.ndarray,
+    V_desc: np.ndarray,
+    energy: float,
+) -> tuple[float, float]:
+    """
+    Construct stable starting values at x_max for inward shooting.
+
+    For confining potentials such as the harmonic oscillator, the physical
+    bound-state solution decays in the forbidden region. Starting the integration
+    at large x and integrating inward suppresses the unphysical growing tail that
+    can appear when integrating outward from the origin.
+
+    The asymptotic estimate uses psi'/psi ~= -sqrt(2(V-E)) at x_max.
+    """
+    dx = abs(x_desc[1] - x_desc[0])
+    kappa = np.sqrt(max(2.0 * (V_desc[0] - energy), 1.0e-14))
+
+    psi0 = 1.0
+    psi1 = psi0 * (1.0 + kappa * dx + 0.5 * (kappa * dx) ** 2)
+    return psi0, psi1
+
+
+def inward_decay_half_domain_wavefunction(
+    x_max: float,
+    n_grid: int,
+    potential_fn,
+    potential_kwargs: dict,
+    energy: float,
+) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Integrate the decaying tail inward from x_max to x = 0.
+
+    Returns
+    -------
+    tuple[ndarray, ndarray]
+        A decreasing grid from x_max to 0 and the corresponding unnormalized
+        inward-integrated wavefunction.
+    """
+    x_desc = np.linspace(x_max, 0.0, n_grid)
+    V_desc = potential_fn(x_desc, **potential_kwargs)
+    q_desc = q_from_energy(V_desc, energy)
+    psi0, psi1 = inward_decay_initial_conditions(x_desc, V_desc, energy)
+    psi_desc = numerov_outward(x_desc, q_desc, psi0=psi0, psi1=psi1)
+    return x_desc, psi_desc
+
+
+def inward_decay_boundary_mismatch(
+    x_max: float,
+    n_grid: int,
+    potential_fn,
+    potential_kwargs: dict,
+    energy: float,
+    parity: str,
+) -> float:
+    """
+    Evaluate the parity mismatch at the origin for inward shooting.
+
+    Even states should satisfy psi'(0) = 0.
+    Odd states should satisfy psi(0) = 0.
+    """
+    x_desc, psi_desc = inward_decay_half_domain_wavefunction(
+        x_max=x_max,
+        n_grid=n_grid,
+        potential_fn=potential_fn,
+        potential_kwargs=potential_kwargs,
+        energy=energy,
+    )
+
+    if parity == "even":
+        return float(derivative_at_right_edge(x_desc, psi_desc))
+    if parity == "odd":
+        return float(psi_desc[-1])
+
+    raise ValueError("parity must be 'even' or 'odd'")
+
+
+def sample_inward_decay_mismatch(
+    x_max: float,
+    n_grid: int,
+    potential_fn,
+    potential_kwargs: dict,
+    parity: str,
+    e_min: float,
+    e_max: float,
+    n_scan: int = 1000,
+) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Sample the inward-shooting parity mismatch over an energy interval.
+    """
+    energies = np.linspace(e_min, e_max, n_scan)
+    mismatches = np.array(
+        [
+            inward_decay_boundary_mismatch(
+                x_max,
+                n_grid,
+                potential_fn,
+                potential_kwargs,
+                energy,
+                parity,
+            )
+            for energy in energies
+        ],
+        dtype=float,
+    )
+    return energies, mismatches
+
+
+def find_inward_decay_brackets(
+    x_max: float,
+    n_grid: int,
+    potential_fn,
+    potential_kwargs: dict,
+    parity: str,
+    e_min: float,
+    e_max: float,
+    n_scan: int = 2000,
+) -> list[tuple[float, float]]:
+    """
+    Locate sign-changing brackets for inward-shooting eigenvalue searches.
+    """
+    energies, vals = sample_inward_decay_mismatch(
+        x_max,
+        n_grid,
+        potential_fn,
+        potential_kwargs,
+        parity,
+        e_min,
+        e_max,
+        n_scan=n_scan,
+    )
+
+    brackets: list[tuple[float, float]] = []
+    for i in range(len(energies) - 1):
+        a, b = vals[i], vals[i + 1]
+        if not np.isfinite(a) or not np.isfinite(b):
+            continue
+        if a == 0.0:
+            eps = 1e-10 * max(1.0, abs(energies[i]))
+            brackets.append((energies[i] - eps, energies[i] + eps))
+        elif np.signbit(a) != np.signbit(b):
+            brackets.append((energies[i], energies[i + 1]))
+
+    return brackets
+
+
+def bisect_energy_inward_decay(
+    x_max: float,
+    n_grid: int,
+    potential_fn,
+    potential_kwargs: dict,
+    parity: str,
+    bracket: tuple[float, float],
+    tol: float = 1e-12,
+    max_iter: int = 200,
+) -> tuple[float, float]:
+    """
+    Refine an inward-shooting eigenvalue bracket with bisection.
+    """
+    lo, hi = bracket
+    flo = inward_decay_boundary_mismatch(x_max, n_grid, potential_fn, potential_kwargs, lo, parity)
+    fhi = inward_decay_boundary_mismatch(x_max, n_grid, potential_fn, potential_kwargs, hi, parity)
+
+    if not np.isfinite(flo) or not np.isfinite(fhi):
+        raise ValueError("Non-finite function value at bracket endpoints.")
+    if flo == 0.0:
+        return lo, flo
+    if fhi == 0.0:
+        return hi, fhi
+    if np.signbit(flo) == np.signbit(fhi):
+        raise ValueError("Bisection requires a sign-changing bracket.")
+
+    for _ in range(max_iter):
+        mid = 0.5 * (lo + hi)
+        fmid = inward_decay_boundary_mismatch(
+            x_max,
+            n_grid,
+            potential_fn,
+            potential_kwargs,
+            mid,
+            parity,
+        )
+
+        if not np.isfinite(fmid):
+            raise ValueError("Non-finite mismatch during bisection.")
+        if abs(fmid) < tol or abs(hi - lo) < tol:
+            return mid, fmid
+
+        if np.signbit(flo) != np.signbit(fmid):
+            hi, fhi = mid, fmid
+        else:
+            lo, flo = mid, fmid
+
+    mid = 0.5 * (lo + hi)
+    return mid, inward_decay_boundary_mismatch(
+        x_max,
+        n_grid,
+        potential_fn,
+        potential_kwargs,
+        mid,
+        parity,
+    )
+
+
+def bisection_history_inward_decay(
+    x_max: float,
+    n_grid: int,
+    potential_fn,
+    potential_kwargs: dict,
+    parity: str,
+    bracket: tuple[float, float],
+    tol: float = 1e-12,
+    max_iter: int = 80,
+) -> list[dict]:
+    """
+    Record the inward-shooting bisection process for diagnostic plots.
+    """
+    lo, hi = bracket
+    flo = inward_decay_boundary_mismatch(x_max, n_grid, potential_fn, potential_kwargs, lo, parity)
+
+    history: list[dict] = []
+    for iteration in range(max_iter):
+        mid = 0.5 * (lo + hi)
+        fmid = inward_decay_boundary_mismatch(
+            x_max,
+            n_grid,
+            potential_fn,
+            potential_kwargs,
+            mid,
+            parity,
+        )
+        history.append(
+            {
+                "iteration": iteration,
+                "lo": lo,
+                "hi": hi,
+                "mid": mid,
+                "mismatch_mid": fmid,
+            }
+        )
+
+        if abs(fmid) < tol or abs(hi - lo) < tol:
+            break
+
+        if np.signbit(flo) != np.signbit(fmid):
+            hi = mid
+        else:
+            lo = mid
+            flo = fmid
+
+    return history
+
+
+def solve_state_from_inward_decay_bracket(
+    x_max: float,
+    n_grid: int,
+    potential_fn,
+    potential_kwargs: dict,
+    parity: str,
+    bracket: tuple[float, float],
+    tol: float = 1e-12,
+) -> StateSolution:
+    """
+    Compute one bound state using inward shooting from the decaying tail.
+    """
+    energy, mismatch = bisect_energy_inward_decay(
+        x_max,
+        n_grid,
+        potential_fn,
+        potential_kwargs,
+        parity,
+        bracket,
+        tol=tol,
+    )
+
+    x_desc, psi_desc = inward_decay_half_domain_wavefunction(
+        x_max,
+        n_grid,
+        potential_fn,
+        potential_kwargs,
+        energy,
+    )
+
+    x_half = x_desc[::-1]
+    psi_half = psi_desc[::-1]
+    x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
+    psi_full = normalize_wavefunction(x_full, psi_full)
+
+    return StateSolution(
+        energy=energy,
+        parity=parity,
+        x_full=x_full,
+        psi_full=psi_full,
+        mismatch=mismatch,
+    )
+
+
+def solve_symmetric_potential_inward_decay(
+    x_max: float,
+    n_grid: int,
+    potential_fn,
+    potential_kwargs: dict | None = None,
+    n_even: int = 3,
+    n_odd: int = 3,
+    e_min: float | None = None,
+    e_max: float | None = None,
+    scan_points: int = 1200,
+    tol: float = 1e-12,
+) -> list[StateSolution]:
+    """
+    Solve symmetric confining potentials by shooting inward from x_max.
+
+    This is especially useful for the harmonic oscillator. Outward shooting from
+    the origin can pick up a numerically growing exponential tail in the forbidden
+    region. Inward shooting starts from the decaying asymptotic side and imposes
+    parity at the origin, which produces much cleaner wavefunctions.
+    """
+    if potential_kwargs is None:
+        potential_kwargs = {}
+
+    x_probe = np.linspace(0.0, x_max, n_grid)
+    V_probe = potential_fn(x_probe, **potential_kwargs)
+
+    if e_min is None:
+        e_min = float(np.min(V_probe))
+    if e_max is None:
+        e_max = float(np.max(V_probe))
+        e_max = max(e_max, e_min + 30.0)
+
+    solutions: list[StateSolution] = []
+
+    for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
+        brackets = find_inward_decay_brackets(
+            x_max,
+            n_grid,
+            potential_fn,
+            potential_kwargs,
+            parity,
+            e_min=e_min,
+            e_max=e_max,
+            n_scan=scan_points,
+        )
+
+        if len(brackets) < n_needed:
+            raise RuntimeError(
+                f"Found only {len(brackets)} {parity} inward-decay brackets, "
+                f"needed {n_needed}. Increase x_max, e_max, or scan_points."
+            )
+
+        for bracket in brackets[:n_needed]:
+            solutions.append(
+                solve_state_from_inward_decay_bracket(
+                    x_max,
+                    n_grid,
+                    potential_fn,
+                    potential_kwargs,
+                    parity,
+                    bracket,
+                    tol=tol,
+                )
+            )
+
+    solutions.sort(key=lambda s: s.energy)
+    return solutions
+
 def solve_symmetric_potential(
     x_max: float,
     n_grid: int,

@@ -73,7 +73,8 @@ def plot_potential_and_states(
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
 
-    V_plot = np.clip(V, None, 50.0)
+    V_plot = np.clip(V, None, 25.0)
+    # V_plot = np.clip(V, None, 50.0)
     plt.plot(x, V_plot, label=potential_label)
 
     for i, state in enumerate(states[:n_show]):

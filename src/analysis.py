@@ -191,6 +191,7 @@ def convergence_vs_grid(
     e_min: float,
     e_max: float,
     reference_energies: np.ndarray,
+    solver_fn=solve_symmetric_potential,
 ) -> dict[str, np.ndarray]:
     """
     Study eigenvalue convergence as the grid is refined.
@@ -222,7 +223,7 @@ def convergence_vs_grid(
     n_states = len(reference_energies)
 
     for n_grid in grid_sizes:
-        states = solve_symmetric_potential(
+        states = solver_fn(
             x_max=x_max,
             n_grid=n_grid,
             potential_fn=potential_fn,
@@ -249,6 +250,7 @@ def convergence_vs_box_size(
     e_min: float,
     e_max: float,
     reference_energies: np.ndarray,
+    solver_fn=solve_symmetric_potential,
 ) -> dict[str, np.ndarray]:
     """
     Study eigenvalue convergence as the computational box size changes.
@@ -280,7 +282,7 @@ def convergence_vs_box_size(
     n_states = len(reference_energies)
 
     for x_max in x_max_values:
-        states = solve_symmetric_potential(
+        states = solver_fn(
             x_max=x_max,
             n_grid=n_grid,
             potential_fn=potential_fn,
