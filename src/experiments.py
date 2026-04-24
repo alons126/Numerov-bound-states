@@ -109,6 +109,84 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
         )
 
 
+
+def plot_harmonic_oscillator_root_diagnostics(
+    results_dir: Path,
+    omega: float = 1.0,
+    x_max: float = 8.0,
+) -> None:
+    """
+    Plot shooting/root-finding diagnostics for the first four harmonic-oscillator states.
+
+    Even and odd harmonic-oscillator states use different parity boundary conditions:
+    - even sector: global states n=0 and n=2
+    - odd sector: global states n=1 and n=3
+
+    The mismatch is sampled as M(E)=psi_E(x_max). The correct eigenvalues are
+    the energies for which this boundary mismatch crosses zero.
+    """
+    x_half = np.linspace(0.0, x_max, 1200)
+    V_half = harmonic_oscillator(x_half, omega=omega)
+
+    diagnostic_specs = [
+        {
+            "parity": "even",
+            "e_min": 0.1,
+            "e_max": 3.2,
+            "state_labels": ["state 0, even", "state 2, even"],
+            "path": results_dir / "2_harmonic_oscillator_root_finding_even.png",
+            "title": "Harmonic oscillator shooting roots, even states",
+            "mismatch_label": (
+                r"scaled mismatch: $M(E)/\max |M|$, "
+                r"$M(E)=\psi_E(x_{\max})$"
+            ),
+        },
+        {
+            "parity": "odd",
+            "e_min": 0.7,
+            "e_max": 4.3,
+            "state_labels": ["state 1, odd", "state 3, odd"],
+            "path": results_dir / "2_harmonic_oscillator_root_finding_odd.png",
+            "title": "Harmonic oscillator shooting roots, odd states",
+            "mismatch_label": (
+                r"scaled mismatch: $M(E)/\max |M|$, "
+                r"$M(E)=\psi_E(x_{\max})$"
+            ),
+        },
+    ]
+
+    for spec in diagnostic_specs:
+        energies_scan, mismatches_scan = sample_boundary_mismatch(
+            x_half,
+            V_half,
+            parity=spec["parity"],
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            n_scan=1800,
+        )
+        brackets = find_brackets(
+            x_half,
+            V_half,
+            parity=spec["parity"],
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            n_scan=1800,
+        )
+        histories = [
+            bisection_history(x_half, V_half, spec["parity"], bracket, max_iter=30)
+            for bracket in brackets[: len(spec["state_labels"])]
+        ]
+
+        plot_root_finding_diagnostic(
+            energies_scan,
+            mismatches_scan,
+            histories,
+            spec["path"],
+            spec["title"],
+            history_labels=spec["state_labels"],
+            mismatch_label=spec["mismatch_label"],
+        )
+
 def run_square_well(results_dir: Path) -> None:
     """
     Run the infinite square well benchmark case.
@@ -248,6 +326,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         states,
         results_dir / "2_harmonic_oscillator_states.png",
         "Harmonic oscillator states",
+        potential_label=r"$V(x)=\frac{1}{2}\omega^2x^2$",
     )
     plot_probability_densities(
         states,
@@ -259,6 +338,12 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         exact,
         results_dir / "2_harmonic_oscillator_energy_comparison.png",
         "Harmonic oscillator energies",
+        exact_label=r"exact: $E_n=\omega\left(n+\frac{1}{2}\right)$",
+    )
+    plot_harmonic_oscillator_root_diagnostics(
+        results_dir,
+        omega=omega,
+        x_max=x_max,
     )
 
     conv_h = convergence_vs_grid(
