@@ -12,6 +12,8 @@ Numerical solution of the 1D time-independent Schrödinger equation with the Num
 - Physics exploration on:
   - quartic double well
   - finite square well
+  - finite rectangular barrier scattering (transmission/reflection validation)
+  - double-barrier resonant tunneling (resonance peak analysis)
 - Convergence studies versus grid spacing and domain size
 - Root-finding diagnostics (mismatch function plots and bisection traces)
 - Double-well tunneling splitting analysis
@@ -65,6 +67,8 @@ Running the solver generates:
 - convergence plots versus `h` and `x_max`
 - double-well splitting versus barrier parameter
 - finite square well bound-state plots
+- transmission and reflection spectra for finite barriers
+- double-barrier resonance plots (including log-scale)
 
 ## How it works
 
@@ -110,12 +114,16 @@ The solver is applied to several systems:
 - harmonic oscillator (validation against exact solution, using inward shooting for stability)
 - quartic double well (tunneling and energy splitting)
 - finite square well (finite number of bound states)
+- finite rectangular barrier (scattering and validation against analytic transmission)
+- double barrier (resonant tunneling and peak structure)
 
 Additional analysis includes:
 - convergence studies versus grid spacing and domain size
 - parameter sweeps (e.g., double-well barrier height)
 - generation of plots and CSV tables for reporting
 - estimation of convergence rates $\Delta E \propto h^p$ from log--log fits
+- conservation check $T + R \approx 1$ for scattering states
+- identification of resonance peaks in double-barrier transmission
 
 ### 6. Workflow
 The full workflow is executed by:

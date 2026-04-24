@@ -57,6 +57,18 @@ The quartic double-well potential produces pairs of nearly degenerate states. Th
 \subsection{Finite square well}
 The finite square well demonstrates the flexibility of the solver. Unlike the infinite case, only a finite number of bound states exist, depending on the well depth. The numerical results capture this behavior correctly.
 
+\subsection{Scattering and resonant tunneling}
+In addition to bound states, we extend the solver to study one-dimensional scattering from finite potentials. For a given energy $E$, the wavefunction is propagated across the domain and decomposed into incoming and reflected components on the left and a transmitted component on the right.
+
+The transmission and reflection coefficients $T(E)$ and $R(E)$ are computed from the amplitudes of these components and satisfy the conservation relation
+\[
+T(E) + R(E) \approx 1.
+\]
+
+For a single finite rectangular barrier, the numerical transmission is compared to the known analytical result, providing an additional validation of the method.
+
+For a double-barrier potential, the transmission spectrum exhibits sharp resonance peaks corresponding to quasi-bound states in the central well. These resonances are clearly visible in $T(E)$ and illustrate quantum tunneling and interference effects.
+
 \subsection{Convergence study}
 We analyze numerical errors by varying both the grid spacing $h$ and the domain size $x_{\max}$.
 
@@ -83,5 +95,7 @@ The agreement with analytical results, together with consistent convergence beha
 
 \section{Conclusion}
 The Numerov method, combined with parity-based shooting and robust root-finding, provides an efficient and accurate tool for one-dimensional bound-state problems, with controlled errors from discretization, domain truncation, and floating-point precision. In addition to reproducing known spectra, it captures physically interesting effects such as tunneling-induced energy splitting in a double well.
+
+The extension to scattering problems further demonstrates the flexibility of the approach, allowing the study of transmission, reflection, and resonant tunneling phenomena within the same numerical framework.
 
 \end{document}
