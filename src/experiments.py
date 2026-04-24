@@ -111,6 +111,10 @@ def run_harmonic_rk4_comparison(
 
     numerov_h = numerov_convergence["h"]
     numerov_errors = numerov_convergence["energy_errors"]
+    
+    if not np.allclose(numerov_h, rk4_convergence["h"]):
+        raise ValueError("Numerov and RK4 comparisons must use identical h values.")
+    
     comparison_rows = []
 
     for method, h_values, errors in [

@@ -407,7 +407,6 @@ def solve_state_from_bracket(
     )
 
 
-
 def inward_decay_initial_conditions(
     x_desc: np.ndarray,
     V_desc: np.ndarray,
@@ -418,16 +417,24 @@ def inward_decay_initial_conditions(
 
     For confining potentials such as the harmonic oscillator, the physical
     bound-state solution decays in the forbidden region. Starting the integration
-    at large x and integrating inward suppresses the unphysical growing tail that
-    can appear when integrating outward from the origin.
+    at large x and integrating inward suppresses the unphysical growing tail.
 
     The asymptotic estimate uses psi'/psi ~= -sqrt(2(V-E)) at x_max.
     """
     dx = abs(x_desc[1] - x_desc[0])
-    kappa = np.sqrt(max(2.0 * (V_desc[0] - energy), 1.0e-14))
+
+    # In the forbidden region, a decaying bound-state tail satisfies roughly
+    # psi'/psi = -kappa(x), where kappa(x) = sqrt(2[V(x)-E]).
+    # Since we integrate inward from x_max to x_max-dx, the physical decaying
+    # solution grows by exp(integral kappa dx) over the first step.
+    # This is more accurate than a low-order Taylor start and makes the
+    # Numerov/RK4 comparison fairer.
+    kappa0 = np.sqrt(max(2.0 * (V_desc[0] - energy), 1.0e-14))
+    kappa1 = np.sqrt(max(2.0 * (V_desc[1] - energy), 1.0e-14))
+    exponent = 0.5 * (kappa0 + kappa1) * dx
 
     psi0 = 1.0
-    psi1 = psi0 * (1.0 + kappa * dx + 0.5 * (kappa * dx) ** 2)
+    psi1 = psi0 * np.exp(exponent)
     return psi0, psi1
 
 
@@ -568,8 +575,12 @@ def bisect_energy_inward_decay(
     Refine an inward-shooting eigenvalue bracket with bisection.
     """
     lo, hi = bracket
-    flo = inward_decay_boundary_mismatch(x_max, n_grid, potential_fn, potential_kwargs, lo, parity)
-    fhi = inward_decay_boundary_mismatch(x_max, n_grid, potential_fn, potential_kwargs, hi, parity)
+    flo = inward_decay_boundary_mismatch(
+        x_max, n_grid, potential_fn, potential_kwargs, lo, parity
+    )
+    fhi = inward_decay_boundary_mismatch(
+        x_max, n_grid, potential_fn, potential_kwargs, hi, parity
+    )
 
     if not np.isfinite(flo) or not np.isfinite(fhi):
         raise ValueError("Non-finite function value at bracket endpoints.")
@@ -626,7 +637,9 @@ def bisection_history_inward_decay(
     Record the inward-shooting bisection process for diagnostic plots.
     """
     lo, hi = bracket
-    flo = inward_decay_boundary_mismatch(x_max, n_grid, potential_fn, potential_kwargs, lo, parity)
+    flo = inward_decay_boundary_mismatch(
+        x_max, n_grid, potential_fn, potential_kwargs, lo, parity
+    )
 
     history: list[dict] = []
     for iteration in range(max_iter):
@@ -772,6 +785,7 @@ def solve_symmetric_potential_inward_decay(
 
     solutions.sort(key=lambda s: s.energy)
     return solutions
+
 
 def solve_symmetric_potential(
     x_max: float,
