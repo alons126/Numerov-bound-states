@@ -37,6 +37,7 @@ def plot_potential_and_states(
     title: str,
     n_show: int = 4,
     scale: float = 0.8,
+    potential_label: str = "V(x)",
 ) -> None:
     """
     Plot the potential together with several shifted eigenstates.
@@ -57,6 +58,8 @@ def plot_potential_and_states(
         Number of states to overlay.
     scale : float, optional
         Relative vertical scaling of the wavefunctions.
+    potential_label : str, optional
+        Legend label for the potential curve.
 
     Returns
     -------
@@ -71,7 +74,7 @@ def plot_potential_and_states(
     plt.figure(figsize=(8, 5))
 
     V_plot = np.clip(V, None, 50.0)
-    plt.plot(x, V_plot, label="V(x)")
+    plt.plot(x, V_plot, label=potential_label)
 
     for i, state in enumerate(states[:n_show]):
         psi_scaled = scale * state.psi_full / np.max(np.abs(state.psi_full))
@@ -138,6 +141,8 @@ def plot_energy_comparison(
     exact: np.ndarray,
     path: str | Path,
     title: str,
+    exact_label: str = "exact",
+    numerical_label: str = "numerical",
 ) -> None:
     """
     Compare numerical and exact energy levels on the same figure.
@@ -152,6 +157,10 @@ def plot_energy_comparison(
         Output image path.
     title : str
         Figure title.
+    exact_label : str, optional
+        Legend label for the exact reference curve.
+    numerical_label : str, optional
+        Legend label for the numerical curve.
 
     Returns
     -------
@@ -161,8 +170,8 @@ def plot_energy_comparison(
     n = np.arange(len(exact))
 
     plt.figure(figsize=(7, 4.5))
-    plt.plot(n, exact, marker="o", label="exact")
-    plt.plot(n, numerical, marker="s", label="numerical")
+    plt.plot(n, exact, marker="o", markersize=9, label=exact_label)
+    plt.plot(n, numerical, marker="s", label=numerical_label)
     plt.xlabel("state index n")
     plt.ylabel("Energy")
     plt.title(title)
@@ -178,6 +187,7 @@ def plot_error_curve(
     xlabel: str,
     path: str | Path,
     title: str,
+    slopes: list[dict] | None = None,
 ) -> None:
     """
     Plot absolute energy errors on log-log axes.
@@ -194,6 +204,9 @@ def plot_error_curve(
         Output image path.
     title : str
         Figure title.
+    slopes : list[dict], optional
+        Optional convergence fit rows. If provided, each legend entry includes
+        the fitted exponent p from error approximately proportional to h^p.
 
     Returns
     -------
@@ -203,7 +216,12 @@ def plot_error_curve(
     plt.figure(figsize=(7, 4.5))
 
     for i in range(errors.shape[1]):
-        plt.loglog(xvals, errors[:, i], marker="o", label=f"state {i}")
+        label = f"state {i}"
+        if slopes is not None and i < len(slopes):
+            slope = slopes[i].get("convergence_exponent_p", np.nan)
+            if np.isfinite(slope):
+                label = f"state {i}, p={slope:.2f}"
+        plt.loglog(xvals, errors[:, i], marker="o", label=label)
 
     plt.xlabel(xlabel)
     plt.ylabel("Absolute energy error")
@@ -266,6 +284,7 @@ def plot_root_finding_diagnostic(
     path: str | Path,
     title: str,
     history_labels: list[str] | None = None,
+    mismatch_label: str = r"scaled mismatch: $M(E)/\max |M|$",
 ) -> None:
     """
     Plot the shooting mismatch and bisection midpoints for selected states.
@@ -288,6 +307,8 @@ def plot_root_finding_diagnostic(
     history_labels : list[str], optional
         Labels for the bisection histories. If omitted, generic state labels
         are used.
+    mismatch_label : str, optional
+        Legend label for the scaled mismatch curve.
     """
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
@@ -297,7 +318,7 @@ def plot_root_finding_diagnostic(
         scale = 1.0
     mismatch_plot = np.clip(mismatches / scale, -1.0, 1.0)
 
-    plt.plot(energies, mismatch_plot, label="scaled mismatch")
+    plt.plot(energies, mismatch_plot, label=mismatch_label)
     plt.axhline(0.0, linestyle=":", label="target mismatch = 0")
 
     if history_labels is None:

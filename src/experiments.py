@@ -14,6 +14,7 @@ import numpy as np
 from src.analysis import (
     convergence_vs_box_size,
     convergence_vs_grid,
+    estimate_convergence_slopes,
     exact_harmonic_oscillator_energies,
     exact_square_well_energies,
     save_csv_rows,
@@ -62,6 +63,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             "state_labels": ["state 0, even", "state 2, even"],
             "path": results_dir / "1_infinite_square_well_root_finding_even.png",
             "title": "Infinite well shooting roots, even states",
+            "mismatch_label": r"scaled mismatch: $M(E)/\max |M|$, $M(E)=\psi_E(a)$",
         },
         {
             "parity": "odd",
@@ -70,6 +72,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             "state_labels": ["state 1, odd", "state 3, odd"],
             "path": results_dir / "1_infinite_square_well_root_finding_odd.png",
             "title": "Infinite well shooting roots, odd states",
+            "mismatch_label": r"scaled mismatch: $M(E)/\max |M|$, $M(E)=\psi_E(a)$",
         },
     ]
 
@@ -102,6 +105,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             spec["path"],
             spec["title"],
             history_labels=spec["state_labels"],
+            mismatch_label=spec["mismatch_label"],
         )
 
 
@@ -156,6 +160,7 @@ def run_square_well(results_dir: Path) -> None:
         states,
         results_dir / "1_infinite_square_well_states.png",
         "Infinite well states",
+        potential_label=r"$V(x)=0$ for $|x|\leq a$, $V_0$ for $|x|>a$ (numerically: $V_0 \gg 1$)",
     )
     plot_probability_densities(
         states,
@@ -167,6 +172,8 @@ def run_square_well(results_dir: Path) -> None:
         exact,
         results_dir / "1_infinite_square_well_energy_comparison.png",
         "Infinite well energies",
+        exact_label=r"exact: $E_n=\frac{(n+1)^2\pi^2}{8a^2}$",
+        numerical_label="numerical",
     )
 
     conv = convergence_vs_grid(
@@ -180,12 +187,16 @@ def run_square_well(results_dir: Path) -> None:
         e_max=60.0,
         reference_energies=exact[:3],
     )
+    conv_slopes = estimate_convergence_slopes(conv["h"], conv["energy_errors"])
+    save_csv_rows(results_dir / "1_infinite_square_well_convergence_slopes.csv", conv_slopes)
+
     plot_error_curve(
         conv["h"],
         conv["energy_errors"],
         "grid spacing h",
         results_dir / "1_infinite_square_well_convergence_vs_h.png",
         "Infinite well convergence",
+        slopes=conv_slopes,
     )
 
     plot_infinite_well_root_diagnostics(results_dir, a=a)
@@ -261,12 +272,16 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_max=5.0,
         reference_energies=exact[:3],
     )
+    conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
+    save_csv_rows(results_dir / "2_harmonic_convergence_slopes.csv", conv_h_slopes)
+
     plot_error_curve(
         conv_h["h"],
         conv_h["energy_errors"],
         "grid spacing h",
         results_dir / "2_harmonic_convergence_vs_h.png",
         "Harmonic oscillator convergence vs h",
+        slopes=conv_h_slopes,
     )
 
     conv_box = convergence_vs_box_size(

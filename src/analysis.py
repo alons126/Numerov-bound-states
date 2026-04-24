@@ -80,6 +80,56 @@ def relative_error(numerical: np.ndarray, exact: np.ndarray) -> np.ndarray:
     return np.abs((numerical - exact) / exact)
 
 
+def estimate_convergence_slopes(
+    xvals: np.ndarray,
+    errors: np.ndarray,
+    state_offset: int = 0,
+) -> list[dict]:
+    """
+    Estimate convergence exponents from a log-log error curve.
+
+    If the error behaves approximately like error = C h^p, then fitting
+    log(error) as a linear function of log(h) gives the slope p. This is useful
+    for reporting the observed order of convergence.
+
+    Parameters
+    ----------
+    xvals : ndarray
+        Grid spacings h or another positive refinement parameter.
+    errors : ndarray
+        Error array with one column per state.
+    state_offset : int, optional
+        Offset added to the state index in the returned rows.
+
+    Returns
+    -------
+    list[dict]
+        Rows containing state_index and the fitted exponent p.
+    """
+    xvals = np.asarray(xvals, dtype=float)
+    errors = np.asarray(errors, dtype=float)
+
+    rows: list[dict] = []
+    for i in range(errors.shape[1]):
+        valid = np.isfinite(xvals) & np.isfinite(errors[:, i]) & (xvals > 0.0) & (errors[:, i] > 0.0)
+
+        if np.count_nonzero(valid) < 2:
+            slope = np.nan
+            intercept = np.nan
+        else:
+            slope, intercept = np.polyfit(np.log(xvals[valid]), np.log(errors[valid, i]), 1)
+
+        rows.append(
+            {
+                "state_index": i + state_offset,
+                "convergence_exponent_p": slope,
+                "log_prefactor": intercept,
+            }
+        )
+
+    return rows
+
+
 def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
     """
     Save a list of dictionaries as a CSV table.
