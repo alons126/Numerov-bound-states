@@ -49,7 +49,9 @@ class StateSolution:
     mismatch: float
 
 
-def initial_conditions(x_half: np.ndarray, parity: str) -> tuple[float, float]:
+def initial_conditions(
+    x_half: np.ndarray, q_half: np.ndarray, parity: str
+) -> tuple[float, float]:
     """
     Construct parity-consistent starting values near x = 0.
 
@@ -66,13 +68,16 @@ def initial_conditions(x_half: np.ndarray, parity: str) -> tuple[float, float]:
         Starting values (psi0, psi1) for Numerov integration.
     """
     h = x_half[1] - x_half[0]
+    q0 = q_half[0]
 
     if parity == "even":
-        # psi(0) = 1 and psi'(0) = 0 imply psi(h) = 1 + O(h^2).
-        return 1.0, 1.0
+        # psi(0) = 1 and psi'(0) = 0.
+        # The second grid value includes the Taylor correction psi(h) = 1 + q(0)h^2/2 + O(h^4).
+        return 1.0, 1.0 + 0.5 * q0 * h**2
     if parity == "odd":
-        # psi(0) = 0 and psi'(0) = 1 imply psi(h) = h + O(h^3).
-        return 0.0, h
+        # psi(0) = 0 and psi'(0) = 1.
+        # The second grid value includes psi(h) = h + q(0)h^3/6 + O(h^5).
+        return 0.0, h + (q0 * h**3) / 6.0
 
     raise ValueError("parity must be 'even' or 'odd'")
 
@@ -103,7 +108,7 @@ def half_domain_wavefunction(
         Unnormalized half-domain wavefunction.
     """
     q = q_from_energy(V_half, energy)
-    psi0, psi1 = initial_conditions(x_half, parity)
+    psi0, psi1 = initial_conditions(x_half, q, parity)
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
 
 
@@ -194,6 +199,76 @@ def find_brackets(
             brackets.append((energies[i], energies[i + 1]))
 
     return brackets
+
+
+def sample_boundary_mismatch(
+    x_half: np.ndarray,
+    V_half: np.ndarray,
+    parity: str,
+    e_min: float,
+    e_max: float,
+    n_scan: int = 1000,
+) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Sample the shooting mismatch over an energy interval.
+
+    This is used only for diagnostics and visualization. The eigenvalues are
+    located where the mismatch curve crosses zero.
+    """
+    energies = np.linspace(e_min, e_max, n_scan)
+    mismatches = np.array(
+        [boundary_mismatch(x_half, V_half, e, parity, mode="value") for e in energies],
+        dtype=float,
+    )
+    return energies, mismatches
+
+
+def bisection_history(
+    x_half: np.ndarray,
+    V_half: np.ndarray,
+    parity: str,
+    bracket: tuple[float, float],
+    tol: float = 1e-12,
+    max_iter: int = 80,
+) -> list[dict]:
+    """
+    Record the bisection process for one eigenvalue bracket.
+
+    Returns a list of dictionaries containing the lower edge, upper edge,
+    midpoint, and mismatch at each bisection iteration.
+    """
+    lo, hi = bracket
+    flo = boundary_mismatch(x_half, V_half, lo, parity, mode="value")
+    fhi = boundary_mismatch(x_half, V_half, hi, parity, mode="value")
+
+    if not np.isfinite(flo) or not np.isfinite(fhi):
+        raise ValueError("Non-finite function value at bracket endpoints.")
+    if np.signbit(flo) == np.signbit(fhi):
+        raise ValueError("Bisection history requires a sign-changing bracket.")
+
+    history: list[dict] = []
+    for iteration in range(max_iter):
+        mid = 0.5 * (lo + hi)
+        fmid = boundary_mismatch(x_half, V_half, mid, parity, mode="value")
+        history.append(
+            {
+                "iteration": iteration,
+                "lo": lo,
+                "hi": hi,
+                "mid": mid,
+                "mismatch_mid": fmid,
+                "width": hi - lo,
+            }
+        )
+
+        if abs(fmid) < tol or abs(hi - lo) < tol:
+            break
+        if np.signbit(flo) != np.signbit(fmid):
+            hi, fhi = mid, fmid
+        else:
+            lo, flo = mid, fmid
+
+    return history
 
 
 def bisect_energy(

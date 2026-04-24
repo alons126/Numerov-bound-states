@@ -24,6 +24,7 @@ from src.plotting import (
     plot_error_curve,
     plot_potential_and_states,
     plot_probability_densities,
+    plot_root_finding_diagnostic,
     plot_splitting_curve,
 )
 from src.potentials import (
@@ -33,18 +34,88 @@ from src.potentials import (
     quartic_double_well,
     quartic_oscillator,
 )
-from src.shooting import solve_symmetric_potential
+from src.shooting import (
+    bisection_history,
+    find_brackets,
+    sample_boundary_mismatch,
+    solve_symmetric_potential,
+)
+
+
+def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> None:
+    """
+    Plot shooting/root-finding diagnostics for all four infinite-well states.
+
+    Even and odd states use different parity boundary conditions at x = 0, so
+    the cleanest visualization is two separate mismatch plots:
+    - even sector: global states n=0 and n=2
+    - odd sector: global states n=1 and n=3
+    """
+    x_half = np.linspace(0.0, a, 900)
+    V_half = infinite_square_well_numeric(x_half, a=a, wall_height=1e6)
+
+    diagnostic_specs = [
+        {
+            "parity": "even",
+            "e_min": 0.1,
+            "e_max": 15.0,
+            "state_labels": ["state 0, even", "state 2, even"],
+            "path": results_dir / "1_infinite_square_well_root_finding_even.png",
+            "title": "Infinite well shooting roots, even states",
+        },
+        {
+            "parity": "odd",
+            "e_min": 2.0,
+            "e_max": 25.0,
+            "state_labels": ["state 1, odd", "state 3, odd"],
+            "path": results_dir / "1_infinite_square_well_root_finding_odd.png",
+            "title": "Infinite well shooting roots, odd states",
+        },
+    ]
+
+    for spec in diagnostic_specs:
+        energies_scan, mismatches_scan = sample_boundary_mismatch(
+            x_half,
+            V_half,
+            parity=spec["parity"],
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            n_scan=1600,
+        )
+        brackets = find_brackets(
+            x_half,
+            V_half,
+            parity=spec["parity"],
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            n_scan=1600,
+        )
+        histories = [
+            bisection_history(x_half, V_half, spec["parity"], bracket, max_iter=30)
+            for bracket in brackets[: len(spec["state_labels"])]
+        ]
+
+        plot_root_finding_diagnostic(
+            energies_scan,
+            mismatches_scan,
+            histories,
+            spec["path"],
+            spec["title"],
+            history_labels=spec["state_labels"],
+        )
 
 
 def run_square_well(results_dir: Path) -> None:
     """
     Run the infinite square well benchmark case.
 
-    This experiment validates the solver against exact energies and produces
-    the square-well convergence plot used in the report.
+    The actual infinite-well calculation is done on [0, a], not [0, 1.2a].
+    This is important because the exact boundary condition is psi(a)=0.
+    If x_max is larger than a, the convergence plot mixes grid error with the
+    error caused by replacing an infinite wall with a finite numerical barrier.
     """
     a = 1.0
-    x_max = 1.2
+    x_max = a
     n_grid = 2500
 
     states = solve_symmetric_potential(
@@ -74,11 +145,14 @@ def run_square_well(results_dir: Path) -> None:
         )
     save_csv_rows(results_dir / "1_infinite_square_well_energies.csv", rows)
 
-    x = states[0].x_full
-    V = infinite_square_well_numeric(x, a=a, wall_height=1e6)
+    # For visualization only, draw the artificial walls slightly outside the
+    # solved interval. The states themselves are still computed on [-a, a].
+    x_plot = np.linspace(-1.2 * a, 1.2 * a, 1200)
+    V_plot = infinite_square_well_numeric(x_plot, a=a, wall_height=1e6)
+
     plot_potential_and_states(
-        x,
-        V,
+        x_plot,
+        V_plot,
         states,
         results_dir / "1_infinite_square_well_states.png",
         "Infinite well states",
@@ -98,8 +172,8 @@ def run_square_well(results_dir: Path) -> None:
     conv = convergence_vs_grid(
         potential_fn=infinite_square_well_numeric,
         potential_kwargs={"a": a, "wall_height": 1e6},
-        x_max=x_max,
-        grid_sizes=[500, 800, 1200, 1800, 2500],
+        x_max=a,
+        grid_sizes=[50, 80, 120, 180, 260, 400],
         n_even=2,
         n_odd=1,
         e_min=0.1,
@@ -113,6 +187,8 @@ def run_square_well(results_dir: Path) -> None:
         results_dir / "1_infinite_square_well_convergence_vs_h.png",
         "Infinite well convergence",
     )
+
+    plot_infinite_well_root_diagnostics(results_dir, a=a)
 
 
 def run_harmonic_oscillator(results_dir: Path) -> None:

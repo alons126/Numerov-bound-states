@@ -257,3 +257,63 @@ def plot_splitting_curve(
     plt.tight_layout()
     plt.savefig(path, dpi=160)
     plt.close()
+
+
+def plot_root_finding_diagnostic(
+    energies: np.ndarray,
+    mismatches: np.ndarray,
+    histories: list[list[dict]],
+    path: str | Path,
+    title: str,
+    history_labels: list[str] | None = None,
+) -> None:
+    """
+    Plot the shooting mismatch and bisection midpoints for selected states.
+
+    The zero line marks the desired boundary condition. Each sequence of
+    bisection points shows how the root finder narrows in on an eigenvalue.
+
+    Parameters
+    ----------
+    energies : ndarray
+        Trial energies used to sample the shooting mismatch.
+    mismatches : ndarray
+        Boundary mismatch values for the trial energies.
+    histories : list[list[dict]]
+        Bisection history records, one list per state/root.
+    path : str or Path
+        Output image path.
+    title : str
+        Figure title.
+    history_labels : list[str], optional
+        Labels for the bisection histories. If omitted, generic state labels
+        are used.
+    """
+    _ensure_parent(path)
+    plt.figure(figsize=(8, 5))
+
+    scale = np.nanmax(np.abs(mismatches))
+    if scale == 0.0 or not np.isfinite(scale):
+        scale = 1.0
+    mismatch_plot = np.clip(mismatches / scale, -1.0, 1.0)
+
+    plt.plot(energies, mismatch_plot, label="scaled mismatch")
+    plt.axhline(0.0, linestyle=":", label="target mismatch = 0")
+
+    if history_labels is None:
+        history_labels = [f"state {i} bisection" for i in range(len(histories))]
+
+    for i, history in enumerate(histories):
+        mids = np.array([row["mid"] for row in history], dtype=float)
+        vals = np.array([row["mismatch_mid"] for row in history], dtype=float)
+        vals = np.clip(vals / scale, -1.0, 1.0)
+        label = history_labels[i] if i < len(history_labels) else f"state {i} bisection"
+        plt.scatter(mids, vals, s=18, label=label)
+
+    plt.xlabel("trial energy E")
+    plt.ylabel("scaled boundary mismatch")
+    plt.title(title)
+    plt.legend(fontsize=8)
+    plt.tight_layout()
+    plt.savefig(path, dpi=160)
+    plt.close()
