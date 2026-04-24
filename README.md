@@ -9,11 +9,11 @@ Numerical solution of the 1D time-independent Schrödinger equation with the Num
 - Validation on:
   - infinite square well
   - harmonic oscillator
-- Physics exploration on:
+- Physics exploration on (core bound-state focus with extensions):
   - quartic double well
   - finite square well
-  - finite rectangular barrier scattering (transmission/reflection validation)
-  - double-barrier resonant tunneling (resonance peak analysis)
+  - finite rectangular barrier (exploration of scattering behavior such as transmission/reflection validation)
+  - double-barrier resonant tunneling (exploration of resonance peak structure)
 - Convergence studies versus grid spacing and domain size
 - Root-finding diagnostics (mismatch function plots and bisection traces)
 - Double-well tunneling splitting analysis
@@ -111,20 +111,20 @@ To make the algorithm transparent, the code can generate diagnostic plots of $M(
 The half-domain solution is reflected to the negative axis using parity. The resulting full wavefunction is then normalized using numerical integration.
 
 ### 5. Analysis and experiments
-The solver is applied to several systems:
+The solver is applied to several systems (with bound states as the primary focus and additional extensions for more complex behavior):
 - infinite square well (validation against exact solution)
 - harmonic oscillator (validation against exact solution, using inward shooting for stability)
 - quartic double well (tunneling and energy splitting)
 - finite square well (finite number of bound states)
-- finite rectangular barrier (scattering and validation against analytic transmission)
-- double barrier (resonant tunneling and peak structure)
+- finite rectangular barrier (exploration of scattering behavior and comparison with analytic transmission)
+- double barrier (resonant tunneling and peak structure as an extension)
 
 Additional analysis includes:
-- convergence studies versus grid spacing and domain size
+- convergence studies versus grid spacing and domain size to verify numerical accuracy
 - parameter sweeps (e.g., double-well barrier height)
 - generation of plots and CSV tables for reporting
 - estimation of convergence rates $\Delta E \propto h^p$ from log--log fits
-- comparison between Numerov and RK4 integration methods for the harmonic oscillator
+- comparison between Numerov and RK4 integration methods for the harmonic oscillator to assess accuracy, efficiency, and method suitability
 - conservation check $T + R \approx 1$ for scattering states
 - identification of resonance peaks in double-barrier transmission
 
