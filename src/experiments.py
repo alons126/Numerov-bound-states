@@ -56,7 +56,11 @@ from src.scattering import (
     sweep_scattering,
 )
 from src.rk4_compare import (
+    bisection_history_rk4,
+    find_rk4_brackets,
     rk4_harmonic_convergence_vs_grid,
+    rk4_harmonic_convergence_vs_box_size_fixed_spacing,
+    sample_rk4_mismatch,
     solve_harmonic_oscillator_rk4_energies,
 )
 
@@ -67,6 +71,7 @@ def run_harmonic_rk4_comparison(
     numerov_convergence: dict[str, np.ndarray],
     omega: float = 1.0,
     x_max: float = 8.0,
+    target_h: float | None = None,
 ) -> None:
     """
     Compare the specialized Numerov integrator with general RK4 shooting.
@@ -101,12 +106,32 @@ def run_harmonic_rk4_comparison(
             for row in rk4_reference_rows
         ],
     )
+    plot_energy_comparison(
+        np.array([row.energy for row in rk4_reference_rows], dtype=float),
+        np.array([row.exact_energy for row in rk4_reference_rows], dtype=float),
+        results_dir / "2b_harmonic_rk4_energy_comparison.png",
+        "Harmonic oscillator RK4 energies",
+        exact_label=r"exact: $E_n=\omega\left(n+\frac{1}{2}\right)$",
+        numerical_label="RK4",
+    )
 
     rk4_convergence = rk4_harmonic_convergence_vs_grid(
         x_max=x_max,
         grid_sizes=grid_sizes,
         n_states=n_states,
         omega=omega,
+    )
+    rk4_slopes = estimate_convergence_slopes(
+        rk4_convergence["h"], rk4_convergence["energy_errors"]
+    )
+    save_csv_rows(results_dir / "2b_harmonic_rk4_convergence_slopes.csv", rk4_slopes)
+    plot_error_curve(
+        rk4_convergence["h"],
+        rk4_convergence["energy_errors"],
+        "grid spacing h",
+        results_dir / "2b_harmonic_rk4_convergence_vs_h.png",
+        "Harmonic oscillator RK4 convergence vs h",
+        slopes=rk4_slopes,
     )
 
     numerov_h = numerov_convergence["h"]
@@ -138,6 +163,110 @@ def run_harmonic_rk4_comparison(
         results_dir / "2b_harmonic_numerov_vs_rk4.png",
         "Harmonic oscillator: Numerov vs RK4",
     )
+
+    diagnostic_specs = [
+        {
+            "parity": "even",
+            "e_min": 0.1,
+            "e_max": 3.2,
+            "state_labels": ["state 0, even", "state 2, even"],
+            "path": results_dir / "2b_harmonic_rk4_root_finding_even.png",
+            "title": "Harmonic oscillator RK4 roots, even states",
+            "mismatch_label": (
+                r"scaled mismatch: $M(E)/\max |M|$, "
+                r"$M(E)=\psi'_E(0)$"
+            ),
+        },
+        {
+            "parity": "odd",
+            "e_min": 0.7,
+            "e_max": 4.3,
+            "state_labels": ["state 1, odd", "state 3, odd"],
+            "path": results_dir / "2b_harmonic_rk4_root_finding_odd.png",
+            "title": "Harmonic oscillator RK4 roots, odd states",
+            "mismatch_label": (
+                r"scaled mismatch: $M(E)/\max |M|$, "
+                r"$M(E)=\psi_E(0)$"
+            ),
+        },
+    ]
+
+    for spec in diagnostic_specs:
+        energies_scan, mismatches_scan = sample_rk4_mismatch(
+            parity=spec["parity"],
+            x_max=x_max,
+            n_grid=500,
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            omega=omega,
+            n_scan=400,
+        )
+        brackets = find_rk4_brackets(
+            parity=spec["parity"],
+            x_max=x_max,
+            n_grid=500,
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            omega=omega,
+            n_scan=400,
+        )
+        histories = [
+            bisection_history_rk4(
+                parity=spec["parity"],
+                bracket=bracket,
+                x_max=x_max,
+                n_grid=1600,
+                omega=omega,
+                max_iter=30,
+            )
+            for bracket in brackets[: len(spec["state_labels"])]
+        ]
+
+        plot_root_finding_diagnostic(
+            energies_scan,
+            mismatches_scan,
+            histories,
+            spec["path"],
+            spec["title"],
+            history_labels=spec["state_labels"],
+            mismatch_label=spec["mismatch_label"],
+        )
+
+    if target_h is not None:
+        rk4_box = rk4_harmonic_convergence_vs_box_size_fixed_spacing(
+            x_max_values=[4.0, 5.0, 6.0, 7.0, 8.0, 10.0],
+            target_h=target_h,
+            n_states=n_states,
+            omega=omega,
+            e_min=0.1,
+            e_max=6.0,
+        )
+        save_csv_rows(
+            results_dir / "2b_harmonic_rk4_convergence_vs_x_max_data.csv",
+            [
+                {
+                    "x_max": x_val,
+                    "n_grid": int(n_val),
+                    "h": h_val,
+                    **{
+                        f"state_{state_index}_abs_error": rk4_box["energy_errors"][
+                            row_index, state_index
+                        ]
+                        for state_index in range(rk4_box["energy_errors"].shape[1])
+                    },
+                }
+                for row_index, (x_val, n_val, h_val) in enumerate(
+                    zip(rk4_box["x_max"], rk4_box["n_grid"], rk4_box["h"])
+                )
+            ],
+        )
+        plot_error_curve(
+            rk4_box["x_max"],
+            rk4_box["energy_errors"],
+            "box size x_max",
+            results_dir / "2b_harmonic_rk4_convergence_vs_x_max.png",
+            "Harmonic oscillator RK4 convergence vs box size",
+        )
 def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> None:
     """
     Plot shooting/root-finding diagnostics for all four infinite-well states.
@@ -479,17 +608,19 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         slopes=conv_h_slopes,
     )
 
+    # Keep the same nominal spacing for the RK4 and Numerov box-size studies.
+    target_h = x_max / (n_grid - 1)
     run_harmonic_rk4_comparison(
         results_dir=results_dir,
         numerov_convergence=conv_h,
         omega=omega,
         x_max=x_max,
+        target_h=target_h,
     )
 
     # Box-size convergence should isolate the finite-domain truncation error.
     # Therefore h is kept approximately fixed while x_max changes. Holding
     # n_grid fixed would also change h and mix two different error sources.
-    target_h = x_max / (n_grid - 1)
     conv_box = convergence_vs_box_size_fixed_spacing(
         potential_fn=harmonic_oscillator,
         potential_kwargs={"omega": omega},

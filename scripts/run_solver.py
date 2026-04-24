@@ -52,22 +52,22 @@ def main() -> None:
 
     print("Running experiments...")
 
-    print("\n1. Infinite Square Well...")
+    print("\n1. Infinite Square Well (Numerov only)...")
     run_square_well(RESULTS)
 
-    print("\n2. Harmonic Oscillator...")
+    print("\n2. Harmonic Oscillator (Numerov & RK4)...")
     run_harmonic_oscillator(RESULTS)
 
-    print("\n3. Double Well...")
+    print("\n3. Double Well (Numerov only)...")
     run_double_well(RESULTS)
 
-    print("\n4. Finite Square Well...")
+    print("\n4. Finite Square Well (Numerov only)...")
     run_finite_square_well(RESULTS)
 
-    print("\n5. Quartic Oscillator Demo...")
+    print("\n5. Quartic Oscillator Demo (Numerov only)...")
     run_quartic_oscillator_demo(RESULTS)
 
-    print("\n6. Scattering and Resonant Tunneling...")
+    print("\n6. Scattering and Resonant Tunneling (Numerov only)...")
     run_scattering(RESULTS)
 
     print("\nRunning tests...")

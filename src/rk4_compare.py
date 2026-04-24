@@ -111,6 +111,24 @@ def find_rk4_brackets(
     return brackets
 
 
+def sample_rk4_mismatch(
+    parity: str,
+    x_max: float,
+    n_grid: int,
+    e_min: float,
+    e_max: float,
+    omega: float = 1.0,
+    n_scan: int = 1000,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Sample the RK4 inward-shooting mismatch over an energy interval."""
+    energies = np.linspace(e_min, e_max, n_scan)
+    mismatches = np.array(
+        [rk4_inward_mismatch(e, parity, x_max, n_grid, omega) for e in energies],
+        dtype=float,
+    )
+    return energies, mismatches
+
+
 def bisect_rk4_energy(
     parity: str,
     bracket: tuple[float, float],
@@ -138,6 +156,45 @@ def bisect_rk4_energy(
             flo = fmid
 
     return float(0.5 * (lo + hi))
+
+
+def bisection_history_rk4(
+    parity: str,
+    bracket: tuple[float, float],
+    x_max: float,
+    n_grid: int,
+    omega: float = 1.0,
+    tol: float = 1.0e-12,
+    max_iter: int = 80,
+) -> list[dict]:
+    """Record the RK4 inward-shooting bisection process for one bracket."""
+    lo, hi = bracket
+    flo = rk4_inward_mismatch(lo, parity, x_max, n_grid, omega)
+
+    history: list[dict] = []
+    for iteration in range(max_iter):
+        mid = 0.5 * (lo + hi)
+        fmid = rk4_inward_mismatch(mid, parity, x_max, n_grid, omega)
+        history.append(
+            {
+                "iteration": iteration,
+                "lo": lo,
+                "hi": hi,
+                "mid": mid,
+                "mismatch_mid": fmid,
+            }
+        )
+
+        if abs(hi - lo) < tol or abs(fmid) < tol:
+            break
+
+        if np.signbit(flo) != np.signbit(fmid):
+            hi = mid
+        else:
+            lo = mid
+            flo = fmid
+
+    return history
 
 
 def solve_harmonic_oscillator_rk4_energies(
@@ -218,6 +275,53 @@ def rk4_harmonic_convergence_vs_grid(
 
     return {
         "h": np.array(h_values, dtype=float),
+        "energies": np.array(energies, dtype=float),
+        "energy_errors": np.array(errors, dtype=float),
+    }
+
+
+def rk4_harmonic_convergence_vs_box_size_fixed_spacing(
+    x_max_values: list[float],
+    target_h: float,
+    n_states: int = 4,
+    omega: float = 1.0,
+    e_min: float = 0.1,
+    e_max: float = 6.5,
+) -> dict[str, np.ndarray]:
+    """Return RK4 harmonic-oscillator errors versus box size at fixed spacing."""
+    exact = exact_harmonic_oscillator_energies(np.arange(n_states), omega=omega)
+
+    x_values = []
+    h_values = []
+    grid_sizes = []
+    energies = []
+    errors = []
+
+    for x_max in x_max_values:
+        n_grid = int(round(x_max / target_h)) + 1
+        n_grid = max(n_grid, 3)
+        actual_h = x_max / (n_grid - 1)
+
+        rows = solve_harmonic_oscillator_rk4_energies(
+            x_max=x_max,
+            n_grid=n_grid,
+            n_states=n_states,
+            omega=omega,
+            e_min=e_min,
+            e_max=e_max,
+        )
+        row_energies = np.array([row.energy for row in rows], dtype=float)
+
+        x_values.append(x_max)
+        h_values.append(actual_h)
+        grid_sizes.append(n_grid)
+        energies.append(row_energies)
+        errors.append(np.abs(row_energies - exact))
+
+    return {
+        "x_max": np.array(x_values, dtype=float),
+        "h": np.array(h_values, dtype=float),
+        "n_grid": np.array(grid_sizes, dtype=int),
         "energies": np.array(energies, dtype=float),
         "energy_errors": np.array(errors, dtype=float),
     }
