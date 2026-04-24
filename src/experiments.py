@@ -12,7 +12,6 @@ from pathlib import Path
 import numpy as np
 
 from src.analysis import (
-    convergence_vs_box_size,
     convergence_vs_box_size_fixed_spacing,
     convergence_vs_grid,
     estimate_convergence_slopes,
@@ -27,14 +26,18 @@ from src.plotting import (
     plot_potential_and_states,
     plot_probability_densities,
     plot_root_finding_diagnostic,
+    plot_scattering_coefficients,
+    plot_scattering_potential_and_probability,
     plot_splitting_curve,
 )
 from src.potentials import (
+    double_square_barrier,
     finite_square_well,
     harmonic_oscillator,
     infinite_square_well_numeric,
     quartic_double_well,
     quartic_oscillator,
+    square_barrier,
 )
 from src.shooting import (
     bisection_history,
@@ -45,6 +48,11 @@ from src.shooting import (
     sample_inward_decay_mismatch,
     solve_symmetric_potential,
     solve_symmetric_potential_inward_decay,
+)
+from src.scattering import (
+    find_transmission_peaks,
+    scattering_wavefunction,
+    sweep_scattering,
 )
 
 
@@ -586,4 +594,95 @@ def run_quartic_oscillator_demo(results_dir: Path) -> None:
         states,
         results_dir / "5_quartic_oscillator_states.png",
         "Quartic oscillator",
+    )
+
+
+def run_scattering(results_dir: Path) -> None:
+    """
+    Run the Pang-style scattering extension.
+
+    This experiment computes transmission and reflection probabilities for a
+    single finite barrier and a double-barrier resonant tunneling structure. The
+    double-barrier case is the important extension: resonant transmission peaks
+    appear when the energy matches a quasi-bound state in the central well.
+    """
+    x_min = -8.0
+    x_max = 8.0
+    n_grid = 4000
+    x = np.linspace(x_min, x_max, n_grid)
+
+    # ------------------------------------------------------------
+    # Single barrier: basic tunneling/over-barrier validation.
+    # ------------------------------------------------------------
+    single_kwargs = {"V0": 5.0, "width": 1.2, "center": 0.0}
+    V_single = square_barrier(x, **single_kwargs)
+    energies_single = np.linspace(0.2, 10.0, 240)
+    single_results = sweep_scattering(x, V_single, energies_single)
+
+    single_rows = [
+        {
+            "energy": result.energy,
+            "transmission": result.transmission,
+            "reflection": result.reflection,
+            "T_plus_R": result.transmission + result.reflection,
+        }
+        for result in single_results
+    ]
+    save_csv_rows(results_dir / "6_scattering_single_barrier.csv", single_rows)
+
+    T_single = np.array([result.transmission for result in single_results], dtype=float)
+    R_single = np.array([result.reflection for result in single_results], dtype=float)
+    plot_scattering_coefficients(
+        energies_single,
+        T_single,
+        R_single,
+        results_dir / "6_scattering_single_barrier_TR.png",
+        "Finite barrier scattering",
+    )
+
+    # ------------------------------------------------------------
+    # Double barrier: resonant tunneling.
+    # ------------------------------------------------------------
+    double_kwargs = {"V0": 5.0, "barrier_width": 0.6, "well_width": 1.4, "center": 0.0}
+    V_double = double_square_barrier(x, **double_kwargs)
+    energies_double = np.linspace(0.2, 5.0, 420)
+    double_results = sweep_scattering(x, V_double, energies_double)
+
+    T_double = np.array([result.transmission for result in double_results], dtype=float)
+    R_double = np.array([result.reflection for result in double_results], dtype=float)
+    peaks = find_transmission_peaks(energies_double, T_double, threshold=0.65)
+
+    double_rows = [
+        {
+            "energy": result.energy,
+            "transmission": result.transmission,
+            "reflection": result.reflection,
+            "T_plus_R": result.transmission + result.reflection,
+        }
+        for result in double_results
+    ]
+    save_csv_rows(results_dir / "6_scattering_double_barrier.csv", double_rows)
+    save_csv_rows(results_dir / "6_scattering_double_barrier_resonance_peaks.csv", peaks)
+
+    plot_scattering_coefficients(
+        energies_double,
+        T_double,
+        R_double,
+        results_dir / "6_scattering_double_barrier_resonances.png",
+        "Double-barrier resonant tunneling",
+    )
+
+    if peaks:
+        resonance_energy = peaks[0]["energy"]
+    else:
+        resonance_energy = float(energies_double[np.argmax(T_double)])
+
+    psi_res, resonance_result = scattering_wavefunction(x, V_double, resonance_energy)
+    plot_scattering_potential_and_probability(
+        x,
+        V_double,
+        psi_res,
+        resonance_result.energy,
+        results_dir / "6_scattering_double_barrier_resonant_state.png",
+        "Double-barrier resonant scattering state",
     )

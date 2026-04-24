@@ -28,6 +28,7 @@ for path in (PROJECT_ROOT, TESTS_DIR):
         sys.path.insert(0, str(path))
 
 from src.experiments import (
+    run_scattering,
     run_double_well,
     run_finite_square_well,
     run_harmonic_oscillator,
@@ -65,6 +66,9 @@ def main() -> None:
 
     print("\n5. Quartic Oscillator Demo...")
     run_quartic_oscillator_demo(RESULTS)
+
+    print("\n6. Scattering and Resonant Tunneling...")
+    run_scattering(RESULTS)
 
     print("\nRunning tests...")
     run_all_tests()

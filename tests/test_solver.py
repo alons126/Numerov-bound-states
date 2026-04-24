@@ -20,10 +20,12 @@ import numpy as np
 from src.analysis import exact_harmonic_oscillator_energies, exact_square_well_energies
 from src.numerov import normalize_wavefunction
 from src.potentials import (
+    double_square_barrier,
     harmonic_oscillator,
     infinite_square_well_numeric,
     quartic_double_well,
 )
+from src.scattering import sweep_scattering
 from src.shooting import solve_symmetric_potential
 
 
@@ -95,6 +97,18 @@ def test_double_well_splitting_positive() -> None:
     assert states[1].energy > states[0].energy
 
 
+
+
+def test_scattering_probability_conservation() -> None:
+    """
+    Check that scattering approximately conserves probability current.
+    """
+    x = np.linspace(-8.0, 8.0, 2000)
+    V = double_square_barrier(x, V0=5.0, barrier_width=0.6, well_width=1.4)
+    energies = np.array([0.8, 1.5, 2.5, 4.0])
+    results = sweep_scattering(x, V, energies)
+    for result in results:
+        assert abs((result.transmission + result.reflection) - 1.0) < 5e-2
 def run_all_tests() -> None:
     """
     Execute all project validation tests and print a short summary.
@@ -103,6 +117,7 @@ def run_all_tests() -> None:
     test_square_well_ground_state()
     test_harmonic_oscillator_first_levels()
     test_double_well_splitting_positive()
+    test_scattering_probability_conservation()
     print("All tests passed.")
 
 

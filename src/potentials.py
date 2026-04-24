@@ -134,3 +134,72 @@ def quartic_oscillator(
         Potential sampled on the grid.
     """
     return 0.5 * x**2 + lam * x**4
+
+
+def square_barrier(
+    x: np.ndarray,
+    V0: float = 5.0,
+    width: float = 1.0,
+    center: float = 0.0,
+) -> np.ndarray:
+    """
+    Rectangular scattering barrier.
+
+    Parameters
+    ----------
+    x : ndarray
+        Spatial grid.
+    V0 : float, optional
+        Barrier height.
+    width : float, optional
+        Barrier width.
+    center : float, optional
+        Barrier center.
+
+    Returns
+    -------
+    ndarray
+        Potential sampled on the grid.
+    """
+    half_width = 0.5 * width
+    return np.where(np.abs(x - center) <= half_width, V0, 0.0)
+
+
+def double_square_barrier(
+    x: np.ndarray,
+    V0: float = 5.0,
+    barrier_width: float = 0.6,
+    well_width: float = 1.2,
+    center: float = 0.0,
+) -> np.ndarray:
+    """
+    Symmetric double-barrier scattering potential.
+
+    The potential is zero outside the barriers and in the central well. Two
+    rectangular barriers of height V0 are separated by a well of width
+    ``well_width``. This is the standard structure used to demonstrate resonant
+    tunneling.
+
+    Parameters
+    ----------
+    x : ndarray
+        Spatial grid.
+    V0 : float, optional
+        Barrier height.
+    barrier_width : float, optional
+        Width of each barrier.
+    well_width : float, optional
+        Separation between the two barriers.
+    center : float, optional
+        Center of the full double-barrier structure.
+
+    Returns
+    -------
+    ndarray
+        Potential sampled on the grid.
+    """
+    left_center = center - 0.5 * (well_width + barrier_width)
+    right_center = center + 0.5 * (well_width + barrier_width)
+    left_barrier = np.abs(x - left_center) <= 0.5 * barrier_width
+    right_barrier = np.abs(x - right_center) <= 0.5 * barrier_width
+    return np.where(left_barrier | right_barrier, V0, 0.0)

@@ -339,3 +339,80 @@ def plot_root_finding_diagnostic(
     plt.tight_layout()
     plt.savefig(path, dpi=160)
     plt.close()
+
+
+def plot_scattering_coefficients(
+    energies: np.ndarray,
+    transmission: np.ndarray,
+    reflection: np.ndarray,
+    path: str | Path,
+    title: str,
+) -> None:
+    """
+    Plot transmission and reflection probabilities versus incident energy.
+
+    Parameters
+    ----------
+    energies : ndarray
+        Incident energies.
+    transmission : ndarray
+        Transmission probabilities T(E).
+    reflection : ndarray
+        Reflection probabilities R(E).
+    path : str or Path
+        Output image path.
+    title : str
+        Figure title.
+
+    Returns
+    -------
+    None
+    """
+    _ensure_parent(path)
+    plt.figure(figsize=(8, 5))
+    plt.plot(energies, transmission, label="transmission $T(E)$")
+    plt.plot(energies, reflection, linestyle=":", label="reflection $R(E)$")
+    plt.plot(energies, transmission + reflection, linestyle="--", label="$T(E)+R(E)$")
+    plt.xlabel("incident energy E")
+    plt.ylabel("probability")
+    plt.title(title)
+    plt.ylim(-0.05, 1.08)
+    plt.legend(fontsize=8)
+    plt.tight_layout()
+    plt.savefig(path, dpi=160)
+    plt.close()
+
+
+def plot_scattering_potential_and_probability(
+    x: np.ndarray,
+    V: np.ndarray,
+    psi: np.ndarray,
+    energy: float,
+    path: str | Path,
+    title: str,
+) -> None:
+    """
+    Plot a scattering probability density together with the barrier potential.
+
+    The potential is rescaled for visualization so that the wave intensity and
+    barrier shape can be shown on one axis.
+    """
+    _ensure_parent(path)
+    density = np.abs(psi) ** 2
+    density_scale = np.max(density)
+    if density_scale == 0.0 or not np.isfinite(density_scale):
+        density_scale = 1.0
+
+    V_scale = np.max(np.abs(V))
+    V_plot = V / V_scale * density_scale if V_scale > 0.0 else V
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(x, density, label=rf"$|\psi(x)|^2$, $E={energy:.3f}$")
+    plt.plot(x, V_plot, linestyle="--", label="rescaled $V(x)$")
+    plt.xlabel("x")
+    plt.ylabel("relative scale")
+    plt.title(title)
+    plt.legend(fontsize=8)
+    plt.tight_layout()
+    plt.savefig(path, dpi=160)
+    plt.close()
