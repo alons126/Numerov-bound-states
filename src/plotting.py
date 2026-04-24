@@ -416,3 +416,34 @@ def plot_scattering_potential_and_probability(
     plt.tight_layout()
     plt.savefig(path, dpi=160)
     plt.close()
+
+
+def plot_numerov_vs_rk4_errors(
+    h_numerov: np.ndarray,
+    numerov_errors: np.ndarray,
+    h_rk4: np.ndarray,
+    rk4_errors: np.ndarray,
+    path: str | Path,
+    title: str,
+) -> None:
+    """
+    Compare Numerov and RK4 harmonic-oscillator energy errors.
+
+    The plotted value is the maximum absolute energy error among the displayed
+    low-lying states for each grid spacing. This keeps the method-comparison
+    figure readable while the CSV table retains state-by-state errors.
+    """
+    _ensure_parent(path)
+    numerov_max = np.max(numerov_errors, axis=1)
+    rk4_max = np.max(rk4_errors, axis=1)
+
+    plt.figure(figsize=(7, 4.5))
+    plt.loglog(h_numerov, numerov_max, marker="o", label="Numerov, max state error")
+    plt.loglog(h_rk4, rk4_max, marker="s", label="RK4, max state error")
+    plt.xlabel("grid spacing h")
+    plt.ylabel("max absolute energy error")
+    plt.title(title)
+    plt.legend(fontsize=8)
+    plt.tight_layout()
+    plt.savefig(path, dpi=160)
+    plt.close()
