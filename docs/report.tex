@@ -1,5 +1,5 @@
 % To compile:
-% pdflatex proposal.tex
+% pdflatex report.tex
 
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
@@ -23,13 +23,33 @@ In dimensionless units, the Schr\"odinger equation is written as
 \]
 The wavefunction is integrated with the Numerov scheme on a uniform grid. For symmetric potentials, even and odd states are treated separately using parity conditions at $x=0$. Eigenvalues are found by scanning for sign changes in the boundary mismatch and then refining them with bisection.
 
+\subsection{Shooting and root finding}
+The boundary-value eigenproblem is reformulated as a root-finding problem for a mismatch function $M(E)$. For a given trial energy $E$, the Schr\"odinger equation is integrated and a boundary mismatch is evaluated. For symmetric potentials we exploit parity and define
+\begin{align}
+\text{even states:}\quad M(E) &= \psi'_E(0),\\
+\text{odd states:}\quad M(E) &= \psi_E(0).
+\end{align}
+Eigenvalues correspond to the roots of $M(E)=0$, which are located by bracketing sign changes and refined with bisection. To make the procedure transparent, we plot $M(E)$ versus $E$ and mark the bisection iterates; zero crossings identify the allowed energies.
+
 \section{Results}
 
 \subsection{Infinite square well}
-The infinite square well serves as a benchmark problem. The numerical eigenvalues are compared with the exact analytical spectrum, showing good agreement. Errors decrease systematically as the grid resolution increases.
+The infinite square well serves as a benchmark problem with known analytic spectrum
+\[
+E_n = \frac{(n+1)^2\pi^2}{8a^2}.
+\]
+The potential is
+\[
+V(x)=\begin{cases}
+0 & |x|\le a,\\
+\infty & |x|>a
+\end{cases}
+\qquad \text{(implemented numerically with a large finite }V_0\text{)}.
+\]
+The numerical eigenvalues agree with the analytic values to high precision. Convergence with respect to grid spacing is demonstrated with log--log plots, and the fitted slopes indicate power-law behavior $\Delta E \propto h^p$.
 
 \subsection{Harmonic oscillator}
-For the harmonic oscillator, the numerical spectrum reproduces the exact energy levels. The wavefunctions exhibit the correct parity and node structure, providing additional validation of the implementation.
+For the harmonic oscillator with $V(x)=\tfrac{1}{2}\omega^2 x^2$, the numerical spectrum reproduces the exact levels $E_n=\omega(n+\tfrac{1}{2})$. Since the problem is defined on an unbounded domain, we truncate to $[-x_{\max},x_{\max}]$ and impose decay conditions at the boundaries. To avoid contamination by the exponentially growing solution, we use inward shooting: the solution is initialized in the asymptotic region where it decays and integrated toward the origin. The resulting wavefunctions exhibit the correct parity and node structure without spurious growth near the edges.
 
 \subsection{Double-well potential}
 The quartic double-well potential produces pairs of nearly degenerate states. The lowest even and odd states correspond to symmetric and antisymmetric combinations of localized wavefunctions. The energy splitting between these states is analyzed as a function of the barrier height, illustrating quantum tunneling effects.
@@ -38,9 +58,19 @@ The quartic double-well potential produces pairs of nearly degenerate states. Th
 The finite square well demonstrates the flexibility of the solver. Unlike the infinite case, only a finite number of bound states exist, depending on the well depth. The numerical results capture this behavior correctly.
 
 \subsection{Convergence study}
-Convergence is studied by varying both the grid spacing and the size of the computational domain. The results show that the numerical energies approach stable values as the resolution increases, consistent with expectations for finite-difference methods.
+We analyze numerical errors by varying both the grid spacing $h$ and the domain size $x_{\max}$.
 
-Representative plots include wavefunctions, probability densities, convergence curves, and energy splitting as a function of potential parameters.
+\paragraph{Grid convergence.}
+For fixed $x_{\max}$, the energy error follows approximately
+\[
+\Delta E \propto h^p,
+\]
+where $p$ is estimated from log--log fits and reported in the figure legends. The observed values $p\approx 3$--$4$ are consistent with high-order Numerov accuracy, with mild degradation due to boundary truncation and root-finding tolerances.
+
+\paragraph{Dependence on domain size.}
+For problems on unbounded domains (e.g., the harmonic oscillator), truncation at finite $x_{\max}$ introduces boundary error. For small $x_{\max}$ the wavefunction is artificially cut off, producing large errors. As $x_{\max}$ increases, the error decreases until it reaches a plateau set by discretization, root-finding tolerance, and floating-point precision. Thus this plot measures sensitivity to domain size rather than pure discretization convergence.
+
+Representative plots include wavefunctions, probability densities, root-finding diagnostics, convergence curves, and energy splitting as a function of potential parameters.
 
 \section{Discussion}
 The correctness of the code is verified through multiple checks. Analytical benchmarks confirm the accuracy of the computed eigenvalues, while normalization ensures that the wavefunctions remain physically meaningful. Convergence studies provide strong evidence that the numerical results are stable with respect to discretization parameters.
@@ -49,7 +79,9 @@ The double-well analysis highlights a key physical phenomenon: tunneling-induced
 
 The results also illustrate typical numerical considerations, such as sensitivity to grid resolution and domain size. These factors must be carefully controlled to obtain reliable solutions.
 
+The agreement with analytical results, together with consistent convergence behavior and well-behaved root-finding diagnostics, demonstrates the correctness and robustness of the numerical implementation. Differences in observed convergence rates across states are attributed to boundary truncation and solver tolerances rather than defects in the underlying method.
+
 \section{Conclusion}
-The Numerov method provides an efficient and accurate tool for one-dimensional bound-state problems. In addition to reproducing known spectra, it captures physically interesting effects such as tunneling-induced energy splitting in a double well.
+The Numerov method, combined with parity-based shooting and robust root-finding, provides an efficient and accurate tool for one-dimensional bound-state problems, with controlled errors from discretization, domain truncation, and floating-point precision. In addition to reproducing known spectra, it captures physically interesting effects such as tunneling-induced energy splitting in a double well.
 
 \end{document}

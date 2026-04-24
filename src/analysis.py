@@ -299,6 +299,88 @@ def convergence_vs_box_size(
     return {"x_max": np.array(xs), "energy_errors": np.array(errors)}
 
 
+
+def convergence_vs_box_size_fixed_spacing(
+    potential_fn,
+    potential_kwargs: dict,
+    x_max_values: list[float],
+    target_h: float,
+    n_even: int,
+    n_odd: int,
+    e_min: float,
+    e_max: float,
+    reference_energies: np.ndarray,
+    solver_fn=solve_symmetric_potential,
+) -> dict[str, np.ndarray]:
+    """
+    Study box-size convergence while keeping grid spacing approximately fixed.
+
+    This is useful for the harmonic oscillator. If x_max is changed while n_grid
+    is held fixed, then the grid spacing h changes too, so the plot mixes
+    boundary truncation error with discretization error. Here n_grid is adjusted
+    for each x_max so that h remains nearly constant and the box-size study
+    mainly measures the finite-domain cutoff effect.
+
+    Parameters
+    ----------
+    potential_fn : callable
+        Potential function.
+    potential_kwargs : dict
+        Keyword arguments for the potential.
+    x_max_values : list[float]
+        Domain sizes to test.
+    target_h : float
+        Desired half-domain grid spacing.
+    n_even, n_odd : int
+        Number of even and odd states requested.
+    e_min, e_max : float
+        Energy search interval.
+    reference_energies : ndarray
+        Exact or high-quality reference energies.
+    solver_fn : callable, optional
+        Solver function used to compute states.
+
+    Returns
+    -------
+    dict[str, ndarray]
+        Dictionary with x_max values, actual h values, n_grid values, and
+        energy error arrays.
+    """
+    xs = []
+    hs = []
+    grid_sizes = []
+    errors = []
+    n_states = len(reference_energies)
+
+    for x_max in x_max_values:
+        n_grid = int(round(x_max / target_h)) + 1
+        n_grid = max(n_grid, 3)
+        actual_h = x_max / (n_grid - 1)
+
+        states = solver_fn(
+            x_max=x_max,
+            n_grid=n_grid,
+            potential_fn=potential_fn,
+            potential_kwargs=potential_kwargs,
+            n_even=n_even,
+            n_odd=n_odd,
+            e_min=e_min,
+            e_max=e_max,
+        )
+        energies = energies_from_states(states, n_states=n_states)
+        xs.append(x_max)
+        hs.append(actual_h)
+        grid_sizes.append(n_grid)
+        errors.append(np.abs(energies - reference_energies))
+
+    return {
+        "x_max": np.array(xs),
+        "h": np.array(hs),
+        "n_grid": np.array(grid_sizes),
+        "energy_errors": np.array(errors),
+    }
+
+
 def splitting_vs_parameter(
     potential_fn,
     base_kwargs: dict,

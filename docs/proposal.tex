@@ -13,7 +13,7 @@
 
 I would like to propose a final project focused on solving the one-dimensional time-independent Schrödinger equation using the Numerov method.
 
-The goal of the project is to implement a numerical solver for bound states in various potentials by combining the Numerov integration scheme with a shooting method. The project will focus on symmetric potentials, allowing the use of parity (even/odd states) to simplify the boundary conditions.
+The goal of the project is to implement a numerical solver for bound states in various potentials by combining the Numerov integration scheme with a shooting method. The boundary value problem will be reformulated as a root-finding problem for a mismatch function, allowing eigenvalues to be computed using bracketing and bisection. The project will focus on symmetric potentials, allowing the use of parity (even/odd states) to simplify the boundary conditions.
 
 The main objectives are:
 \begin{itemize}
@@ -28,6 +28,7 @@ The main objectives are:
     \end{itemize}
     \item Normalize and analyze the resulting wavefunctions.
     \item Perform convergence studies with respect to grid spacing and domain size.
+    \item Visualize the root-finding process by plotting the mismatch function as a function of trial energy.
     \item Analyze physical behavior such as parity, node structure, and tunneling-induced energy splitting.
 \end{itemize}
 
@@ -41,7 +42,7 @@ The project will include:
     \item A short report summarizing methods, results, and numerical accuracy.
 \end{itemize}
 
-This project connects directly to numerical ODE methods and eigenvalue problems discussed in the course, particularly the use of shooting methods for boundary value problems.
+This project connects directly to numerical ODE methods and eigenvalue problems discussed in the course, particularly the use of shooting methods for boundary value problems, convergence analysis, and root-finding techniques.
 
 \vspace{0.5cm}
 

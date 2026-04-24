@@ -13,6 +13,7 @@ import numpy as np
 
 from src.analysis import (
     convergence_vs_box_size,
+    convergence_vs_box_size_fixed_spacing,
     convergence_vs_grid,
     estimate_convergence_slopes,
     exact_harmonic_oscillator_energies,
@@ -361,16 +362,20 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         x_max=x_max,
     )
 
+    # Grid-refinement convergence for all four displayed states. Use the
+    # inward-decay solver here as well, so the convergence study matches the
+    # stable harmonic-oscillator calculation used for the final figures.
     conv_h = convergence_vs_grid(
         potential_fn=harmonic_oscillator,
         potential_kwargs={"omega": omega},
         x_max=x_max,
         grid_sizes=[500, 800, 1200, 1800, 2500],
         n_even=2,
-        n_odd=1,
+        n_odd=2,
         e_min=0.1,
-        e_max=5.0,
-        reference_energies=exact[:3],
+        e_max=6.0,
+        reference_energies=exact[:4],
+        solver_fn=solve_symmetric_potential_inward_decay,
     )
     conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
     save_csv_rows(results_dir / "2_harmonic_convergence_slopes.csv", conv_h_slopes)
@@ -384,16 +389,38 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         slopes=conv_h_slopes,
     )
 
-    conv_box = convergence_vs_box_size(
+    # Box-size convergence should isolate the finite-domain truncation error.
+    # Therefore h is kept approximately fixed while x_max changes. Holding
+    # n_grid fixed would also change h and mix two different error sources.
+    target_h = x_max / (n_grid - 1)
+    conv_box = convergence_vs_box_size_fixed_spacing(
         potential_fn=harmonic_oscillator,
         potential_kwargs={"omega": omega},
         x_max_values=[4.0, 5.0, 6.0, 7.0, 8.0, 10.0],
-        n_grid=2500,
+        target_h=target_h,
         n_even=2,
-        n_odd=1,
+        n_odd=2,
         e_min=0.1,
-        e_max=5.0,
-        reference_energies=exact[:3],
+        e_max=6.0,
+        reference_energies=exact[:4],
+        solver_fn=solve_symmetric_potential_inward_decay,
+    )
+    save_csv_rows(
+        results_dir / "2_harmonic_convergence_vs_x_max_data.csv",
+        [
+            {
+                "x_max": x_val,
+                "n_grid": int(n_val),
+                "h": h_val,
+                **{
+                    f"state_{state_index}_abs_error": conv_box["energy_errors"][row_index, state_index]
+                    for state_index in range(conv_box["energy_errors"].shape[1])
+                },
+            }
+            for row_index, (x_val, n_val, h_val) in enumerate(
+                zip(conv_box["x_max"], conv_box["n_grid"], conv_box["h"])
+            )
+        ],
     )
     plot_error_curve(
         conv_box["x_max"],

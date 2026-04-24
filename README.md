@@ -5,7 +5,7 @@ Numerical solution of the 1D time-independent Schrödinger equation with the Num
 ## Features
 
 - Numerov integration for symmetric 1D bound-state problems
-- Shooting + bisection search for eigenvalues
+- Shooting + bisection root-finding for eigenvalues (mismatch function formulation)
 - Validation on:
   - infinite square well
   - harmonic oscillator
@@ -13,6 +13,7 @@ Numerical solution of the 1D time-independent Schrödinger equation with the Num
   - quartic double well
   - finite square well
 - Convergence studies versus grid spacing and domain size
+- Root-finding diagnostics (mismatch function plots and bisection traces)
 - Double-well tunneling splitting analysis
 - Plots and CSV output for report-ready figures
 - Lightweight automated tests
@@ -74,7 +75,7 @@ This project solves the one-dimensional time-independent Schrödinger equation
 using a combination of the Numerov method and a shooting procedure.
 
 ### 1. Discretization
-A uniform spatial grid is created on a symmetric domain [−x_max, x_max]. For symmetric potentials, only the half-domain [0, x_max] is integrated, and the full wavefunction is reconstructed using parity.
+A uniform spatial grid is created on a symmetric domain $[-x_{\max}, x_{\max}]$. For symmetric potentials, only the half-domain $[0, x_{\max}]$ is integrated, and the full wavefunction is reconstructed using parity.
 
 ### 2. Numerov integration
 The differential equation is rewritten in the form
@@ -84,14 +85,21 @@ The differential equation is rewritten in the form
 and integrated using the Numerov recurrence relation, which is a high-accuracy finite-difference scheme for second-order ODEs.
 
 ### 3. Shooting method
-For a given trial energy E:
-- the wavefunction is integrated outward from x = 0
-- boundary conditions are chosen based on parity:
-  - even states: ψ'(0) = 0
-  - odd states:  ψ(0) = 0
-- a mismatch function at the boundary x = x_max is computed
 
-Eigenvalues are found by scanning over energies, detecting sign changes in the mismatch, and refining them with bisection.
+For a given trial energy $E$:
+- the wavefunction is integrated according to the chosen boundary strategy
+- boundary conditions are chosen based on parity:
+  - even states: $\psi'(0) = 0$
+  - odd states:  $\psi(0) = 0$
+- a mismatch function $M(E)$ is constructed
+
+For symmetric potentials solved on the half-domain:
+- outward shooting uses the boundary mismatch at $x = x_{\max}$
+- inward shooting (used for unbounded problems like the harmonic oscillator) enforces decay at large $|x|$ and evaluates the mismatch at $x = 0$
+
+Eigenvalues are obtained by solving $M(E) = 0$. The solver scans over energies to locate sign changes (bracketing) and refines roots using the bisection method.
+
+To make the algorithm transparent, the code can generate diagnostic plots of $M(E)$ versus $E$, where zero crossings correspond to physical eigenvalues.
 
 ### 4. Wavefunction reconstruction and normalization
 The half-domain solution is reflected to the negative axis using parity. The resulting full wavefunction is then normalized using numerical integration.
@@ -99,7 +107,7 @@ The half-domain solution is reflected to the negative axis using parity. The res
 ### 5. Analysis and experiments
 The solver is applied to several systems:
 - infinite square well (validation against exact solution)
-- harmonic oscillator (validation against exact solution)
+- harmonic oscillator (validation against exact solution, using inward shooting for stability)
 - quartic double well (tunneling and energy splitting)
 - finite square well (finite number of bound states)
 
@@ -107,6 +115,7 @@ Additional analysis includes:
 - convergence studies versus grid spacing and domain size
 - parameter sweeps (e.g., double-well barrier height)
 - generation of plots and CSV tables for reporting
+- estimation of convergence rates $\Delta E \propto h^p$ from log--log fits
 
 ### 6. Workflow
 The full workflow is executed by:
@@ -119,6 +128,7 @@ This script:
 - runs all experiments
 - saves figures and data to `results/`
 - executes automated tests to verify correctness
+- generates root-finding diagnostic plots for selected states
 
 ## Notes
 
@@ -128,5 +138,7 @@ This implementation assumes symmetric potentials, so:
 - odd states satisfy `psi(0)=0`
 
 That makes the shooting problem simple and robust for a final project.
+
+For unbounded problems such as the harmonic oscillator, the domain is truncated to a finite interval and inward shooting is used to enforce the physically correct decaying behavior at large $|x|$.
 
 The code is written for clarity and analysis rather than maximum performance.
