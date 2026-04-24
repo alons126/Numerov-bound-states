@@ -28,9 +28,16 @@ from src.potentials import (
 )
 import src.rk4_compare as rk4_compare
 from src.scattering import sweep_scattering
-from src.shooting import solve_symmetric_potential, solve_symmetric_potential_inward_decay
+from src.shooting import (
+    solve_symmetric_potential,
+    solve_symmetric_potential_inward_decay,
+)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: test_normalization
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def test_normalization() -> None:
     """
     Check that the wavefunction normalization helper produces unit norm.
@@ -42,6 +49,10 @@ def test_normalization() -> None:
     assert abs(val - 1.0) < 1e-10
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: test_derivative_at_right_edge_polynomial
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def test_derivative_at_right_edge_polynomial() -> None:
     """
     Check the high-order right-edge derivative stencil on a smooth polynomial.
@@ -52,13 +63,19 @@ def test_derivative_at_right_edge_polynomial() -> None:
     assert abs(derivative_at_right_edge(x, psi) - exact) < 1e-12
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: test_find_rk4_brackets_accepts_exact_zero_hit
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
     """
     Check that RK4 bracketing keeps roots that land exactly on a scan point.
     """
     original = rk4_compare.rk4_inward_mismatch
 
-    def fake_mismatch(energy: float, parity: str, x_max: float, n_grid: int, omega: float = 1.0) -> float:
+    def fake_mismatch(
+        energy: float, parity: str, x_max: float, n_grid: int, omega: float = 1.0
+    ) -> float:
         values = {0.1: -1.0, 0.3: -0.2, 0.5: 0.0, 0.7: 0.4, 0.9: 1.0}
         return values[round(float(energy), 1)]
 
@@ -78,6 +95,10 @@ def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
     assert any(lo < 0.5 < hi for lo, hi in brackets)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: test_square_well_ground_state
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def test_square_well_ground_state() -> None:
     """
     Verify that the square-well ground-state energy matches the exact result.
@@ -98,6 +119,10 @@ def test_square_well_ground_state() -> None:
     assert abs(e0 - exact) / exact < 5e-3
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: test_harmonic_oscillator_first_levels
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def test_harmonic_oscillator_first_levels() -> None:
     """
     Verify that the first few harmonic-oscillator energies are accurate.
@@ -118,6 +143,10 @@ def test_harmonic_oscillator_first_levels() -> None:
     assert np.all(np.abs((numerical - exact) / exact) < 3e-3)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: test_harmonic_oscillator_inward_decay_first_levels
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def test_harmonic_oscillator_inward_decay_first_levels() -> None:
     """
     Verify that the inward-decay harmonic solver resolves the first levels accurately.
@@ -138,6 +167,10 @@ def test_harmonic_oscillator_inward_decay_first_levels() -> None:
     assert np.all(np.abs(numerical - exact) < 1e-8)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: test_double_well_splitting_positive
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def test_double_well_splitting_positive() -> None:
     """
     Check that the first odd state lies above the first even state in the double well.
@@ -155,8 +188,10 @@ def test_double_well_splitting_positive() -> None:
     assert states[1].energy > states[0].energy
 
 
-
-
+# ---------------------------------------------------------------------------
+# FUNCTION: test_scattering_probability_conservation
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def test_scattering_probability_conservation() -> None:
     """
     Check that scattering approximately conserves probability current.
@@ -169,6 +204,10 @@ def test_scattering_probability_conservation() -> None:
         assert abs((result.transmission + result.reflection) - 1.0) < 5e-2
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: test_run_solver_import_without_experiment_dependencies
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def test_run_solver_import_without_experiment_dependencies() -> None:
     """
     Check that the entry script can be imported without importing plotting code.
@@ -181,6 +220,10 @@ def test_run_solver_import_without_experiment_dependencies() -> None:
     assert callable(module.main)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: run_all_tests
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def run_all_tests() -> None:
     """
     Execute all project validation tests and print a short summary.

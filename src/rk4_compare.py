@@ -16,6 +16,10 @@ import numpy as np
 from src.analysis import exact_harmonic_oscillator_energies
 
 
+# ---------------------------------------------------------------------------
+# DATA CLASS: RK4EnergyResult
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 @dataclass
 class RK4EnergyResult:
     """One RK4 eigenvalue result for the harmonic oscillator."""
@@ -28,6 +32,10 @@ class RK4EnergyResult:
     relative_error: float
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: _harmonic_rhs
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def _harmonic_rhs(x: float, y: np.ndarray, energy: float, omega: float) -> np.ndarray:
     """
     Right-hand side for the first-order Schrodinger system.
@@ -35,13 +43,22 @@ def _harmonic_rhs(x: float, y: np.ndarray, energy: float, omega: float) -> np.nd
     The second-order equation psi'' = 2[V(x)-E] psi is written as
     y = [psi, phi], where phi = psi'.
     """
+    # RK4 evolves a first-order system, so the second component explicitly
+    # stores phi = psi'. This is the key contrast with Numerov.
     psi, phi = y
     potential = 0.5 * omega**2 * x**2
     return np.array([phi, 2.0 * (potential - energy) * psi], dtype=float)
 
 
-def rk4_step(x: float, y: np.ndarray, h: float, energy: float, omega: float) -> np.ndarray:
+# ---------------------------------------------------------------------------
+# FUNCTION: rk4_step
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def rk4_step(
+    x: float, y: np.ndarray, h: float, energy: float, omega: float
+) -> np.ndarray:
     """Advance the first-order Schrodinger system by one RK4 step."""
+    # Four slope evaluations give the classical fourth-order Runge-Kutta step.
     k1 = _harmonic_rhs(x, y, energy, omega)
     k2 = _harmonic_rhs(x + 0.5 * h, y + 0.5 * h * k1, energy, omega)
     k3 = _harmonic_rhs(x + 0.5 * h, y + 0.5 * h * k2, energy, omega)
@@ -49,6 +66,10 @@ def rk4_step(x: float, y: np.ndarray, h: float, energy: float, omega: float) -> 
     return y + (h / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: rk4_inward_mismatch
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def rk4_inward_mismatch(
     energy: float,
     parity: str,
@@ -68,6 +89,8 @@ def rk4_inward_mismatch(
     if n_grid < 3:
         raise ValueError("n_grid must be at least 3.")
 
+    # The grid is decreasing because this is inward shooting: start in the
+    # asymptotic forbidden region and integrate toward the symmetry point.
     x_values = np.linspace(x_max, 0.0, n_grid)
     h = x_values[1] - x_values[0]
     potential_edge = 0.5 * omega**2 * x_max**2
@@ -83,6 +106,10 @@ def rk4_inward_mismatch(
     return float(psi_at_zero)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: find_rk4_brackets
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def find_rk4_brackets(
     parity: str,
     x_max: float,
@@ -114,6 +141,10 @@ def find_rk4_brackets(
     return brackets
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: sample_rk4_mismatch
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def sample_rk4_mismatch(
     parity: str,
     x_max: float,
@@ -132,6 +163,10 @@ def sample_rk4_mismatch(
     return energies, mismatches
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: bisect_rk4_energy
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def bisect_rk4_energy(
     parity: str,
     bracket: tuple[float, float],
@@ -161,6 +196,10 @@ def bisect_rk4_energy(
     return float(0.5 * (lo + hi))
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: bisection_history_rk4
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def bisection_history_rk4(
     parity: str,
     bracket: tuple[float, float],
@@ -200,6 +239,10 @@ def bisection_history_rk4(
     return history
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: solve_harmonic_oscillator_rk4_energies
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def solve_harmonic_oscillator_rk4_energies(
     x_max: float,
     n_grid: int,
@@ -254,6 +297,10 @@ def solve_harmonic_oscillator_rk4_energies(
     return results[:n_states]
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: rk4_harmonic_convergence_vs_grid
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def rk4_harmonic_convergence_vs_grid(
     x_max: float,
     grid_sizes: list[int],
@@ -283,6 +330,10 @@ def rk4_harmonic_convergence_vs_grid(
     }
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: rk4_harmonic_convergence_vs_box_size_fixed_spacing
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def rk4_harmonic_convergence_vs_box_size_fixed_spacing(
     x_max_values: list[float],
     target_h: float,

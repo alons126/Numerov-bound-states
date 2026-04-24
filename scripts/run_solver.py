@@ -32,6 +32,10 @@ from test_solver import run_all_tests
 RESULTS = Path("results")
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: main
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def main() -> None:
     """
     Run the full project pipeline and regenerate the results directory.

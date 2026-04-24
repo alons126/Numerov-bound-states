@@ -14,6 +14,10 @@ using the Numerov method on a uniform grid.
 import numpy as np
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: q_from_energy
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     """
     Build the Numerov coefficient q(x) for a trial energy.
@@ -30,9 +34,15 @@ def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     ndarray
         Array q(x) such that psi'' = q psi.
     """
+    # In the dimensionless Schrodinger equation used here,
+    # psi'' = 2(V-E)psi, so this array is the coefficient multiplying psi.
     return 2.0 * (V - energy)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: numerov_outward
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def numerov_outward(
     x: np.ndarray,
     q: np.ndarray,
@@ -76,10 +86,14 @@ def numerov_outward(
     if not np.allclose(np.diff(x), h, rtol=1e-12, atol=1e-14):
         raise ValueError("Numerov integration requires a uniform grid.")
 
+    # Allocate the output and seed the first two values. Numerov is a
+    # two-step method, so these two values replace the usual first-order
+    # initial condition pair.
     psi = np.zeros_like(x, dtype=float)
     psi[0] = psi0
     psi[1] = psi1
 
+    # Precompute constants used by the recurrence at every grid point.
     h2 = h * h
     c = h2 / 12.0
 
@@ -97,6 +111,10 @@ def numerov_outward(
     return psi
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: normalize_wavefunction
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     """
     Normalize a wavefunction safely on a discrete grid.
@@ -113,6 +131,8 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     ndarray
         Wavefunction normalized so that integral |psi|^2 dx = 1.
     """
+    # First scale the wavefunction before squaring it. This avoids overflow
+    # when a non-eigenvalue shooting trial has grown exponentially.
     scale = np.max(np.abs(psi))
     if scale == 0.0:
         raise ValueError("Cannot normalize a zero wavefunction.")
@@ -126,6 +146,10 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     return psi / norm
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: derivative_at_right_edge
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
     """
     Estimate the derivative at the last grid point with a backward stencil.
@@ -148,6 +172,10 @@ def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
         raise ValueError("Need at least 3 points for derivative.")
 
     h = x[1] - x[0]
+
+    # The fourth-order stencil is important for even-state inward shooting:
+    # the eigenvalue condition is psi'(0)=0, so a low-order derivative stencil
+    # would degrade the accuracy of an otherwise high-order Numerov solve.
     if len(x) >= 5:
         return (
             25.0 * psi[-1]

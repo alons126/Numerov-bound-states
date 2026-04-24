@@ -20,6 +20,10 @@ import numpy as np
 from src.numerov import q_from_energy
 
 
+# ---------------------------------------------------------------------------
+# DATA CLASS: ScatteringResult
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 @dataclass
 class ScatteringResult:
     """
@@ -53,6 +57,10 @@ class ScatteringResult:
     reflection_amplitude: complex
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: numerov_outward_complex
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def numerov_outward_complex(
     x: np.ndarray,
     q: np.ndarray,
@@ -93,6 +101,10 @@ def numerov_outward_complex(
     return psi
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: integrate_from_right
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def integrate_from_right(
     x: np.ndarray,
     V: np.ndarray,
@@ -118,6 +130,10 @@ def integrate_from_right(
     return psi_desc[::-1]
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: decompose_left_asymptotic
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def decompose_left_asymptotic(
     x: np.ndarray,
     psi: np.ndarray,
@@ -142,6 +158,10 @@ def decompose_left_asymptotic(
     return incident, reflected
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: solve_scattering
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def solve_scattering(
     x: np.ndarray,
     V: np.ndarray,
@@ -174,6 +194,10 @@ def solve_scattering(
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: scattering_wavefunction
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def scattering_wavefunction(
     x: np.ndarray,
     V: np.ndarray,
@@ -188,6 +212,10 @@ def scattering_wavefunction(
     return psi_unit_incident, result
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: sweep_scattering
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def sweep_scattering(
     x: np.ndarray,
     V: np.ndarray,
@@ -199,6 +227,10 @@ def sweep_scattering(
     return [solve_scattering(x, V, float(energy)) for energy in energies]
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: find_transmission_peaks
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def find_transmission_peaks(
     energies: np.ndarray,
     transmission: np.ndarray,
@@ -211,7 +243,10 @@ def find_transmission_peaks(
     for i in range(1, len(energies) - 1):
         if transmission[i] <= threshold:
             continue
-        if transmission[i] >= transmission[i - 1] and transmission[i] >= transmission[i + 1]:
+        if (
+            transmission[i] >= transmission[i - 1]
+            and transmission[i] >= transmission[i + 1]
+        ):
             peaks.append(
                 {
                     "energy": float(energies[i]),

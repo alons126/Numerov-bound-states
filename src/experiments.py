@@ -65,7 +65,10 @@ from src.rk4_compare import (
 )
 
 
-
+# ---------------------------------------------------------------------------
+# FUNCTION: run_harmonic_rk4_comparison
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def run_harmonic_rk4_comparison(
     results_dir: Path,
     numerov_convergence: dict[str, np.ndarray],
@@ -169,8 +172,7 @@ def run_harmonic_rk4_comparison(
             "path": results_dir / "2b_harmonic_rk4_root_finding_even.png",
             "title": "Harmonic oscillator RK4 roots, even states",
             "mismatch_label": (
-                r"scaled mismatch: $M(E)/\max |M|$, "
-                r"$M(E)=\psi'_E(0)$"
+                r"scaled mismatch: $M(E)/\max |M|$, " r"$M(E)=\psi'_E(0)$"
             ),
         },
         {
@@ -181,8 +183,7 @@ def run_harmonic_rk4_comparison(
             "path": results_dir / "2b_harmonic_rk4_root_finding_odd.png",
             "title": "Harmonic oscillator RK4 roots, odd states",
             "mismatch_label": (
-                r"scaled mismatch: $M(E)/\max |M|$, "
-                r"$M(E)=\psi_E(0)$"
+                r"scaled mismatch: $M(E)/\max |M|$, " r"$M(E)=\psi_E(0)$"
             ),
         },
     ]
@@ -263,6 +264,12 @@ def run_harmonic_rk4_comparison(
             results_dir / "2b_harmonic_rk4_convergence_vs_x_max.png",
             "Harmonic oscillator RK4 convergence vs box size",
         )
+
+
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_infinite_well_root_diagnostics
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> None:
     """
     Plot shooting/root-finding diagnostics for all four infinite-well states.
@@ -329,7 +336,10 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
         )
 
 
-
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_harmonic_oscillator_root_diagnostics
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_harmonic_oscillator_root_diagnostics(
     results_dir: Path,
     omega: float = 1.0,
@@ -356,8 +366,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             "path": results_dir / "2_harmonic_oscillator_root_finding_even.png",
             "title": "Harmonic oscillator shooting roots, even states",
             "mismatch_label": (
-                r"scaled mismatch: $M(E)/\max |M|$, "
-                r"$M(E)=\psi'_E(0)$"
+                r"scaled mismatch: $M(E)/\max |M|$, " r"$M(E)=\psi'_E(0)$"
             ),
         },
         {
@@ -368,8 +377,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             "path": results_dir / "2_harmonic_oscillator_root_finding_odd.png",
             "title": "Harmonic oscillator shooting roots, odd states",
             "mismatch_label": (
-                r"scaled mismatch: $M(E)/\max |M|$, "
-                r"$M(E)=\psi_E(0)$"
+                r"scaled mismatch: $M(E)/\max |M|$, " r"$M(E)=\psi_E(0)$"
             ),
         },
     ]
@@ -418,6 +426,11 @@ def plot_harmonic_oscillator_root_diagnostics(
             mismatch_label=spec["mismatch_label"],
         )
 
+
+# ---------------------------------------------------------------------------
+# FUNCTION: run_square_well
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def run_square_well(results_dir: Path) -> None:
     """
     Run the infinite square well benchmark case.
@@ -497,7 +510,9 @@ def run_square_well(results_dir: Path) -> None:
         reference_energies=exact[:3],
     )
     conv_slopes = estimate_convergence_slopes(conv["h"], conv["energy_errors"])
-    save_csv_rows(results_dir / "1_infinite_square_well_convergence_slopes.csv", conv_slopes)
+    save_csv_rows(
+        results_dir / "1_infinite_square_well_convergence_slopes.csv", conv_slopes
+    )
 
     plot_error_curve(
         conv["h"],
@@ -511,6 +526,10 @@ def run_square_well(results_dir: Path) -> None:
     plot_infinite_well_root_diagnostics(results_dir, a=a)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: run_harmonic_oscillator
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def run_harmonic_oscillator(results_dir: Path) -> None:
     """
     Run the harmonic-oscillator benchmark case.
@@ -522,6 +541,8 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     x_max = 8.0
     n_grid = 2500
 
+    # Use inward shooting for the harmonic oscillator. Outward shooting can
+    # pick up the exponentially growing forbidden-region solution.
     states = solve_symmetric_potential_inward_decay(
         x_max=x_max,
         n_grid=n_grid,
@@ -580,6 +601,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     # Grid-refinement convergence for all four displayed states. Use the
     # inward-decay solver here as well, so the convergence study matches the
     # stable harmonic-oscillator calculation used for the final figures.
+    # Grid convergence changes h at fixed domain size, isolating discretization error.
     conv_h = convergence_vs_grid(
         potential_fn=harmonic_oscillator,
         potential_kwargs={"omega": omega},
@@ -617,6 +639,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     # Box-size convergence should isolate the finite-domain truncation error.
     # Therefore h is kept approximately fixed while x_max changes. Holding
     # n_grid fixed would also change h and mix two different error sources.
+    # Box-size sensitivity changes the physical cutoff while keeping h nearly fixed.
     conv_box = convergence_vs_box_size_fixed_spacing(
         potential_fn=harmonic_oscillator,
         potential_kwargs={"omega": omega},
@@ -637,7 +660,9 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
                 "n_grid": int(n_val),
                 "h": h_val,
                 **{
-                    f"state_{state_index}_abs_error": conv_box["energy_errors"][row_index, state_index]
+                    f"state_{state_index}_abs_error": conv_box["energy_errors"][
+                        row_index, state_index
+                    ]
                     for state_index in range(conv_box["energy_errors"].shape[1])
                 },
             }
@@ -655,6 +680,10 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: run_double_well
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def run_double_well(results_dir: Path) -> None:
     """
     Run the quartic double-well study.
@@ -731,6 +760,10 @@ def run_double_well(results_dir: Path) -> None:
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: run_finite_square_well
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def run_finite_square_well(results_dir: Path) -> None:
     """
     Run the finite square well as an additional nontrivial potential.
@@ -780,6 +813,10 @@ def run_finite_square_well(results_dir: Path) -> None:
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: run_quartic_oscillator_demo
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def run_quartic_oscillator_demo(results_dir: Path) -> None:
     """
     Run an optional anharmonic quartic-oscillator demonstration.
@@ -813,6 +850,10 @@ def run_quartic_oscillator_demo(results_dir: Path) -> None:
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: run_scattering
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def run_scattering(results_dir: Path) -> None:
     """
     Run the Pang-style scattering extension.
@@ -830,6 +871,8 @@ def run_scattering(results_dir: Path) -> None:
     # ------------------------------------------------------------
     # Single barrier: basic tunneling/over-barrier validation.
     # ------------------------------------------------------------
+    # First validate scattering on a single finite barrier, then move to the
+    # double-barrier system where resonant tunneling appears.
     single_kwargs = {"V0": 5.0, "width": 1.2, "center": 0.0}
     V_single = square_barrier(x, **single_kwargs)
     energies_single = np.linspace(0.2, 10.0, 240)

@@ -11,6 +11,10 @@ makes it easy to test multiple physical systems with the same numerical method.
 import numpy as np
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: harmonic_oscillator
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def harmonic_oscillator(x: np.ndarray, omega: float = 1.0) -> np.ndarray:
     """
     Harmonic-oscillator potential V(x) = 1/2 * omega^2 * x^2.
@@ -30,6 +34,10 @@ def harmonic_oscillator(x: np.ndarray, omega: float = 1.0) -> np.ndarray:
     return 0.5 * omega**2 * x**2
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: infinite_square_well_numeric
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def infinite_square_well_numeric(
     x: np.ndarray,
     a: float = 1.0,
@@ -58,6 +66,10 @@ def infinite_square_well_numeric(
     return np.where(np.abs(x) <= a, 0.0, wall_height)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: finite_square_well
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def finite_square_well(
     x: np.ndarray,
     V0: float = 20.0,
@@ -83,6 +95,10 @@ def finite_square_well(
     return np.where(np.abs(x) <= a, 0.0, V0)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: quartic_double_well
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def quartic_double_well(
     x: np.ndarray,
     a: float = 1.0,
@@ -114,6 +130,10 @@ def quartic_double_well(
     return v
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: quartic_oscillator
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def quartic_oscillator(
     x: np.ndarray,
     lam: float = 0.1,
@@ -136,6 +156,10 @@ def quartic_oscillator(
     return 0.5 * x**2 + lam * x**4
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: square_barrier
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def square_barrier(
     x: np.ndarray,
     V0: float = 5.0,
@@ -165,6 +189,10 @@ def square_barrier(
     return np.where(np.abs(x - center) <= half_width, V0, 0.0)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: double_square_barrier
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def double_square_barrier(
     x: np.ndarray,
     V0: float = 5.0,

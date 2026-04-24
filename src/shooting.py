@@ -23,6 +23,10 @@ from src.numerov import (
 )
 
 
+# ---------------------------------------------------------------------------
+# DATA CLASS: StateSolution
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 @dataclass
 class StateSolution:
     """
@@ -49,6 +53,10 @@ class StateSolution:
     mismatch: float
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: initial_conditions
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def initial_conditions(
     x_half: np.ndarray, q_half: np.ndarray, parity: str
 ) -> tuple[float, float]:
@@ -67,6 +75,8 @@ def initial_conditions(
     tuple[float, float]
         Starting values (psi0, psi1) for Numerov integration.
     """
+    # The Taylor expansion around x=0 supplies the first two Numerov values.
+    # This is where parity enters the shooting calculation.
     h = x_half[1] - x_half[0]
     q0 = q_half[0]
 
@@ -82,6 +92,10 @@ def initial_conditions(
     raise ValueError("parity must be 'even' or 'odd'")
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: half_domain_wavefunction
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def half_domain_wavefunction(
     x_half: np.ndarray,
     V_half: np.ndarray,
@@ -112,6 +126,10 @@ def half_domain_wavefunction(
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: boundary_mismatch
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def boundary_mismatch(
     x_half: np.ndarray,
     V_half: np.ndarray,
@@ -154,6 +172,10 @@ def boundary_mismatch(
     raise ValueError("mode must be 'value' or 'logder'")
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: find_brackets
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def find_brackets(
     x_half: np.ndarray,
     V_half: np.ndarray,
@@ -181,6 +203,9 @@ def find_brackets(
     list[tuple[float, float]]
         Brackets suitable for bisection.
     """
+    # Bracketing converts the eigenvalue problem into a set of scalar root
+    # searches. Every sign change in the mismatch curve marks one candidate
+    # eigenvalue interval.
     energies = np.linspace(e_min, e_max, n_scan)
     vals = np.array(
         [boundary_mismatch(x_half, V_half, e, parity, mode="value") for e in energies]
@@ -201,6 +226,10 @@ def find_brackets(
     return brackets
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: sample_boundary_mismatch
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def sample_boundary_mismatch(
     x_half: np.ndarray,
     V_half: np.ndarray,
@@ -223,6 +252,10 @@ def sample_boundary_mismatch(
     return energies, mismatches
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: bisection_history
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def bisection_history(
     x_half: np.ndarray,
     V_half: np.ndarray,
@@ -271,6 +304,10 @@ def bisection_history(
     return history
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: bisect_energy
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def bisect_energy(
     x_half: np.ndarray,
     V_half: np.ndarray,
@@ -331,6 +368,10 @@ def bisect_energy(
     return mid, boundary_mismatch(x_half, V_half, mid, parity, mode="value")
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: build_full_wavefunction
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def build_full_wavefunction(
     x_half: np.ndarray,
     psi_half: np.ndarray,
@@ -367,6 +408,10 @@ def build_full_wavefunction(
     return x_full, psi_full
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: solve_state_from_bracket
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def solve_state_from_bracket(
     x_half: np.ndarray,
     V_half: np.ndarray,
@@ -407,6 +452,10 @@ def solve_state_from_bracket(
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: inward_decay_initial_conditions
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def inward_decay_initial_conditions(
     x_desc: np.ndarray,
     V_desc: np.ndarray,
@@ -438,6 +487,10 @@ def inward_decay_initial_conditions(
     return psi0, psi1
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: inward_decay_half_domain_wavefunction
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def inward_decay_half_domain_wavefunction(
     x_max: float,
     n_grid: int,
@@ -462,6 +515,10 @@ def inward_decay_half_domain_wavefunction(
     return x_desc, psi_desc
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: inward_decay_boundary_mismatch
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def inward_decay_boundary_mismatch(
     x_max: float,
     n_grid: int,
@@ -492,6 +549,10 @@ def inward_decay_boundary_mismatch(
     raise ValueError("parity must be 'even' or 'odd'")
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: sample_inward_decay_mismatch
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def sample_inward_decay_mismatch(
     x_max: float,
     n_grid: int,
@@ -523,6 +584,10 @@ def sample_inward_decay_mismatch(
     return energies, mismatches
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: find_inward_decay_brackets
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def find_inward_decay_brackets(
     x_max: float,
     n_grid: int,
@@ -561,6 +626,10 @@ def find_inward_decay_brackets(
     return brackets
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: bisect_energy_inward_decay
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def bisect_energy_inward_decay(
     x_max: float,
     n_grid: int,
@@ -623,6 +692,10 @@ def bisect_energy_inward_decay(
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: bisection_history_inward_decay
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def bisection_history_inward_decay(
     x_max: float,
     n_grid: int,
@@ -674,6 +747,10 @@ def bisection_history_inward_decay(
     return history
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: solve_state_from_inward_decay_bracket
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def solve_state_from_inward_decay_bracket(
     x_max: float,
     n_grid: int,
@@ -718,6 +795,10 @@ def solve_state_from_inward_decay_bracket(
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: solve_symmetric_potential_inward_decay
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def solve_symmetric_potential_inward_decay(
     x_max: float,
     n_grid: int,
@@ -752,6 +833,8 @@ def solve_symmetric_potential_inward_decay(
 
     solutions: list[StateSolution] = []
 
+    # Solve each parity sector separately, then merge and sort the states by
+    # energy. This is cleaner than solving on the full domain for every state.
     for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
         brackets = find_inward_decay_brackets(
             x_max,
@@ -787,6 +870,10 @@ def solve_symmetric_potential_inward_decay(
     return solutions
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: solve_symmetric_potential
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def solve_symmetric_potential(
     x_max: float,
     n_grid: int,

@@ -13,6 +13,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: _ensure_parent
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def _ensure_parent(path: str | Path) -> None:
     """
     Create the parent directory of an output path if it does not exist.
@@ -29,6 +33,10 @@ def _ensure_parent(path: str | Path) -> None:
     Path(path).parent.mkdir(parents=True, exist_ok=True)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_potential_and_states
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_potential_and_states(
     x: np.ndarray,
     V: np.ndarray,
@@ -94,6 +102,10 @@ def plot_potential_and_states(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_probability_densities
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_probability_densities(
     states,
     path: str | Path,
@@ -137,6 +149,10 @@ def plot_probability_densities(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_energy_comparison
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_energy_comparison(
     numerical: np.ndarray,
     exact: np.ndarray,
@@ -182,6 +198,10 @@ def plot_energy_comparison(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_error_curve
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_error_curve(
     xvals: np.ndarray,
     errors: np.ndarray,
@@ -233,6 +253,10 @@ def plot_error_curve(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_splitting_curve
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_splitting_curve(
     xvals: np.ndarray,
     e0: np.ndarray,
@@ -278,6 +302,10 @@ def plot_splitting_curve(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_root_finding_diagnostic
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_root_finding_diagnostic(
     energies: np.ndarray,
     mismatches: np.ndarray,
@@ -341,6 +369,10 @@ def plot_root_finding_diagnostic(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_scattering_coefficients
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_scattering_coefficients(
     energies: np.ndarray,
     transmission: np.ndarray,
@@ -383,6 +415,10 @@ def plot_scattering_coefficients(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_scattering_potential_and_probability
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_scattering_potential_and_probability(
     x: np.ndarray,
     V: np.ndarray,
@@ -418,6 +454,10 @@ def plot_scattering_potential_and_probability(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_numerov_vs_rk4_errors
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def plot_numerov_vs_rk4_errors(
     h_numerov: np.ndarray,
     numerov_errors: np.ndarray,

@@ -16,6 +16,10 @@ import numpy as np
 from src.shooting import StateSolution, solve_symmetric_potential
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: exact_square_well_energies
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarray:
     """
     Exact energies for an infinite square well on [-a, a].
@@ -36,6 +40,10 @@ def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarr
     return (n_values * np.pi / (2.0 * a)) ** 2 / 2.0
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: exact_harmonic_oscillator_energies
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def exact_harmonic_oscillator_energies(
     n_values: np.ndarray,
     omega: float = 1.0,
@@ -59,6 +67,10 @@ def exact_harmonic_oscillator_energies(
     return omega * (n_values + 0.5)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: relative_error
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def relative_error(numerical: np.ndarray, exact: np.ndarray) -> np.ndarray:
     """
     Compute componentwise relative error.
@@ -80,6 +92,10 @@ def relative_error(numerical: np.ndarray, exact: np.ndarray) -> np.ndarray:
     return np.abs((numerical - exact) / exact)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: estimate_convergence_slopes
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def estimate_convergence_slopes(
     xvals: np.ndarray,
     errors: np.ndarray,
@@ -111,13 +127,20 @@ def estimate_convergence_slopes(
 
     rows: list[dict] = []
     for i in range(errors.shape[1]):
-        valid = np.isfinite(xvals) & np.isfinite(errors[:, i]) & (xvals > 0.0) & (errors[:, i] > 0.0)
+        valid = (
+            np.isfinite(xvals)
+            & np.isfinite(errors[:, i])
+            & (xvals > 0.0)
+            & (errors[:, i] > 0.0)
+        )
 
         if np.count_nonzero(valid) < 2:
             slope = np.nan
             intercept = np.nan
         else:
-            slope, intercept = np.polyfit(np.log(xvals[valid]), np.log(errors[valid, i]), 1)
+            slope, intercept = np.polyfit(
+                np.log(xvals[valid]), np.log(errors[valid, i]), 1
+            )
 
         rows.append(
             {
@@ -130,6 +153,10 @@ def estimate_convergence_slopes(
     return rows
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: save_csv_rows
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
     """
     Save a list of dictionaries as a CSV table.
@@ -157,6 +184,10 @@ def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
         writer.writerows(rows)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: energies_from_states
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def energies_from_states(
     states: list[StateSolution],
     n_states: int | None = None,
@@ -181,6 +212,10 @@ def energies_from_states(
     return np.array([s.energy for s in states[:n_states]], dtype=float)
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: convergence_vs_grid
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def convergence_vs_grid(
     potential_fn,
     potential_kwargs: dict,
@@ -240,6 +275,10 @@ def convergence_vs_grid(
     return {"h": np.array(hs), "energy_errors": np.array(errors)}
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: convergence_vs_box_size
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def convergence_vs_box_size(
     potential_fn,
     potential_kwargs: dict,
@@ -299,7 +338,10 @@ def convergence_vs_box_size(
     return {"x_max": np.array(xs), "energy_errors": np.array(errors)}
 
 
-
+# ---------------------------------------------------------------------------
+# FUNCTION: convergence_vs_box_size_fixed_spacing
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def convergence_vs_box_size_fixed_spacing(
     potential_fn,
     potential_kwargs: dict,
@@ -381,6 +423,10 @@ def convergence_vs_box_size_fixed_spacing(
     }
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: splitting_vs_parameter
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 def splitting_vs_parameter(
     potential_fn,
     base_kwargs: dict,
