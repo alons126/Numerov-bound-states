@@ -27,14 +27,6 @@ for path in (PROJECT_ROOT, TESTS_DIR):
     if str(path) not in sys.path:
         sys.path.insert(0, str(path))
 
-from src.experiments import (
-    run_scattering,
-    run_double_well,
-    run_finite_square_well,
-    run_harmonic_oscillator,
-    run_quartic_oscillator_demo,
-    run_square_well,
-)
 from test_solver import run_all_tests
 
 RESULTS = Path("results")
@@ -50,30 +42,47 @@ def main() -> None:
     shutil.rmtree(RESULTS, ignore_errors=True)
     RESULTS.mkdir(exist_ok=True)
 
-    print("Running experiments...")
+    experiments_import_error: Exception | None = None
+    try:
+        from src.experiments import (
+            run_scattering,
+            run_double_well,
+            run_finite_square_well,
+            run_harmonic_oscillator,
+            run_quartic_oscillator_demo,
+            run_square_well,
+        )
+    except ModuleNotFoundError as exc:
+        experiments_import_error = exc
+        print(f"Skipping experiments: {exc}")
+    else:
+        print("Running experiments...")
 
-    print("\n1. Infinite Square Well (Numerov only)...")
-    run_square_well(RESULTS)
+        print("\n1. Infinite Square Well (Numerov only)...")
+        run_square_well(RESULTS)
 
-    print("\n2. Harmonic Oscillator (Numerov & RK4)...")
-    run_harmonic_oscillator(RESULTS)
+        print("\n2. Harmonic Oscillator (Numerov & RK4)...")
+        run_harmonic_oscillator(RESULTS)
 
-    print("\n3. Double Well (Numerov only)...")
-    run_double_well(RESULTS)
+        print("\n3. Double Well (Numerov only)...")
+        run_double_well(RESULTS)
 
-    print("\n4. Finite Square Well (Numerov only)...")
-    run_finite_square_well(RESULTS)
+        print("\n4. Finite Square Well (Numerov only)...")
+        run_finite_square_well(RESULTS)
 
-    print("\n5. Quartic Oscillator Demo (Numerov only)...")
-    run_quartic_oscillator_demo(RESULTS)
+        print("\n5. Quartic Oscillator Demo (Numerov only)...")
+        run_quartic_oscillator_demo(RESULTS)
 
-    print("\n6. Scattering and Resonant Tunneling (Numerov only)...")
-    run_scattering(RESULTS)
+        print("\n6. Scattering and Resonant Tunneling (Numerov only)...")
+        run_scattering(RESULTS)
 
     print("\nRunning tests...")
     run_all_tests()
 
-    print(f"\nDone. Results written to: {RESULTS.resolve()}")
+    if experiments_import_error is None:
+        print(f"\nDone. Results written to: {RESULTS.resolve()}")
+    else:
+        print("\nDone. Tests ran, but experiment generation was skipped.")
 
 
 if __name__ == "__main__":

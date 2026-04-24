@@ -9,6 +9,7 @@ and one qualitative physical feature of the double well.
 """
 
 import sys
+import importlib.util
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -25,6 +26,7 @@ from src.potentials import (
     infinite_square_well_numeric,
     quartic_double_well,
 )
+import src.rk4_compare as rk4_compare
 from src.scattering import sweep_scattering
 from src.shooting import solve_symmetric_potential, solve_symmetric_potential_inward_decay
 
@@ -48,6 +50,32 @@ def test_derivative_at_right_edge_polynomial() -> None:
     psi = x**4 - 2.0 * x**3 + x
     exact = 4.0 * x[-1] ** 3 - 6.0 * x[-1] ** 2 + 1.0
     assert abs(derivative_at_right_edge(x, psi) - exact) < 1e-12
+
+
+def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
+    """
+    Check that RK4 bracketing keeps roots that land exactly on a scan point.
+    """
+    original = rk4_compare.rk4_inward_mismatch
+
+    def fake_mismatch(energy: float, parity: str, x_max: float, n_grid: int, omega: float = 1.0) -> float:
+        values = {0.1: -1.0, 0.3: -0.2, 0.5: 0.0, 0.7: 0.4, 0.9: 1.0}
+        return values[round(float(energy), 1)]
+
+    rk4_compare.rk4_inward_mismatch = fake_mismatch
+    try:
+        brackets = rk4_compare.find_rk4_brackets(
+            parity="even",
+            x_max=8.0,
+            n_grid=500,
+            e_min=0.1,
+            e_max=0.9,
+            n_scan=5,
+        )
+    finally:
+        rk4_compare.rk4_inward_mismatch = original
+
+    assert any(lo < 0.5 < hi for lo, hi in brackets)
 
 
 def test_square_well_ground_state() -> None:
@@ -139,17 +167,33 @@ def test_scattering_probability_conservation() -> None:
     results = sweep_scattering(x, V, energies)
     for result in results:
         assert abs((result.transmission + result.reflection) - 1.0) < 5e-2
+
+
+def test_run_solver_import_without_experiment_dependencies() -> None:
+    """
+    Check that the entry script can be imported without importing plotting code.
+    """
+    path = PROJECT_ROOT / "scripts" / "run_solver.py"
+    spec = importlib.util.spec_from_file_location("run_solver_test", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert callable(module.main)
+
+
 def run_all_tests() -> None:
     """
     Execute all project validation tests and print a short summary.
     """
     test_normalization()
     test_derivative_at_right_edge_polynomial()
+    test_find_rk4_brackets_accepts_exact_zero_hit()
     test_square_well_ground_state()
     test_harmonic_oscillator_first_levels()
     test_harmonic_oscillator_inward_decay_first_levels()
     test_double_well_splitting_positive()
     test_scattering_probability_conservation()
+    test_run_solver_import_without_experiment_dependencies()
     print("All tests passed.")
 
 

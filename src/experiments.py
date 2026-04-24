@@ -81,10 +81,9 @@ def run_harmonic_rk4_comparison(
     isolates the difference between the Numerov and RK4 integration formulas.
     """
     n_states = 4
-    # IMPORTANT: RK4 must use the same grid sizes as Numerov.
-    # Otherwise the comparison is misleading (different h values).
-    # Use exactly the same grids as the Numerov convergence for a fair comparison
-    grid_sizes = [500, 800, 1200, 1800, 2500]
+    numerov_h = np.asarray(numerov_convergence["h"], dtype=float)
+    numerov_errors = np.asarray(numerov_convergence["energy_errors"], dtype=float)
+    grid_sizes = [int(round(x_max / h)) + 1 for h in numerov_h]
 
     rk4_reference_rows = solve_harmonic_oscillator_rk4_energies(
         x_max=x_max,
@@ -134,12 +133,9 @@ def run_harmonic_rk4_comparison(
         slopes=rk4_slopes,
     )
 
-    numerov_h = numerov_convergence["h"]
-    numerov_errors = numerov_convergence["energy_errors"]
-    
     if not np.allclose(numerov_h, rk4_convergence["h"]):
         raise ValueError("Numerov and RK4 comparisons must use identical h values.")
-    
+
     comparison_rows = []
 
     for method, h_values, errors in [
@@ -882,7 +878,6 @@ def run_scattering(results_dir: Path) -> None:
         for result in double_results
     ]
     save_csv_rows(results_dir / "6_scattering_double_barrier.csv", double_rows)
-    save_csv_rows(results_dir / "6_scattering_double_barrier_resonance_peaks.csv", peaks)
 
     plot_scattering_coefficients(
         energies_double,
@@ -894,8 +889,20 @@ def run_scattering(results_dir: Path) -> None:
 
     if peaks:
         resonance_energy = peaks[0]["energy"]
+        resonance_rows = peaks
     else:
         resonance_energy = float(energies_double[np.argmax(T_double)])
+        resonance_rows = [
+            {
+                "energy": resonance_energy,
+                "transmission": float(np.max(T_double)),
+            }
+        ]
+
+    save_csv_rows(
+        results_dir / "6_scattering_double_barrier_resonance_peaks.csv",
+        resonance_rows,
+    )
 
     psi_res, resonance_result = scattering_wavefunction(x, V_double, resonance_energy)
     plot_scattering_potential_and_probability(

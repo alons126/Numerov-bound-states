@@ -106,7 +106,10 @@ def find_rk4_brackets(
         b = mismatches[i + 1]
         if not np.isfinite(a) or not np.isfinite(b):
             continue
-        if np.signbit(a) != np.signbit(b):
+        if a == 0.0:
+            eps = 1e-10 * max(1.0, abs(energies[i]))
+            brackets.append((float(energies[i] - eps), float(energies[i] + eps)))
+        elif np.signbit(a) != np.signbit(b):
             brackets.append((float(energies[i]), float(energies[i + 1])))
     return brackets
 
