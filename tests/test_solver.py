@@ -18,7 +18,7 @@ if str(PROJECT_ROOT) not in sys.path:
 import numpy as np
 
 from src.analysis import exact_harmonic_oscillator_energies, exact_square_well_energies
-from src.numerov import normalize_wavefunction
+from src.numerov import derivative_at_right_edge, normalize_wavefunction
 from src.potentials import (
     double_square_barrier,
     harmonic_oscillator,
@@ -26,7 +26,7 @@ from src.potentials import (
     quartic_double_well,
 )
 from src.scattering import sweep_scattering
-from src.shooting import solve_symmetric_potential
+from src.shooting import solve_symmetric_potential, solve_symmetric_potential_inward_decay
 
 
 def test_normalization() -> None:
@@ -38,6 +38,16 @@ def test_normalization() -> None:
     psi_n = normalize_wavefunction(x, psi)
     val = np.trapezoid(np.abs(psi_n) ** 2, x)
     assert abs(val - 1.0) < 1e-10
+
+
+def test_derivative_at_right_edge_polynomial() -> None:
+    """
+    Check the high-order right-edge derivative stencil on a smooth polynomial.
+    """
+    x = np.linspace(-1.0, 1.0, 9)
+    psi = x**4 - 2.0 * x**3 + x
+    exact = 4.0 * x[-1] ** 3 - 6.0 * x[-1] ** 2 + 1.0
+    assert abs(derivative_at_right_edge(x, psi) - exact) < 1e-12
 
 
 def test_square_well_ground_state() -> None:
@@ -80,6 +90,26 @@ def test_harmonic_oscillator_first_levels() -> None:
     assert np.all(np.abs((numerical - exact) / exact) < 3e-3)
 
 
+def test_harmonic_oscillator_inward_decay_first_levels() -> None:
+    """
+    Verify that the inward-decay harmonic solver resolves the first levels accurately.
+    """
+    omega = 1.0
+    states = solve_symmetric_potential_inward_decay(
+        x_max=8.0,
+        n_grid=800,
+        potential_fn=harmonic_oscillator,
+        potential_kwargs={"omega": omega},
+        n_even=2,
+        n_odd=2,
+        e_min=0.1,
+        e_max=6.0,
+    )
+    numerical = np.array([s.energy for s in states[:4]])
+    exact = exact_harmonic_oscillator_energies(np.arange(4), omega=omega)
+    assert np.all(np.abs(numerical - exact) < 1e-8)
+
+
 def test_double_well_splitting_positive() -> None:
     """
     Check that the first odd state lies above the first even state in the double well.
@@ -114,8 +144,10 @@ def run_all_tests() -> None:
     Execute all project validation tests and print a short summary.
     """
     test_normalization()
+    test_derivative_at_right_edge_polynomial()
     test_square_well_ground_state()
     test_harmonic_oscillator_first_levels()
+    test_harmonic_oscillator_inward_decay_first_levels()
     test_double_well_splitting_positive()
     test_scattering_probability_conservation()
     print("All tests passed.")

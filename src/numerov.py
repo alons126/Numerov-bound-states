@@ -140,10 +140,21 @@ def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
     Returns
     -------
     float
-        Second-order accurate estimate of psi'(x_max).
+        Derivative estimate at the right edge. Uses a fourth-order backward
+        stencil when at least five grid points are available, otherwise falls
+        back to the standard second-order formula.
     """
     if len(x) < 3:
         raise ValueError("Need at least 3 points for derivative.")
 
     h = x[1] - x[0]
+    if len(x) >= 5:
+        return (
+            25.0 * psi[-1]
+            - 48.0 * psi[-2]
+            + 36.0 * psi[-3]
+            - 16.0 * psi[-4]
+            + 3.0 * psi[-5]
+        ) / (12.0 * h)
+
     return (3.0 * psi[-1] - 4.0 * psi[-2] + psi[-3]) / (2.0 * h)
