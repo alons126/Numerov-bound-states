@@ -90,7 +90,7 @@ def plot_potential_and_states(
         plt.plot(
             state.x_full,
             state.energy + psi_scaled,
-            label=f"n={i}, {state.parity}, E={state.energy:.4f}",
+            label=f"n={i}, {state.parity}, E={state.energy:.6f}",
         )
 
     plt.xlabel("x")
@@ -137,7 +137,7 @@ def plot_probability_densities(
         plt.plot(
             state.x_full,
             np.abs(state.psi_full) ** 2,
-            label=f"n={i}, E={state.energy:.4f}",
+            label=f"n={i}, E={state.energy:.6f}",
         )
 
     plt.xlabel("x")
