@@ -79,17 +79,21 @@ def initial_conditions(
     # This is where parity enters the shooting calculation.
     h = x_half[1] - x_half[0]
     q0 = q_half[0]
+    # For smooth symmetric potentials, q'(0)=0 but q''(0) generally does not
+    # vanish. Including it prevents the startup step from degrading the
+    # observed high-order convergence for center-penetrating states.
+    q2 = (q_half[2] - 2.0 * q_half[1] + q_half[0]) / (h * h)
 
     if parity == "even":
         # psi(0) = 1 and psi'(0) = 0.
-        # Include the h^4 term so the two-step startup does not dominate the
-        # nominal fourth-order eigenvalue convergence of the Numerov solve in
-        # constant-curvature regions such as the square-well interior.
-        return 1.0, 1.0 + 0.5 * q0 * h**2 + (q0**2 * h**4) / 24.0
+        # Include the full h^4 term. For y'' = q(x) y, the even Taylor series
+        # is y(h) = 1 + q0 h^2 / 2 + (q0^2 + q''(0)) h^4 / 24 + O(h^6).
+        return 1.0, 1.0 + 0.5 * q0 * h**2 + ((q0**2 + q2) * h**4) / 24.0
     if parity == "odd":
         # psi(0) = 0 and psi'(0) = 1.
-        # Include the h^5 term for the same reason as the even startup above.
-        return 0.0, h + (q0 * h**3) / 6.0 + (q0**2 * h**5) / 120.0
+        # Include the full h^5 term. For odd states the series is
+        # y(h) = h + q0 h^3 / 6 + (q0^2 + 3 q''(0)) h^5 / 120 + O(h^7).
+        return 0.0, h + (q0 * h**3) / 6.0 + ((q0**2 + 3.0 * q2) * h**5) / 120.0
 
     raise ValueError("parity must be 'even' or 'odd'")
 

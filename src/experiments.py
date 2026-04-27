@@ -924,8 +924,8 @@ def run_double_well(results_dir: Path) -> None:
         e1,
         splitting,
         "double-well parameter b",
-        results_dir / "3_double_well_splitting.png",
-        "Quartic double well splitting",
+        results_dir / "3_double_well_splitting_vs_b.png",
+        "Quartic double well splitting vs b",
     )
 
 

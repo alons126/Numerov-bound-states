@@ -337,6 +337,7 @@ def test_double_well_successive_convergence_order() -> None:
     slopes = estimate_convergence_slopes(conv["h"], conv["energy_errors"])
     assert slopes[0]["convergence_exponent_p"] > 3.5
     assert slopes[1]["convergence_exponent_p"] > 3.5
+    assert slopes[2]["convergence_exponent_p"] > 3.5
 
 
 # ---------------------------------------------------------------------------

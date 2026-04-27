@@ -198,7 +198,6 @@ def plot_energy_comparison(
     plt.close()
 
 
-# ---------------------------------------------------------------------------
 # FUNCTION: plot_error_curve
 # Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
