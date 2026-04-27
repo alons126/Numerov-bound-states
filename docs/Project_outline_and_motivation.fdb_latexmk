@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1777288822.13207 "/Users/alon/Projects/Numerov-bound-states/docs/Project_outline_and_motivation.tex" "Project_outline_and_motivation.pdf" "Project_outline_and_motivation" 1777288822.61985 0
-  "/Users/alon/Projects/Numerov-bound-states/docs/Project_outline_and_motivation.tex" 1777288821.96703 27056 089affd48eed5ced5d89da9b3d64ffc3 ""
+["pdflatex"] 1777294644.48993 "/Users/alon/Projects/Numerov-bound-states/docs/Project_outline_and_motivation.tex" "Project_outline_and_motivation.pdf" "Project_outline_and_motivation" 1777294644.98834 0
+  "/Users/alon/Projects/Numerov-bound-states/docs/Project_outline_and_motivation.tex" 1777294643.75324 31676 1c9fe976f6985cdbdd7e5b30a58a761d ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -92,9 +92,9 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774538740 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774538681 3636776 dfeaead9e2e9c793969724e130e444cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "Project_outline_and_motivation.aux" 1777288822.56044 4644 ed607f9b3b393b0705c6fea871b89ce2 "pdflatex"
-  "Project_outline_and_motivation.out" 1777288822.56114 6646 784b79e9ba85b80b66fe959848983ea3 "pdflatex"
-  "Project_outline_and_motivation.tex" 1777288821.96703 27056 089affd48eed5ced5d89da9b3d64ffc3 ""
+  "Project_outline_and_motivation.aux" 1777294644.92773 4646 69f97e0b80eb08e3e18d30ae28b8600b "pdflatex"
+  "Project_outline_and_motivation.out" 1777294644.92845 6646 784b79e9ba85b80b66fe959848983ea3 "pdflatex"
+  "Project_outline_and_motivation.tex" 1777294643.75324 31676 1c9fe976f6985cdbdd7e5b30a58a761d ""
   (generated)
   "Project_outline_and_motivation.aux"
   "Project_outline_and_motivation.log"

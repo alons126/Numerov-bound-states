@@ -51,7 +51,7 @@
         \item discussion of truncation error, round-off error, and numerical floors.
     \end{itemize}
 
-    A very important example is the infinite square well convergence study. The solver originally produced very accurate energies, but the observed convergence order was not ideal. The issue was not the Numerov recurrence itself, but the startup values used to seed the two-step recurrence. After adding higher Taylor terms to the parity-based startup conditions, the square-well convergence slopes improved to approximately fourth order. This is exactly the kind of numerical-error diagnosis emphasized in the course.
+    A very important example is the infinite square well convergence study. The solver originally produced very accurate energies, but the observed convergence order was not ideal. The issue was not the Numerov recurrence itself, but the startup values used to seed the two-step recurrence. After adding higher Taylor terms to the parity-based startup conditions, the square-well convergence slopes improved to approximately fourth order. A similar lesson appeared later in the quartic double-well study: the convergence behavior was polluted until the potential offset, startup expansion, and convergence methodology were made consistent. These are exactly the kinds of numerical-error diagnoses emphasized in the course.
 
     \subsection{Lecture 3: Numerical differentiation and integration}
 
@@ -88,7 +88,7 @@
         \item \texttt{bisect\_rk4\_energy()}.
     \end{itemize}
 
-    Bisection is used because it is stable and easy to justify. Newton's method is faster, but it requires derivatives and can fail if the starting guess is poor. Bisection is slower, but it is robust.
+    Bisection is used because it is stable and easy to justify. Newton's method is faster, but it requires derivatives and can fail if the starting guess is poor. Bisection is slower, but it is robust. In the latest solver, the bisection routine was also adjusted so it does not stop too early only because the energy bracket became small; it now uses a safeguarded secant polishing step to improve the final root estimate.
 
     The project also includes root-finding diagnostics. These are not strictly required, but they are useful because they show how the mismatch function crosses zero and how the bisection process isolates eigenvalues.
 
@@ -168,13 +168,15 @@
         \psi(0)=0, \qquad \psi'(0)=1.
     \end{equation}
 
-    The latest code includes higher Taylor terms:
+    The latest code includes higher Taylor terms and the curvature of the local coefficient $q(x)$ near the origin:
     \begin{itemize}
         \item even states include the $h^4$ term,
         \item odd states include the $h^5$ term.
     \end{itemize}
 
-    This matters because if the startup formula is too low order, it can pollute the observed convergence rate. This was seen in the infinite square well: the energies were accurate, but the convergence slopes were not cleanly fourth order. After the startup correction, the first square-well states show slopes close to 4.
+    For the quartic double well, the startup expansion was improved further by including the relevant $q''(0)$ terms for both even and odd parity. This matters because the quartic potential has curvature structure near the origin that affects the first Numerov steps. Without these terms, one of the low-lying double-well states showed a degraded convergence slope. After the correction, the state recovered high-order convergence consistent with the Numerov method.
+
+    This matters because if the startup formula is too low order, it can pollute the observed convergence rate. This was seen first in the infinite square well: the energies were accurate, but the convergence slopes were not cleanly fourth order. It appeared again in the quartic double well, where the second excited state initially converged too slowly. After correcting the startup formula, the square-well states show slopes close to 4, and the double-well state that had been stuck near $p\approx3.09$ improved to about $p\approx4.55$.
 
     \section{Why shooting?}
 
@@ -201,6 +203,8 @@
     \end{itemize}
 
     The important function is \texttt{boundary\_mismatch()}. It answers the question: for this trial energy, did the wavefunction land correctly at the boundary? If not, the energy is wrong.
+
+    The latest solver also changes how the final mismatch is stored. Instead of reporting the raw, unnormalized boundary amplitude $\psi(x_{\max})$, the code now stores the normalized boundary leakage after the full wavefunction has been reconstructed and normalized. This makes the residual scale-invariant and physically more meaningful. In practice, this changed the low-state double-well residuals from raw values around $10^{-6}$--$10^{-5}$ to normalized leakage values around $2\times10^{-7}$.
 
     The inward shooting logic is built from:
     \begin{itemize}
@@ -296,10 +300,16 @@
         \item infinite square well: analytic validation,
         \item harmonic oscillator: analytic validation and inward shooting,
         \item finite square well: nontrivial finite bound-state system,
-        \item quartic double well: tunneling and energy splitting,
+        \item quartic double well: tunneling and energy splitting, with the shifted potential using the analytic minimum $V_{\min}=-b^2/(4a)$,
         \item quartic oscillator: optional extra demonstration,
         \item single barrier and double barrier: scattering extension.
     \end{itemize}
+
+    A recent correction was made in \texttt{quartic\_double\_well()}: the zero shift now uses the analytic minimum
+    \begin{equation}
+        V_{\min}=-\frac{b^2}{4a}
+    \end{equation}
+    instead of the sampled grid minimum. This is important because using the sampled minimum makes the potential itself depend slightly on the grid spacing $h$, which contaminates a grid-convergence study.
 
     \subsection{\texttt{src/numerov.py}}
 
@@ -333,7 +343,7 @@
         \item \texttt{solve\_symmetric\_potential\_inward\_decay()}.
     \end{itemize}
 
-    Important latest detail: \texttt{initial\_conditions()} now includes higher Taylor terms so the first Numerov step does not reduce the convergence order. This fixed the square-well convergence slope problem.
+    Important latest details: \texttt{initial\_conditions()} now includes higher Taylor terms so the first Numerov step does not reduce the convergence order. For the quartic double well, the startup was also extended with the $q''(0)$ contribution. This fixed the square-well convergence slope problem and restored the expected high-order convergence for the problematic double-well state. The bisection routine was also strengthened with a safeguarded secant polishing step, and \texttt{StateSolution.mismatch} now stores normalized boundary leakage rather than raw unnormalized wall amplitude.
 
     \subsection{\texttt{src/analysis.py}}
 
@@ -344,6 +354,7 @@
         \item \texttt{relative\_error()},
         \item \texttt{estimate\_convergence\_slopes()},
         \item \texttt{convergence\_vs\_grid()},
+        \item \texttt{convergence\_vs\_grid\_successive()},
         \item \texttt{convergence\_vs\_box\_size()},
         \item \texttt{convergence\_vs\_box\_size\_fixed\_spacing()},
         \item \texttt{splitting\_vs\_parameter()}.
@@ -351,7 +362,7 @@
 
     This is what turns the code from ``it runs'' into ``it was verified scientifically.''
 
-    For cases without analytic solutions, such as the quartic double well, the code can use a high-resolution numerical solution as the reference. This is the right approach because there is no exact spectrum to compare with.
+    For cases without analytic solutions, such as the quartic double well, the code now distinguishes between two convergence strategies. The box-size study is compared against a larger-box reference, while the grid-spacing study uses successive refinements, comparing each grid to the next finer one. This avoids pretending that there is an exact spectrum and avoids introducing an artificial reference floor into the $h$-convergence study.
 
     \subsection{\texttt{src/rk4\_compare.py}}
 
@@ -413,7 +424,7 @@
         \item \texttt{plot\_numerov\_vs\_rk4\_errors()}.
     \end{itemize}
 
-    These plots let the reviewer visually see the states, convergence, tunneling behavior, scattering behavior, and method comparison.
+    These plots let the reviewer visually see the states, convergence, tunneling behavior, scattering behavior, and method comparison. Recent plotting updates increased the displayed energy precision from 4 to 6 decimals and changed the root-diagnostic plots to show the raw mismatch on a symmetric logarithmic scale. This makes even and odd root scans easier to distinguish and avoids hiding structure through clipping or overly aggressive scaling.
 
     \subsection{\texttt{src/experiments.py}}
 
@@ -431,11 +442,14 @@
 
     Important latest double-well additions:
     \begin{itemize}
+        \item the default double-well domain was increased from $x_{\max}=3.0$ to $x_{\max}=4.0$,
+        \item grid-convergence and box-convergence studies are now separated properly,
+        \item the grid-spacing study now uses successive refinements rather than a single fixed reference,
+        \item the box-size study is still compared against a larger-box reference,
         \item the double-well plot legend now shows the explicit formula,
-        \item root-finding diagnostics are now generated for the double well,
-        \item double-well convergence versus grid spacing is included,
-        \item double-well convergence versus box size is included,
-        \item double-well convergence uses a high-resolution numerical reference instead of pretending there is an exact analytic solution.
+        \item root-finding diagnostics are now generated separately for the double well,
+        \item redundant outputs such as \texttt{3\_double\_well\_energies.png} and the old \texttt{3\_double\_well\_splitting.png} were removed,
+        \item the retained splitting plot is \texttt{3\_double\_well\_splitting\_vs\_b.png}.
     \end{itemize}
 
     \subsection{\texttt{scripts/run\_solver.py}}
@@ -461,6 +475,11 @@
         \item square-well convergence order,
         \item harmonic oscillator energies,
         \item harmonic oscillator inward shooting,
+        \item analytic quartic double-well shift,
+        \item larger-box improvement for the double well,
+        \item same-box successive refinement error decrease,
+        \item low-state double-well convergence order,
+        \item parity-specific mismatch scans,
         \item double-well splitting,
         \item scattering probability conservation,
         \item \texttt{run\_solver} import behavior.
@@ -499,7 +518,7 @@
         \item domain size $x_{\max}$.
     \end{itemize}
 
-    The goal is to show that the energies stabilize. This addresses truncation error, resolution dependence, finite-domain effects, floating-point limits, and root-finding limits.
+    The goal is to show that the energies stabilize. This addresses truncation error, resolution dependence, finite-domain effects, floating-point limits, and root-finding limits. For the quartic double well, the convergence studies now deliberately separate grid refinement from box-size effects: $h$-convergence uses successive refinements at fixed domain size, while $x_{\max}$-convergence compares against a larger-domain reference.
 
     A key interpretation point is that if a convergence slope is slightly above 4, this does not mean the method is truly higher than fourth order. It usually means the errors are very small and the log-log fit is being affected by numerical floors, root-finding tolerance, or floating-point limits.
 
@@ -511,10 +530,11 @@
     \begin{itemize}
         \item states and densities,
         \item energy splitting versus parameter $b$,
-        \item root-finding diagnostics,
-        \item convergence versus $h$,
-        \item convergence versus $x_{\max}$,
-        \item a high-resolution reference solution.
+        \item root-finding diagnostics for even and odd parity,
+        \item convergence versus $h$ using successive refinements,
+        \item convergence versus $x_{\max}$ using a larger-box reference,
+        \item an analytic zero shift based on $V_{\min}=-b^2/(4a)$,
+        \item normalized boundary leakage as the residual diagnostic.
     \end{itemize}
 
     \section{What is apparent from the lectures and what is beyond them?}
@@ -554,9 +574,13 @@
     The most advanced or specialized parts are:
     \begin{itemize}
         \item fourth-order-consistent Numerov startup values,
+        \item startup expansion terms involving $q''(0)$ for the quartic double well,
         \item high-order derivative stencil at the boundary,
+        \item safeguarded secant polishing after bisection,
+        \item scale-invariant normalized boundary leakage as a residual,
         \item inward shooting from the forbidden region,
-        \item high-resolution numerical reference for non-analytic potentials,
+        \item successive-refinement convergence for non-analytic potentials,
+        \item high-resolution larger-box reference for domain-size studies,
         \item RK4 versus Numerov method comparison,
         \item complex Numerov scattering,
         \item double-barrier resonant tunneling.
@@ -585,7 +609,7 @@
     Here is the project summary in reviewer language:
 
     \begin{quote}
-    I am solving the one-dimensional time-independent Schr\"odinger equation as a boundary-value eigenvalue problem. I discretize space on a uniform grid and use the Numerov method to integrate the second-order ODE for a trial energy. Since only special energies satisfy the required boundary conditions, I use a shooting method. The boundary mismatch becomes a scalar function of energy, and I find its roots using bracketing and bisection. For symmetric potentials I use parity to reduce the calculation to the half domain, then reconstruct and normalize the full wavefunction. I validate the solver on the infinite square well and harmonic oscillator, study convergence with grid spacing and domain size, and then apply it to a finite square well and quartic double well to analyze nontrivial bound states and tunneling-induced splitting. I also compare Numerov with RK4 for the harmonic oscillator and include scattering through finite and double barriers as a secondary extension.
+    I am solving the one-dimensional time-independent Schr\"odinger equation as a boundary-value eigenvalue problem. I discretize space on a uniform grid and use the Numerov method to integrate the second-order ODE for a trial energy. Since only special energies satisfy the required boundary conditions, I use a shooting method. The boundary mismatch becomes a scalar function of energy, and I find its roots using bracketing and bisection. For symmetric potentials I use parity to reduce the calculation to the half domain, then reconstruct and normalize the full wavefunction. I validate the solver on the infinite square well and harmonic oscillator, study convergence with grid spacing and domain size, and then apply it to a finite square well and quartic double well to analyze nontrivial bound states and tunneling-induced splitting. For the double well, I separate grid and domain convergence, use an analytic potential shift, and report normalized boundary leakage as the residual diagnostic. I also compare Numerov with RK4 for the harmonic oscillator and include scattering through finite and double barriers as a secondary extension.
     \end{quote}
 
     That is the full logic of the project.

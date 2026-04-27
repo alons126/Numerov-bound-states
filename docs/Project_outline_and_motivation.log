@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  27 APR 2026 14:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  27 APR 2026 15:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -305,13 +305,18 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [2] [3] [4] [5] [6]
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 279.
- [7] [8] [9] [10]
-Overfull \hbox (2.67586pt too wide) in paragraph at lines 469--470
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 283.
+ [7] [8] [9] [10] [11]
+Overfull \hbox (39.78522pt too wide) in paragraph at lines 451--452
+[]\T1/cmr/m/n/10.95 redundant out-puts such as \T1/cmtt/m/n/10.95 3_double_well_energies.png \T1/cmr/m/n/10.95 and the old \T1/cmtt/m/n/10.95 3_double_well_splitting.png
+ []
+
+[12]
+Overfull \hbox (2.67586pt too wide) in paragraph at lines 488--489
 []\T1/cmr/m/n/10.95 Important lat-est re-gres-sion test: \T1/cmtt/m/n/10.95 test_square_well_convergence_order() \T1/cmr/m/n/10.95 re-quires the first square-
  []
 
-[11] [12] [13] [14] [15] (./Project_outline_and_motivation.aux)
+[13] [14] [15] [16] (./Project_outline_and_motivation.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -320,18 +325,18 @@ Package rerunfilecheck Info: File `Project_outline_and_motivation.out' has not c
 (rerunfilecheck)             Checksum: 784B79E9BA85B80B66FE959848983EA3;6646.
  ) 
 Here is how much of TeX's memory you used:
- 9982 strings out of 467525
- 150546 string characters out of 5418982
+ 9984 strings out of 467525
+ 150564 string characters out of 5418982
  570406 words of memory out of 5000000
  38720 multiletter control sequences out of 15000+600000
  641032 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,8n,79p,1088b,577s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,1249b,560s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on Project_outline_and_motivation.pdf (15 pages, 237976 bytes).
+Output written on Project_outline_and_motivation.pdf (16 pages, 246528 bytes).
 PDF statistics:
- 321 PDF objects out of 1000 (max. 8388607)
- 274 compressed objects within 3 object streams
- 77 named destinations out of 1000 (max. 500000)
+ 327 PDF objects out of 1000 (max. 8388607)
+ 279 compressed objects within 3 object streams
+ 79 named destinations out of 1000 (max. 500000)
  265 words of extra memory for PDF output out of 10000 (max. 10000000)
 
