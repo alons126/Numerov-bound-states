@@ -43,7 +43,8 @@ class StateSolution:
     psi_full : ndarray
         Normalized full-domain wavefunction.
     mismatch : float
-        Residual value of the boundary mismatch at the final eigenvalue.
+        Scale-invariant boundary leakage for the final normalized state,
+        reported as psi(x_max) after normalization on the full domain.
     """
 
     energy: float
@@ -474,10 +475,11 @@ def solve_state_from_bracket(
     StateSolution
         Structured solution object containing energy and wavefunction data.
     """
-    energy, mismatch = bisect_energy(x_half, V_half, parity, bracket, tol=tol)
+    energy, _raw_mismatch = bisect_energy(x_half, V_half, parity, bracket, tol=tol)
     psi_half = half_domain_wavefunction(x_half, V_half, energy, parity)
     x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
     psi_full = normalize_wavefunction(x_full, psi_full)
+    mismatch = float(psi_full[-1])
 
     return StateSolution(
         energy=energy,
