@@ -18,7 +18,12 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import numpy as np
 
-from src.analysis import exact_harmonic_oscillator_energies, exact_square_well_energies
+from src.analysis import (
+    convergence_vs_grid,
+    estimate_convergence_slopes,
+    exact_harmonic_oscillator_energies,
+    exact_square_well_energies,
+)
 from src.numerov import derivative_at_right_edge, normalize_wavefunction
 from src.potentials import (
     double_square_barrier,
@@ -117,6 +122,33 @@ def test_square_well_ground_state() -> None:
     e0 = states[0].energy
     exact = exact_square_well_energies(np.array([1]), a=a)[0]
     assert abs(e0 - exact) / exact < 5e-3
+
+
+# ---------------------------------------------------------------------------
+# FUNCTION: test_square_well_convergence_order
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def test_square_well_convergence_order() -> None:
+    """
+    Check that square-well energies show near-fourth-order grid convergence.
+    """
+    a = 1.0
+    exact = exact_square_well_energies(np.arange(1, 4), a=a)
+    conv = convergence_vs_grid(
+        potential_fn=infinite_square_well_numeric,
+        potential_kwargs={"a": a, "wall_height": 1.0e6},
+        x_max=a,
+        grid_sizes=[50, 80, 120, 180],
+        n_even=2,
+        n_odd=1,
+        e_min=0.1,
+        e_max=60.0,
+        reference_energies=exact,
+    )
+    slopes = estimate_convergence_slopes(conv["h"], conv["energy_errors"])
+
+    for row in slopes:
+        assert row["convergence_exponent_p"] > 3.8
 
 
 # ---------------------------------------------------------------------------
@@ -232,6 +264,7 @@ def run_all_tests() -> None:
     test_derivative_at_right_edge_polynomial()
     test_find_rk4_brackets_accepts_exact_zero_hit()
     test_square_well_ground_state()
+    test_square_well_convergence_order()
     test_harmonic_oscillator_first_levels()
     test_harmonic_oscillator_inward_decay_first_levels()
     test_double_well_splitting_positive()

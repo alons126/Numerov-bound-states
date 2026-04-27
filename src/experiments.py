@@ -502,7 +502,10 @@ def run_square_well(results_dir: Path) -> None:
         potential_fn=infinite_square_well_numeric,
         potential_kwargs={"a": a, "wall_height": 1e6},
         x_max=a,
-        grid_sizes=[50, 80, 120, 180, 260, 400],
+        # Stop before the lowest-state error reaches the root-finding / floating
+        # point floor; otherwise the fitted slope understates the true Numerov
+        # asymptotic order.
+        grid_sizes=[50, 80, 120, 180],
         n_even=2,
         n_odd=1,
         e_min=0.1,

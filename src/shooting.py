@@ -82,12 +82,14 @@ def initial_conditions(
 
     if parity == "even":
         # psi(0) = 1 and psi'(0) = 0.
-        # The second grid value includes the Taylor correction psi(h) = 1 + q(0)h^2/2 + O(h^4).
-        return 1.0, 1.0 + 0.5 * q0 * h**2
+        # Include the h^4 term so the two-step startup does not dominate the
+        # nominal fourth-order eigenvalue convergence of the Numerov solve in
+        # constant-curvature regions such as the square-well interior.
+        return 1.0, 1.0 + 0.5 * q0 * h**2 + (q0**2 * h**4) / 24.0
     if parity == "odd":
         # psi(0) = 0 and psi'(0) = 1.
-        # The second grid value includes psi(h) = h + q(0)h^3/6 + O(h^5).
-        return 0.0, h + (q0 * h**3) / 6.0
+        # Include the h^5 term for the same reason as the even startup above.
+        return 0.0, h + (q0 * h**3) / 6.0 + (q0**2 * h**5) / 120.0
 
     raise ValueError("parity must be 'even' or 'odd'")
 
