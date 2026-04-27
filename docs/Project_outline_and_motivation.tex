@@ -1,0 +1,593 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\setlist[itemize]{itemsep=0.25em, topsep=0.25em}
+\setlist[enumerate]{itemsep=0.35em, topsep=0.35em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+
+\title{Project Outline and Motivation 3 \\ Updated Notes}
+\author{Alon Sportes}
+\date{}
+
+\begin{document}
+    \maketitle
+
+    \section{What problem are we solving?}
+
+    The project solves the one-dimensional time-independent Schr\"odinger equation. In the dimensionless convention used in the code, it is written as
+    \begin{equation}
+        \psi''(x) = 2\,[V(x)-E]\psi(x).
+    \end{equation}
+
+    The unknowns are:
+    \begin{itemize}
+        \item $\psi(x)$: the wavefunction,
+        \item $E$: the energy eigenvalue,
+        \item $V(x)$: the chosen potential.
+    \end{itemize}
+
+    This is not just an ordinary differential equation problem. It is a boundary-value eigenvalue problem. Only special values of $E$ give physically valid bound states. This matches the proposal and the report structure exactly.
+
+    \section{Which course topics are used?}
+
+    \subsection{Lecture 1: Numerical errors and computational project expectations}
+
+    This project uses the main idea from Lecture 1: numerical computation is approximate, so numerical errors must be controlled and the method must be documented. The final project instructions also require code documentation and a short writeup explaining the problem, the method, the results, and the convergence and correctness checks.
+
+    In this project, this appears through:
+    \begin{itemize}
+        \item convergence studies,
+        \item comparison with exact solutions,
+        \item normalization checks,
+        \item automated tests,
+        \item README documentation,
+        \item discussion of truncation error, round-off error, and numerical floors.
+    \end{itemize}
+
+    A very important example is the infinite square well convergence study. The solver originally produced very accurate energies, but the observed convergence order was not ideal. The issue was not the Numerov recurrence itself, but the startup values used to seed the two-step recurrence. After adding higher Taylor terms to the parity-based startup conditions, the square-well convergence slopes improved to approximately fourth order. This is exactly the kind of numerical-error diagnosis emphasized in the course.
+
+    \subsection{Lecture 3: Numerical differentiation and integration}
+
+    Numerical integration is used when normalizing the wavefunction:
+    \begin{equation}
+        \|\psi\| = \sqrt{\int |\psi(x)|^2\,dx}.
+    \end{equation}
+
+    In the code, this is done with \texttt{np.trapezoid}. The reason is physical: quantum wavefunctions must satisfy
+    \begin{equation}
+        \int |\psi(x)|^2\,dx = 1.
+    \end{equation}
+
+    Therefore, normalization is not optional. It makes the solution physically meaningful.
+
+    Numerical differentiation is also used in \texttt{derivative\_at\_right\_edge()}. This is especially important for inward shooting. For even states, the condition at the origin is
+    \begin{equation}
+        \psi'(0)=0.
+    \end{equation}
+
+    If the derivative is computed with a low-order stencil, then the whole eigenvalue calculation can lose accuracy even if the Numerov recurrence itself is high order. This happened in the harmonic oscillator case. The code now uses a fourth-order backward stencil when enough points are available. This keeps the boundary-condition accuracy consistent with the rest of the method.
+
+    \subsection{Lecture 4: Root finding}
+
+    Root finding is used to determine the allowed energies. The project uses bisection: first detect a sign change, then repeatedly cut the interval in half.
+
+    In the code this appears in:
+    \begin{itemize}
+        \item \texttt{find\_brackets()},
+        \item \texttt{bisect\_energy()},
+        \item \texttt{find\_inward\_decay\_brackets()},
+        \item \texttt{bisect\_energy\_inward\_decay()},
+        \item \texttt{find\_rk4\_brackets()},
+        \item \texttt{bisect\_rk4\_energy()}.
+    \end{itemize}
+
+    Bisection is used because it is stable and easy to justify. Newton's method is faster, but it requires derivatives and can fail if the starting guess is poor. Bisection is slower, but it is robust.
+
+    The project also includes root-finding diagnostics. These are not strictly required, but they are useful because they show how the mismatch function crosses zero and how the bisection process isolates eigenvalues.
+
+    \subsection{Lecture 5: ODEs, boundary-value problems, eigenvalue problems, and shooting}
+
+    This is the core lecture for the project. The Schr\"odinger equation is a second-order ODE, but unlike an initial-value problem, the correct energy is not known in advance. Therefore, the method is:
+    \begin{enumerate}
+        \item guess an energy $E$,
+        \item integrate the ODE,
+        \item check the boundary condition,
+        \item improve the energy guess.
+    \end{enumerate}
+
+    That is the shooting method.
+
+    The project uses two shooting strategies:
+    \begin{itemize}
+        \item outward shooting from $x=0$,
+        \item inward shooting from $x_{\max}$ to $x=0$.
+    \end{itemize}
+
+    Outward shooting is used for many symmetric finite-domain or effectively finite-domain problems. Inward shooting is used mainly for the harmonic oscillator. This is because the harmonic oscillator is defined on an infinite domain, and outward integration can pick up the unphysical growing exponential tail. Inward shooting starts from the decaying asymptotic side and imposes the parity condition at the origin.
+
+    \subsection{Lecture 6: PDEs and Schr\"odinger equation context}
+
+    Lecture 6 mentions the Schr\"odinger equation as one of the important PDEs in physics. This project uses the time-independent Schr\"odinger equation in one dimension, which becomes an ODE eigenvalue problem. Therefore, this project is not solving a time-dependent PDE. It is using an ODE method on the stationary quantum problem.
+
+    \subsection{What is not used}
+
+    The project does not use:
+    \begin{itemize}
+        \item finite-volume methods,
+        \item upwind methods,
+        \item CFL conditions,
+        \item Riemann solvers,
+        \item shock capturing,
+        \item slope limiters,
+        \item Euler fluid equations,
+        \item MHD,
+        \item Particle in Cell.
+    \end{itemize}
+
+    Those topics belong to the advection, hydrodynamics, Burgers equation, Euler equations, and PIC parts of the course. They are not part of this project.
+
+    \section{Why Numerov?}
+
+    The equation has the form
+    \begin{equation}
+        \psi''(x)=q(x)\psi(x),
+    \end{equation}
+    where
+    \begin{equation}
+        q(x)=2[V(x)-E].
+    \end{equation}
+
+    This form is exactly what Numerov is designed for: second-order ODEs without a first-derivative term.
+
+    In \texttt{src/numerov.py}:
+    \begin{itemize}
+        \item \texttt{q\_from\_energy()} builds $q(x)$,
+        \item \texttt{numerov\_outward()} performs the Numerov recurrence,
+        \item \texttt{normalize\_wavefunction()} rescales the final wavefunction so that total probability is 1,
+        \item \texttt{derivative\_at\_right\_edge()} estimates the derivative at the boundary when needed.
+    \end{itemize}
+
+    Numerov is used instead of Euler or a generic Runge-Kutta method because it is especially efficient for equations like the Schr\"odinger equation. It uses neighboring grid values and gives high accuracy for second-order linear ODEs. This is also consistent with Pang, where the one-dimensional Schr\"odinger equation is treated using wavefunction integration and eigenvalue search.
+
+    A key implementation detail is that Numerov is a two-step method. It needs $\psi$ at the first two grid points. Therefore, the code must provide startup values. In \texttt{shooting.py}, \texttt{initial\_conditions()} gives those startup values using Taylor expansion and parity.
+
+    For even states:
+    \begin{equation}
+        \psi(0)=1, \qquad \psi'(0)=0.
+    \end{equation}
+
+    For odd states:
+    \begin{equation}
+        \psi(0)=0, \qquad \psi'(0)=1.
+    \end{equation}
+
+    The latest code includes higher Taylor terms:
+    \begin{itemize}
+        \item even states include the $h^4$ term,
+        \item odd states include the $h^5$ term.
+    \end{itemize}
+
+    This matters because if the startup formula is too low order, it can pollute the observed convergence rate. This was seen in the infinite square well: the energies were accurate, but the convergence slopes were not cleanly fourth order. After the startup correction, the first square-well states show slopes close to 4.
+
+    \section{Why shooting?}
+
+    A bound state must behave correctly at both boundaries. However, Numerov integration needs starting values. Therefore, the algorithm is:
+    \begin{enumerate}
+        \item choose a trial energy $E$,
+        \item choose initial conditions at $x=0$, or from the decaying tail,
+        \item integrate with Numerov,
+        \item check whether the wavefunction satisfies the target boundary condition,
+        \item adjust $E$.
+    \end{enumerate}
+
+    This is shooting.
+
+    In \texttt{src/shooting.py}, the outward shooting logic is built from:
+    \begin{itemize}
+        \item \texttt{initial\_conditions()},
+        \item \texttt{half\_domain\_wavefunction()},
+        \item \texttt{boundary\_mismatch()},
+        \item \texttt{find\_brackets()},
+        \item \texttt{bisect\_energy()},
+        \item \texttt{solve\_state\_from\_bracket()},
+        \item \texttt{solve\_symmetric\_potential()}.
+    \end{itemize}
+
+    The important function is \texttt{boundary\_mismatch()}. It answers the question: for this trial energy, did the wavefunction land correctly at the boundary? If not, the energy is wrong.
+
+    The inward shooting logic is built from:
+    \begin{itemize}
+        \item \texttt{inward\_decay\_initial\_conditions()},
+        \item \texttt{inward\_decay\_half\_domain\_wavefunction()},
+        \item \texttt{inward\_decay\_boundary\_mismatch()},
+        \item \texttt{find\_inward\_decay\_brackets()},
+        \item \texttt{bisect\_energy\_inward\_decay()},
+        \item \texttt{solve\_symmetric\_potential\_inward\_decay()}.
+    \end{itemize}
+
+    Inward shooting is used for confining potentials such as the harmonic oscillator. The physical solution decays at large $x$. If we integrate outward from the origin, the numerical solution can pick up the unphysical growing mode. Inward shooting starts in the forbidden region and integrates toward the origin, giving cleaner harmonic oscillator wavefunctions and more reliable parity enforcement.
+
+    \section{Why parity?}
+
+    The main bound-state potentials are symmetric:
+    \begin{equation}
+        V(-x)=V(x).
+    \end{equation}
+
+    For symmetric potentials, quantum states are either even or odd.
+
+    Even states satisfy
+    \begin{equation}
+        \psi(-x)=\psi(x),
+    \end{equation}
+    and odd states satisfy
+    \begin{equation}
+        \psi(-x)=-\psi(x).
+    \end{equation}
+
+    Therefore, instead of integrating from $-x_{\max}$ to $x_{\max}$, the code integrates only from $0$ to $x_{\max}$.
+
+    In code, \texttt{initial\_conditions()} uses:
+    \begin{itemize}
+        \item even: $\psi(0)=1$, $\psi'(0)=0$,
+        \item odd: $\psi(0)=0$, $\psi'(0)=1$.
+    \end{itemize}
+
+    Then \texttt{build\_full\_wavefunction()} reflects the half-domain solution to the left side.
+
+    This choice makes the algorithm simpler, faster, and more stable. It also lets the states be classified physically as even or odd.
+
+    Parity is also useful for the double well because tunneling splitting appears as pairs of even and odd states. The lowest two states are symmetric and antisymmetric combinations of wavefunctions localized in the two wells.
+
+    \section{Why root finding and bisection?}
+
+    For each trial energy, the boundary mismatch gives a number:
+    \begin{equation}
+        F(E)=\text{mismatch}(E).
+    \end{equation}
+
+    Allowed eigenvalues satisfy
+    \begin{equation}
+        F(E)=0.
+    \end{equation}
+
+    So the eigenvalue problem becomes a root-finding problem.
+
+    The code first scans energies using \texttt{find\_brackets()}. It looks for sign changes. If $F(E_1)$ and $F(E_2)$ have opposite signs, then a root is likely between them. Then \texttt{bisect\_energy()} refines the energy until the interval is small enough.
+
+    This is exactly the root-finding logic from the course: bracket a root, then reduce the bracket until the required accuracy is reached.
+
+    The code also includes:
+    \begin{itemize}
+        \item \texttt{sample\_boundary\_mismatch()},
+        \item \texttt{bisection\_history()},
+        \item \texttt{sample\_inward\_decay\_mismatch()},
+        \item \texttt{bisection\_history\_inward\_decay()}.
+    \end{itemize}
+
+    These are mainly for diagnostics and plots. They show that the eigenvalues are not magic numbers. They are roots of a clearly defined numerical function.
+
+    \section{What each code file does}
+
+    \subsection{\texttt{src/potentials.py}}
+
+    This file defines the physical systems:
+    \begin{itemize}
+        \item \texttt{harmonic\_oscillator()},
+        \item \texttt{infinite\_square\_well\_numeric()},
+        \item \texttt{finite\_square\_well()},
+        \item \texttt{quartic\_double\_well()},
+        \item \texttt{quartic\_oscillator()},
+        \item \texttt{square\_barrier()},
+        \item \texttt{double\_square\_barrier()}.
+    \end{itemize}
+
+    The purpose is to separate the physics definitions from the numerical solver. This is good design: the solver does not care which potential is chosen. It only needs $V(x)$. That makes the project modular.
+
+    The main potentials have clear roles:
+    \begin{itemize}
+        \item infinite square well: analytic validation,
+        \item harmonic oscillator: analytic validation and inward shooting,
+        \item finite square well: nontrivial finite bound-state system,
+        \item quartic double well: tunneling and energy splitting,
+        \item quartic oscillator: optional extra demonstration,
+        \item single barrier and double barrier: scattering extension.
+    \end{itemize}
+
+    \subsection{\texttt{src/numerov.py}}
+
+    This is the numerical integration engine. Its main role is to take an $x$ grid, a potential $V$, and a trial energy $E$, and produce a trial wavefunction $\psi$.
+
+    The most important functions are:
+    \begin{itemize}
+        \item \texttt{q\_from\_energy()},
+        \item \texttt{numerov\_outward()},
+        \item \texttt{normalize\_wavefunction()},
+        \item \texttt{derivative\_at\_right\_edge()}.
+    \end{itemize}
+
+    Important details:
+    \begin{itemize}
+        \item \texttt{numerov\_outward()} includes dynamic rescaling to avoid overflow when a non-eigenvalue trial solution grows exponentially.
+        \item \texttt{normalize\_wavefunction()} rescales before squaring to avoid overflow.
+        \item \texttt{derivative\_at\_right\_edge()} uses a fourth-order stencil when possible.
+    \end{itemize}
+
+    \subsection{\texttt{src/shooting.py}}
+
+    This is the eigenvalue solver. Its main role is to try energies, integrate with Numerov, check the boundary mismatch, find the correct eigenvalues, and return normalized eigenstates.
+
+    The most important functions are:
+    \begin{itemize}
+        \item \texttt{initial\_conditions()},
+        \item \texttt{find\_brackets()},
+        \item \texttt{bisect\_energy()},
+        \item \texttt{solve\_symmetric\_potential()},
+        \item \texttt{solve\_symmetric\_potential\_inward\_decay()}.
+    \end{itemize}
+
+    Important latest detail: \texttt{initial\_conditions()} now includes higher Taylor terms so the first Numerov step does not reduce the convergence order. This fixed the square-well convergence slope problem.
+
+    \subsection{\texttt{src/analysis.py}}
+
+    This is the scientific validation layer. It contains:
+    \begin{itemize}
+        \item \texttt{exact\_square\_well\_energies()},
+        \item \texttt{exact\_harmonic\_oscillator\_energies()},
+        \item \texttt{relative\_error()},
+        \item \texttt{estimate\_convergence\_slopes()},
+        \item \texttt{convergence\_vs\_grid()},
+        \item \texttt{convergence\_vs\_box\_size()},
+        \item \texttt{convergence\_vs\_box\_size\_fixed\_spacing()},
+        \item \texttt{splitting\_vs\_parameter()}.
+    \end{itemize}
+
+    This is what turns the code from ``it runs'' into ``it was verified scientifically.''
+
+    For cases without analytic solutions, such as the quartic double well, the code can use a high-resolution numerical solution as the reference. This is the right approach because there is no exact spectrum to compare with.
+
+    \subsection{\texttt{src/rk4\_compare.py}}
+
+    This is the method-comparison module. It solves the harmonic oscillator using RK4 shooting.
+
+    The harmonic oscillator is used because it has exact energies and a smooth potential, so it is a fair comparison.
+
+    RK4 works differently from Numerov. Numerov solves the second-order equation directly. RK4 rewrites it as a first-order system:
+    \begin{align}
+        \psi' &= \phi, \\
+        \phi' &= 2[V(x)-E]\psi.
+    \end{align}
+
+    This means RK4 evolves both $\psi$ and $\psi'$ explicitly.
+
+    The comparison is useful because it shows the difference between a specialized solver and a general-purpose ODE solver. It also explains why the derivative boundary condition mattered so much. RK4 carries $\psi'$ as a variable, while Numerov needs a finite-difference derivative estimate when enforcing some boundary conditions.
+
+    \subsection{\texttt{src/scattering.py}}
+
+    This is the scattering extension. It computes:
+    \begin{itemize}
+        \item transmission $T$,
+        \item reflection $R$,
+        \item conservation check $T+R$.
+    \end{itemize}
+
+    The method is:
+    \begin{enumerate}
+        \item assume the potential is zero far left and far right,
+        \item impose a transmitted right-moving wave on the far right,
+        \item integrate backward through the potential with complex Numerov,
+        \item decompose the left-side wave into incident and reflected parts.
+    \end{enumerate}
+
+    The main functions are:
+    \begin{itemize}
+        \item \texttt{numerov\_outward\_complex()},
+        \item \texttt{integrate\_from\_right()},
+        \item \texttt{decompose\_left\_asymptotic()},
+        \item \texttt{solve\_scattering()},
+        \item \texttt{sweep\_scattering()},
+        \item \texttt{find\_transmission\_peaks()}.
+    \end{itemize}
+
+    This is not the core bound-state project, but it shows that the same Numerov framework can be extended to scattering and resonant tunneling.
+
+    \subsection{\texttt{src/plotting.py}}
+
+    This file generates report figures:
+    \begin{itemize}
+        \item \texttt{plot\_potential\_and\_states()},
+        \item \texttt{plot\_probability\_densities()},
+        \item \texttt{plot\_energy\_comparison()},
+        \item \texttt{plot\_error\_curve()},
+        \item \texttt{plot\_splitting\_curve()},
+        \item \texttt{plot\_root\_finding\_diagnostic()},
+        \item \texttt{plot\_scattering\_coefficients()},
+        \item \texttt{plot\_scattering\_potential\_and\_probability()},
+        \item \texttt{plot\_numerov\_vs\_rk4\_errors()}.
+    \end{itemize}
+
+    These plots let the reviewer visually see the states, convergence, tunneling behavior, scattering behavior, and method comparison.
+
+    \subsection{\texttt{src/experiments.py}}
+
+    This file connects the solver to the actual project cases. It runs:
+    \begin{itemize}
+        \item \texttt{run\_square\_well()},
+        \item \texttt{run\_harmonic\_oscillator()},
+        \item \texttt{run\_double\_well()},
+        \item \texttt{run\_finite\_square\_well()},
+        \item \texttt{run\_quartic\_oscillator\_demo()},
+        \item \texttt{run\_scattering()}.
+    \end{itemize}
+
+    This file is basically the scientific experiment plan in code.
+
+    Important latest double-well additions:
+    \begin{itemize}
+        \item the double-well plot legend now shows the explicit formula,
+        \item root-finding diagnostics are now generated for the double well,
+        \item double-well convergence versus grid spacing is included,
+        \item double-well convergence versus box size is included,
+        \item double-well convergence uses a high-resolution numerical reference instead of pretending there is an exact analytic solution.
+    \end{itemize}
+
+    \subsection{\texttt{scripts/run\_solver.py}}
+
+    This is the entry point. It:
+    \begin{itemize}
+        \item clears old results,
+        \item runs all experiments,
+        \item runs tests,
+        \item prints a completion message.
+    \end{itemize}
+
+    It is intentionally lightweight. Most logic lives in \texttt{src/}.
+
+    \subsection{\texttt{tests/test\_solver.py}}
+
+    This file checks correctness. It tests:
+    \begin{itemize}
+        \item normalization,
+        \item derivative stencil accuracy,
+        \item RK4 bracket detection,
+        \item square-well ground-state accuracy,
+        \item square-well convergence order,
+        \item harmonic oscillator energies,
+        \item harmonic oscillator inward shooting,
+        \item double-well splitting,
+        \item scattering probability conservation,
+        \item \texttt{run\_solver} import behavior.
+    \end{itemize}
+
+    Important latest regression test: \texttt{test\_square\_well\_convergence\_order()} requires the first square-well states to show near-fourth-order convergence. This prevents the startup-order bug from quietly returning.
+
+    \section{What the project demonstrates}
+
+    The project demonstrates three levels of correctness.
+
+    \subsection{Level 1: Exact benchmarks}
+
+    The square well and harmonic oscillator have known exact energies. If the numerical method reproduces them, the solver is credible.
+
+    Square well:
+    \begin{itemize}
+        \item validates the basic outward Numerov shooting method,
+        \item checks node structure and parity,
+        \item checks fourth-order convergence after the improved startup values.
+    \end{itemize}
+
+    Harmonic oscillator:
+    \begin{itemize}
+        \item validates inward shooting,
+        \item checks parity and node structure,
+        \item checks domain truncation effects,
+        \item supports the Numerov versus RK4 comparison.
+    \end{itemize}
+
+    \subsection{Level 2: Convergence}
+
+    The project varies:
+    \begin{itemize}
+        \item grid spacing $h$,
+        \item domain size $x_{\max}$.
+    \end{itemize}
+
+    The goal is to show that the energies stabilize. This addresses truncation error, resolution dependence, finite-domain effects, floating-point limits, and root-finding limits.
+
+    A key interpretation point is that if a convergence slope is slightly above 4, this does not mean the method is truly higher than fourth order. It usually means the errors are very small and the log-log fit is being affected by numerical floors, root-finding tolerance, or floating-point limits.
+
+    \subsection{Level 3: New physics}
+
+    The double well has nearly degenerate even and odd pairs. This shows tunneling splitting, which is the strongest physics result in the project.
+
+    The double-well analysis now includes:
+    \begin{itemize}
+        \item states and densities,
+        \item energy splitting versus parameter $b$,
+        \item root-finding diagnostics,
+        \item convergence versus $h$,
+        \item convergence versus $x_{\max}$,
+        \item a high-resolution reference solution.
+    \end{itemize}
+
+    \section{What is apparent from the lectures and what is beyond them?}
+
+    \subsection{Clearly from the lectures}
+
+    \begin{itemize}
+        \item ODEs,
+        \item boundary-value problems,
+        \item eigenvalue problems,
+        \item shooting,
+        \item root finding,
+        \item bisection,
+        \item numerical integration,
+        \item numerical differentiation,
+        \item convergence,
+        \item numerical errors,
+        \item documentation.
+    \end{itemize}
+
+    \subsection{Partly from the lectures, but specialized to quantum mechanics}
+
+    \begin{itemize}
+        \item Numerov method,
+        \item wavefunction normalization,
+        \item parity classification,
+        \item bound-state interpretation,
+        \item inward shooting from a decaying tail,
+        \item tunneling splitting,
+        \item scattering transmission and reflection.
+    \end{itemize}
+
+    The Numerov idea appears in Pang's Schr\"odinger equation treatment, but it is more specialized than the main lecture slides.
+
+    \subsection{Beyond the slides}
+
+    The most advanced or specialized parts are:
+    \begin{itemize}
+        \item fourth-order-consistent Numerov startup values,
+        \item high-order derivative stencil at the boundary,
+        \item inward shooting from the forbidden region,
+        \item high-resolution numerical reference for non-analytic potentials,
+        \item RK4 versus Numerov method comparison,
+        \item complex Numerov scattering,
+        \item double-barrier resonant tunneling.
+    \end{itemize}
+
+    \subsection{Not used from the lectures}
+
+    \begin{itemize}
+        \item advection schemes,
+        \item finite-volume methods,
+        \item limiters,
+        \item Burgers equation,
+        \item Euler equations,
+        \item MHD,
+        \item PIC,
+        \item chaos,
+        \item Monte Carlo,
+        \item FFT,
+        \item matrix eigenvalue solvers.
+    \end{itemize}
+
+    This is fine. The final project explicitly allows choosing a different physics problem or going beyond class material.
+
+    \section{The clean explanation for a reviewer}
+
+    Here is the project summary in reviewer language:
+
+    \begin{quote}
+    I am solving the one-dimensional time-independent Schr\"odinger equation as a boundary-value eigenvalue problem. I discretize space on a uniform grid and use the Numerov method to integrate the second-order ODE for a trial energy. Since only special energies satisfy the required boundary conditions, I use a shooting method. The boundary mismatch becomes a scalar function of energy, and I find its roots using bracketing and bisection. For symmetric potentials I use parity to reduce the calculation to the half domain, then reconstruct and normalize the full wavefunction. I validate the solver on the infinite square well and harmonic oscillator, study convergence with grid spacing and domain size, and then apply it to a finite square well and quartic double well to analyze nontrivial bound states and tunneling-induced splitting. I also compare Numerov with RK4 for the harmonic oscillator and include scattering through finite and double barriers as a secondary extension.
+    \end{quote}
+
+    That is the full logic of the project.
+
+\end{document}

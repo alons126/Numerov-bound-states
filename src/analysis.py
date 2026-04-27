@@ -276,6 +276,76 @@ def convergence_vs_grid(
 
 
 # ---------------------------------------------------------------------------
+# FUNCTION: convergence_vs_grid_successive
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def convergence_vs_grid_successive(
+    potential_fn,
+    potential_kwargs: dict,
+    x_max: float,
+    grid_sizes: list[int],
+    n_even: int,
+    n_odd: int,
+    e_min: float,
+    e_max: float,
+    solver_fn=solve_symmetric_potential,
+) -> dict[str, np.ndarray]:
+    """
+    Study grid convergence using successive refinements on a fixed box.
+
+    Instead of comparing every grid to one finite reference calculation, this
+    compares each grid to the next finer grid. That avoids contamination from a
+    finite-reference floor when no exact spectrum is available.
+
+    Parameters
+    ----------
+    potential_fn : callable
+        Potential function.
+    potential_kwargs : dict
+        Keyword arguments for the potential.
+    x_max : float
+        Computational half-domain size.
+    grid_sizes : list[int]
+        Grid resolutions to test, ordered from coarse to fine.
+    n_even, n_odd : int
+        Number of even and odd states requested.
+    e_min, e_max : float
+        Energy search interval.
+    solver_fn : callable, optional
+        Solver function used to compute states.
+
+    Returns
+    -------
+    dict[str, ndarray]
+        Dictionary with coarse-grid spacings h and successive-difference arrays.
+    """
+    if len(grid_sizes) < 2:
+        raise ValueError("Need at least two grid sizes for successive convergence.")
+
+    hs = []
+    energies_by_grid = []
+    n_states = n_even + n_odd
+
+    for n_grid in grid_sizes:
+        states = solver_fn(
+            x_max=x_max,
+            n_grid=n_grid,
+            potential_fn=potential_fn,
+            potential_kwargs=potential_kwargs,
+            n_even=n_even,
+            n_odd=n_odd,
+            e_min=e_min,
+            e_max=e_max,
+        )
+        energies_by_grid.append(energies_from_states(states, n_states=n_states))
+        hs.append(x_max / (n_grid - 1))
+
+    energies_arr = np.array(energies_by_grid, dtype=float)
+    successive_errors = np.abs(energies_arr[:-1] - energies_arr[1:])
+    return {"h": np.array(hs[:-1]), "energy_errors": successive_errors}
+
+
+# ---------------------------------------------------------------------------
 # FUNCTION: convergence_vs_box_size
 # Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------

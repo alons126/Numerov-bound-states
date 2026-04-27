@@ -20,6 +20,7 @@ import numpy as np
 
 from src.analysis import (
     convergence_vs_grid,
+    convergence_vs_grid_successive,
     estimate_convergence_slopes,
     exact_harmonic_oscillator_energies,
     exact_square_well_energies,
@@ -34,6 +35,7 @@ from src.potentials import (
 import src.rk4_compare as rk4_compare
 from src.scattering import sweep_scattering
 from src.shooting import (
+    sample_boundary_mismatch,
     solve_symmetric_potential,
     solve_symmetric_potential_inward_decay,
 )
@@ -218,6 +220,166 @@ def test_double_well_splitting_positive() -> None:
         e_max=20.0,
     )
     assert states[1].energy > states[0].energy
+
+
+# ---------------------------------------------------------------------------
+# FUNCTION: test_quartic_double_well_exact_shifted_minimum
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def test_quartic_double_well_exact_shifted_minimum() -> None:
+    """
+    Check that the shifted quartic double well uses the analytic minimum.
+    """
+    b = 6.0
+    x_min = np.sqrt(b / 2.0)
+    values = quartic_double_well(
+        np.array([0.0, x_min]), a=1.0, b=b, shift_min_to_zero=True
+    )
+    assert abs(values[1]) < 1e-12
+    assert abs(values[0] - 9.0) < 1e-12
+
+
+# ---------------------------------------------------------------------------
+# FUNCTION: test_double_well_larger_box_improves_low_lying_energies
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def test_double_well_larger_box_improves_low_lying_energies() -> None:
+    """
+    Check that enlarging the double-well box reduces truncation error.
+    """
+    kwargs = {"a": 1.0, "b": 6.0, "shift_min_to_zero": True}
+    states_small = solve_symmetric_potential(
+        x_max=3.0,
+        n_grid=1500,
+        potential_fn=quartic_double_well,
+        potential_kwargs=kwargs,
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+    )
+    states_large = solve_symmetric_potential(
+        x_max=4.0,
+        n_grid=2000,
+        potential_fn=quartic_double_well,
+        potential_kwargs=kwargs,
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+    )
+    states_ref = solve_symmetric_potential(
+        x_max=5.0,
+        n_grid=2500,
+        potential_fn=quartic_double_well,
+        potential_kwargs=kwargs,
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+    )
+
+    err_small = np.max(
+        [abs(states_small[i].energy - states_ref[i].energy) for i in range(4)]
+    )
+    err_large = np.max(
+        [abs(states_large[i].energy - states_ref[i].energy) for i in range(4)]
+    )
+
+    assert err_large < 1e-4
+    assert err_large < 0.1 * err_small
+
+
+# ---------------------------------------------------------------------------
+# FUNCTION: test_double_well_same_box_grid_errors_decrease
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def test_double_well_same_box_grid_errors_decrease() -> None:
+    """
+    Check that double-well successive refinement errors decrease on a fixed box.
+    """
+    kwargs = {"a": 1.0, "b": 6.0, "shift_min_to_zero": True}
+    conv = convergence_vs_grid_successive(
+        potential_fn=quartic_double_well,
+        potential_kwargs=kwargs,
+        x_max=4.0,
+        grid_sizes=[600, 1000, 1600, 2200, 3000],
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+    )
+
+    for state_index in range(conv["energy_errors"].shape[1]):
+        errors = conv["energy_errors"][:, state_index]
+        assert np.all(np.diff(errors) < 0.0)
+
+
+# ---------------------------------------------------------------------------
+# FUNCTION: test_double_well_successive_convergence_order
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def test_double_well_successive_convergence_order() -> None:
+    """
+    Check that the low double-well states recover near-fourth-order convergence.
+    """
+    kwargs = {"a": 1.0, "b": 6.0, "shift_min_to_zero": True}
+    conv = convergence_vs_grid_successive(
+        potential_fn=quartic_double_well,
+        potential_kwargs=kwargs,
+        x_max=4.0,
+        grid_sizes=[600, 1000, 1600, 2200, 3000],
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+    )
+    slopes = estimate_convergence_slopes(conv["h"], conv["energy_errors"])
+    assert slopes[0]["convergence_exponent_p"] > 3.5
+    assert slopes[1]["convergence_exponent_p"] > 3.5
+
+
+# ---------------------------------------------------------------------------
+# FUNCTION: test_double_well_low_state_mismatches_are_polished
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def test_double_well_low_state_mismatches_are_polished() -> None:
+    """
+    Check that the low double-well roots are polished beyond the bisection width floor.
+    """
+    kwargs = {"a": 1.0, "b": 6.0, "shift_min_to_zero": True}
+    states = solve_symmetric_potential(
+        x_max=4.0,
+        n_grid=2000,
+        potential_fn=quartic_double_well,
+        potential_kwargs=kwargs,
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+    )
+    assert abs(states[0].mismatch) < 1e-5
+    assert abs(states[1].mismatch) < 1e-5
+
+
+# ---------------------------------------------------------------------------
+# FUNCTION: test_double_well_even_odd_mismatch_scans_differ
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def test_double_well_even_odd_mismatch_scans_differ() -> None:
+    """
+    Check that even and odd double-well mismatch scans are parity-specific.
+    """
+    x_half = np.linspace(0.0, 4.0, 800)
+    V_half = quartic_double_well(x_half, a=1.0, b=6.0, shift_min_to_zero=True)
+    energies_even, mismatches_even = sample_boundary_mismatch(
+        x_half, V_half, parity="even", e_min=1.0, e_max=8.5, n_scan=400
+    )
+    energies_odd, mismatches_odd = sample_boundary_mismatch(
+        x_half, V_half, parity="odd", e_min=1.0, e_max=8.5, n_scan=400
+    )
+    assert np.allclose(energies_even, energies_odd)
+    assert not np.allclose(mismatches_even, mismatches_odd)
 
 
 # ---------------------------------------------------------------------------

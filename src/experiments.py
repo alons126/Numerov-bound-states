@@ -14,6 +14,7 @@ import numpy as np
 from src.analysis import (
     convergence_vs_box_size_fixed_spacing,
     convergence_vs_grid,
+    convergence_vs_grid_successive,
     estimate_convergence_slopes,
     exact_harmonic_oscillator_energies,
     exact_square_well_energies,
@@ -454,7 +455,7 @@ def plot_double_well_root_diagnostics(
             "state_labels": ["state 0, even", "state 2, even"],
             "path": results_dir / "3_double_well_root_finding_even.png",
             "title": "Quartic double well shooting roots, even states",
-            "mismatch_label": r"scaled mismatch: $M(E)/\max |M|$, $M(E)=\psi_E(x_{\max})$",
+            "mismatch_label": r"$M(E)=\psi_E(x_{\max})$, even sector",
         },
         {
             "parity": "odd",
@@ -463,7 +464,7 @@ def plot_double_well_root_diagnostics(
             "state_labels": ["state 1, odd", "state 3, odd"],
             "path": results_dir / "3_double_well_root_finding_odd.png",
             "title": "Quartic double well shooting roots, odd states",
-            "mismatch_label": r"scaled mismatch: $M(E)/\max |M|$, $M(E)=\psi_E(x_{\max})$",
+            "mismatch_label": r"$M(E)=\psi_E(x_{\max})$, odd sector",
         },
     ]
 
@@ -768,8 +769,11 @@ def run_double_well(results_dir: Path) -> None:
     double-well parameter b and records the tunneling splitting E1 - E0.
     """
     base_kwargs = {"a": 1.0, "b": 6.0, "shift_min_to_zero": True}
-    x_max = 3.0
-    n_grid = 3000
+    # The quartic wells centered near x = sqrt(b/2) develop long forbidden-region
+    # tails, so x_max = 3.0 leaves visible box error in the published energies.
+    # Use a larger default box and keep h near 1e-3.
+    x_max = 4.0
+    n_grid = 4000
 
     states = solve_symmetric_potential(
         x_max=x_max,
@@ -819,28 +823,18 @@ def run_double_well(results_dir: Path) -> None:
         x_max=x_max,
     )
 
-    reference_states = solve_symmetric_potential(
-        x_max=5.0,
-        n_grid=6000,
-        potential_fn=quartic_double_well,
-        potential_kwargs=base_kwargs,
-        n_even=2,
-        n_odd=2,
-        e_min=0.0,
-        e_max=20.0,
-    )
-    reference_energies = np.array([s.energy for s in reference_states[:4]], dtype=float)
-
-    conv_h = convergence_vs_grid(
+    # Use successive refinements instead of one finite reference. For this
+    # non-analytic spectrum, that avoids fitting against a reference-floor
+    # artifact once the grids become very fine.
+    conv_h = convergence_vs_grid_successive(
         potential_fn=quartic_double_well,
         potential_kwargs=base_kwargs,
         x_max=x_max,
-        grid_sizes=[600, 1000, 1600, 2200, 3000],
+        grid_sizes=[600, 1000, 1600, 2200, 3000, 4000],
         n_even=2,
         n_odd=2,
         e_min=0.0,
         e_max=20.0,
-        reference_energies=reference_energies,
     )
     conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
     save_csv_rows(results_dir / "3_double_well_convergence_slopes.csv", conv_h_slopes)
@@ -853,17 +847,33 @@ def run_double_well(results_dir: Path) -> None:
         slopes=conv_h_slopes,
     )
 
+    # For box-size convergence, compare against a larger box while keeping h
+    # approximately fixed so the curve mostly reflects boundary truncation.
+    reference_states_box = solve_symmetric_potential(
+        x_max=5.0,
+        n_grid=5000,
+        potential_fn=quartic_double_well,
+        potential_kwargs=base_kwargs,
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+    )
+    reference_energies_box = np.array(
+        [s.energy for s in reference_states_box[:4]], dtype=float
+    )
+
     target_h = x_max / (n_grid - 1)
     conv_box = convergence_vs_box_size_fixed_spacing(
         potential_fn=quartic_double_well,
         potential_kwargs=base_kwargs,
-        x_max_values=[2.0, 2.5, 3.0, 3.5, 4.0, 5.0],
+        x_max_values=[2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
         target_h=target_h,
         n_even=2,
         n_odd=2,
         e_min=0.0,
         e_max=20.0,
-        reference_energies=reference_energies,
+        reference_energies=reference_energies_box,
     )
     save_csv_rows(
         results_dir / "3_double_well_convergence_vs_x_max_data.csv",

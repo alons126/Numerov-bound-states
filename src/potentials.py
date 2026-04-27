@@ -126,7 +126,13 @@ def quartic_double_well(
     """
     v = a * x**4 - b * x**2
     if shift_min_to_zero:
-        v = v - np.min(v)
+        # Use the analytic minimum rather than the sampled grid minimum. The
+        # latter drifts with h and contaminates convergence studies by changing
+        # the potential itself as the grid is refined.
+        if a <= 0.0:
+            raise ValueError("quartic_double_well requires a > 0.")
+        v_min = -(b**2) / (4.0 * a) if b > 0.0 else 0.0
+        v = v - v_min
     return v
 
 

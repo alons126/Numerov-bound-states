@@ -313,7 +313,7 @@ def plot_root_finding_diagnostic(
     path: str | Path,
     title: str,
     history_labels: list[str] | None = None,
-    mismatch_label: str = r"scaled mismatch: $M(E)/\max |M|$",
+    mismatch_label: str = r"boundary mismatch $M(E)$",
 ) -> None:
     """
     Plot the shooting mismatch and bisection midpoints for selected states.
@@ -337,17 +337,21 @@ def plot_root_finding_diagnostic(
         Labels for the bisection histories. If omitted, generic state labels
         are used.
     mismatch_label : str, optional
-        Legend label for the scaled mismatch curve.
+        Legend label for the mismatch curve.
     """
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
 
-    scale = np.nanmax(np.abs(mismatches))
-    if scale == 0.0 or not np.isfinite(scale):
-        scale = 1.0
-    mismatch_plot = np.clip(mismatches / scale, -1.0, 1.0)
+    finite_curve = np.asarray(mismatches[np.isfinite(mismatches)], dtype=float)
+    if finite_curve.size == 0:
+        finite_curve = np.array([1.0], dtype=float)
+    nonzero_abs = np.abs(finite_curve[np.abs(finite_curve) > 0.0])
+    if nonzero_abs.size == 0:
+        linthresh = 1.0
+    else:
+        linthresh = max(1.0e-12, float(np.quantile(nonzero_abs, 0.05)))
 
-    plt.plot(energies, mismatch_plot, label=mismatch_label)
+    plt.plot(energies, mismatches, label=mismatch_label)
     plt.axhline(0.0, linestyle=":", label="target mismatch = 0")
 
     if history_labels is None:
@@ -356,12 +360,12 @@ def plot_root_finding_diagnostic(
     for i, history in enumerate(histories):
         mids = np.array([row["mid"] for row in history], dtype=float)
         vals = np.array([row["mismatch_mid"] for row in history], dtype=float)
-        vals = np.clip(vals / scale, -1.0, 1.0)
         label = history_labels[i] if i < len(history_labels) else f"state {i} bisection"
         plt.scatter(mids, vals, s=18, label=label)
 
+    plt.yscale("symlog", linthresh=linthresh)
     plt.xlabel("trial energy E")
-    plt.ylabel("scaled boundary mismatch")
+    plt.ylabel("boundary mismatch")
     plt.title(title)
     plt.legend(fontsize=8)
     plt.tight_layout()

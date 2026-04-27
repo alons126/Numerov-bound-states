@@ -358,16 +358,46 @@ def bisect_energy(
 
         if not np.isfinite(fmid):
             raise ValueError("Non-finite mismatch during bisection.")
-        if abs(fmid) < tol or abs(hi - lo) < tol:
+        if abs(fmid) < tol:
             return mid, fmid
+        if abs(hi - lo) < tol:
+            if np.signbit(flo) != np.signbit(fmid):
+                hi, fhi = mid, fmid
+            else:
+                lo, flo = mid, fmid
+            break
 
         if np.signbit(flo) != np.signbit(fmid):
             hi, fhi = mid, fmid
         else:
             lo, flo = mid, fmid
 
-    mid = 0.5 * (lo + hi)
-    return mid, boundary_mismatch(x_half, V_half, mid, parity, mode="value")
+    # Bisection makes the energy bracket tiny, but for steep mismatch curves
+    # the midpoint residual can still be visibly nonzero. Finish with a few
+    # safeguarded secant steps inside the last sign-changing bracket to report
+    # a much better boundary residual without sacrificing robustness.
+    for _ in range(8):
+        denom = fhi - flo
+        if denom == 0.0 or not np.isfinite(denom):
+            break
+        trial = lo - flo * (hi - lo) / denom
+        if not (min(lo, hi) <= trial <= max(lo, hi)):
+            break
+
+        ftrial = boundary_mismatch(x_half, V_half, trial, parity, mode="value")
+        if not np.isfinite(ftrial):
+            break
+        if abs(ftrial) < tol:
+            return trial, ftrial
+
+        if np.signbit(flo) != np.signbit(ftrial):
+            hi, fhi = trial, ftrial
+        else:
+            lo, flo = trial, ftrial
+
+    if abs(flo) <= abs(fhi):
+        return lo, flo
+    return hi, fhi
 
 
 # ---------------------------------------------------------------------------
