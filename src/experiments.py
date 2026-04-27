@@ -428,6 +428,79 @@ def plot_harmonic_oscillator_root_diagnostics(
 
 
 # ---------------------------------------------------------------------------
+# FUNCTION: plot_double_well_root_diagnostics
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def plot_double_well_root_diagnostics(
+    results_dir: Path,
+    potential_kwargs: dict[str, float | bool],
+    x_max: float = 3.0,
+) -> None:
+    """
+    Plot shooting/root-finding diagnostics for the first four quartic double-well states.
+
+    As in the harmonic benchmark, the even and odd parity sectors are shown in
+    separate panels so the first two states of each sector can be tracked
+    cleanly through the mismatch and bisection curves.
+    """
+    x_half = np.linspace(0.0, x_max, 1200)
+    V_half = quartic_double_well(x_half, **potential_kwargs)
+
+    diagnostic_specs = [
+        {
+            "parity": "even",
+            "e_min": 1.0,
+            "e_max": 8.5,
+            "state_labels": ["state 0, even", "state 2, even"],
+            "path": results_dir / "3_double_well_root_finding_even.png",
+            "title": "Quartic double well shooting roots, even states",
+            "mismatch_label": r"scaled mismatch: $M(E)/\max |M|$, $M(E)=\psi_E(x_{\max})$",
+        },
+        {
+            "parity": "odd",
+            "e_min": 1.0,
+            "e_max": 8.5,
+            "state_labels": ["state 1, odd", "state 3, odd"],
+            "path": results_dir / "3_double_well_root_finding_odd.png",
+            "title": "Quartic double well shooting roots, odd states",
+            "mismatch_label": r"scaled mismatch: $M(E)/\max |M|$, $M(E)=\psi_E(x_{\max})$",
+        },
+    ]
+
+    for spec in diagnostic_specs:
+        energies_scan, mismatches_scan = sample_boundary_mismatch(
+            x_half,
+            V_half,
+            parity=spec["parity"],
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            n_scan=1600,
+        )
+        brackets = find_brackets(
+            x_half,
+            V_half,
+            parity=spec["parity"],
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            n_scan=1600,
+        )
+        histories = [
+            bisection_history(x_half, V_half, spec["parity"], bracket, max_iter=30)
+            for bracket in brackets[: len(spec["state_labels"])]
+        ]
+
+        plot_root_finding_diagnostic(
+            energies_scan,
+            mismatches_scan,
+            histories,
+            spec["path"],
+            spec["title"],
+            history_labels=spec["state_labels"],
+            mismatch_label=spec["mismatch_label"],
+        )
+
+
+# ---------------------------------------------------------------------------
 # FUNCTION: run_square_well
 # Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
@@ -729,11 +802,94 @@ def run_double_well(results_dir: Path) -> None:
         states,
         results_dir / "3_double_well_states.png",
         "Quartic double well",
+        potential_label=(
+            r"$V(x)=a x^4 - b x^2 - V_{\min}$"
+            if base_kwargs["shift_min_to_zero"]
+            else r"$V(x)=a x^4 - b x^2$"
+        ),
     )
     plot_probability_densities(
         states,
         results_dir / "3_double_well_densities.png",
         "Quartic double well densities",
+    )
+    plot_double_well_root_diagnostics(
+        results_dir,
+        potential_kwargs=base_kwargs,
+        x_max=x_max,
+    )
+
+    reference_states = solve_symmetric_potential(
+        x_max=5.0,
+        n_grid=6000,
+        potential_fn=quartic_double_well,
+        potential_kwargs=base_kwargs,
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+    )
+    reference_energies = np.array([s.energy for s in reference_states[:4]], dtype=float)
+
+    conv_h = convergence_vs_grid(
+        potential_fn=quartic_double_well,
+        potential_kwargs=base_kwargs,
+        x_max=x_max,
+        grid_sizes=[600, 1000, 1600, 2200, 3000],
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+        reference_energies=reference_energies,
+    )
+    conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
+    save_csv_rows(results_dir / "3_double_well_convergence_slopes.csv", conv_h_slopes)
+    plot_error_curve(
+        conv_h["h"],
+        conv_h["energy_errors"],
+        "grid spacing h",
+        results_dir / "3_double_well_convergence_vs_h.png",
+        "Quartic double well convergence vs h",
+        slopes=conv_h_slopes,
+    )
+
+    target_h = x_max / (n_grid - 1)
+    conv_box = convergence_vs_box_size_fixed_spacing(
+        potential_fn=quartic_double_well,
+        potential_kwargs=base_kwargs,
+        x_max_values=[2.0, 2.5, 3.0, 3.5, 4.0, 5.0],
+        target_h=target_h,
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=20.0,
+        reference_energies=reference_energies,
+    )
+    save_csv_rows(
+        results_dir / "3_double_well_convergence_vs_x_max_data.csv",
+        [
+            {
+                "x_max": x_val,
+                "n_grid": int(n_val),
+                "h": h_val,
+                **{
+                    f"state_{state_index}_abs_error": conv_box["energy_errors"][
+                        row_index, state_index
+                    ]
+                    for state_index in range(conv_box["energy_errors"].shape[1])
+                },
+            }
+            for row_index, (x_val, n_val, h_val) in enumerate(
+                zip(conv_box["x_max"], conv_box["n_grid"], conv_box["h"])
+            )
+        ],
+    )
+    plot_error_curve(
+        conv_box["x_max"],
+        conv_box["energy_errors"],
+        "box size x_max",
+        results_dir / "3_double_well_convergence_vs_x_max.png",
+        "Quartic double well convergence vs box size",
     )
 
     sweep_rows = splitting_vs_parameter(
