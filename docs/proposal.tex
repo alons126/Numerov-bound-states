@@ -7,51 +7,31 @@
 \begin{document}
 
 \noindent
-\textbf{Subject:} Final Project Proposal – Numerov Method for Quantum Bound States
+\textbf{Subject:} Final Project Proposal - Numerov Method for Quantum Bound States
 
 \vspace{0.5cm}
 
-I would like to propose a final project focused on solving the one-dimensional time-independent Schrödinger equation using the Numerov method.
+Shalom Omer,
 
-The goal of the project is to implement a numerical solver for bound states in various potentials by combining the Numerov integration scheme with a shooting method. The boundary value problem will be reformulated as a root-finding problem for a mismatch in boundary conditions, allowing eigenvalues to be computed using bracketing and bisection. The project will focus on symmetric potentials, allowing the use of parity (even/odd states) to simplify the boundary conditions. The correctness of the solver will be verified through comparison with analytical solutions where available and through convergence behavior.
+This is Alon Sportes again from the "Numerical methods in astrophysics" course. Following our agreement below, I would like to propose a final project focused on solving the one-dimensional time-independent Schrödinger equation using the Numerov method.
 
-The main objectives are:
+The project will focus on building a numerical solver for bound states in different potentials by combining Numerov integration with a shooting method. The boundary value problem will be reformulated as a root-finding problem, where eigenvalues are determined using bracketing and bisection. I will mainly consider symmetric potentials, which allows the use of parity (even/odd states) to simplify the boundary conditions. The solver will be validated against analytical solutions where available and through convergence tests.
+
+I plan to apply the method to several systems, including:
 \begin{itemize}
-    \item Implement the Numerov method for second-order differential equations.
-    \item Develop a shooting method with bisection to determine eigenvalues.
-    \item Solve for bound states in several potentials (core focus):
-    \begin{itemize}
-        \item Infinite square well (validation against exact solutions)
-        \item Harmonic oscillator (validation against exact solutions)
-        \item Quartic double-well potential (tunneling and energy splitting)
-        \item Finite square well (additional nontrivial test case)
-        \item Finite rectangular barrier and double-barrier potentials (exploration of scattering behavior such as transmission and resonances)
-    \end{itemize}
-    \item Normalize and analyze the resulting wavefunctions.
-    \item Perform convergence studies with respect to grid spacing and domain size to verify numerical accuracy.
-    \item Compare the Numerov method with a fourth-order Runge--Kutta (RK4) integrator for the harmonic oscillator to analyze accuracy, efficiency, and method suitability for Schrödinger-type problems.
-    \item Visualize the root-finding process by plotting the mismatch function as a function of trial energy.
-    \item Analyze physical behavior such as parity, node structure, and tunneling-induced energy splitting.
+    \item Infinite square well and harmonic oscillator (validation cases)
+    \item Finite square well and quartic double-well (nontrivial bound states and tunneling effects)
+    \item Finite barrier and double-barrier potentials (to explore scattering and resonances)
 \end{itemize}
 
-The project will include:
-\begin{itemize}
-    \item A modular Python implementation (Numerov solver, shooting method, potentials).
-    \item Visualization of wavefunctions and probability densities.
-    \item Convergence plots demonstrating numerical accuracy.
-    \item Parameter studies (e.g., double-well barrier dependence).
-    \item Comparison with analytical solutions where available.
-    \item Validation of scattering results through comparison with known analytical transmission coefficients.
-    \item Method comparison plots (Numerov vs RK4) highlighting differences in convergence behavior.
-    \item A short report summarizing methods, results, and numerical accuracy.
-\end{itemize}
+I will also compare the Numerov method with an RK4 integrator for the harmonic oscillator to examine accuracy and efficiency.
 
-This project connects directly to numerical ODE methods and eigenvalue problems discussed in the course, particularly the use of shooting methods for boundary value problems, convergence analysis, root-finding techniques, and the comparison of specialized and general-purpose integrators (Numerov vs Runge--Kutta). It also extends to scattering problems as a secondary component, illustrating transmission, reflection, and resonance phenomena within the same numerical framework.
+Please let me know if this topic is approved, and I will proceed accordingly.
 
 \vspace{0.5cm}
 
 \noindent
-Best regards,\\
+Best,
 Alon Sportes
 
 \end{document}

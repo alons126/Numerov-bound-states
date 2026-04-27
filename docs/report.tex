@@ -2,9 +2,58 @@
 % pdflatex report.tex
 
 \documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
-\usepackage{amsmath,amssymb}
-\usepackage{graphicx}
+
+% Language setting:
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}                             % Set document language (hyphenation, date formats, etc.)
+
+% Set caption formatting:
+\usepackage{caption}                                    % Control the appearance of figure and table captions
+\captionsetup[table]{labelfont=bf, font=small}          % Make table labels bold and use a small font for table captions
+\captionsetup[figure]{labelfont=bf, font=small}         % Make figure labels bold and use a small font for figure captions
+
+\usepackage{subcaption}                                 % Allow subFigures_compressed/subtables with individual sub-captions
+
+% Set page size and margins:
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry} % Configure paper size and margins
+
+% Useful packages
+\usepackage{amsmath}                                    % Enhanced math environments and symbols
+\usepackage{amssymb}                                    % Additional math symbols
+\usepackage{graphicx}                                   % Include and scale external graphics (e.g. .pdf, .png)
+\usepackage[colorlinks=true,                            % Use colored links instead of boxed links
+            allcolors=blue,                             % Use blue for all link types (cite, ref, url)
+            bookmarksnumbered=true,                     % Number the PDF bookmarks according to section numbers
+            bookmarksopen=true,                         % Open the bookmark tree when the PDF is opened
+            bookmarksopenlevel=10]{hyperref}            % Control depth to which bookmarks are expanded
+\usepackage{listings}                                   % Typeset source code with syntax highlighting
+
+\usepackage{authblk}                                    % Manage authors and affiliations in a structured way
+% Make only the author and/or affiliation smaller
+% \renewcommand\Authfont{\small}                        % Set the Author font size (e.g. small or footnotesize)
+\renewcommand\Affilfont{\small}                         % Set the affiliation font size (e.g. small or footnotesize)
+\renewcommand\Authand{}        % <-- add this
+
+\usepackage{comment}                                    % Define large comment environments to exclude blocks from output
+\usepackage{enumitem}                                   % Customize list environments (itemize, enumerate, etc.)
+\usepackage{lineno}                                     % Add optional line numbers to the document
+% \usepackage[backend=biber, style=numeric-comp, citestyle=numeric-comp, sorting=none]{biblatex} % Modern bibliography management with biber backend
+\usepackage[backend=biber, sorting=none, style=numeric, citestyle=numeric]{biblatex} % Modern bibliography management with biber backend
+% Make bibliography font smaller
+\renewcommand*{\bibfont}{\footnotesize}                 % Reduce font size in the bibliography
+\usepackage{multirow}                                   % Enable table cells that span multiple rows
+\usepackage{rotating}                                   % Rotate figures, tables, or text (e.g. sideways tables)
+\usepackage{pdfpages}                                   % Include external PDF pages in the document
+\usepackage{csquotes}                                   % Context-sensitive quotation marks, recommended with biblatex
+\usepackage[table]{xcolor}                              % Color support, including coloring table rows/columns
+\usepackage{array, makecell, colortbl}                  % Extra tools for tables: new column types, multi-line cells, colored cells
+\renewcommand{\arraystretch}{1.5}                       % Increase row height in tables by a factor of 1.5
+\setlength{\parskip}{1\baselineskip}                    % Adds a full line space between paragraphs
+\setlength{\parindent}{0pt}                             % Optional: removes paragraph indentation
+
+\usepackage{todonotes}
+\usepackage{sidecap}
 
 \title{\textbf{Numerov Method for Bound States in the One-Dimensional Schr\"odinger Equation}}
 \author{Alon Sportes (ID: 204498745)}
