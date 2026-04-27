@@ -1,0 +1,17 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{Table of Contents}{1}{section*.1}%
+\contentsline {section}{List of Figures}{2}{section*.3}%
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {section}{\numberline {2}Computational approach}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Shooting and root finding}{3}{subsection.2.1}%
+\contentsline {section}{\numberline {3}Results}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Infinite square well}{4}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Harmonic oscillator}{4}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Double-well potential}{4}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Finite square well}{5}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Scattering and resonant tunneling}{5}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Convergence study}{5}{subsection.3.6}%
+\contentsline {paragraph}{Grid convergence.}{5}{section*.5}%
+\contentsline {paragraph}{Dependence on domain size.}{5}{section*.6}%
+\contentsline {section}{\numberline {4}Discussion}{6}{section.4}%
+\contentsline {section}{\numberline {5}Conclusion}{6}{section.5}%
