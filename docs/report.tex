@@ -262,11 +262,72 @@
                     \label{fig:ho_numerov_vs_rk4}
                 \end{figure}
 
-    \subsection{Double-well potential}
-    The quartic double-well potential is used to demonstrate nontrivial quantum behavior beyond analytic benchmarks and produces pairs of nearly degenerate states. The lowest even and odd states correspond to symmetric and antisymmetric combinations of localized wavefunctions. The energy splitting between these states is analyzed as a function of the barrier height, illustrating quantum tunneling effects.
+        \subsection{Double-well potential}
+            The quartic double-well potential is used as the main nontrivial bound-state example. In the shifted form used here,
+            \[
+            V(x)=ax^4-bx^2-V_{\min}, \qquad V_{\min}=-\frac{b^2}{4a},
+            \]
+            the two minima are shifted to zero. Unlike the infinite square well and harmonic oscillator, this system does not have a simple analytic spectrum, so the validation relies on internal consistency checks, convergence studies, parity structure, and physically expected tunneling behavior.
 
-    \subsection{Finite square well}
-    The finite square well demonstrates the flexibility of the solver. Unlike the infinite case, only a finite number of bound states exist, depending on the well depth. The numerical results capture this behavior correctly.
+            Figure~\ref{fig:dw_states} shows the first four computed states together with the double-well potential. The two lowest states form a nearly degenerate even-odd pair, with energies $E_0\approx2.357273$ and $E_1\approx2.359372$. This is the expected tunneling doublet: the even and odd states are symmetric and antisymmetric combinations of states localized in the two wells. The next pair is higher in energy and has a larger splitting, consistent with stronger overlap through the barrier.
+
+            The probability densities in Fig.~\ref{fig:dw_densities} show the expected localization near the two wells. The lowest pair has nearly identical density, because the sign difference between even and odd wavefunctions disappears in $|\psi(x)|^2$. The higher states show additional node structure and broader support, as expected for excited double-well states.
+
+            The root-finding diagnostics (Fig.~\ref{fig:dw_shooting}) show well-defined zero crossings in the even and odd parity sectors. These plots verify that the computed energies are roots of the shooting mismatch function and that the parity separation continues to work for a more complicated potential.
+
+            Since there is no closed-form exact spectrum for this potential, grid convergence is measured using successive refinements at fixed domain size. The convergence with respect to grid spacing (Fig.~\ref{fig:dw_convergence_h}) shows high-order behavior for the first four states, with fitted slopes close to or above fourth order. As in the harmonic oscillator case, slopes slightly above four should be interpreted as fitting artifacts in a very small-error regime, not as a true order higher than Numerov's expected order.
+
+            The box-size study (Fig.~\ref{fig:dw_convergence_xmax}) shows rapid error reduction as the computational domain is enlarged, followed by a plateau near numerical precision. This confirms that the chosen domain is large enough for the bound states and that the final results are not dominated by artificial boundary truncation.
+
+            Finally, Fig.~\ref{fig:dw_splitting} shows how the lowest even-odd splitting changes with the double-well parameter $b$. As $b$ increases, the barrier between the wells becomes more pronounced and the splitting decreases toward zero. This is the expected physical signature of tunneling suppression: increasing the barrier reduces overlap between the left- and right-localized components.
+
+            Overall, the double-well results demonstrate that the solver works beyond analytic benchmarks. The computed states have the expected parity and localization, the tunneling splitting behaves physically, and the convergence studies show that the numerical results are stable with respect to both grid spacing and domain size.
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_states.png}
+                \caption{First four bound states of the quartic double-well potential. The lowest two states form a nearly degenerate tunneling doublet.}
+                \label{fig:dw_states}
+            \end{figure}
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_densities.png}
+                \caption{Probability densities $|\psi(x)|^2$ for the first four double-well states. The lowest even and odd states have nearly identical densities, as expected for a tunneling doublet.}
+                \label{fig:dw_densities}
+            \end{figure}
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png}
+                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png}
+                \caption{Shooting mismatch functions for even (top) and odd (bottom) double-well states. The zero crossings define the numerical eigenvalues.}
+                \label{fig:dw_shooting}
+            \end{figure}
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png}
+                \caption{Grid convergence for the quartic double well. The energy errors decrease with high-order behavior under successive grid refinement.}
+                \label{fig:dw_convergence_h}
+            \end{figure}
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png}
+                \caption{Dependence of the double-well energy errors on box size. The errors decrease rapidly as the domain is enlarged and then reach a numerical plateau.}
+                \label{fig:dw_convergence_xmax}
+            \end{figure}
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png}
+                \caption{Energy splitting between the two lowest double-well states as the parameter $b$ is varied. The splitting decreases as the barrier becomes stronger, consistent with tunneling suppression.}
+                \label{fig:dw_splitting}
+            \end{figure}
+
+        \subsection{Finite square well}
+            The finite square well demonstrates the flexibility of the solver. Unlike the infinite case, only a finite number of bound states exist, depending on the well depth. The numerical results capture this behavior correctly.
 
     \subsection{Scattering and resonant tunneling}
     In addition to bound states, we extend the solver to study one-dimensional scattering from finite potentials. For a given energy $E$, the wavefunction is propagated across the domain and decomposed into incoming and reflected components on the left and a transmitted component on the right.

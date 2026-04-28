@@ -12,10 +12,10 @@
 \contentsline {subsubsection}{\numberline {3.2.2}Numerov versus Runge--Kutta}{6}{subsubsection.3.2.2}%
 \contentsline {subsection}{\numberline {3.3}Double-well potential}{6}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Finite square well}{9}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Scattering and resonant tunneling}{9}{subsection.3.5}%
-\contentsline {subsection}{\numberline {3.6}Convergence study}{9}{subsection.3.6}%
-\contentsline {paragraph}{Grid convergence.}{9}{section*.17}%
-\contentsline {paragraph}{Dependence on domain size.}{9}{section*.18}%
-\contentsline {section}{\numberline {4}Discussion}{10}{section.4}%
-\contentsline {section}{\numberline {5}Conclusion}{10}{section.5}%
-\contentsline {section}{References}{11}{section*.19}%
+\contentsline {subsection}{\numberline {3.5}Scattering and resonant tunneling}{12}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Convergence study}{12}{subsection.3.6}%
+\contentsline {paragraph}{Grid convergence.}{12}{section*.23}%
+\contentsline {paragraph}{Dependence on domain size.}{12}{section*.24}%
+\contentsline {section}{\numberline {4}Discussion}{13}{section.4}%
+\contentsline {section}{\numberline {5}Conclusion}{13}{section.5}%
+\contentsline {section}{References}{13}{section*.25}%
