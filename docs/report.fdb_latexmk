@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber report"] 0 "report.bcf" "report.bbl" "report" 1777373023.24803 -1
+["biber report"] 1777376331.54677 "report.bcf" "report.bbl" "report" 1777376399.9338 0
   "references.bib" 1777369189.93512 655 8f93fc878757d4fd3cda6064465a846c ""
-  "report.bcf" 1777373023.17813 108089 923416fff6ebbc02cf2ccbe7fb784adf "pdflatex"
+  "report.bcf" 1777376399.85282 108089 923416fff6ebbc02cf2ccbe7fb784adf "pdflatex"
   (generated)
   "report.bbl"
   "report.blg"
   (rewritten before read)
-["pdflatex"] 1777373020.6997 "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" "report.pdf" "report" 1777373023.24827 0
+["pdflatex"] 1777376397.40076 "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" "report.pdf" "report" 1777376399.93404 0
   "../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png" 1777368490.69294 64128 0ba2a1ba59328176e16eb25ff1e7ffd3 ""
   "../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png" 1777368489.75487 163359 dba3aacfb9395bbf50865b3b7fcb10e1 ""
   "../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png" 1777368489.8116 46745 752e83432a3ee948c460b420d6197603 ""
@@ -33,7 +33,7 @@
   "../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png" 1777368886.0406 58660 f3823039df6c6caf72c49f0cd5c456d7 ""
   "../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png" 1777368887.35944 80074 50bf723fe2bd0fbcd8137e70b540afb2 ""
   "../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png" 1777368887.43438 52567 d28c99e429df3e3a3b5bbee9a1633884 ""
-  "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" 1777373019.64205 37636 e8bdcb05dfab9a9431a5cc00ed8c46b8 ""
+  "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" 1777376392.03796 39743 99799856f83fa96404e30a469678a522 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -45,6 +45,7 @@
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1246382020 940 228d6584342e91276bf566bcf9716b83 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
+  "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmbx9.tfm" 1136768653 1328 5442e22a7072966dbaf88ca900acf3f0 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmex10.tfm" 1136768653 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm" 1136768653 1528 abec98dbc43e172678c11b3b9031252a ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1136768653 1512 f21f83efb36853c0b70002322c1ab3ad ""
@@ -61,6 +62,7 @@
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmti9.tfm" 1136768653 1476 cccc6cc4935c18ec3d5623b77ecb8b74 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1248133631 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1248133631 32080 340ef9bf63678554ee606688e7b5339d ""
+  "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb" 1248133631 32298 c6d25bb16d1eac01ebdc6d7084126a1e ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1248133631 30251 6afa5cb1d0204815a708a080681d4674 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1248133631 35469 70d41d2b9ea31d5d813066df7c99281c ""
@@ -175,17 +177,15 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774538740 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774538681 3636776 dfeaead9e2e9c793969724e130e444cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "report.aux" 1777373023.1746 14929 7b380c3a64b0a7d36d1556f274d36e84 "pdflatex"
-  "report.bbl" 1777369191.96824 1666 1d08ed8c5ef7e023b792ac2be9f0f476 "biber report"
-  "report.lof" 1777373023.1789 5459 58a26c08668291e757252fdd137bdc52 "pdflatex"
-  "report.out" 1777373023.17715 3549 b41363861ae2d6a60182225a03579445 "pdflatex"
-  "report.run.xml" 1777373023.1788 2319 1dbeae9c91c70510d621aca3b4772e83 "pdflatex"
-  "report.tex" 1777373019.64205 37636 e8bdcb05dfab9a9431a5cc00ed8c46b8 ""
-  "report.toc" 1777373023.17887 1802 f07dff93c7bd42f58d3bcac724a71fd1 "pdflatex"
+  "report.aux" 1777376399.85017 14234 c5d930bb43a4ada7c60d9972680343c1 "pdflatex"
+  "report.bbl" 1777376332.74006 1666 1d08ed8c5ef7e023b792ac2be9f0f476 "biber report"
+  "report.out" 1777376399.85204 3295 fde5501006ea269db1ae1329a812c6ae "pdflatex"
+  "report.run.xml" 1777376399.85336 2319 1dbeae9c91c70510d621aca3b4772e83 "pdflatex"
+  "report.tex" 1777376392.03796 39743 99799856f83fa96404e30a469678a522 ""
+  "report.toc" 1777376399.85343 1545 cd0d6d14a1bdbcea3bb3b4423b05d814 "pdflatex"
   (generated)
   "report.aux"
   "report.bcf"
-  "report.lof"
   "report.log"
   "report.out"
   "report.pdf"
