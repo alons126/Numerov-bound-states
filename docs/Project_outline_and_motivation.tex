@@ -211,9 +211,11 @@
 
     Those topics belong to the advection, hydrodynamics, Burgers equation, Euler equations, and PIC parts of the course. They are not part of this project.
 
-    \section{Why Numerov?}
+    \section{The Numerov algorithm}
 
-    The equation has the form
+    \subsection{In-depth explanation of the Numerov algorithm}
+
+    After nondimensionalization, the one-dimensional time-independent Schr\"odinger equation is written as
     \begin{equation}
         \psi''(x)=q(x)\psi(x),
     \end{equation}
@@ -221,40 +223,71 @@
     \begin{equation}
         q(x)=2[V(x)-E].
     \end{equation}
+    This is a linear second-order ordinary differential equation with no first-derivative term, which is exactly the structure for which the Numerov algorithm is designed.
 
-    This form is exactly what Numerov is designed for: second-order ODEs without a first-derivative term.
+    The main idea is to discretize space on a uniform grid $x_n=x_0+nh$ and derive a recurrence relation for the wavefunction values $\psi_n=\psi(x_n)$. Instead of replacing $\psi''$ with the simplest second-difference approximation, Numerov combines Taylor expansions about neighboring points in a way that cancels lower-order truncation errors. The resulting method advances the solution using $\psi_{n-1}$ and $\psi_n$ to obtain $\psi_{n+1}$ while incorporating the local values of $q(x)$ at the same three grid points.
 
-    In \texttt{src/numerov.py}:
-    \begin{itemize}
-        \item \texttt{q\_from\_energy()} builds $q(x)$,
-        \item \texttt{numerov\_outward()} performs the Numerov recurrence,
-        \item \texttt{normalize\_wavefunction()} rescales the final wavefunction so that total probability is 1,
-        \item \texttt{derivative\_at\_right\_edge()} estimates the derivative at the boundary when needed.
-    \end{itemize}
-
-    Numerov is used instead of Euler or a generic Runge-Kutta method because it is especially efficient for equations like the Schr\"odinger equation. It uses neighboring grid values and gives high accuracy for second-order linear ODEs. This is also consistent with Pang, where the one-dimensional Schr\"odinger equation is treated using wavefunction integration and eigenvalue search.
-
-    A key implementation detail is that Numerov is a two-step method. It needs $\psi$ at the first two grid points. Therefore, the code must provide startup values. In \texttt{shooting.py}, \texttt{initial\_conditions()} gives those startup values using Taylor expansion and parity.
-
-    For even states:
+    For an equation of the form $\psi''(x)=q(x)\psi(x)$, the standard Numerov update can be written as
     \begin{equation}
-        \psi(0)=1, \qquad \psi'(0)=0.
+        \left(1-\frac{h^2}{12}q_{n+1}\right)\psi_{n+1}
+        =
+        2\left(1+\frac{5h^2}{12}q_n\right)\psi_n
+        -
+        \left(1-\frac{h^2}{12}q_{n-1}\right)\psi_{n-1},
     \end{equation}
+    where $q_n=q(x_n)$. Solving for $\psi_{n+1}$ gives an explicit two-step marching scheme. Its local truncation error is higher order than that of basic finite-difference stepping, so in practice it is much more accurate than Euler-type methods on the same grid. For smooth problems, this is the reason it is a standard tool for Schr\"odinger eigenvalue calculations.
 
-    For odd states:
+    The high accuracy comes from exploiting the special structure of the equation rather than treating it as a completely general first-order system. A generic Runge-Kutta integrator can also solve the problem, but it introduces an auxiliary variable for $\psi'$ and does not take direct advantage of the fact that the physical equation is already second order and linear. Numerov is therefore both specialized and efficient: one stores only the wavefunction sequence and the coefficient function $q(x)$, yet still obtains high-order propagation.
+
+    There is, however, an important practical consequence of the recurrence: Numerov is a two-step method. It cannot start from a single boundary value alone. It needs two nearby values, typically $\psi_0$ and $\psi_1$, before the recurrence can be applied. That means the startup formula is part of the algorithm, not just a minor implementation detail. If the initialization is too crude, then the formally high-order recurrence can be contaminated by low-order starting error. This project encountered exactly that issue during convergence studies.
+
+    For symmetric potentials, the startup values are obtained from parity and a Taylor expansion about the origin. For even states,
+    \begin{equation}
+        \psi(0)=1, \qquad \psi'(0)=0,
+    \end{equation}
+    while for odd states,
     \begin{equation}
         \psi(0)=0, \qquad \psi'(0)=1.
     \end{equation}
-
-    The latest code includes higher Taylor terms and the curvature of the local coefficient $q(x)$ near the origin:
+    These conditions determine the local series expansion and therefore the first usable grid values. The latest implementation keeps higher Taylor terms so that the first Numerov step remains consistent with the overall order of the method:
     \begin{itemize}
         \item even states include the $h^4$ term,
         \item odd states include the $h^5$ term.
     \end{itemize}
 
-    For the quartic double well, the startup expansion was improved further by including the relevant $q''(0)$ terms for both even and odd parity. This matters because the quartic potential has curvature structure near the origin that affects the first Numerov steps. Without these terms, one of the low-lying double-well states showed a degraded convergence slope. After the correction, the state recovered high-order convergence consistent with the Numerov method.
+    The quartic double-well problem required one more refinement. Near the origin, the local curvature of $q(x)$ affects the startup series, so the code was extended to include the relevant $q''(0)$ terms for both parities. Without this correction, one of the low-lying double-well states showed a reduced convergence slope even though the recurrence itself was correct. After the startup was upgraded, the state recovered high-order behavior consistent with Numerov. This is a useful lesson for the project: the algorithm is not just the recurrence formula, but also the consistent initialization and boundary diagnostics that allow its formal accuracy to appear in actual computations.
 
-    This matters because if the startup formula is too low order, it can pollute the observed convergence rate. This was seen first in the infinite square well: the energies were accurate, but the convergence slopes were not cleanly fourth order. It appeared again in the quartic double well, where the second excited state initially converged too slowly. After correcting the startup formula, the square-well states show slopes close to 4, and the double-well state that had been stuck near $p\approx3.09$ improved to about $p\approx4.55$.
+    \subsection{Why Numerov?}
+
+    Numerov is the natural method here because the Schr\"odinger equation already has the exact structure it expects: a second-order ODE with no first-derivative term. That makes it more appropriate than a generic ODE solver if the goal is to compute bound-state wavefunctions and eigenvalues efficiently on a uniform grid.
+
+    It is also a good match to the goals of the project. I want a method that is accurate enough to support convergence studies, simple enough to implement from first principles, and specialized enough that numerical issues can be interpreted physically and algorithmically. Numerov satisfies all three. It is compact, mathematically transparent, and widely used in textbook Schr\"odinger problems, including the treatment in Pang based on wavefunction integration plus eigenvalue search.
+
+    The project results also justify the choice. Once the startup formulas and boundary derivative estimates were made consistent with the method's order, the solver produced clean convergence for the infinite square well, harmonic oscillator, finite square well, and quartic double well. That would be harder to diagnose pedagogically with a more black-box integrator. Numerov therefore serves not only as an effective solver, but also as a useful framework for studying numerical error, parity reduction, domain truncation, and tunneling-sensitive states.
+
+    \subsection{How the code uses the Numerov algorithm}
+
+    In the codebase, Numerov is the propagation engine inside the larger shooting-based eigenvalue solver. The functions in \texttt{src/numerov.py} implement the method-specific operations:
+    \begin{itemize}
+        \item \texttt{q\_from\_energy()} builds the coefficient function $q(x)$ from the potential and trial energy,
+        \item \texttt{numerov\_outward()} performs the Numerov recurrence across the grid,
+        \item \texttt{normalize\_wavefunction()} rescales the final wavefunction so that total probability is 1,
+        \item \texttt{derivative\_at\_right\_edge()} estimates the derivative at the boundary when a derivative-based mismatch is needed.
+    \end{itemize}
+
+    The startup values used by the recurrence are supplied from \texttt{src/shooting.py}. In particular, \texttt{initial\_conditions()} constructs the parity-based Taylor expansions near the origin, and \texttt{half\_domain\_wavefunction()} uses those values to launch the outward integration on the half domain. The shooting routines then evaluate how well the integrated solution satisfies the target boundary behavior for a given trial energy.
+
+    The overall workflow is therefore:
+    \begin{enumerate}
+        \item choose a trial energy $E$,
+        \item construct $q(x)=2[V(x)-E]$ on the grid,
+        \item generate parity-consistent startup values near the origin,
+        \item propagate the wavefunction outward with Numerov,
+        \item measure the boundary mismatch,
+        \item adjust $E$ until the mismatch vanishes.
+    \end{enumerate}
+
+    For symmetric potentials, only the half domain must be integrated, after which the full wavefunction is reconstructed from parity and normalized. This is one of the main algorithmic advantages used throughout the project. In that sense, the code does not use Numerov in isolation: it combines Numerov propagation, carefully designed startup conditions, symmetry reduction, boundary-condition diagnostics, and root-finding in energy to build the full bound-state solver.
 
     \section{Why shooting?}
 
@@ -280,7 +313,7 @@
         \item \texttt{solve\_symmetric\_potential()}.
     \end{itemize}
 
-    The important function is \texttt{boundary\_mismatch()}. It answers the question: for this trial energy, did the wavefunction land correctly at the boundary? If not, the energy is wrong.
+    The important function is \texttt{boundary\_mismatch()}. Here, a \emph{mismatch} means the residual error in the boundary condition after integrating the wavefunction for a trial energy. In other words, after the solver marches across the domain, it evaluates how far the computed wavefunction is from satisfying the required boundary behavior at the endpoint. If that residual is not zero, the trial energy is not an eigenvalue. The function \texttt{boundary\_mismatch()} is therefore the code routine that computes this residual for a given energy.
 
     The latest solver also changes how the final mismatch is stored. Instead of reporting the raw, unnormalized boundary amplitude $\psi(x_{\max})$, the code now stores the normalized boundary leakage after the full wavefunction has been reconstructed and normalized. This makes the residual scale-invariant and physically more meaningful. In practice, this changed the low-state double-well residuals from raw values around $10^{-6}$--$10^{-5}$ to normalized leakage values around $2\times10^{-7}$.
 
@@ -334,6 +367,7 @@
     \begin{equation}
         F(E)=\text{mismatch}(E).
     \end{equation}
+    This $F(E)$ is the \emph{mismatch function}: it takes an energy $E$ as input and returns the boundary-condition residual produced by the shooting calculation. Its sign and magnitude indicate how the trial solution fails to satisfy the boundary condition.
 
     Allowed eigenvalues satisfy
     \begin{equation}

@@ -292,6 +292,7 @@ OUTPUT Project_outline_and_motivation.lof
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/ecbx1200.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/ecti1095.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/ecrm0800.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/ecrm0600.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/jknappen/ec/ectt1200.tfm
@@ -302,6 +303,7 @@ INPUT Project_outline_and_motivation.run.xml
 OUTPUT Project_outline_and_motivation.run.xml
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
@@ -312,5 +314,6 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pf
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb
