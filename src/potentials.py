@@ -6,6 +6,27 @@ Potential models used in the Numerov project.
 All functions in this module accept a NumPy array x and return the potential
 evaluated at the same locations. Keeping potentials separate from the solver
 makes it easy to test multiple physical systems with the same numerical method.
+
+Reviewer guide
+--------------
+This module is the "physics definition" layer of the project. The solvers in
+`src/shooting.py`, `src/numerov.py`, and `src/scattering.py` do not know which
+system is being solved; they only require sampled values of V(x). That
+separation is intentional because it lets the same numerical machinery be
+validated on analytic benchmarks and then reused for less trivial systems.
+
+The potentials play distinct roles in the report:
+- infinite square well: basic analytic validation of bound-state shooting
+- harmonic oscillator: analytic validation plus inward-shooting stability study
+- finite square well: finite-depth bound-state example
+- quartic double well: tunneling splitting and convergence analysis
+- square and double barriers: scattering and resonant-tunneling extension
+
+The most important implementation choice here is in `quartic_double_well()`.
+When `shift_min_to_zero=True`, the code subtracts the analytic minimum
+`-b^2/(4a)` instead of the sampled grid minimum. That keeps the physical
+potential fixed while the grid changes, which is necessary for meaningful
+grid-convergence studies.
 """
 
 import numpy as np

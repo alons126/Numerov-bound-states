@@ -11,6 +11,24 @@ The implementation follows the common Numerov scattering strategy used in
 computational physics texts: impose a transmitted right-moving wave on the far
 right, integrate backward through the potential, and decompose the left-side
 solution into incident and reflected waves.
+
+Reviewer guide
+--------------
+This is the main extension beyond the core bound-state project. It reuses the
+same Numerov framework, but now for complex-valued scattering states instead of
+real bound-state eigenfunctions.
+
+The method is:
+1. assume the potential is asymptotically zero on both sides
+2. impose a unit transmitted wave on the far right
+3. integrate backward through the barrier using complex Numerov
+4. decompose the left asymptotic solution into incident and reflected waves
+5. compute T, R, and the conservation check T + R
+
+This module is included to show that the codebase is not limited to bound-state
+shooting. The physics focus of the report is still on bound states; scattering
+is a secondary extension used to study transmission, reflection, and
+double-barrier resonances.
 """
 
 from dataclasses import dataclass

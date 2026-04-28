@@ -10,6 +10,19 @@ This script runs the full project workflow described in the report:
 4. automated tests for numerical sanity checks.
 
 It is intentionally lightweight: all physics and analysis logic lives in src/.
+
+Reviewer guide
+--------------
+This script is intentionally small. Its job is orchestration, not numerical
+work. A reviewer reading the project from top to bottom can treat it as the
+"main program":
+- clear previous generated outputs
+- run each experiment module in the intended report order
+- run the regression tests
+- print a concise completion summary
+
+Keeping this file thin is part of the project structure: most scientific logic
+lives in `src/`, while this script simply reproduces the full workflow.
 """
 
 import shutil

@@ -9,6 +9,26 @@ time-independent Schrödinger equation in dimensionless form,
     psi''(x) = 2 [V(x) - E] psi(x),
 
 using the Numerov method on a uniform grid.
+
+Reviewer guide
+--------------
+This file is the numerical core of the project. It does not decide which
+eigenvalue is correct; instead it provides the low-level operations that all
+higher layers rely on:
+- convert a trial energy into the coefficient q(x)
+- propagate a trial solution with the Numerov recurrence
+- normalize the resulting wavefunction safely
+- estimate boundary derivatives needed by parity-based shooting
+
+Several comments in the report are implemented directly here:
+- `numerov_outward()` rescales large trial solutions during scans so a wrong
+  trial energy does not overflow before the mismatch is evaluated
+- `normalize_wavefunction()` rescales before squaring for the same reason
+- `derivative_at_right_edge()` uses a fourth-order stencil when possible
+
+That last point is not cosmetic. Even-state inward shooting enforces
+`psi'(0)=0`, so a low-order derivative estimate would make the overall method
+look worse than the Numerov recurrence itself really is.
 """
 
 import numpy as np

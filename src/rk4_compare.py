@@ -7,6 +7,23 @@ This module is separate from the main Numerov solver. It solves the same
 harmonic-oscillator shooting problem with a fourth-order Runge-Kutta integrator
 so the project can compare a general ODE method with the specialized Numerov
 scheme.
+
+Reviewer guide
+--------------
+This module exists to make one methodological comparison precise: how does the
+specialized Numerov integrator compare with a standard general-purpose RK4
+integrator on the same physical problem?
+
+The harmonic oscillator is used because it has:
+- an exact spectrum, so errors can be measured directly
+- a smooth potential, so the comparison is not dominated by discontinuities
+- a natural inward-shooting formulation, matching the stable Numerov treatment
+
+RK4 is implemented as a first-order system for `[psi, psi']`, whereas Numerov
+works directly with the second-order equation. That distinction is one reason
+the derivative boundary treatment matters so much for Numerov: RK4 carries
+`psi'` explicitly, while Numerov must reconstruct it when parity conditions
+require a derivative mismatch.
 """
 
 from dataclasses import dataclass

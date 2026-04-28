@@ -5,6 +5,23 @@ Plotting helpers for report-ready figures.
 
 The functions in this module keep all Matplotlib logic in one place so the rest
 of the project code can focus on the numerical calculations.
+
+Reviewer guide
+--------------
+This file is deliberately separate from the numerical solvers. It contains only
+presentation logic: turning validated data into figures used in the report.
+
+The plotting choices are part of the reviewer story, not just aesthetics:
+- state and density plots show parity, node structure, and localization
+- error curves show convergence with respect to h or x_max
+- root-diagnostic plots show that eigenvalues come from zeros of a mismatch
+  function rather than from opaque black-box optimization
+- scattering plots show T(E), R(E), and the conservation check T(E)+R(E)
+
+Recent reviewer-facing changes keep more information visible:
+- state labels now show energies with higher precision
+- root-diagnostic plots display the raw mismatch on a symmetric log scale so
+  both even and odd scans remain interpretable near zero
 """
 
 from pathlib import Path

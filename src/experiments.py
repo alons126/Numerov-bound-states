@@ -5,6 +5,28 @@ High-level numerical experiments used in the project report.
 
 Each function in this module runs one physical case study, writes tabulated data
 to CSV, and saves the associated figures into the results directory.
+
+Reviewer guide
+--------------
+This file is the experiment plan in executable form. The lower-level modules
+know how to solve or analyze a problem; this module chooses which problems to
+run, which outputs to save, and which comparisons support the report.
+
+The major cases are:
+- square well: analytic validation and clean outward-shooting diagnostics
+- harmonic oscillator: inward-shooting validation plus Numerov versus RK4
+- quartic double well: tunneling splitting and the most careful convergence
+  study in the project
+- finite square well: additional finite-depth bound-state example
+- scattering: single- and double-barrier transmission study
+
+The quartic double-well workflow includes several choices that are documented
+in the README and reviewer notes:
+- a larger default box than earlier drafts, because x_max=3 was visibly too
+  small for the low-lying tails
+- separate h-convergence and x_max-convergence studies
+- successive-refinement error estimates for grid convergence
+- parity-separated root-diagnostic plots for the double well itself
 """
 
 from pathlib import Path

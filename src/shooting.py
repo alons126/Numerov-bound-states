@@ -9,6 +9,33 @@ For a symmetric potential, low-lying eigenstates can be separated into:
 
 This module exploits that symmetry to solve the bound-state problem on the
 half-domain x in [0, x_max], then reconstructs the full wavefunction.
+
+Reviewer guide
+--------------
+This file is the bound-state eigenvalue solver. Conceptually, it turns the
+Schrödinger boundary-value problem into a scalar root-finding problem:
+1. choose a trial energy E
+2. integrate the corresponding trial wavefunction with Numerov
+3. evaluate a boundary mismatch M(E)
+4. bracket sign changes of M(E)
+5. refine the roots to obtain eigenvalues
+
+Two formulations are implemented because the project studies both bounded and
+unbounded confining systems:
+- outward shooting from x=0 for finite-domain or effectively boxed problems
+- inward shooting from x_max for decaying-tail problems such as the harmonic
+  oscillator, where outward shooting is numerically contaminated by the growing
+  forbidden-region solution
+
+This file also contains the most delicate numerical fixes described in the
+reviewer documents:
+- `initial_conditions()` includes higher-order Taylor startup terms, including
+  the q''(0) contribution, so the first Numerov step does not spoil the
+  observed fourth-order convergence
+- `bisect_energy()` finishes with a few safeguarded secant-style polishing
+  steps inside the final sign-changing bracket
+- `StateSolution.mismatch` stores a normalized residual diagnostic rather than
+  an arbitrary unnormalized wall amplitude
 """
 
 from dataclasses import dataclass

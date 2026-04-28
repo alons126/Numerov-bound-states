@@ -6,6 +6,25 @@ Minimal automated tests for the Numerov project.
 These tests are designed for project validation rather than full software
 engineering coverage: they check normalization, analytic benchmark energies,
 and one qualitative physical feature of the double well.
+
+Reviewer guide
+--------------
+These tests are lightweight by software-engineering standards, but they are
+targeted at the numerical claims made in the report. The goal is to catch the
+kinds of regressions that would silently invalidate the scientific conclusions.
+
+The suite checks:
+- normalization and derivative-stencil correctness
+- analytic benchmark accuracy for the square well and harmonic oscillator
+- expected convergence order where the implementation should recover it
+- quartic-double-well details such as the analytic minimum shift, box-size
+  sensitivity, parity-specific mismatch behavior, and low-state residuals
+- scattering probability conservation
+- the top-level script import path behavior
+
+One especially important regression test is the square-well convergence-order
+check. It protects the higher-order startup logic in `initial_conditions()`
+from quietly degrading in the future.
 """
 
 import sys

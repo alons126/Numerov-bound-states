@@ -6,6 +6,26 @@ Analysis utilities for validation and convergence studies.
 This module collects functions that turn raw solver output into quantities used
 in the report: exact benchmark spectra, error tables, convergence trends, and
 double-well splitting data.
+
+Reviewer guide
+--------------
+This module is the scientific validation layer. It is what turns the project
+from "the code runs" into "the numerical claims are checked."
+
+The functions here fall into three groups:
+- exact benchmark helpers for problems with known spectra
+- convergence helpers for studying discretization and truncation error
+- parameter-sweep helpers for extracting physical trends such as double-well
+  tunneling splitting
+
+One important reviewer-facing design choice is that the quartic double well
+uses two different convergence strategies:
+- grid-refinement (`convergence_vs_grid_successive`) compares each grid to the
+  next finer grid on the same domain, because there is no exact closed-form
+  spectrum to compare against
+- box-size studies (`convergence_vs_box_size_fixed_spacing`) keep the spacing
+  approximately fixed so that changing x_max mainly measures finite-domain
+  truncation rather than also changing h
 """
 
 import csv
