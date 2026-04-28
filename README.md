@@ -6,6 +6,7 @@ Numerical solution of the 1D time-independent Schrödinger equation with the Num
 
 - Numerov integration for symmetric 1D bound-state problems
 - Shooting + bisection root-finding for eigenvalues (mismatch function formulation)
+- Safeguarded root polishing after bisection for smaller final boundary residuals
 - Validation on:
   - infinite square well
   - harmonic oscillator
@@ -17,6 +18,7 @@ Numerical solution of the 1D time-independent Schrödinger equation with the Num
 - Convergence studies versus grid spacing and domain size
 - Root-finding diagnostics (mismatch function plots and bisection traces)
 - Double-well tunneling splitting analysis
+- Separate grid-refinement and box-size studies for the quartic double well
 - Plots and CSV output for report-ready figures
 - Lightweight automated tests
 
@@ -34,7 +36,9 @@ Numerical solution of the 1D time-independent Schrödinger equation with the Num
 - `tests/`
   - `test_solver.py`: lightweight numerical sanity checks
 - `docs/`
-  - `report.tex`: project report skeleton
+  - `report.tex`: main project report
+  - `code_walkthrough.md`: reviewer-oriented code map
+  - `Project_outline_and_motivation.tex`: project overview and implementation notes
 
 ## Installation
 
@@ -65,10 +69,12 @@ Running the solver generates:
 - validation tables for square well and harmonic oscillator
 - wavefunction and density plots
 - convergence plots versus `h` and `x_max`
+- RK4 versus Numerov comparison data for the harmonic oscillator
 - double-well splitting versus barrier parameter
+- double-well root-diagnostic plots
 - finite square well bound-state plots
 - transmission and reflection spectra for finite barriers
-- double-barrier resonance plots (including log-scale)
+- double-barrier resonance peak tables and resonant-state plots
 
 ## How it works
 
@@ -90,6 +96,8 @@ and integrated using the Numerov recurrence relation, which is a high-accuracy f
 
 A key implementation detail is that the accuracy of the method depends not only on the Numerov recurrence itself, but also on how boundary conditions are enforced. In particular, for inward shooting problems such as the harmonic oscillator, the derivative at the origin must be computed with a high-order stencil to preserve the overall accuracy of the scheme.
 
+The startup values used for parity-based shooting also matter: the current implementation includes higher-order Taylor terms near the origin so the first Numerov step does not reduce the observed convergence order.
+
 ### 3. Shooting method
 
 For a given trial energy $E$:
@@ -103,7 +111,7 @@ For symmetric potentials solved on the half-domain:
 - outward shooting uses the boundary mismatch at $x = x_{\max}$
 - inward shooting (used for unbounded problems like the harmonic oscillator) enforces decay at large $|x|$ and evaluates the mismatch at $x = 0$
 
-Eigenvalues are obtained by solving $M(E) = 0$. The solver scans over energies to locate sign changes (bracketing) and refines roots using the bisection method.
+Eigenvalues are obtained by solving $M(E) = 0$. The solver scans over energies to locate sign changes (bracketing), refines roots using bisection, and then applies a short safeguarded polishing step inside the final bracket for the outward-shooting bound-state solver.
 
 To make the algorithm transparent, the code can generate diagnostic plots of $M(E)$ versus $E$, where zero crossings correspond to physical eigenvalues.
 
@@ -114,13 +122,16 @@ The half-domain solution is reflected to the negative axis using parity. The res
 The solver is applied to several systems (with bound states as the primary focus and additional extensions for more complex behavior):
 - infinite square well (validation against exact solution)
 - harmonic oscillator (validation against exact solution, using inward shooting for stability)
-- quartic double well (tunneling and energy splitting)
+- quartic double well (tunneling and energy splitting, with an analytic shift that places the well minima at zero without making the potential grid-dependent)
 - finite square well (finite number of bound states)
-- finite rectangular barrier (exploration of scattering behavior and comparison with analytic transmission)
+- finite rectangular barrier (exploration of scattering behavior and probability-conservation validation)
 - double barrier (resonant tunneling and peak structure as an extension)
 
 Additional analysis includes:
 - convergence studies versus grid spacing and domain size to verify numerical accuracy
+- for the quartic double well, separate treatment of grid refinement and box truncation:
+  - `h`-convergence uses successive refinements on a fixed domain
+  - `x_max`-convergence compares against a larger-box reference while keeping spacing approximately fixed
 - parameter sweeps (e.g., double-well barrier height)
 - generation of plots and CSV tables for reporting
 - estimation of convergence rates $\Delta E \propto h^p$ from log--log fits
@@ -137,8 +148,8 @@ python3 scripts/run_solver.py
 
 This script:
 - runs all experiments
-- saves figures and data to `results/`
 - executes automated tests to verify correctness
+- saves figures and data to `results/`
 - generates root-finding diagnostic plots for selected states
 
 ## Notes
@@ -155,3 +166,5 @@ For unbounded problems such as the harmonic oscillator, the domain is truncated 
 The code is written for clarity and analysis rather than maximum performance.
 
 A subtle but important numerical point is that the accuracy of eigenvalue shooting depends on both the integrator and the boundary mismatch evaluation. In this project, a higher-order derivative approximation was required to ensure that the Numerov method achieves its expected accuracy when compared with RK4. This serves as a practical example of how implementation details can influence the apparent performance of numerical algorithms.
+
+Another subtle point appears in the quartic double well: shifting the potential by the sampled grid minimum makes the potential itself vary slightly with grid spacing. The current implementation instead uses the analytic minimum, which keeps convergence studies physically meaningful.
