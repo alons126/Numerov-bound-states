@@ -173,6 +173,31 @@ def test_square_well_convergence_order() -> None:
 
 
 # ---------------------------------------------------------------------------
+# FUNCTION: test_square_well_convergence_includes_four_requested_states
+# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
+def test_square_well_convergence_includes_four_requested_states() -> None:
+    """
+    Check that the infinite-well convergence study tracks all four solved states.
+    """
+    a = 1.0
+    exact = exact_square_well_energies(np.arange(1, 5), a=a)
+    conv = convergence_vs_grid(
+        potential_fn=infinite_square_well_numeric,
+        potential_kwargs={"a": a, "wall_height": 1.0e6},
+        x_max=a,
+        grid_sizes=[50, 80, 120, 180],
+        n_even=2,
+        n_odd=2,
+        e_min=0.1,
+        e_max=80.0,
+        reference_energies=exact,
+    )
+
+    assert conv["energy_errors"].shape == (4, 4)
+
+
+# ---------------------------------------------------------------------------
 # FUNCTION: test_harmonic_oscillator_first_levels
 # Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------

@@ -1,1 +1,13 @@
 \babel@toc {english}{}\relax 
+\contentsline {figure}{\numberline {1}{\ignorespaces Comparison between numerical and exact energy eigenvalues for the infinite square well. The agreement is excellent for the first four states.}}{5}{figure.caption.5}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Probability densities $|\psi (x)|^2$ for the first four eigenstates of the infinite square well. The correct number of nodes and boundary behavior are clearly reproduced.}}{5}{figure.caption.6}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Boundary mismatch functions for even (top) and odd (bottom) states. The zero crossings correspond to the physical eigenvalues found by the shooting method.}}{5}{figure.caption.7}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}}{7}{figure.caption.8}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Wavefunctions for the first four states plotted together with their corresponding energies and the confining potential.}}{7}{figure.caption.9}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Comparison between numerical and exact energy eigenvalues for the harmonic oscillator. The agreement is excellent for the first four states.}}{7}{figure.caption.10}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Probability densities $|\psi (x)|^2$ for the first four harmonic oscillator eigenstates. The correct node structure is clearly reproduced.}}{7}{figure.caption.11}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Boundary mismatch functions for even (top) and odd (bottom) states. The zero crossings correspond to the physical eigenvalues.}}{8}{figure.caption.12}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}}{8}{figure.caption.13}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Dependence of the energy error on the domain size $x_{\max }$. Errors decrease rapidly before reaching a plateau set by discretization and floating-point limits.}}{8}{figure.caption.14}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Wavefunctions for the first four harmonic oscillator states plotted together with the potential.}}{12}{figure.caption.15}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Comparison of Numerov and RK4 shooting for the harmonic oscillator. Both methods show fourth-order convergence, while Numerov gives a smaller maximum energy error at the same grid spacing.}}{12}{figure.caption.16}%

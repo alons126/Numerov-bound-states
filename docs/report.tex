@@ -11,13 +11,16 @@
 \usepackage[english]{babel}                             % Set document language (hyphenation, date formats, etc.)
 
 % Set caption formatting:
+% Set caption formatting:
 \usepackage{caption}                                    % Control the appearance of figure and table captions
+\captionsetup[table]{labelfont=bf, font=small}          % Make table labels bold and use a small font for table captions
+\captionsetup[figure]{labelfont=bf, font=small}         % Make figure labels bold and use a small font for figure captions
 
 \usepackage{subcaption}                                 % Allow subFigures_compressed/subtables with individual sub-captions
 
 % Set page size and margins:
 % Replace `letterpaper' with `a4paper' for UK/EU standard size
-\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry} % Configure paper size and margins
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry} % Configure paper size and margins
 
 % Useful packages
 \usepackage{amsmath}                                    % Enhanced math environments and symbols
@@ -93,50 +96,171 @@
     \newpage
 
     \section{Introduction}
-    This project studies the one-dimensional time-independent Schr\"odinger equation using the Numerov method combined with a parity-based shooting procedure. The goals are to validate the method on systems with known analytic solutions, demonstrate numerical convergence and accuracy, and then apply it to more interesting bound-state potentials such as a double well and a finite square well. Extensions to scattering problems are also explored as a secondary component.
+        This project studies the one-dimensional time-independent Schr\"odinger equation using the Numerov method combined with a parity-based shooting procedure. The goals are to validate the method on systems with known analytic solutions, demonstrate numerical convergence and accuracy, and then apply it to more interesting bound-state potentials such as a double well and a finite square well. Extensions to scattering problems are also explored as a secondary component.
 
     \section{Computational approach}
-    In dimensionless units, the Schr\"odinger equation is written as
-    \[
-    \psi''(x) = 2\,[V(x)-E]\psi(x).
-    \]
-    The wavefunction is integrated with the Numerov scheme on a uniform grid. For symmetric potentials, even and odd states are treated separately using parity conditions at $x=0$. Eigenvalues are found by scanning for sign changes in the boundary mismatch and then refining them with bisection. The correctness of the numerical approach is verified through comparison with analytical solutions where available and through systematic convergence studies.
+        \subsection{The Schr\"odinger equation and Numerov method}
+            In dimensionless units, the Schr\"odinger equation is written as
+            \[
+            \psi''(x) = 2\,[V(x)-E]\psi(x).
+            \]
+            The wavefunction is integrated with the Numerov scheme on a uniform grid. For symmetric potentials, even and odd states are treated separately using parity conditions at $x=0$. Eigenvalues are found by scanning for sign changes in the boundary mismatch and then refining them with bisection. The correctness of the numerical approach is verified through comparison with analytical solutions where available and through systematic convergence studies.
 
-    The overall numerical workflow is implemented in a modular way in the accompanying Python code. The core components include a Numerov integrator for propagating the wavefunction, a shooting module that enforces parity-based boundary conditions and constructs the mismatch function, and analysis utilities for convergence studies and parameter sweeps. This separation of concerns allows each numerical component to be validated independently and makes the implementation easier to interpret \cite{Pang_2006}.
+            The overall numerical workflow is implemented in a modular way in the accompanying Python code. The core components include a Numerov integrator for propagating the wavefunction, a shooting module that enforces parity-based boundary conditions and constructs the mismatch function, and analysis utilities for convergence studies and parameter sweeps. This separation of concerns allows each numerical component to be validated independently and makes the implementation easier to interpret \cite{Pang_2006}.
 
-    \subsection{Shooting and root finding}
-    The boundary-value eigenproblem is reformulated as a root-finding problem for a mismatch function $M(E)$. For a given trial energy $E$, the Schr\"odinger equation is integrated and a boundary mismatch is evaluated. For symmetric potentials we exploit parity and define
-    \begin{align}
-    \text{even states:}\quad M(E) &= \psi'_E(0),\\
-    \text{odd states:}\quad M(E) &= \psi_E(0).
-    \end{align}
-    Eigenvalues correspond to the roots of $M(E)=0$, which are located by bracketing sign changes and refined with bisection. To make the procedure transparent, we plot $M(E)$ versus $E$ and mark the bisection iterates; zero crossings identify the allowed energies.
+        \subsection{Shooting and root finding}
+            The boundary-value eigenproblem is reformulated as a root-finding problem for a mismatch function $M(E)$. For a given trial energy $E$, the Schr\"odinger equation is integrated and a boundary mismatch is evaluated. For symmetric potentials we exploit parity and define
+            \begin{align}
+            \text{even states:}\quad M(E) &= \psi'_E(0),\\
+            \text{odd states:}\quad M(E) &= \psi_E(0).
+            \end{align}
+            Eigenvalues correspond to the roots of $M(E)=0$, which are located by bracketing sign changes and refined with bisection. To make the procedure transparent, we plot $M(E)$ versus $E$ and mark the bisection iterates; zero crossings identify the allowed energies.
 
-    In the implementation, the mismatch function is evaluated numerically using the propagated wavefunction. For even states, the derivative at the origin is computed using a high-order finite-difference stencil to ensure that the overall accuracy of the method is not limited by the boundary evaluation. This detail is crucial for achieving consistent convergence behavior in the harmonic oscillator case.
+            In the implementation, the mismatch function is evaluated numerically using the propagated wavefunction. For even states, the derivative at the origin is computed using a high-order finite-difference stencil to ensure that the overall accuracy of the method is not limited by the boundary evaluation. This detail is crucial for achieving consistent convergence behavior in the harmonic oscillator case.
 
     \section{Results}
+        Each potential is used to validate, test, or demonstrate different aspects of the numerical method, ranging from analytic benchmarks to nontrivial quantum behavior.
 
-    Each potential is used to validate, test, or demonstrate different aspects of the numerical method, ranging from analytic benchmarks to nontrivial quantum behavior.
+        \subsection{Infinite square well}
+            The infinite square well serves as a benchmark problem with known analytic spectrum
+            \[
+            E_n = \frac{(n+1)^2\pi^2}{8a^2}.
+            \]
+            The potential is
+            \[
+            V(x)=\begin{cases}
+            0 & |x|\le a,\\
+            \infty & |x|>a
+            \end{cases}
+            \qquad \text{(implemented numerically with a large finite }V_0\text{)}.
+            \]
+            The numerical eigenvalues agree with the analytic values to high precision, as shown in Fig.~\ref{fig:infwell_energies}. Convergence with respect to grid spacing is demonstrated with log--log plots (Fig.~\ref{fig:infwell_convergence}), and the fitted slopes indicate power-law behavior $\Delta E \propto h^p$.
 
-    \subsection{Infinite square well}
-    The infinite square well serves as a benchmark problem with known analytic spectrum
-    \[
-    E_n = \frac{(n+1)^2\pi^2}{8a^2}.
-    \]
-    The potential is
-    \[
-    V(x)=\begin{cases}
-    0 & |x|\le a,\\
-    \infty & |x|>a
-    \end{cases}
-    \qquad \text{(implemented numerically with a large finite }V_0\text{)}.
-    \]
-    The numerical eigenvalues agree with the analytic values to high precision. Convergence with respect to grid spacing is demonstrated with log--log plots, and the fitted slopes indicate power-law behavior $\Delta E \propto h^p$.
+            The probability densities for the first four states (Fig.~\ref{fig:infwell_densities}) display the correct number of nodes and vanish at the boundaries, consistent with the analytic square-well eigenstates.
 
-    \subsection{Harmonic oscillator}
-    For the harmonic oscillator with $V(x)=\tfrac{1}{2}\omega^2 x^2$, the numerical spectrum reproduces the exact levels $E_n=\omega(n+\tfrac{1}{2})$. Since the problem is defined on an unbounded domain, we truncate to $[-x_{\max},x_{\max}]$ and impose decay conditions at the boundaries. To avoid contamination by the exponentially growing solution, we use inward shooting: the solution is initialized in the asymptotic region where it decays and integrated toward the origin. The resulting wavefunctions exhibit the correct parity and node structure without spurious growth near the edges.
+            The shooting method is validated by plotting the boundary mismatch functions for both even and odd states (Fig.~\ref{fig:infwell_shooting}). The zero crossings correspond to the physical eigenvalues, confirming that the parity separation is working as intended and that the root finder is selecting the physical eigenvalues rather than spurious numerical solutions.
 
-    A subtle numerical issue arises when enforcing the even-parity condition $\psi'(0)=0$. Although the Numerov method itself is high-order, the accuracy of the eigenvalues can be degraded if the derivative at the origin is evaluated with a low-order finite-difference approximation. In this implementation, a fourth-order one-sided stencil is used when sufficient grid points are available, ensuring that the boundary condition is enforced with comparable accuracy to the integration scheme. This correction was essential for obtaining consistent agreement with alternative methods such as Runge--Kutta integration, and illustrates how boundary-condition accuracy can limit an otherwise high-order method.
+            The convergence of the energy error as a function of grid spacing $h$ (Fig.~\ref{fig:infwell_convergence}) is close to fourth order, as expected for the Numerov method. Higher excited states are more demanding to resolve.
+
+            Finally, the wavefunctions for the first four states are plotted together with their corresponding energies and the confining potential (Fig.~\ref{fig:infwell_states}), and the convergence study shows the expected high-order decrease in error.
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png}
+                \caption{Comparison between numerical and exact energy eigenvalues for the infinite square well. The agreement is excellent for the first four states.}
+                \label{fig:infwell_energies}
+            \end{figure}
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png}
+                \caption{Probability densities $|\psi(x)|^2$ for the first four eigenstates of the infinite square well. The correct number of nodes and boundary behavior are clearly reproduced.}
+                \label{fig:infwell_densities}
+            \end{figure}
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png}
+                \includegraphics[height=5cm]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png}
+                \caption{Boundary mismatch functions for even (top) and odd (bottom) states. The zero crossings correspond to the physical eigenvalues found by the shooting method.}
+                \label{fig:infwell_shooting}
+            \end{figure}
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png}
+                \caption{Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}
+                \label{fig:infwell_convergence}
+            \end{figure}
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png}
+                \caption{Wavefunctions for the first four states plotted together with their corresponding energies and the confining potential.}
+                \label{fig:infwell_states}
+            \end{figure}
+
+        \subsection{Harmonic oscillator}
+            \subsubsection{Numerov method on unbounded domains}
+                For the harmonic oscillator with $V(x)=\tfrac{1}{2}\omega^2 x^2$, the exact spectrum is
+                \[
+                E_n = \omega\left(n+\tfrac{1}{2}\right), \qquad n=0,1,2,\ldots
+                \]
+                This provides a second analytic benchmark, but on an unbounded domain. Numerically, the domain is truncated to $[-x_{\max},x_{\max}]$, and decaying boundary conditions are imposed.
+
+                The numerical eigenvalues agree with the exact linear spectrum to high precision, as shown in Fig.~\ref{fig:ho_energies}. This confirms that the inward-shooting formulation correctly handles the exponentially decaying asymptotic behavior.
+
+                The probability densities (Fig.~\ref{fig:ho_densities}) show the expected structure: the ground state is Gaussian-like with no nodes, while higher states exhibit the correct number of nodes and increasing spatial extent. This confirms both physical correctness and stability of the integration on a truncated domain.
+
+                The shooting mismatch functions (Fig.~\ref{fig:ho_shooting}) exhibit clear zero crossings at the eigenvalues. Even and odd states are separated using parity conditions at the origin, and the roots alternate as expected. Although the mismatch spans many orders of magnitude due to exponential behavior, the crossings remain well-defined, indicating a robust root-finding procedure.
+
+                Convergence with respect to grid spacing $h$ (Fig.~\ref{fig:ho_convergence_h}) shows near fourth-order behavior for most states, consistent with the Numerov method. Slight deviations (e.g. $p>4$ for the ground state) are attributed to fitting in a regime close to machine precision rather than a true increase in order.
+
+                The dependence on domain size (Fig.~\ref{fig:ho_convergence_xmax}) shows rapid error reduction as $x_{\max}$ increases, followed by a plateau. This reflects the transition from truncation error (small $x_{\max}$) to discretization and floating-point limits (large $x_{\max}$).
+
+                Finally, the combined state plot (Fig.~\ref{fig:ho_states}) shows the wavefunctions together with the confining potential. The spatial extent increases with energy, and the states remain well-behaved across the domain.
+
+                \begin{figure}[!p]
+                    \centering
+                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png}
+                    \caption{Comparison between numerical and exact energy eigenvalues for the harmonic oscillator. The agreement is excellent for the first four states.}
+                    \label{fig:ho_energies}
+                \end{figure}
+
+                \begin{figure}[!p]
+                    \centering
+                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png}
+                    \caption{Probability densities $|\psi(x)|^2$ for the first four harmonic oscillator eigenstates. The correct node structure is clearly reproduced.}
+                    \label{fig:ho_densities}
+                \end{figure}
+
+                \begin{figure}[!p]
+                    \centering
+                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png}
+                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png}
+                    \caption{Boundary mismatch functions for even (top) and odd (bottom) states. The zero crossings correspond to the physical eigenvalues.}
+                    \label{fig:ho_shooting}
+                \end{figure}
+
+                \begin{figure}[!p]
+                    \centering
+                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png}
+                    \caption{Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}
+                    \label{fig:ho_convergence_h}
+                \end{figure}
+
+                \begin{figure}[!p]
+                    \centering
+                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png}
+                    \caption{Dependence of the energy error on the domain size $x_{\max}$. Errors decrease rapidly before reaching a plateau set by discretization and floating-point limits.}
+                    \label{fig:ho_convergence_xmax}
+                \end{figure}
+
+                \begin{figure}[!p]
+                    \centering
+                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png}
+                    \caption{Wavefunctions for the first four harmonic oscillator states plotted together with the potential.}
+                    \label{fig:ho_states}
+                \end{figure}
+
+            \subsubsection{Numerov versus Runge--Kutta}
+                As an additional method comparison, the harmonic oscillator was also solved using a fourth-order Runge--Kutta (RK4) shooting method. In this formulation the second-order Schr\"odinger equation is rewritten as the first-order system
+                \[
+                \psi' = \phi, \qquad
+                \phi' = 2[V(x)-E]\psi .
+                \]
+                This makes RK4 a useful general-purpose comparison for Numerov, which instead exploits the special second-order structure of the Schr\"odinger equation directly.
+
+                Figure~\ref{fig:ho_numerov_vs_rk4} compares the maximum energy error over the computed harmonic-oscillator states as a function of grid spacing. Both methods show approximately fourth-order convergence, as expected. Numerov is consistently more accurate for the same grid spacing, although the difference is moderate. This is consistent with the fact that both methods are already high-order and that the final accuracy is also affected by root-finding tolerance, domain truncation, and boundary-condition treatment.
+
+                This comparison also emphasizes an important numerical point: the order of the integration scheme alone is not sufficient. Boundary conditions and diagnostic quantities must be evaluated with comparable accuracy. After using a high-order boundary derivative for the Numerov inward-shooting condition, the Numerov and RK4 comparison behaves as expected.
+
+                \begin{figure}[!p]
+                    \centering
+                    \includegraphics[height=5cm]{../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png}
+                    \caption{Comparison of Numerov and RK4 shooting for the harmonic oscillator. Both methods show fourth-order convergence, while Numerov gives a smaller maximum energy error at the same grid spacing.}
+                    \label{fig:ho_numerov_vs_rk4}
+                \end{figure}
 
     \subsection{Double-well potential}
     The quartic double-well potential is used to demonstrate nontrivial quantum behavior beyond analytic benchmarks and produces pairs of nearly degenerate states. The lowest even and odd states correspond to symmetric and antisymmetric combinations of localized wavefunctions. The energy splitting between these states is analyzed as a function of the barrier height, illustrating quantum tunneling effects.

@@ -641,7 +641,7 @@ def run_square_well(results_dir: Path) -> None:
         n_odd=1,
         e_min=0.1,
         e_max=60.0,
-        reference_energies=exact[:3],
+        reference_energies=exact,
     )
     conv_slopes = estimate_convergence_slopes(conv["h"], conv["energy_errors"])
     save_csv_rows(

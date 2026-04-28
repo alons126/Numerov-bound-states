@@ -16,5 +16,37 @@
   {}
 \endgroup
 
+
+\refsection{1}
+  \datalist[entry]{none/global//global/global/global}
+    \entry{Pang_2006}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=15bfbfe1db67917fc953926d49afd752}{%
+           family={Pang},
+           familyi={P\bibinitperiod},
+           given={Tao},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{15bfbfe1db67917fc953926d49afd752}
+      \strng{fullhash}{15bfbfe1db67917fc953926d49afd752}
+      \strng{fullhashraw}{15bfbfe1db67917fc953926d49afd752}
+      \strng{bibnamehash}{15bfbfe1db67917fc953926d49afd752}
+      \strng{authorbibnamehash}{15bfbfe1db67917fc953926d49afd752}
+      \strng{authornamehash}{15bfbfe1db67917fc953926d49afd752}
+      \strng{authorfullhash}{15bfbfe1db67917fc953926d49afd752}
+      \strng{authorfullhashraw}{15bfbfe1db67917fc953926d49afd752}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2}
+      \field{title}{An Introduction to Computational Physics}
+      \field{year}{2006}
+    \endentry
+  \enddatalist
+\endrefsection
 \endinput
 
