@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  28 APR 2026 15:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  28 APR 2026 15:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -943,6 +943,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 219--220
  []
 
 
+Overfull \hbox (9.55353pt too wide) in paragraph at lines 221--222
+[]\OT1/cmr/m/n/10.95 The de-pen-dence on do-main size (Fig. [][]10[][]) shows the ex-pected truncation-to-discretization crossover.
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 221--222
 
  []
@@ -1007,12 +1012,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 302--304
 
  []
 
-
+[5] [6 <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png>] [7 <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png> <../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 305--306
 
  []
 
-[5] [6 <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png>] [7 <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png> <../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png>]
+
 Underfull \hbox (badness 10000) in paragraph at lines 313--315
 
  []
@@ -1042,7 +1047,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 324--325
 
  []
 
-
+[8]
 Underfull \hbox (badness 10000) in paragraph at lines 326--327
 
  []
@@ -1052,7 +1057,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 328--329
 
  []
 
-[8]
 <../results/3_double_well_Numerov/3_double_well_Numerov_states.png, id=204, 578.16pt x 361.35pt>
 File: ../results/3_double_well_Numerov/3_double_well_Numerov_states.png Graphic file (type png)
 <use ../results/3_double_well_Numerov/3_double_well_Numerov_states.png>
@@ -1138,12 +1142,12 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 422.
 See the caption package documentation for explanation.
 
-
+[9] [10 <../results/3_double_well_Numerov/3_double_well_Numerov_states.png> <../results/3_double_well_Numerov/3_double_well_Numerov_densities.png> <../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png> <../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png>] [11 <../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png> <../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png> <../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 428--429
 
  []
 
-[9 <../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png> <../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png>] [10 <../results/3_double_well_Numerov/3_double_well_Numerov_states.png> <../results/3_double_well_Numerov/3_double_well_Numerov_densities.png> <../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png> <../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png>] [11 <../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png> <../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png> <../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png>]
+
 Underfull \hbox (badness 10000) in paragraph at lines 430--431
 
  []
@@ -1153,7 +1157,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 432--433
 
  []
 
-<../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png, id=240, 578.16pt x 361.35pt>
+<../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png, id=238, 578.16pt x 361.35pt>
 File: ../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png Graphic file (type png)
 <use ../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png>
 Package pdftex.def Info: ../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png  used on input line 436.
@@ -1163,7 +1167,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 442--443
 
  []
 
-
+[12 <../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png> <../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png> <../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 444--445
 
  []
@@ -1183,7 +1187,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 450--451
 
  []
 
-<../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png, id=243, 578.16pt x 361.35pt>
+<../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png, id=249, 578.16pt x 361.35pt>
 File: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png Graphic file (type png)
 <use ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png>
 Package pdftex.def Info: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png  used on input line 455.
@@ -1193,7 +1197,7 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 456.
 See the caption package documentation for explanation.
 
-<../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png, id=244, 578.16pt x 361.35pt>
+<../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png, id=250, 578.16pt x 361.35pt>
 File: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png Graphic file (type png)
 <use ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png>
 Package pdftex.def Info: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png  used on input line 462.
@@ -1203,7 +1207,7 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 463.
 See the caption package documentation for explanation.
 
-[12 <../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png>]
+
 Underfull \hbox (badness 10000) in paragraph at lines 471--472
 
  []
@@ -1213,7 +1217,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 473--474
 
  []
 
-
+[13 <../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png> <../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 475--476
 
  []
@@ -1228,9 +1232,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 479--480
 
  []
 
-[13 <../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png> <../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png>]
 Package biblatex Info: Reference section=0 on input line 491.
-
 
 Package caption Warning: Unused \captionsetup[table] on input line 16.
 See the caption package documentation for explanation.
@@ -1249,13 +1251,13 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 Here is how much of TeX's memory you used:
  24799 strings out of 467525
  440006 string characters out of 5418982
- 1295545 words of memory out of 5000000
+ 1296547 words of memory out of 5000000
  53373 multiletter control sequences out of 15000+600000
  637452 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,10n,90p,786b,1911s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,90p,790b,1911s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on report.pdf (14 pages, 1889774 bytes).
+Output written on report.pdf (14 pages, 1891373 bytes).
 PDF statistics:
  340 PDF objects out of 1000 (max. 8388607)
  241 compressed objects within 3 object streams
