@@ -42,7 +42,7 @@ for path in (PROJECT_ROOT, TESTS_DIR):
 
 from test_solver import run_all_tests
 
-RESULTS = Path("results")
+RESULTS = PROJECT_ROOT / "results"
 
 
 # ---------------------------------------------------------------------------
