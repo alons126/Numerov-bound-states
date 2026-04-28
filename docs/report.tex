@@ -148,55 +148,59 @@
 
             Finally, the wavefunctions for the first four states are plotted together with their corresponding energies and the confining potential (Fig.~\ref{fig:infwell_states}), and the convergence study shows the expected high-order decrease in error. \\
 
-            \noindent
-            \begin{minipage}[t]{0.48\textwidth}
-                % \begin{figure}[h]
+            \begin{figure}[p]
+                \centering
+                
+                \begin{minipage}[t]{0.48\textwidth}
                     \centering
                     \includegraphics[width=\textwidth]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png}
                     \captionof{figure}{Comparison between numerical and exact energy eigenvalues for the infinite square well. The agreement is excellent for the first four states.}
-                    \label{fig:infwell_energies}                    
-                % \end{figure}
-            \end{minipage}
-            \hfill
-            \begin{minipage}[t]{0.48\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png}
-                \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four eigenstates of the infinite square well. The correct number of nodes and boundary behavior are clearly reproduced.}
-                \label{fig:infwell_densities}
-            \end{minipage}
-
-            \begin{figure}[h]
-                \centering
-                \begin{subfigure}[t]{0.485\textwidth}
-                    \centering
-                    \includegraphics[height=5cm]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png}
-                    \caption{}
-                \end{subfigure}
+                    \label{fig:infwell_energies}
+                \end{minipage}
                 \hfill
-                \begin{subfigure}[t]{0.485\textwidth}
+                \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[height=5cm]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png}
-                    \caption{}
-                \end{subfigure}
+                    \includegraphics[width=\textwidth]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png}
+                    \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four eigenstates of the infinite square well. The correct number of nodes and boundary behavior are clearly reproduced.}
+                    \label{fig:infwell_densities}
+                \end{minipage}
 
-                \caption{Boundary mismatch functions for even (a) and odd (b) states. The zero crossings correspond to the physical eigenvalues found by the shooting method.}
-                \label{fig:infwell_shooting}
+                \vspace{1em}
+
+                \begin{minipage}[t]{\textwidth}
+                    \centering
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png}
+                        \caption{}
+                    \end{subfigure}
+                    \hfill
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png}
+                        \caption{}
+                    \end{subfigure}
+
+                    \captionof{figure}{Boundary mismatch functions for even (a) and odd (b) states. The zero crossings correspond to the physical eigenvalues found by the shooting method.}
+                    \label{fig:infwell_shooting}
+                \end{minipage}
+
+                \vspace{1em}
+
+                \begin{minipage}[t]{0.48\textwidth}
+                    \centering
+                    \includegraphics[width=\textwidth]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png}
+                    \captionof{figure}{Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}
+                    \label{fig:infwell_convergence}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[t]{0.48\textwidth}
+                    \centering
+                    \includegraphics[width=\textwidth]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png}
+                    \captionof{figure}{Wavefunctions for the first four states plotted together with their corresponding energies and the confining potential.}
+                    \label{fig:infwell_states}
+                \end{minipage}
             \end{figure}
-
-            \noindent
-            \begin{minipage}[t]{0.48\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png}
-                \captionof{figure}{Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}
-                \label{fig:infwell_convergence}
-            \end{minipage}
-            \hfill
-            \begin{minipage}[t]{0.48\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png}
-                \captionof{figure}{Wavefunctions for the first four states plotted together with their corresponding energies and the confining potential.}
-                \label{fig:infwell_states}
-            \end{minipage}
 
         \subsection{Harmonic oscillator}
             \subsubsection{Numerov method on unbounded domains}
@@ -218,68 +222,77 @@
 
                 Finally, the combined state plot (Fig.~\ref{fig:ho_states}) shows the wavefunctions together with the confining potential. The spatial extent increases with energy, and the states remain well-behaved across the domain. \\
 
-                \noindent
-                \begin{minipage}[t]{0.48\textwidth}
+                \begin{figure}[p]
                     \centering
-                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png}
-                    \captionof{figure}{Comparison between numerical and exact energy eigenvalues for the harmonic oscillator. The agreement is excellent for the first four states.}
-                    \label{fig:ho_energies}
-                \end{minipage}
-                \hfill
-                \begin{minipage}[t]{0.48\textwidth}
-                    \centering
-                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png}
-                    \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four harmonic oscillator eigenstates. The correct node structure is clearly reproduced.}
-                    \label{fig:ho_densities}
-                \end{minipage}
 
-                \begin{figure}[h]
-                    \centering
-                    \begin{subfigure}[t]{0.485\textwidth}
+                    \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png}
-                        \caption{}
-                    \end{subfigure}
+                        \includegraphics[width=\textwidth]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png}
+                        \captionof{figure}{Comparison between numerical and exact energy eigenvalues for the harmonic oscillator. The agreement is excellent for the first four states.}
+                        \label{fig:ho_energies}
+                    \end{minipage}
                     \hfill
-                    \begin{subfigure}[t]{0.485\textwidth}
+                    \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png}
-                        \caption{}
-                    \end{subfigure}
+                        \includegraphics[width=\textwidth]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png}
+                        \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four harmonic oscillator eigenstates. The correct node structure is clearly reproduced.}
+                        \label{fig:ho_densities}
+                    \end{minipage}
 
-                    \caption{Boundary mismatch functions for even (a) and odd (b) states. The zero crossings correspond to the physical eigenvalues.}
-                    \label{fig:ho_shooting}
+                    \vspace{1em}
+
+                    \begin{minipage}[t]{\textwidth}
+                        \centering
+                        \begin{subfigure}[t]{0.485\textwidth}
+                            \centering
+                            \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png}
+                            \caption{}
+                        \end{subfigure}
+                        \hfill
+                        \begin{subfigure}[t]{0.485\textwidth}
+                            \centering
+                            \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png}
+                            \caption{}
+                        \end{subfigure}
+
+                        \captionof{figure}{Boundary mismatch functions for even (a) and odd (b) states. The zero crossings correspond to the physical eigenvalues.}
+                        \label{fig:ho_shooting}
+                    \end{minipage}
                 \end{figure}
 
-                \noindent
-                \begin{minipage}[t]{0.48\textwidth}
+                \begin{figure}[p]
                     \centering
-                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png}
-                    \captionof{figure}{Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}
-                    \label{fig:ho_convergence_h}
-                \end{minipage}
-                \hfill
-                \begin{minipage}[t]{0.48\textwidth}
-                    \centering
-                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png}
-                    \captionof{figure}{Dependence of the energy error on the domain size $x_{\max}$. Errors decrease rapidly before reaching a plateau set by discretization and floating-point limits.}
-                    \label{fig:ho_convergence_xmax}
-                \end{minipage}
 
-                \noindent
-                \begin{minipage}[t]{0.48\textwidth}
-                    \centering
-                    \includegraphics[height=5cm]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png}
-                    \captionof{figure}{Wavefunctions for the first four harmonic oscillator states plotted together with the potential.}
-                    \label{fig:ho_states}
-                \end{minipage}
-                \hfill
-                \begin{minipage}[t]{0.48\textwidth}
-                    \centering
-                    \includegraphics[height=5cm]{../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png}
-                    \captionof{figure}{Comparison of Numerov and RK4 shooting for the harmonic oscillator. Both methods show fourth-order convergence, while Numerov gives a smaller maximum energy error at the same grid spacing.}
-                    \label{fig:ho_numerov_vs_rk4}
-                \end{minipage}
+                    \begin{minipage}[t]{0.48\textwidth}
+                        \centering
+                        \includegraphics[width=\textwidth]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png}
+                        \captionof{figure}{Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}
+                        \label{fig:ho_convergence_h}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.48\textwidth}
+                        \centering
+                        \includegraphics[width=\textwidth]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png}
+                        \captionof{figure}{Dependence of the energy error on the domain size $x_{\max}$. Errors decrease rapidly before reaching a plateau set by discretization and floating-point limits.}
+                        \label{fig:ho_convergence_xmax}
+                    \end{minipage}
+
+                    \vspace{1em}
+
+                    \begin{minipage}[t]{0.48\textwidth}
+                        \centering
+                        \includegraphics[width=\textwidth]{../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png}
+                        \captionof{figure}{Wavefunctions for the first four harmonic oscillator states plotted together with the potential.}
+                        \label{fig:ho_states}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.48\textwidth}
+                        \centering
+                        \includegraphics[width=\textwidth]{../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png}
+                        \captionof{figure}{Comparison of Numerov and RK4 shooting for the harmonic oscillator. Both methods show fourth-order convergence, while Numerov gives a smaller maximum energy error at the same grid spacing.}
+                        \label{fig:ho_numerov_vs_rk4}
+                    \end{minipage}
+                \end{figure}
 
             \subsubsection{Numerov versus Runge--Kutta}
                 As an additional method comparison, the harmonic oscillator was also solved using a fourth-order Runge--Kutta (RK4) shooting method. In this formulation the second-order Schr\"odinger equation is rewritten as the first-order system
@@ -314,59 +327,69 @@
 
             Overall, the double-well results demonstrate that the solver works beyond analytic benchmarks. The computed states have the expected parity and localization, the tunneling splitting behaves physically, and the convergence studies show that the numerical results are stable with respect to both grid spacing and domain size. \\
 
-            \noindent
-            \begin{minipage}[t]{0.48\textwidth}
+            \begin{figure}[p]
                 \centering
-                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_states.png}
-                \captionof{figure}{First four bound states of the quartic double-well potential. The lowest two states form a nearly degenerate tunneling doublet.}
-                \label{fig:dw_states}
-            \end{minipage}
-            \hfill
-            \begin{minipage}[t]{0.48\textwidth}
-                \centering
-                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_densities.png}
-                \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four double-well states. The lowest even and odd states have nearly identical densities, as expected for a tunneling doublet.}
-                \label{fig:dw_densities}
-            \end{minipage}
 
-            \begin{figure}[h]
-                \centering
-                \begin{subfigure}[t]{0.485\textwidth}
+                \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png}
-                    \caption{}
-                \end{subfigure}
+                    \includegraphics[width=\textwidth]{../results/3_double_well_Numerov/3_double_well_Numerov_states.png}
+                    \captionof{figure}{First four bound states of the quartic double-well potential. The lowest two states form a nearly degenerate tunneling doublet.}
+                    \label{fig:dw_states}
+                \end{minipage}
                 \hfill
-                \begin{subfigure}[t]{0.485\textwidth}
+                \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png}
-                    \caption{}
-                \end{subfigure}
+                    \includegraphics[width=\textwidth]{../results/3_double_well_Numerov/3_double_well_Numerov_densities.png}
+                    \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four double-well states. The lowest even and odd states have nearly identical densities, as expected for a tunneling doublet.}
+                    \label{fig:dw_densities}
+                \end{minipage}
 
-                \caption{Shooting mismatch functions for even (top) and odd (bottom) double-well states. The zero crossings define the numerical eigenvalues.}
-                \label{fig:dw_shooting}
+                \vspace{1em}
+
+                \begin{minipage}[t]{\textwidth}
+                    \centering
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png}
+                        \caption{}
+                    \end{subfigure}
+                    \hfill
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png}
+                        \caption{}
+                    \end{subfigure}
+
+                    \captionof{figure}{Shooting mismatch functions for even (top) and odd (bottom) double-well states. The zero crossings define the numerical eigenvalues.}
+                    \label{fig:dw_shooting}
+                \end{minipage}
             \end{figure}
 
-            \noindent
-            \begin{minipage}[t]{0.48\textwidth}
+            \begin{figure}[p]
                 \centering
-                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png}
-                \captionof{figure}{Grid convergence for the quartic double well. The energy errors decrease with high-order behavior under successive grid refinement.}
-                \label{fig:dw_convergence_h}
-            \end{minipage}
-            \hfill
-            \begin{minipage}[t]{0.48\textwidth}
-                \centering
-                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png}
-                \captionof{figure}{Dependence of the double-well energy errors on box size. The errors decrease rapidly as the domain is enlarged and then reach a numerical plateau.}
-                \label{fig:dw_convergence_xmax}
-            \end{minipage}
 
-            \begin{figure}[h]
-                \centering
-                \includegraphics[height=5cm]{../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png}
-                \caption{Energy splitting between the two lowest double-well states as the parameter $b$ is varied. The splitting decreases as the barrier becomes stronger, consistent with tunneling suppression.}
-                \label{fig:dw_splitting}
+                \begin{minipage}[t]{0.48\textwidth}
+                    \centering
+                    \includegraphics[width=\textwidth]{../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png}
+                    \captionof{figure}{Grid convergence for the quartic double well. The energy errors decrease with high-order behavior under successive grid refinement.}
+                    \label{fig:dw_convergence_h}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[t]{0.48\textwidth}
+                    \centering
+                    \includegraphics[width=\textwidth]{../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png}
+                    \captionof{figure}{Dependence of the double-well energy errors on box size. The errors decrease rapidly as the domain is enlarged and then reach a numerical plateau.}
+                    \label{fig:dw_convergence_xmax}
+                \end{minipage}
+
+                \vspace{1em}
+
+                \begin{minipage}[t]{0.48\textwidth}
+                    \centering
+                    \includegraphics[width=\textwidth]{../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png}
+                    \captionof{figure}{Energy splitting between the two lowest double-well states as the parameter $b$ is varied. The splitting decreases as the barrier becomes stronger, consistent with tunneling suppression.}
+                    \label{fig:dw_splitting}
+                \end{minipage}
             \end{figure}
 
         \subsection{Finite square well}

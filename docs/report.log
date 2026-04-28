@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  28 APR 2026 14:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  28 APR 2026 14:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -875,78 +875,45 @@ Underfull \hbox (badness 10000) in paragraph at lines 149--150
 <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png, id=122, 505.89pt x 325.215pt>
 File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png Graphic file (type png)
 <use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png  used on input line 155.
+Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png  used on input line 156.
 (pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 156.
-See the caption package documentation for explanation.
-
 <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png, id=124, 578.16pt x 361.35pt>
 File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png Graphic file (type png)
 <use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png>
 Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png  used on input line 163.
 (pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 164.
-See the caption package documentation for explanation.
-
 <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png, id=125, 578.16pt x 361.35pt>
 File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png Graphic file (type png)
 <use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png  used on input line 172.
+Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png  used on input line 174.
 (pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
 
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 172--173
+Overfull \hbox (6.83156pt too wide) in paragraph at lines 174--175
  [][] 
  []
 
 <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png, id=126, 578.16pt x 361.35pt>
 File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png Graphic file (type png)
 <use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png  used on input line 178.
+Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png  used on input line 180.
 (pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
 
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 178--179
+Overfull \hbox (6.83156pt too wide) in paragraph at lines 180--181
  [][] 
  []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
 
 <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png, id=127, 505.89pt x 325.215pt>
 File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png Graphic file (type png)
 <use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png  used on input line 189.
+Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png  used on input line 192.
 (pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 190.
-See the caption package documentation for explanation.
-
 <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png, id=128, 578.16pt x 361.35pt>
 File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png Graphic file (type png)
 <use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png  used on input line 196.
+Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png  used on input line 199.
 (pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
 
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 197.
-See the caption package documentation for explanation.
-
-[3 <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 206--208
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 209--210
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 211--212
+Underfull \hbox (badness 10000) in paragraph at lines 210--212
 
  []
 
@@ -960,145 +927,78 @@ Underfull \hbox (badness 10000) in paragraph at lines 215--216
 
  []
 
-[4 <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png>]
+
 Underfull \hbox (badness 10000) in paragraph at lines 217--218
 
  []
 
-
+[3] [4 <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 219--220
 
  []
 
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png, id=161, 505.89pt x 325.215pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--222
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 223--224
+
+ []
+
+<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png, id=155, 505.89pt x 325.215pt>
 File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png Graphic file (type png)
 <use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png  used on input line 224.
-(pdftex.def)             Requested size: 221.30316pt x 142.26378pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 225.
-See the caption package documentation for explanation.
-
-
-Overfull \hbox (2.78795pt too wide) in paragraph at lines 224--225
- [][] 
- []
-
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png, id=162, 578.16pt x 361.35pt>
+Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png  used on input line 230.
+(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
+<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png, id=156, 578.16pt x 361.35pt>
 File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png Graphic file (type png)
 <use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png  used on input line 231.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 232.
-See the caption package documentation for explanation.
-
-
-Overfull \hbox (9.11002pt too wide) in paragraph at lines 231--232
- [][] 
- []
-
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png, id=163, 578.16pt x 361.35pt>
+Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png  used on input line 237.
+(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
+<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png, id=157, 578.16pt x 361.35pt>
 File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png Graphic file (type png)
 <use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png  used on input line 240.
+Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png  used on input line 248.
 (pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
 
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 240--241
+Overfull \hbox (6.83156pt too wide) in paragraph at lines 248--249
  [][] 
  []
 
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png, id=164, 578.16pt x 361.35pt>
+<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png, id=158, 578.16pt x 361.35pt>
 File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png Graphic file (type png)
 <use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png  used on input line 246.
+Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png  used on input line 254.
 (pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
 
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 246--247
+Overfull \hbox (6.83156pt too wide) in paragraph at lines 254--255
  [][] 
  []
 
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png, id=165, 505.89pt x 325.215pt>
+<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png, id=159, 505.89pt x 325.215pt>
 File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png Graphic file (type png)
 <use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png  used on input line 257.
-(pdftex.def)             Requested size: 221.30316pt x 142.26378pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 258.
-See the caption package documentation for explanation.
-
-
-Overfull \hbox (2.78795pt too wide) in paragraph at lines 257--258
- [][] 
- []
-
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png, id=166, 505.89pt x 325.215pt>
+Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png  used on input line 268.
+(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
+<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png, id=160, 505.89pt x 325.215pt>
 File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png Graphic file (type png)
 <use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png  used on input line 264.
-(pdftex.def)             Requested size: 221.30316pt x 142.26378pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 265.
-See the caption package documentation for explanation.
-
-
-Overfull \hbox (2.78795pt too wide) in paragraph at lines 264--265
- [][] 
- []
-
-[5 <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png>]
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png, id=179, 578.16pt x 361.35pt>
+Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png  used on input line 275.
+(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
+<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png, id=161, 578.16pt x 361.35pt>
 File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png Graphic file (type png)
 <use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png  used on input line 272.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 273.
-See the caption package documentation for explanation.
-
-
-Overfull \hbox (9.11002pt too wide) in paragraph at lines 272--273
- [][] 
- []
-
-<../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png, id=180, 505.89pt x 325.215pt>
+Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png  used on input line 284.
+(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
+<../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png, id=162, 505.89pt x 325.215pt>
 File: ../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png Graphic file (type png)
 <use ../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png>
-Package pdftex.def Info: ../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png  used on input line 279.
-(pdftex.def)             Requested size: 221.30316pt x 142.26378pt.
+Package pdftex.def Info: ../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png  used on input line 291.
+(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
 
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 280.
-See the caption package documentation for explanation.
-
-
-Overfull \hbox (2.78795pt too wide) in paragraph at lines 279--280
- [][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 289--291
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 292--293
-
- []
-
-[6 <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png> <../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 300--302
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 303--304
+Underfull \hbox (badness 10000) in paragraph at lines 302--304
 
  []
 
@@ -1108,224 +1008,167 @@ Underfull \hbox (badness 10000) in paragraph at lines 305--306
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 307--308
+Underfull \hbox (badness 10000) in paragraph at lines 313--315
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 309--310
+Underfull \hbox (badness 10000) in paragraph at lines 316--317
+
+ []
+
+[5] [6 <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png>] [7 <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png> <../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 318--319
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 311--312
+Underfull \hbox (badness 10000) in paragraph at lines 320--321
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 313--314
+Underfull \hbox (badness 10000) in paragraph at lines 322--323
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 315--316
+Underfull \hbox (badness 10000) in paragraph at lines 324--325
 
  []
 
-<../results/3_double_well_Numerov/3_double_well_Numerov_states.png, id=197, 578.16pt x 361.35pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 326--327
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 328--329
+
+ []
+
+<../results/3_double_well_Numerov/3_double_well_Numerov_states.png, id=193, 578.16pt x 361.35pt>
 File: ../results/3_double_well_Numerov/3_double_well_Numerov_states.png Graphic file (type png)
 <use ../results/3_double_well_Numerov/3_double_well_Numerov_states.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_states.png  used on input line 320.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 321.
-See the caption package documentation for explanation.
-
-
-Overfull \hbox (9.11002pt too wide) in paragraph at lines 320--321
- [][] 
- []
-
-<../results/3_double_well_Numerov/3_double_well_Numerov_densities.png, id=198, 578.16pt x 361.35pt>
+Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_states.png  used on input line 335.
+(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
+<../results/3_double_well_Numerov/3_double_well_Numerov_densities.png, id=194, 578.16pt x 361.35pt>
 File: ../results/3_double_well_Numerov/3_double_well_Numerov_densities.png Graphic file (type png)
 <use ../results/3_double_well_Numerov/3_double_well_Numerov_densities.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_densities.png  used on input line 327.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 328.
-See the caption package documentation for explanation.
-
-
-Overfull \hbox (9.11002pt too wide) in paragraph at lines 327--328
- [][] 
- []
-
-<../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png, id=199, 578.16pt x 361.35pt>
+Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_densities.png  used on input line 342.
+(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
+<../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png, id=195, 578.16pt x 361.35pt>
 File: ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png Graphic file (type png)
 <use ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png  used on input line 336.
+Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png  used on input line 353.
 (pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
 
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 336--337
+Overfull \hbox (6.83156pt too wide) in paragraph at lines 353--354
  [][] 
  []
 
-<../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png, id=200, 578.16pt x 361.35pt>
+<../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png, id=196, 578.16pt x 361.35pt>
 File: ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png Graphic file (type png)
 <use ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png  used on input line 342.
+Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png  used on input line 359.
 (pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
 
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 342--343
+Overfull \hbox (6.83156pt too wide) in paragraph at lines 359--360
  [][] 
  []
 
-[7]
-<../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png, id=212, 505.89pt x 325.215pt>
+<../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png, id=197, 505.89pt x 325.215pt>
 File: ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png Graphic file (type png)
 <use ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png  used on input line 353.
-(pdftex.def)             Requested size: 221.30316pt x 142.26378pt.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 354.
-See the caption package documentation for explanation.
-
-
-Overfull \hbox (2.78795pt too wide) in paragraph at lines 353--354
- [][] 
- []
-
-<../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png, id=213, 505.89pt x 325.215pt>
+Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png  used on input line 373.
+(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
+<../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png, id=198, 505.89pt x 325.215pt>
 File: ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png Graphic file (type png)
 <use ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png  used on input line 360.
-(pdftex.def)             Requested size: 221.30316pt x 142.26378pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 361.
-See the caption package documentation for explanation.
-
-
-Overfull \hbox (2.78795pt too wide) in paragraph at lines 360--361
- [][] 
- []
-
-<../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png, id=214, 505.89pt x 325.215pt>
+Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png  used on input line 380.
+(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
+<../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png, id=199, 505.89pt x 325.215pt>
 File: ../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png Graphic file (type png)
 <use ../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png  used on input line 367.
-(pdftex.def)             Requested size: 221.30316pt x 142.26378pt.
+Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png  used on input line 389.
+(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 379--381
+Underfull \hbox (badness 10000) in paragraph at lines 402--404
 
  []
-
-[8 <../results/3_double_well_Numerov/3_double_well_Numerov_states.png> <../results/3_double_well_Numerov/3_double_well_Numerov_densities.png> <../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png> <../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png> <../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png> <../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 382--383
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 384--385
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 386--387
-
- []
-
-<../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png, id=227, 578.16pt x 361.35pt>
-File: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png Graphic file (type png)
-<use ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png>
-Package pdftex.def Info: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png  used on input line 391.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 392.
-See the caption package documentation for explanation.
-
-<../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png, id=228, 578.16pt x 361.35pt>
-File: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png Graphic file (type png)
-<use ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png>
-Package pdftex.def Info: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png  used on input line 398.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 399.
-See the caption package documentation for explanation.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 405--406
 
  []
 
-[9 <../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png> <../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png> <../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png>]
+
 Underfull \hbox (badness 10000) in paragraph at lines 407--408
 
  []
 
-
+[8] [9 <../results/3_double_well_Numerov/3_double_well_Numerov_states.png> <../results/3_double_well_Numerov/3_double_well_Numerov_densities.png> <../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png> <../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png>] [10 <../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png> <../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png> <../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 409--410
 
  []
 
-<../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png, id=239, 578.16pt x 361.35pt>
+<../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png, id=224, 578.16pt x 361.35pt>
+File: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png Graphic file (type png)
+<use ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png>
+Package pdftex.def Info: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png  used on input line 414.
+(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 415.
+See the caption package documentation for explanation.
+
+<../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png, id=225, 578.16pt x 361.35pt>
+File: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png Graphic file (type png)
+<use ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png>
+Package pdftex.def Info: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png  used on input line 421.
+(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 422.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 428--429
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 430--431
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 432--433
+
+ []
+
+<../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png, id=227, 578.16pt x 361.35pt>
 File: ../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png Graphic file (type png)
 <use ../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png>
-Package pdftex.def Info: ../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png  used on input line 413.
+Package pdftex.def Info: ../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png  used on input line 436.
 (pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 419--420
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 442--443
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 421--422
+Underfull \hbox (badness 10000) in paragraph at lines 444--445
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 423--424
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 425--426
+[11 <../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png> <../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 446--447
 
  []
-
-[10 <../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 427--428
-
- []
-
-<../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png, id=250, 578.16pt x 361.35pt>
-File: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png Graphic file (type png)
-<use ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png>
-Package pdftex.def Info: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png  used on input line 432.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 433.
-See the caption package documentation for explanation.
-
-<../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png, id=251, 578.16pt x 361.35pt>
-File: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png Graphic file (type png)
-<use ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png>
-Package pdftex.def Info: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png  used on input line 439.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 440.
-See the caption package documentation for explanation.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 448--449
@@ -1337,52 +1180,82 @@ Underfull \hbox (badness 10000) in paragraph at lines 450--451
 
  []
 
+<../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png, id=238, 578.16pt x 361.35pt>
+File: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png Graphic file (type png)
+<use ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png>
+Package pdftex.def Info: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png  used on input line 455.
+(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 452--453
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 456.
+See the caption package documentation for explanation.
+
+<../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png, id=239, 578.16pt x 361.35pt>
+File: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png Graphic file (type png)
+<use ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png>
+Package pdftex.def Info: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png  used on input line 462.
+(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 463.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 471--472
+
+ []
+
+[12 <../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png> <../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png> <../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 473--474
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 454--455
+Underfull \hbox (badness 10000) in paragraph at lines 475--476
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 456--457
+Underfull \hbox (badness 10000) in paragraph at lines 477--478
 
  []
 
-[11 <../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png> <../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png>] [12]
-Package biblatex Info: Reference section=0 on input line 466.
+
+Underfull \hbox (badness 10000) in paragraph at lines 479--480
+
+ []
+
+[13]
+Package biblatex Info: Reference section=0 on input line 489.
 
 
 Package caption Warning: Unused \captionsetup[table] on input line 16.
 See the caption package documentation for explanation.
 
-[13] (./report.aux)
+[14] (./report.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: FDE5501006EA269DB1AE1329A812C6AE;3295.
+(rerunfilecheck)             Checksum: E9BBAE9D10E22B55DF504258104BE03E;3295.
 Package logreq Info: Writing requests to 'report.run.xml'.
 \openout1 = `report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24806 strings out of 467525
- 440098 string characters out of 5418982
- 1291434 words of memory out of 5000000
+ 24794 strings out of 467525
+ 440002 string characters out of 5418982
+ 1294544 words of memory out of 5000000
  53375 multiletter control sequences out of 15000+600000
  637452 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,10n,90p,786b,1911s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on report.pdf (13 pages, 1876681 bytes).
+Output written on report.pdf (14 pages, 1875967 bytes).
 PDF statistics:
- 344 PDF objects out of 1000 (max. 8388607)
- 246 compressed objects within 3 object streams
- 58 named destinations out of 1000 (max. 500000)
+ 333 PDF objects out of 1000 (max. 8388607)
+ 234 compressed objects within 3 object streams
+ 46 named destinations out of 1000 (max. 500000)
  275 words of extra memory for PDF output out of 10000 (max. 10000000)
 
