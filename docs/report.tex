@@ -92,6 +92,8 @@
     % ==============================================================
     \section{Introduction}
         This project studies the one-dimensional time-independent Schr\"odinger equation using the Numerov method combined with parity-aware shooting procedures. The goals are to validate the method on systems with known analytic solutions, demonstrate numerical convergence and accuracy, and then apply it to more interesting bound-state potentials such as a double well and a finite square well. Extensions to scattering problems are also explored as a secondary component. \\
+
+        This problem is a boundary-value eigenvalue problem rather than a standard initial-value problem: only special energies produce wavefunctions satisfying the required boundary behavior. The Numerov method is well suited to this task because the time-independent Schr\"odinger equation has the second-order form $\psi''=q(x)\psi$, with no first-derivative term. The project therefore focuses not only on obtaining eigenvalues, but also on checking that the numerical results are physically meaningful through analytic benchmarks, convergence tests, parity and node structure, and probability conservation in the scattering extension. \\
         
         The full code was written in Python and is available in \href{https://github.com/alons126/Numerov-bound-states}{this repository}. The implementation is modular, with separate components for the Numerov integrator, shooting method, root finding, analysis utilities, and an automated validation suite. This structure allows for independent validation of each numerical component and makes the overall workflow easier to understand.
 
@@ -116,8 +118,6 @@
             Eigenvalues correspond to the roots of $M(E)=0$, which are located by bracketing sign changes and then refined numerically. To make the procedure transparent, we plot $M(E)$ versus $E$ and mark the bisection iterates; zero crossings identify the allowed energies. \\
 
             In the implementation, the inward even-state mismatch uses a fourth-order backward finite-difference stencil to approximate $\psi'(0)$ from the last few points of the inward integration grid. This is important because a lower-order boundary derivative would spoil the fourth-order behavior otherwise expected from the Numerov recurrence in the harmonic-oscillator study.
-
-    \newpage
 
     % ==============================================================
     % Results
@@ -484,7 +484,9 @@
     \section{Conclusion}
         This project implemented a Numerov shooting solver for the one-dimensional time-independent Schr\"odinger equation. The method was validated on analytic bound-state problems, extended to finite and double-well potentials, and checked through convergence studies, parity diagnostics, and comparison with RK4. The results reproduce known spectra, show the expected tunneling splitting in the double well, and demonstrate resonant transmission in scattering as a secondary extension.
 
-    \newpage
+    % ==============================================================
+    % References
+    % ==============================================================
     \printbibliography[heading=bibintoc,title={References}]
     \end{refsection}
 \end{document}
