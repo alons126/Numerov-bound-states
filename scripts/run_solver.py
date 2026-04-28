@@ -53,7 +53,6 @@ def main() -> None:
             run_double_well,
             run_finite_square_well,
             run_harmonic_oscillator,
-            run_quartic_oscillator_demo,
             run_square_well,
         )
     except ModuleNotFoundError as exc:
@@ -74,10 +73,7 @@ def main() -> None:
         print("\n4. Finite Square Well (Numerov only)...")
         run_finite_square_well(RESULTS)
 
-        print("\n5. Quartic Oscillator Demo (Numerov only)...")
-        run_quartic_oscillator_demo(RESULTS)
-
-        print("\n6. Scattering and Resonant Tunneling (Numerov only)...")
+        print("\n5. Scattering and Resonant Tunneling (Numerov only)...")
         run_scattering(RESULTS)
 
     print("\nRunning tests...")

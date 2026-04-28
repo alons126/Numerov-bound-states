@@ -137,32 +137,6 @@ def quartic_double_well(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: quartic_oscillator
-# Reviewer note: this named block is one logical unit of the implementation.
-# ---------------------------------------------------------------------------
-def quartic_oscillator(
-    x: np.ndarray,
-    lam: float = 0.1,
-) -> np.ndarray:
-    """
-    Anharmonic quartic oscillator V(x) = 1/2 x^2 + lam x^4.
-
-    Parameters
-    ----------
-    x : ndarray
-        Spatial grid.
-    lam : float, optional
-        Strength of the quartic correction.
-
-    Returns
-    -------
-    ndarray
-        Potential sampled on the grid.
-    """
-    return 0.5 * x**2 + lam * x**4
-
-
-# ---------------------------------------------------------------------------
 # FUNCTION: square_barrier
 # Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------

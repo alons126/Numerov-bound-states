@@ -9,7 +9,7 @@ The bound-state part uses Numerov integration plus shooting/root finding. The ha
 
 ## Project workflow
 ### `scripts/run_solver.py`
-Entry point. Creates/clears the results directory, runs tests, and calls every experiment in order.
+Entry point. Creates/clears the results directory, runs every experiment in order, and then runs the test suite.
 | Lines | Block | Purpose |
 |---:|---|---|
 | 39-89 | `function main` | Run the full project pipeline and regenerate the results directory. |
@@ -18,16 +18,23 @@ Entry point. Creates/clears the results directory, runs tests, and calls every e
 Regression and sanity tests. These tests protect the validated numerical behavior from silent regressions.
 | Lines | Block | Purpose |
 |---:|---|---|
-| 38-46 | `function test_normalization` | Check that the wavefunction normalization helper produces unit norm. |
-| 53-60 | `function test_derivative_at_right_edge_polynomial` | Check the high-order right-edge derivative stencil on a smooth polynomial. |
-| 67-90 | `function test_find_rk4_brackets_accepts_exact_zero_hit` | Check that RK4 bracketing keeps roots that land exactly on a scan point. |
-| 97-114 | `function test_square_well_ground_state` | Verify that the square-well ground-state energy matches the exact result. |
-| 121-138 | `function test_harmonic_oscillator_first_levels` | Verify that the first few harmonic-oscillator energies are accurate. |
-| 145-162 | `function test_harmonic_oscillator_inward_decay_first_levels` | Verify that the inward-decay harmonic solver resolves the first levels accurately. |
-| 169-183 | `function test_double_well_splitting_positive` | Check that the first odd state lies above the first even state in the double well. |
-| 192-201 | `function test_scattering_probability_conservation` | Check that scattering approximately conserves probability current. |
-| 208-217 | `function test_run_solver_import_without_experiment_dependencies` | Check that the entry script can be imported without importing plotting code. |
-| 224-237 | `function run_all_tests` | Execute all project validation tests and print a short summary. |
+| 48-56 | `function test_normalization` | Check that the wavefunction normalization helper produces unit norm. |
+| 63-70 | `function test_derivative_at_right_edge_polynomial` | Check the high-order right-edge derivative stencil on a smooth polynomial. |
+| 77-102 | `function test_find_rk4_brackets_accepts_exact_zero_hit` | Check that RK4 bracketing keeps roots that land exactly on a scan point. |
+| 109-126 | `function test_square_well_ground_state` | Verify that the square-well ground-state energy matches the exact result. |
+| 133-153 | `function test_square_well_convergence_order` | Check that the square-well energies recover near-fourth-order grid convergence. |
+| 160-177 | `function test_harmonic_oscillator_first_levels` | Verify that the first few harmonic-oscillator energies are accurate. |
+| 184-201 | `function test_harmonic_oscillator_inward_decay_first_levels` | Verify that the inward-decay harmonic solver resolves the first levels accurately. |
+| 208-222 | `function test_double_well_splitting_positive` | Check that the first odd state lies above the first even state in the double well. |
+| 229-239 | `function test_quartic_double_well_exact_shifted_minimum` | Check that the shifted double well uses the analytic minimum rather than a grid-dependent sampled minimum. |
+| 246-290 | `function test_double_well_larger_box_improves_low_lying_energies` | Check that enlarging the quartic-double-well box reduces truncation error. |
+| 297-315 | `function test_double_well_same_box_grid_errors_decrease` | Check that successive double-well grid refinements reduce the coarse-grid error estimates. |
+| 322-339 | `function test_double_well_successive_convergence_order` | Check that the lowest double-well states recover near-fourth-order successive-refinement convergence. |
+| 347-364 | `function test_double_well_low_state_mismatches_are_polished` | Check that the low double-well roots are polished to small final boundary mismatches. |
+| 370-387 | `function test_double_well_even_odd_mismatch_scans_differ` | Check that even and odd double-well mismatch scans remain parity-specific. |
+| 390-402 | `function test_scattering_probability_conservation` | Check that scattering approximately conserves probability current. |
+| 406-418 | `function test_run_solver_import_without_experiment_dependencies` | Check that the entry script can be imported without importing plotting code. |
+| 422-442 | `function run_all_tests` | Execute the lightweight regression suite and print a short summary. |
 
 
 ## Core numerical methods
@@ -103,10 +110,9 @@ Definitions of every potential used in the report.
 | 18-34 | `function harmonic_oscillator` | Harmonic-oscillator potential V(x) = 1/2 * omega^2 * x^2. |
 | 41-66 | `function infinite_square_well_numeric` | Numerical approximation to an infinite square well. |
 | 73-95 | `function finite_square_well` | Finite square well with barrier height V0 outside |x| <= a. |
-| 102-130 | `function quartic_double_well` | Quartic double-well potential V(x) = a x^4 - b x^2. |
-| 137-156 | `function quartic_oscillator` | Anharmonic quartic oscillator V(x) = 1/2 x^2 + lam x^4. |
-| 163-189 | `function square_barrier` | Rectangular scattering barrier. |
-| 196-233 | `function double_square_barrier` | Symmetric double-barrier scattering potential. |
+| 102-136 | `function quartic_double_well` | Quartic double-well potential V(x) = a x^4 - b x^2, with an option to shift the analytic minima to zero for cleaner convergence studies. |
+| 143-169 | `function square_barrier` | Rectangular scattering barrier. |
+| 176-213 | `function double_square_barrier` | Symmetric double-barrier scattering potential. |
 
 ### `src/analysis.py`
 Exact benchmark spectra, convergence helpers, CSV export, and double-well sweeps.
@@ -119,23 +125,24 @@ Exact benchmark spectra, convergence helpers, CSV export, and double-well sweeps
 | 153-177 | `function save_csv_rows` | Save a list of dictionaries as a CSV table. |
 | 184-205 | `function energies_from_states` | Extract the first n state energies from a list of StateSolution objects. |
 | 212-268 | `function convergence_vs_grid` | Study eigenvalue convergence as the grid is refined. |
-| 275-331 | `function convergence_vs_box_size` | Study eigenvalue convergence as the computational box size changes. |
-| 339-417 | `function convergence_vs_box_size_fixed_spacing` | Study box-size convergence while keeping grid spacing approximately fixed. |
-| 424-486 | `function splitting_vs_parameter` | Measure double-well ground-state splitting while varying one parameter. |
+| 282-345 | `function convergence_vs_grid_successive` | Study grid convergence by comparing each grid to the next finer grid when no exact reference spectrum is available. |
+| 352-408 | `function convergence_vs_box_size` | Study eigenvalue convergence as the computational box size changes. |
+| 415-493 | `function convergence_vs_box_size_fixed_spacing` | Study box-size convergence while keeping grid spacing approximately fixed. |
+| 500-562 | `function splitting_vs_parameter` | Measure double-well ground-state splitting while varying one parameter. |
 
 ### `src/experiments.py`
 High-level routines that connect solvers, potentials, CSV outputs, and plots.
 | Lines | Block | Purpose |
 |---:|---|---|
-| 73-269 | `function run_harmonic_rk4_comparison` | Compare the specialized Numerov integrator with general RK4 shooting. |
-| 274-337 | `function plot_infinite_well_root_diagnostics` | Plot shooting/root-finding diagnostics for all four infinite-well states. |
-| 345-431 | `function plot_harmonic_oscillator_root_diagnostics` | Plot shooting/root-finding diagnostics for the first four harmonic-oscillator states. |
-| 437-527 | `function run_square_well` | Run the infinite square well benchmark case. |
-| 534-679 | `function run_harmonic_oscillator` | Run the harmonic-oscillator benchmark case. |
-| 686-759 | `function run_double_well` | Run the quartic double-well study. |
-| 766-812 | `function run_finite_square_well` | Run the finite square well as an additional nontrivial potential. |
-| 819-849 | `function run_quartic_oscillator_demo` | Run an optional anharmonic quartic-oscillator demonstration. |
-| 856-957 | `function run_scattering` | Run the Pang-style scattering extension. |
+| 72-268 | `function run_harmonic_rk4_comparison` | Compare the specialized Numerov integrator with general RK4 shooting. |
+| 273-337 | `function plot_infinite_well_root_diagnostics` | Plot shooting/root-finding diagnostics for all four infinite-well states. |
+| 343-428 | `function plot_harmonic_oscillator_root_diagnostics` | Plot inward-shooting root diagnostics for the first four harmonic-oscillator states. |
+| 434-500 | `function plot_double_well_root_diagnostics` | Plot parity-separated root diagnostics for the first four quartic-double-well states. |
+| 507-607 | `function run_square_well` | Run the infinite square well benchmark case and its convergence studies. |
+| 609-757 | `function run_harmonic_oscillator` | Run the harmonic-oscillator benchmark, including inward-shooting diagnostics and the RK4 comparison. |
+| 763-929 | `function run_double_well` | Run the quartic double-well study, including convergence and tunneling-splitting sweeps. |
+| 935-982 | `function run_finite_square_well` | Run the finite square well as an additional nontrivial bound-state example. |
+| 988-1089 | `function run_scattering` | Run the scattering extension for single- and double-barrier tunneling, including resonant-peak extraction. |
 
 ### `src/plotting.py`
 Report-ready Matplotlib figures.
@@ -154,7 +161,10 @@ Report-ready Matplotlib figures.
 
 ## Important numerical checks
 - The Numerov derivative stencil is fourth order when enough points are available. This matters because even inward-shooting states use the condition `psi'(0)=0`.
+- The parity-based startup in `initial_conditions` includes higher-order Taylor terms, so the first Numerov step does not spoil the observed fourth-order convergence.
 - Harmonic-oscillator inward shooting starts from the decaying forbidden-region tail and integrates toward the origin. This avoids contamination by the growing exponential mode.
+- The quartic double well can shift its analytic minima to zero. That keeps the physical potential fixed as the grid changes and prevents fake convergence effects from a grid-sampled minimum.
 - RK4 comparison solves the same harmonic oscillator with the same grid sizes so the comparison focuses on the integration formula rather than a different physical setup.
+- The bound-state bisection routine finishes with a few safeguarded secant-style polishing steps inside the final bracket, which noticeably reduces the reported boundary mismatch for steep roots.
 - Scattering outputs include a conservation check through `T + R`, which should remain close to one.
-- The tests include analytic benchmarks, normalization checks, derivative-stencil checks, and scattering sanity checks.
+- The tests include analytic benchmarks, convergence-order checks, parity-specific double-well checks, normalization checks, derivative-stencil checks, and scattering sanity checks.

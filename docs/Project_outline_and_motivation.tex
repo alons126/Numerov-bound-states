@@ -1,23 +1,101 @@
+% To compile from the project root:
+% latexmk -pdf docs/Project_outline_and_motivation.tex
+
+% ==============================================================
+% Latex packages and settings
+% ==============================================================
 \documentclass[11pt]{article}
 
-\usepackage[margin=1in]{geometry}
-\usepackage{amsmath, amssymb}
-\usepackage{enumitem}
-\usepackage{hyperref}
+% Language setting:
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}                             % Set document language (hyphenation, date formats, etc.)
+
+% Set caption formatting:
+\usepackage{caption}                                    % Control the appearance of figure and table captions
+
+\usepackage{subcaption}                                 % Allow subFigures_compressed/subtables with individual sub-captions
+
+% Set page size and margins:
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry} % Configure paper size and margins
+
+% Useful packages
+\usepackage{amsmath}                                    % Enhanced math environments and symbols
+\usepackage{amssymb}                                    % Additional math symbols
+\usepackage{graphicx}                                   % Include and scale external graphics (e.g. .pdf, .png)
+\usepackage[colorlinks=true,                            % Use colored links instead of boxed links
+            allcolors=blue,                             % Use blue for all link types (cite, ref, url)
+            bookmarksnumbered=true,                     % Number the PDF bookmarks according to section numbers
+            bookmarksopen=true,                         % Open the bookmark tree when the PDF is opened
+            bookmarksopenlevel=10]{hyperref}            % Control depth to which bookmarks are expanded
+\usepackage{listings}                                   % Typeset source code with syntax highlighting
+
+\usepackage{authblk}                                    % Manage authors and affiliations in a structured way
+% Make only the author and/or affiliation smaller
+% \renewcommand\Authfont{\small}                        % Set the Author font size (e.g. small or footnotesize)
+\renewcommand\Affilfont{\small}                         % Set the affiliation font size (e.g. small or footnotesize)
+\renewcommand\Authand{}        % <-- add this
+
+\usepackage{comment}                                    % Define large comment environments to exclude blocks from output
+\usepackage{enumitem}                                   % Customize list environments (itemize, enumerate, etc.)
+\usepackage{lineno}                                     % Add optional line numbers to the document
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+% \usepackage[backend=biber, style=numeric-comp, citestyle=numeric-comp, sorting=none]{biblatex} % Modern bibliography management with biber backend
+\usepackage[backend=biber, sorting=none, style=numeric, citestyle=numeric]{biblatex} % Modern bibliography management with biber backend
+\addbibresource{docs/references.bib}                    % Load bibliography entries for citations and references
+% Make bibliography font smaller
+\renewcommand*{\bibfont}{\footnotesize}                 % Reduce font size in the bibliography
+\usepackage{multirow}                                   % Enable table cells that span multiple rows
+\usepackage{rotating}                                   % Rotate figures, tables, or text (e.g. sideways tables)
+\usepackage{pdfpages}                                   % Include external PDF pages in the document
+\usepackage{csquotes}                                   % Context-sensitive quotation marks, recommended with biblatex
+\usepackage[table]{xcolor}                              % Color support, including coloring table rows/columns
+\usepackage{array, makecell, colortbl}                  % Extra tools for tables: new column types, multi-line cells, colored cells
+\renewcommand{\arraystretch}{1.5}                       % Increase row height in tables by a factor of 1.5
+\setlength{\parskip}{1\baselineskip}                    % Adds a full line space between paragraphs
+\setlength{\parindent}{0pt}                             % Optional: removes paragraph indentation
+
+\usepackage{sidecap}
 
 \setlist[itemize]{itemsep=0.25em, topsep=0.25em}
 \setlist[enumerate]{itemsep=0.35em, topsep=0.35em}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.65em}
 
-\title{Project Outline and Motivation 3 \\ Updated Notes}
-\author{Alon Sportes}
+% ==============================================================
+% Document title and author
+% ==============================================================
+\title{\textbf{Numerov Method for Bound States in the One-Dimensional Schr\"odinger Equation}\\ 
+       \textbf{- Project Outline and Motivation -}}
+\author{Alon Sportes (ID: 204498745)}
 \date{}
 
+% ==============================================================
+% Document content
+% ==============================================================
 \begin{document}
     \maketitle
+
+    \vfill
+
+    \phantomsection
+    \begingroup
+        \setlength{\parskip}{0pt}
+        \addcontentsline{toc}{section}{Table of Contents}
+        \tableofcontents
+    \endgroup
+    \vfill
+
+    \newpage
+    \phantomsection
+    \begingroup
+        \setlength{\parskip}{0pt}
+        \addcontentsline{toc}{section}{List of Figures}
+        \listoffigures
+    \endgroup
+
+    \newpage
 
     \section{What problem are we solving?}
 
@@ -288,7 +366,6 @@
         \item \texttt{infinite\_square\_well\_numeric()},
         \item \texttt{finite\_square\_well()},
         \item \texttt{quartic\_double\_well()},
-        \item \texttt{quartic\_oscillator()},
         \item \texttt{square\_barrier()},
         \item \texttt{double\_square\_barrier()}.
     \end{itemize}
@@ -301,7 +378,6 @@
         \item harmonic oscillator: analytic validation and inward shooting,
         \item finite square well: nontrivial finite bound-state system,
         \item quartic double well: tunneling and energy splitting, with the shifted potential using the analytic minimum $V_{\min}=-b^2/(4a)$,
-        \item quartic oscillator: optional extra demonstration,
         \item single barrier and double barrier: scattering extension.
     \end{itemize}
 
@@ -434,7 +510,6 @@
         \item \texttt{run\_harmonic\_oscillator()},
         \item \texttt{run\_double\_well()},
         \item \texttt{run\_finite\_square\_well()},
-        \item \texttt{run\_quartic\_oscillator\_demo()},
         \item \texttt{run\_scattering()}.
     \end{itemize}
 

@@ -38,7 +38,6 @@ from src.potentials import (
     harmonic_oscillator,
     infinite_square_well_numeric,
     quartic_double_well,
-    quartic_oscillator,
     square_barrier,
 )
 from src.shooting import (
@@ -979,43 +978,6 @@ def run_finite_square_well(results_dir: Path) -> None:
         states,
         results_dir / "4_finite_square_well_densities.png",
         "Finite square well densities",
-    )
-
-
-# ---------------------------------------------------------------------------
-# FUNCTION: run_quartic_oscillator_demo
-# Reviewer note: this named block is one logical unit of the implementation.
-# ---------------------------------------------------------------------------
-def run_quartic_oscillator_demo(results_dir: Path) -> None:
-    """
-    Run an optional anharmonic quartic-oscillator demonstration.
-
-    This figure is not required for the core project, but it is useful if you want
-    one extra example showing that the solver is reusable beyond the main cases.
-    """
-    x_max = 6.0
-    n_grid = 2400
-    kwargs = {"lam": 0.1}
-
-    states = solve_symmetric_potential(
-        x_max=x_max,
-        n_grid=n_grid,
-        potential_fn=quartic_oscillator,
-        potential_kwargs=kwargs,
-        n_even=2,
-        n_odd=2,
-        e_min=0.0,
-        e_max=10.0,
-    )
-
-    x = states[0].x_full
-    V = quartic_oscillator(x, **kwargs)
-    plot_potential_and_states(
-        x,
-        V,
-        states,
-        results_dir / "5_quartic_oscillator_states.png",
-        "Quartic oscillator",
     )
 
 
