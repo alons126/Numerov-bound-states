@@ -523,8 +523,9 @@
         \item the box-size study is still compared against a larger-box reference,
         \item the double-well plot legend now shows the explicit formula,
         \item root-finding diagnostics are now generated separately for the double well,
-        \item redundant outputs such as \texttt{3\_double\_well\_energies.png} and the old \texttt{3\_double\_well\_splitting.png} were removed,
-        \item the retained splitting plot is \texttt{3\_double\_well\_splitting\_vs\_b.png}.
+        \item redundant outputs such as the old \texttt{3\_double\_well\_splitting.png} were removed,
+        \item the retained splitting plot is \texttt{3\_double\_well\_Numerov\_splitting\_vs\_b.png},
+        \item each experiment now writes into its own subdirectory under \texttt{results/}, for example \texttt{results/3\_double\_well\_Numerov/}.
     \end{itemize}
 
     \subsection{\texttt{scripts/run\_solver.py}}
@@ -537,7 +538,7 @@
         \item prints a completion message.
     \end{itemize}
 
-    It is intentionally lightweight. Most logic lives in \texttt{src/}.
+    It is intentionally lightweight. Most logic lives in \texttt{src/}. The latest runner keeps a single canonical results root at \texttt{PROJECT\_ROOT/results} and each experiment writes its CSV and PNG outputs into its own dedicated subdirectory there.
 
     \subsection{\texttt{tests/test\_solver.py}}
 

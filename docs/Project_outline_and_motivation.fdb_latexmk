@@ -1,13 +1,13 @@
 # Fdb version 4
-["biber Project_outline_and_motivation"] 1777363085.43862 "Project_outline_and_motivation.bcf" "Project_outline_and_motivation.bbl" "Project_outline_and_motivation" 1777363324.09717 0
+["biber Project_outline_and_motivation"] 1777363085.43862 "Project_outline_and_motivation.bcf" "Project_outline_and_motivation.bbl" "Project_outline_and_motivation" 1777367254.30582 0
   "Project_outline_and_motivation.bcf" 1777363284.32857 107620 8e21140204e9c66b8d66f1a2889033ef "pdflatex"
   "docs/references.bib" 0 -1 0 ""
   (generated)
   "Project_outline_and_motivation.bbl"
   "Project_outline_and_motivation.blg"
   (rewritten before read)
-["pdflatex"] 1777363323.11763 "/Users/alon/Projects/Numerov-bound-states/docs/Project_outline_and_motivation.tex" "Project_outline_and_motivation.pdf" "Project_outline_and_motivation" 1777363324.09746 0
-  "/Users/alon/Projects/Numerov-bound-states/docs/Project_outline_and_motivation.tex" 1777363321.88495 36376 8632f7ef16003173744c093388f68e81 ""
+["pdflatex"] 1777367253.35681 "/Users/alon/Projects/Numerov-bound-states/docs/Project_outline_and_motivation.tex" "Project_outline_and_motivation.pdf" "Project_outline_and_motivation" 1777367254.30608 0
+  "/Users/alon/Projects/Numerov-bound-states/docs/Project_outline_and_motivation.tex" 1777367252.15953 36674 ed24c327567a5869a9d39be17755ca00 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -159,13 +159,13 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774538740 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774538681 3636776 dfeaead9e2e9c793969724e130e444cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "Project_outline_and_motivation.aux" 1777363323.91002 5430 83b3ffa2a29318ab3e0ceee3e2573742 "pdflatex"
+  "Project_outline_and_motivation.aux" 1777367254.14418 5430 94b983d434318591d1dca07fab506273 "pdflatex"
   "Project_outline_and_motivation.bbl" 1777363086.76131 466 76d65a242ec496c9b4361af646ff12cb "biber Project_outline_and_motivation"
-  "Project_outline_and_motivation.lof" 1777363323.91331 30 283c90c47f0e16887e96cec4ba110f76 "pdflatex"
-  "Project_outline_and_motivation.out" 1777363323.91177 7542 f09889fbe211b8fb5b9e81bdba4fbd5c "pdflatex"
-  "Project_outline_and_motivation.run.xml" 1777363323.91322 2492 92cdac098a6ffb579d7f214cea8455c2 "pdflatex"
-  "Project_outline_and_motivation.tex" 1777363321.88495 36376 8632f7ef16003173744c093388f68e81 ""
-  "Project_outline_and_motivation.toc" 1777363323.91328 3271 077dbac7b81b02ce6f4b17d97f29d8e8 "pdflatex"
+  "Project_outline_and_motivation.lof" 1777367254.1475 30 283c90c47f0e16887e96cec4ba110f76 "pdflatex"
+  "Project_outline_and_motivation.out" 1777367254.14559 7542 f09889fbe211b8fb5b9e81bdba4fbd5c "pdflatex"
+  "Project_outline_and_motivation.run.xml" 1777367254.14739 2492 92cdac098a6ffb579d7f214cea8455c2 "pdflatex"
+  "Project_outline_and_motivation.tex" 1777367252.15953 36674 ed24c327567a5869a9d39be17755ca00 ""
+  "Project_outline_and_motivation.toc" 1777367254.14748 3271 82b1b9026b4094f818d430e7419e21b0 "pdflatex"
   (generated)
   "Project_outline_and_motivation.aux"
   "Project_outline_and_motivation.bcf"

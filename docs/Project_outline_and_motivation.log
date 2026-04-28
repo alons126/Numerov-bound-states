@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  28 APR 2026 11:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  28 APR 2026 12:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -856,12 +856,7 @@ Overfull \hbox (11.47006pt too wide) in paragraph at lines 404--405
 []\T1/cmtt/m/n/10.95 numerov_outward() \T1/cmr/m/n/10.95 in-cludes dy-namic rescal-ing to avoid over-flow when a non-eigenvalue
  []
 
-[10] [11] [12]
-Overfull \hbox (82.74889pt too wide) in paragraph at lines 526--527
-[]\T1/cmr/m/n/10.95 redundant out-puts such as \T1/cmtt/m/n/10.95 3_double_well_energies.png \T1/cmr/m/n/10.95 and the old \T1/cmtt/m/n/10.95 3_double_well_splitting.png
- []
-
-[13] [14] [15] [16] [17] (./Project_outline_and_motivation.aux)
+[10] [11] [12] [13] [14] [15] [16] [17] (./Project_outline_and_motivation.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -890,7 +885,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  75i,8n,90p,1249b,2326s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on Project_outline_and_motivation.pdf (17 pages, 284939 bytes).
+Output written on Project_outline_and_motivation.pdf (17 pages, 287324 bytes).
 PDF statistics:
  383 PDF objects out of 1000 (max. 8388607)
  331 compressed objects within 4 object streams

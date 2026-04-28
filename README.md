@@ -54,7 +54,16 @@ python3 -m pip install -r requirements.txt
 python3 scripts/run_solver.py
 ```
 
-This writes figures and CSV tables to `results/`.
+This writes figures and CSV tables to `results/`, grouped by experiment:
+
+- `results/1_infinite_square_well_Numerov/`
+- `results/2a_harmonic_oscillator_Numerov/`
+- `results/2b_harmonic_oscillator_RK4/`
+- `results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/`
+- `results/3_double_well_Numerov/`
+- `results/4_finite_square_well_Numerov/`
+- `results/5_scattering_single_barrier_Numerov/`
+- `results/6_scattering_double_barrier_Numerov/`
 
 If you encounter import errors, run with:
 
@@ -75,6 +84,14 @@ Running the solver generates:
 - finite square well bound-state plots
 - transmission and reflection spectra for finite barriers
 - double-barrier resonance peak tables and resonant-state plots
+
+Representative filenames now follow the same convention as the directories. For
+example:
+
+- `results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png`
+- `results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energies.csv`
+- `results/2b_harmonic_oscillator_RK4/2b_harmonic_rk4_convergence_vs_h.png`
+- `results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.csv`
 
 ## How it works
 
@@ -149,7 +166,7 @@ python3 scripts/run_solver.py
 This script:
 - runs all experiments
 - executes automated tests to verify correctness
-- saves figures and data to `results/`
+- saves figures and data to experiment-specific subdirectories under `results/`
 - generates root-finding diagnostic plots for selected states
 
 ## Notes
