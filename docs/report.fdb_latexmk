@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber report"] 1777379191.8256 "report.bcf" "report.bbl" "report" 1777381270.84892 0
+["biber report"] 1777379191.8256 "report.bcf" "report.bbl" "report" 1777381439.57998 0
   "references.bib" 1777369189.93512 655 8f93fc878757d4fd3cda6064465a846c ""
-  "report.bcf" 1777381270.77102 108089 923416fff6ebbc02cf2ccbe7fb784adf "pdflatex"
+  "report.bcf" 1777381439.50234 108089 923416fff6ebbc02cf2ccbe7fb784adf "pdflatex"
   (generated)
   "report.bbl"
   "report.blg"
   (rewritten before read)
-["pdflatex"] 1777381268.29913 "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" "report.pdf" "report" 1777381270.84917 0
+["pdflatex"] 1777381437.01495 "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" "report.pdf" "report" 1777381439.58021 0
   "../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png" 1777378604.32654 71947 47c7d4b6d6956e6afb043647db9b24bd ""
   "../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png" 1777378603.3206 163359 dba3aacfb9395bbf50865b3b7fcb10e1 ""
   "../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png" 1777378603.38216 46745 752e83432a3ee948c460b420d6197603 ""
@@ -33,7 +33,7 @@
   "../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png" 1777378999.84709 58660 f3823039df6c6caf72c49f0cd5c456d7 ""
   "../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png" 1777379001.23404 80074 50bf723fe2bd0fbcd8137e70b540afb2 ""
   "../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png" 1777379001.3143 52567 d28c99e429df3e3a3b5bbee9a1633884 ""
-  "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" 1777381265.53628 47083 769d97db93d64c84df27adb78d93b6a4 ""
+  "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" 1777381434.23651 47847 9ae48f5816033111a3a749d3953e57d2 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -177,12 +177,12 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774538740 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774538681 3636776 dfeaead9e2e9c793969724e130e444cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "report.aux" 1777381270.76841 14384 f663b3824255b56c3c1a06e17148d81f "pdflatex"
+  "report.aux" 1777381439.49979 14384 301daa5cc96b5bdc5b07d9578dbf5d44 "pdflatex"
   "report.bbl" 1777379193.12531 1666 1d08ed8c5ef7e023b792ac2be9f0f476 "biber report"
-  "report.out" 1777381270.77028 3295 e9bbae9d10e22b55df504258104be03e "pdflatex"
-  "report.run.xml" 1777381270.77159 2319 1dbeae9c91c70510d621aca3b4772e83 "pdflatex"
-  "report.tex" 1777381265.53628 47083 769d97db93d64c84df27adb78d93b6a4 ""
-  "report.toc" 1777381270.77165 1545 33af2aa307fe64947e57ed180d9559f7 "pdflatex"
+  "report.out" 1777381439.50157 3295 e9bbae9d10e22b55df504258104be03e "pdflatex"
+  "report.run.xml" 1777381439.50289 2319 1dbeae9c91c70510d621aca3b4772e83 "pdflatex"
+  "report.tex" 1777381434.23651 47847 9ae48f5816033111a3a749d3953e57d2 ""
+  "report.toc" 1777381439.50295 1545 c677904a286dd856e25968e859dd423f "pdflatex"
   (generated)
   "report.aux"
   "report.bcf"
