@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber report"] 0 "report.bcf" "report.bbl" "report" 1777372471.63101 -1
+["biber report"] 0 "report.bcf" "report.bbl" "report" 1777373023.24803 -1
   "references.bib" 1777369189.93512 655 8f93fc878757d4fd3cda6064465a846c ""
-  "report.bcf" 1777372471.56306 108089 923416fff6ebbc02cf2ccbe7fb784adf "pdflatex"
+  "report.bcf" 1777373023.17813 108089 923416fff6ebbc02cf2ccbe7fb784adf "pdflatex"
   (generated)
   "report.bbl"
   "report.blg"
   (rewritten before read)
-["pdflatex"] 1777372469.4054 "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" "report.pdf" "report" 1777372471.63124 0
+["pdflatex"] 1777373020.6997 "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" "report.pdf" "report" 1777373023.24827 0
   "../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png" 1777368490.69294 64128 0ba2a1ba59328176e16eb25ff1e7ffd3 ""
   "../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png" 1777368489.75487 163359 dba3aacfb9395bbf50865b3b7fcb10e1 ""
   "../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png" 1777368489.8116 46745 752e83432a3ee948c460b420d6197603 ""
@@ -28,7 +28,12 @@
   "../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png" 1777368781.09818 63270 15019451419b4ced2d8a2ac467c86e27 ""
   "../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png" 1777368880.48108 44827 770f47e432a197bebc7e107add5d8f95 ""
   "../results/3_double_well_Numerov/3_double_well_Numerov_states.png" 1777368776.03538 82458 a466468d0f4e871e9b109829f6a9579f ""
-  "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" 1777372469.22412 31471 d3c610c4958acfa72b8746cdb3e89e39 ""
+  "../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png" 1777368885.25776 115444 1b722e93e6a0252dcd997bd961558ad8 ""
+  "../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png" 1777368885.18646 67905 609fe2bf6c1c0181d37580d9ae6c5bb1 ""
+  "../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png" 1777368886.0406 58660 f3823039df6c6caf72c49f0cd5c456d7 ""
+  "../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png" 1777368887.35944 80074 50bf723fe2bd0fbcd8137e70b540afb2 ""
+  "../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png" 1777368887.43438 52567 d28c99e429df3e3a3b5bbee9a1633884 ""
+  "/Users/alon/Projects/Numerov-bound-states/docs/report.tex" 1777373019.64205 37636 e8bdcb05dfab9a9431a5cc00ed8c46b8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -170,13 +175,13 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774538740 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774538681 3636776 dfeaead9e2e9c793969724e130e444cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "report.aux" 1777372471.5601 11724 328c3924a2c6060243babea6ef9360fb "pdflatex"
+  "report.aux" 1777373023.1746 14929 7b380c3a64b0a7d36d1556f274d36e84 "pdflatex"
   "report.bbl" 1777369191.96824 1666 1d08ed8c5ef7e023b792ac2be9f0f476 "biber report"
-  "report.lof" 1777372471.5637 4076 8d51b64ac92b6caa1ea6f7eca388e4bf "pdflatex"
-  "report.out" 1777372471.56228 3137 352c66a74fb8c3610555a29136bfd126 "pdflatex"
-  "report.run.xml" 1777372471.56362 2319 1dbeae9c91c70510d621aca3b4772e83 "pdflatex"
-  "report.tex" 1777372469.22412 31471 d3c610c4958acfa72b8746cdb3e89e39 ""
-  "report.toc" 1777372471.56368 1620 49b576296dd82b4f80575de18c1836d9 "pdflatex"
+  "report.lof" 1777373023.1789 5459 58a26c08668291e757252fdd137bdc52 "pdflatex"
+  "report.out" 1777373023.17715 3549 b41363861ae2d6a60182225a03579445 "pdflatex"
+  "report.run.xml" 1777373023.1788 2319 1dbeae9c91c70510d621aca3b4772e83 "pdflatex"
+  "report.tex" 1777373019.64205 37636 e8bdcb05dfab9a9431a5cc00ed8c46b8 ""
+  "report.toc" 1777373023.17887 1802 f07dff93c7bd42f58d3bcac724a71fd1 "pdflatex"
   (generated)
   "report.aux"
   "report.bcf"

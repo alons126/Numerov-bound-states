@@ -13,9 +13,11 @@
 \contentsline {subsection}{\numberline {3.3}Double-well potential}{6}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Finite square well}{9}{subsection.3.4}%
 \contentsline {subsection}{\numberline {3.5}Scattering and resonant tunneling}{12}{subsection.3.5}%
-\contentsline {subsection}{\numberline {3.6}Convergence study}{12}{subsection.3.6}%
-\contentsline {paragraph}{Grid convergence.}{12}{section*.23}%
-\contentsline {paragraph}{Dependence on domain size.}{12}{section*.24}%
-\contentsline {section}{\numberline {4}Discussion}{13}{section.4}%
-\contentsline {section}{\numberline {5}Conclusion}{13}{section.5}%
-\contentsline {section}{References}{13}{section*.25}%
+\contentsline {subsection}{\numberline {3.6}Single barrier potential}{12}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}Double barrier potential}{12}{subsection.3.7}%
+\contentsline {subsection}{\numberline {3.8}Convergence study}{14}{subsection.3.8}%
+\contentsline {paragraph}{Grid convergence.}{14}{section*.28}%
+\contentsline {paragraph}{Dependence on domain size.}{14}{section*.29}%
+\contentsline {section}{\numberline {4}Discussion}{16}{section.4}%
+\contentsline {section}{\numberline {5}Conclusion}{16}{section.5}%
+\contentsline {section}{References}{16}{section*.30}%

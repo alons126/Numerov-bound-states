@@ -327,19 +327,74 @@
             \end{figure}
 
         \subsection{Finite square well}
-            The finite square well demonstrates the flexibility of the solver. Unlike the infinite case, only a finite number of bound states exist, depending on the well depth. The numerical results capture this behavior correctly.
+            The finite square well is included as an additional nontrivial bound-state test. Unlike the infinite square well, the potential walls are finite, so bound states can leak into the classically forbidden region. The potential used here has the form
+            \[
+            V(x)=\begin{cases}
+            0 & |x|\le a,\\
+            V_0 & |x|>a,
+            \end{cases}
+            \]
+            and only states with $E<V_0$ are true bound states.
 
-    \subsection{Scattering and resonant tunneling}
-    In addition to bound states, we extend the solver to study one-dimensional scattering from finite potentials. For a given energy $E$, the wavefunction is propagated across the domain and decomposed into incoming and reflected components on the left and a transmitted component on the right.
+            Figure~\ref{fig:finitewell_states} shows the first four computed states together with the finite well potential. The first three states lie clearly below the barrier and are localized mainly inside the well, with exponentially decaying tails outside. The fourth state is close to the barrier height, and therefore has much stronger leakage into the exterior region. This behavior is physically expected for shallow or near-threshold bound states.
 
-    The transmission and reflection coefficients $T(E)$ and $R(E)$ are computed from the amplitudes of these components and satisfy the conservation relation
-    \[
-    T(E) + R(E) \approx 1.
-    \]
+            The probability densities in Fig.~\ref{fig:finitewell_densities} show the same effect more clearly. Low-lying states are concentrated inside the well, while the highest plotted state is spread much farther outside the well. The node count and even-odd structure remain consistent with the ordering of one-dimensional bound states.
 
-    For a single finite rectangular barrier, the numerical transmission is compared to the known analytical result, providing an additional validation of the method.
+            These results are sufficient for the finite square well part of the report because this case is used mainly to demonstrate that the same shooting framework works for a potential with finite barriers and evanescent tails. The more detailed convergence and validation analysis is already provided by the infinite well and harmonic oscillator, while the finite well serves as an additional qualitative and physical test.
 
-    For a double-barrier potential, the transmission spectrum exhibits sharp resonance peaks corresponding to quasi-bound states in the central well. These resonances are clearly visible in $T(E)$ and illustrate quantum tunneling and interference effects.
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png}
+                \caption{First four finite square well states plotted together with the finite barrier potential. States below the barrier are localized in the well, while the near-threshold state has a larger evanescent tail.}
+                \label{fig:finitewell_states}
+            \end{figure}
+
+            \begin{figure}[!p]
+                \centering
+                \includegraphics[height=5cm]{../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png}
+                \caption{Probability densities $|\psi(x)|^2$ for the first four finite square well states. The densities show both interior oscillation and exterior exponential leakage.}
+                \label{fig:finitewell_densities}
+            \end{figure}
+
+        \subsection{Scattering and resonant tunneling}
+            \subsection{Single barrier potential}
+                As a secondary extension beyond bound states, the Numerov framework is also applied to one-dimensional scattering from a finite rectangular barrier. For each incident energy $E$, the complex wavefunction is propagated through the barrier region and decomposed into incident, reflected, and transmitted waves. This gives the transmission and reflection probabilities $T(E)$ and $R(E)$.
+
+                The single-barrier result is shown in Fig.~\ref{fig:single_barrier_scattering}. At low incident energy, where $E$ is well below the barrier height, transmission is strongly suppressed and reflection is close to one. As the incident energy increases, the transmission rises smoothly and approaches unity, while reflection decreases. This is the expected qualitative behavior for scattering from a finite barrier.
+
+                The dashed curve shows the conservation check $T(E)+R(E)$, which remains close to one across the full energy range. This confirms that the numerical scattering calculation approximately conserves probability flux. Small deviations near the highest energies are consistent with numerical decomposition and finite-domain effects, and do not affect the qualitative conclusion.
+
+                \begin{figure}[!p]
+                    \centering
+                    \includegraphics[height=5cm]{../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png}
+                    \caption{Transmission and reflection probabilities for scattering from a finite rectangular barrier. At low energies reflection dominates, while at high energies transmission approaches unity. The conservation check $T(E)+R(E)$ remains close to one.}
+                    \label{fig:single_barrier_scattering}
+                \end{figure}
+
+            \subsection{Double barrier potential}
+                The double-barrier potential is used to demonstrate resonant tunneling. In this case the two barriers create an intermediate well, so certain incident energies can form quasi-bound states between the barriers. At these energies, destructive reflection and constructive transmission lead to sharp peaks in the transmission coefficient.
+
+                Figure~\ref{fig:double_barrier_resonances} shows the computed transmission and reflection probabilities. The transmission contains a narrow resonance near $E\approx1.139$ and a broader high-energy resonance at larger energy. At the resonant energies, $T(E)$ approaches unity and $R(E)$ drops correspondingly, which is the expected behavior for resonant tunneling through a double barrier.
+
+                The conservation check $T(E)+R(E)$ remains close to one, confirming approximate probability-flux conservation in the scattering calculation. This is an important diagnostic because it verifies that the numerical decomposition into incident, reflected, and transmitted components is self-consistent.
+
+                Figure~\ref{fig:double_barrier_resonant_state} shows the probability density at the first resonance. The wavefunction is strongly enhanced in the region between the two barriers, which is the expected signature of a quasi-bound state. This spatial localization explains the corresponding peak in the transmission spectrum.
+
+                These results are sufficient for the double-barrier part of the report because the scattering section is a secondary extension. The plots demonstrate the key qualitative physics: transmission resonances, reflection suppression at resonance, flux conservation, and enhancement of the wavefunction in the central well.
+
+                \begin{figure}[!p]
+                    \centering
+                    \includegraphics[height=5cm]{../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png}
+                    \caption{Transmission and reflection probabilities for the double-barrier potential. Sharp transmission peaks occur at resonant energies, where reflection is suppressed and $T(E)+R(E)$ remains close to one.}
+                    \label{fig:double_barrier_resonances}
+                \end{figure}
+
+                \begin{figure}[!p]
+                    \centering
+                    \includegraphics[height=5cm]{../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png}
+                    \caption{Probability density at the first resonant energy. The wavefunction is strongly enhanced between the two barriers, showing the quasi-bound state responsible for resonant tunneling.}
+                    \label{fig:double_barrier_resonant_state}
+                \end{figure}
 
     \subsection{Convergence study}
     We analyze numerical errors by varying both the grid spacing $h$ and the domain size $x_{\max}$.
