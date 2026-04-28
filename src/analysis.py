@@ -229,6 +229,11 @@ def energies_from_states(
     """
     if n_states is None:
         return np.array([s.energy for s in states], dtype=float)
+    if len(states) < n_states:
+        raise ValueError(
+            f"Requested {n_states} state energies, but solver returned only "
+            f"{len(states)} states."
+        )
     return np.array([s.energy for s in states[:n_states]], dtype=float)
 
 

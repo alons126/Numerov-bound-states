@@ -638,9 +638,9 @@ def run_square_well(results_dir: Path) -> None:
         # asymptotic order.
         grid_sizes=[50, 80, 120, 180],
         n_even=2,
-        n_odd=1,
+        n_odd=2,
         e_min=0.1,
-        e_max=60.0,
+        e_max=80.0,
         reference_energies=exact,
     )
     conv_slopes = estimate_convergence_slopes(conv["h"], conv["energy_errors"])
