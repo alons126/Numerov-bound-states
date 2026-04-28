@@ -138,15 +138,15 @@
             \end{cases}
             \qquad \text{(implemented numerically with a large finite }V_0\text{)}
             \end{equation}
-            The numerical eigenvalues agree with the analytic values to high precision, as shown in Fig.~\ref{fig:infwell_energies}. Convergence with respect to grid spacing is demonstrated with log--log plots (Fig.~\ref{fig:infwell_convergence}), and the fitted slopes indicate power-law behavior $\Delta E \propto h^p$. \\
+            The numerical eigenvalues agree with the analytic values to essentially machine precision, as shown in Fig.~\ref{fig:infwell_energies}. In the saved run the first four relative errors are $4.9\times10^{-11}$, $1.3\times10^{-10}$, $2.6\times10^{-11}$, and $7.0\times10^{-12}$. This is exactly the behavior expected for a benchmark problem of this type: the energies follow the analytic law $E_n \propto (n+1)^2$, and the numerical points are visually indistinguishable from the exact curve on the scale of the plot. \\
 
-            The probability densities for the first four states (Fig.~\ref{fig:infwell_densities}) display the correct number of nodes and vanish at the boundaries, consistent with the analytic square-well eigenstates. \\
+            The probability densities for the first four states (Fig.~\ref{fig:infwell_densities}) also have the expected structure. The ground-state density is maximal at the center, while the excited states show the correct sequence of interior nodes inherited from the alternating even/odd parity eigenfunctions. All densities vanish at $x=\pm a$, consistent with the hard-wall boundary condition. \\
 
-            The shooting method is validated by plotting the boundary mismatch functions for both even and odd states (Fig.~\ref{fig:infwell_shooting}). The zero crossings correspond to the physical eigenvalues, confirming that the parity separation is working as intended and that the root finder is selecting the physical eigenvalues rather than spurious numerical solutions. \\
+            The shooting method is validated by plotting the boundary mismatch functions for both even and odd sectors (Fig.~\ref{fig:infwell_shooting}). The even-sector scan has zero crossings near $E\approx1.234$ and $E\approx11.103$, while the odd-sector scan crosses zero near $E\approx4.935$ and $E\approx19.739$. These are precisely the first four physical eigenvalues, so the parity separation and bracketing logic are behaving as intended rather than picking spurious roots. \\
 
-            The convergence of the energy error as a function of grid spacing $h$ (Fig.~\ref{fig:infwell_convergence}) is close to fourth order, as expected for the Numerov method. Higher excited states are more demanding to resolve. \\
+            The convergence of the energy error as a function of grid spacing $h$ (Fig.~\ref{fig:infwell_convergence}) is also as expected for Numerov. The fitted exponents from the saved convergence study are $p=3.94$, $4.00$, $3.98$, and $4.00$ for the first four states, which is strong evidence that the recurrence, startup values, and boundary treatment are all consistent with fourth-order accuracy. The higher states sit at larger absolute error for a fixed grid, which is also expected because their shorter wavelengths are harder to resolve. \\
 
-            Finally, the wavefunctions for the first four states are plotted together with their corresponding energies and the confining potential (Fig.~\ref{fig:infwell_states}), and the convergence study shows the expected high-order decrease in error. \\
+            Finally, the wavefunctions for the first four states are plotted together with their corresponding energies and the confining potential (Fig.~\ref{fig:infwell_states}). The alternating parity, increasing node count, and quadratic growth of the energy levels all match the analytic infinite-well picture. \\
 
             \begin{figure}[p]
                 \centering

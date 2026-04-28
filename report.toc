@@ -11,9 +11,8 @@
 \contentsline {subsubsection}{\numberline {3.2.2}Numerov versus Runge--Kutta}{5}{subsubsection.3.2.2}%
 \contentsline {subsection}{\numberline {3.3}Double-well potential}{8}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Finite square well}{9}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Scattering and resonant tunneling}{9}{subsection.3.5}%
-\contentsline {subsubsection}{\numberline {3.5.1}Single barrier potential}{9}{subsubsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5}Scattering and resonant tunneling}{12}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}Single barrier potential}{12}{subsubsection.3.5.1}%
 \contentsline {subsubsection}{\numberline {3.5.2}Double barrier potential}{12}{subsubsection.3.5.2}%
 \contentsline {section}{\numberline {4}Discussion}{13}{section.4}%
 \contentsline {section}{\numberline {5}Conclusion}{14}{section.5}%
-\contentsline {section}{References}{14}{section*.9}%
