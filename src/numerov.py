@@ -25,7 +25,7 @@ Several comments in the report are implemented directly here:
 - `numerov_outward()` rescales large trial solutions during scans so a wrong
   trial energy does not overflow before the mismatch is evaluated
 - `normalize_wavefunction()` uses numerical quadrature because physical bound
-  states must satisfy integral |psi|^2 dx = 1
+  states must satisfy the normalization condition integral |psi|^2 dx = 1
 - `derivative_at_right_edge()` uses a fourth-order stencil when possible
 
 That last point is not cosmetic. Even-state inward shooting enforces
@@ -156,11 +156,13 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     Returns
     -------
     ndarray
-        Wavefunction normalized so that integral |psi|^2 dx = 1.
+        Wavefunction normalized so that the discrete approximation to
+        integral |psi|^2 dx equals 1.
     """
-    # Physical wavefunctions must satisfy integral |psi|^2 dx = 1. Evaluate
-    # that discrete normalization safely by scaling before squaring, which also
-    # avoids overflow when a non-eigenvalue shooting trial has grown strongly.
+    # Physical wavefunctions must satisfy the normalization condition
+    # integral |psi|^2 dx = 1. Evaluate that discrete normalization safely by
+    # scaling before squaring, which also avoids overflow when a non-eigenvalue
+    # shooting trial has grown strongly.
     scale = np.max(np.abs(psi))
     if scale == 0.0:
         raise ValueError("Cannot normalize a zero wavefunction.")

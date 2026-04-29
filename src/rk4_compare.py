@@ -55,7 +55,7 @@ class RK4EnergyResult:
 # ---------------------------------------------------------------------------
 def _harmonic_rhs(x: float, y: np.ndarray, energy: float, omega: float) -> np.ndarray:
     """
-    Right-hand side for the first-order Schrodinger system.
+    Right-hand side for the first-order Schrödinger system.
 
     The second-order equation psi'' = 2[V(x)-E] psi is written as
     y = [psi, phi], where phi = psi'.
@@ -74,7 +74,7 @@ def _harmonic_rhs(x: float, y: np.ndarray, energy: float, omega: float) -> np.nd
 def rk4_step(
     x: float, y: np.ndarray, h: float, energy: float, omega: float
 ) -> np.ndarray:
-    """Advance the first-order Schrodinger system by one RK4 step."""
+    """Advance the first-order Schrödinger system by one RK4 step."""
     # Four slope evaluations give the classical fourth-order Runge-Kutta step.
     # Each intermediate stage samples the RHS at a different point inside the
     # current interval, then combines them into one O(h^5) local update.

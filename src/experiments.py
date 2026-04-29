@@ -228,9 +228,7 @@ def run_harmonic_rk4_comparison(
             "state_labels": ["state 0, even", "state 2, even"],
             "path": rk4_results_dir / "2b_harmonic_rk4_root_finding_even.png",
             "title": "Harmonic oscillator RK4 roots, even states",
-            "mismatch_label": (
-                r"scaled mismatch: $M(E)/\max |M|$, " r"$M(E)=\psi'_E(0)$"
-            ),
+            "mismatch_label": r"raw mismatch: $M(E)=\psi'_E(0)$",
         },
         {
             "parity": "odd",
@@ -239,9 +237,7 @@ def run_harmonic_rk4_comparison(
             "state_labels": ["state 1, odd", "state 3, odd"],
             "path": rk4_results_dir / "2b_harmonic_rk4_root_finding_odd.png",
             "title": "Harmonic oscillator RK4 roots, odd states",
-            "mismatch_label": (
-                r"scaled mismatch: $M(E)/\max |M|$, " r"$M(E)=\psi_E(0)$"
-            ),
+            "mismatch_label": r"raw mismatch: $M(E)=\psi_E(0)$",
         },
     ]
 
@@ -350,7 +346,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             "path": results_dir
             / "1_infinite_square_well_Numerov_root_finding_even.png",
             "title": "Infinite well shooting roots, even states",
-            "mismatch_label": r"scaled mismatch: $M(E)/\max |M|$, $M(E)=\psi_E(a)$",
+            "mismatch_label": r"raw mismatch: $M(E)=\psi_E(a)$",
         },
         {
             "parity": "odd",
@@ -359,7 +355,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             "state_labels": ["state 1, odd", "state 3, odd"],
             "path": results_dir / "1_infinite_square_well_Numerov_root_finding_odd.png",
             "title": "Infinite well shooting roots, odd states",
-            "mismatch_label": r"scaled mismatch: $M(E)/\max |M|$, $M(E)=\psi_E(a)$",
+            "mismatch_label": r"raw mismatch: $M(E)=\psi_E(a)$",
         },
     ]
 
@@ -406,7 +402,8 @@ def plot_harmonic_oscillator_root_diagnostics(
     x_max: float = 8.0,
 ) -> None:
     """
-    Plot shooting/root-finding diagnostics for the first four harmonic-oscillator states.
+    Plot shooting/root-finding diagnostics for the first four
+    harmonic-oscillator states.
 
     Even and odd harmonic-oscillator states use different parity boundary conditions:
     - even sector: global states n=0 and n=2
@@ -426,9 +423,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             "path": results_dir
             / "2a_harmonic_oscillator_Numerov_root_finding_even.png",
             "title": "Harmonic oscillator shooting roots, even states",
-            "mismatch_label": (
-                r"scaled mismatch: $M(E)/\max |M|$, " r"$M(E)=\psi'_E(0)$"
-            ),
+            "mismatch_label": r"raw mismatch: $M(E)=\psi'_E(0)$",
         },
         {
             "parity": "odd",
@@ -437,9 +432,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             "state_labels": ["state 1, odd", "state 3, odd"],
             "path": results_dir / "2a_harmonic_oscillator_Numerov_root_finding_odd.png",
             "title": "Harmonic oscillator shooting roots, odd states",
-            "mismatch_label": (
-                r"scaled mismatch: $M(E)/\max |M|$, " r"$M(E)=\psi_E(0)$"
-            ),
+            "mismatch_label": r"raw mismatch: $M(E)=\psi_E(0)$",
         },
     ]
 
@@ -498,7 +491,8 @@ def plot_double_well_root_diagnostics(
     x_max: float = 3.0,
 ) -> None:
     """
-    Plot shooting/root-finding diagnostics for the first four quartic double-well states.
+    Plot shooting/root-finding diagnostics for the first four quartic
+    double-well states.
 
     As in the harmonic benchmark, the even and odd parity sectors are shown in
     separate panels so the first two states of each sector can be tracked

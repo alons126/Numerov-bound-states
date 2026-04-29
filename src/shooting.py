@@ -34,8 +34,8 @@ reviewer documents:
   observed fourth-order convergence
 - `bisect_energy()` finishes with a few safeguarded secant-style polishing
   steps inside the final sign-changing bracket
-- `StateSolution.mismatch` stores a normalized residual diagnostic rather than
-  an arbitrary unnormalized wall amplitude
+- `StateSolution.mismatch` stores the final residual diagnostic returned by the
+  corresponding shooting formulation
 """
 
 from dataclasses import dataclass
@@ -70,8 +70,9 @@ class StateSolution:
     psi_full : ndarray
         Normalized full-domain wavefunction.
     mismatch : float
-        Scale-invariant boundary leakage for the final normalized state,
-        reported as psi(x_max) after normalization on the full domain.
+        Final diagnostic residual reported by the solver. For outward shooting
+        this is the normalized boundary leakage psi(x_max); for inward
+        shooting it is the final parity mismatch at the origin.
     """
 
     energy: float
