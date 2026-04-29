@@ -4,7 +4,7 @@
 \contentsline {section}{\numberline {1}What problem are we solving?}{4}{section.1}%
 \contentsline {section}{\numberline {2}Which course topics are used?}{4}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Lecture 1: Numerical errors and computational project expectations}{4}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Lecture 3: Numerical differentiation and integration}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.2}Lecture 3: Numerical differentiation and integration}{5}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Lecture 4: Root finding}{6}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}Lecture 5: ODEs, boundary-value problems, eigenvalue problems, and shooting}{6}{subsection.2.4}%
 \contentsline {subsection}{\numberline {2.5}Lecture 6: PDEs and Schr\"odinger equation context}{7}{subsection.2.5}%

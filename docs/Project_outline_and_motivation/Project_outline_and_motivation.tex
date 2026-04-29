@@ -17,7 +17,7 @@
 
 % Set page size and margins:
 % Replace `letterpaper' with `a4paper' for UK/EU standard size
-\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry} % Configure paper size and margins
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry} % Configure paper size and margins
 
 % Useful packages
 \usepackage{amsmath}                                    % Enhanced math environments and symbols
@@ -99,7 +99,7 @@
 
     \section{What problem are we solving?}
 
-    The project solves the one-dimensional time-independent Schr\"odinger equation. In the dimensionless convention used in the code, it is written as
+    The project solves the one-dimensional time-independent Schr\"odinger equation. In the dimensionless convention (where $\hbar=1$, $m=1$, and $E$ is measured in units of the potential depth) used in the code, it is written as
     \begin{equation}
         \psi''(x) = 2\,[V(x)-E]\psi(x).
     \end{equation}
@@ -121,12 +121,12 @@
 
     In this project, this appears through:
     \begin{itemize}
-        \item convergence studies,
-        \item comparison with exact solutions,
-        \item normalization checks,
-        \item automated tests,
-        \item README documentation,
-        \item discussion of truncation error, round-off error, and numerical floors.
+        \item Convergence studies: implemented in \texttt{src/analysis.py} (e.g. \texttt{convergence\_vs\_grid()}, \texttt{convergence\_vs\_box\_size()}, \texttt{convergence\_vs\_grid\_successive()}) and executed in \texttt{src/experiments.py}.
+        \item Comparison with exact solutions: implemented in \texttt{src/analysis.py} (\texttt{exact\_square\_well\_energies()}, \texttt{exact\_harmonic\_oscillator\_energies()}) and used in the square well and harmonic oscillator experiments.
+        \item Normalization checks: implemented in \texttt{src/numerov.py} via \texttt{normalize\_wavefunction()} and verified in \texttt{tests/test\_solver.py}.
+        \item Automated tests: implemented in \texttt{tests/test\_solver.py}, covering correctness, convergence, and regression behavior.
+        \item README documentation: provided in \texttt{README.md}, describing usage, structure, and project goals.
+        \item Discussion of truncation error, round-off error, and numerical floors: reflected in \texttt{src/analysis.py} (convergence diagnostics) and discussed in the report through convergence plots and slope interpretation.
     \end{itemize}
 
     A very important example is the infinite square well convergence study. The solver originally produced very accurate energies, but the observed convergence order was not ideal. The issue was not the Numerov recurrence itself, but the startup values used to seed the two-step recurrence. After adding higher Taylor terms to the parity-based startup conditions, the square-well convergence slopes improved to approximately fourth order. A similar lesson appeared later in the quartic double-well study: the convergence behavior was polluted until the potential offset, startup expansion, and convergence methodology were made consistent. These are exactly the kinds of numerical-error diagnoses emphasized in the course.
@@ -460,11 +460,27 @@
         \item single barrier and double barrier: scattering extension.
     \end{itemize}
 
+
     A recent correction was made in \texttt{quartic\_double\_well()}: the zero shift now uses the analytic minimum
     \begin{equation}
         V_{\min}=-\frac{b^2}{4a}
     \end{equation}
     instead of the sampled grid minimum. This is important because using the sampled minimum makes the potential itself depend slightly on the grid spacing $h$, which contaminates a grid-convergence study.
+
+    For the quartic double-well potential,
+    \begin{equation}
+        V(x)=a x^4 - b x^2,
+    \end{equation}
+    the true minimum can be obtained analytically by minimizing $V(x)$, which gives
+    \begin{equation}
+        V_{\min} = -\frac{b^2}{4a}.
+    \end{equation}
+
+    It is therefore preferable to shift the potential using this exact expression rather than a grid-sampled minimum. The shifted potential is defined as
+    \begin{equation}
+        V_{\text{shifted}}(x) = a x^4 - b x^2 - V_{\min},
+    \end{equation}
+    so that the minima lie at zero energy. This choice makes the energy scale cleaner and easier to interpret, and avoids introducing grid-dependent artifacts into convergence studies.
 
     \subsection{\texttt{src/numerov.py}}
 
