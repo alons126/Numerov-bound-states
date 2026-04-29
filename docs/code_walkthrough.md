@@ -6,7 +6,7 @@ The code separates the project into layers: low-level numerical methods, physica
 ```text
 psi''(x) = 2 [V(x) - E] psi(x)
 ```
-The bound-state part uses Numerov integration plus shooting/root finding. The harmonic oscillator also uses inward shooting for stability. The scattering extension uses complex Numerov integration to compute transmission and reflection.
+The bound-state part uses Numerov integration plus shooting/root finding. That structure is not just an implementation preference: the project is solving a boundary-value eigenproblem, so only special energies satisfy the physical boundary conditions. The harmonic oscillator also uses inward shooting for stability. The scattering extension uses complex Numerov integration to compute transmission and reflection.
 
 ## Project workflow
 ### `scripts/run_solver.py`
@@ -39,7 +39,7 @@ Regression and sanity tests. These tests protect the validated numerical behavio
 
 ## Core numerical methods
 ### `src/numerov.py`
-Low-level Numerov recurrence, wavefunction normalization, and boundary derivative estimation.
+Low-level Numerov recurrence, wavefunction normalization, and boundary derivative estimation. This file carries the numerical details needed to keep the overall shooting method as accurate as the formal Numerov recurrence.
 | Lines | Block | Purpose |
 |---:|---|---|
 | 41-59 | `function q_from_energy` | Build the Numerov coefficient q(x) for a trial energy. |
@@ -48,7 +48,7 @@ Low-level Numerov recurrence, wavefunction normalization, and boundary derivativ
 | 173-208 | `function derivative_at_right_edge` | Estimate the derivative at the last grid point with a backward stencil. |
 
 ### `src/shooting.py`
-Bound-state shooting solvers, including parity-based outward shooting and stable inward shooting for confining potentials.
+Bound-state shooting solvers, including parity-based outward shooting and stable inward shooting for confining potentials. This is the code realization of the course-level shooting idea: guess an energy, integrate, evaluate the mismatch, then refine the guess with root finding.
 | Lines | Block | Purpose |
 |---:|---|---|
 | 57-81 | `class StateSolution` | Container for a single bound-state solution. |
@@ -102,7 +102,7 @@ Complex Numerov scattering solver for transmission, reflection, and double-barri
 
 ## Physics and analysis layer
 ### `src/potentials.py`
-Definitions of every potential used in the report.
+Definitions of every potential used in the report. These are chosen to separate analytic validation problems from the more physical exploration problems.
 | Lines | Block | Purpose |
 |---:|---|---|
 | 39-55 | `function harmonic_oscillator` | Harmonic-oscillator potential V(x) = 1/2 * omega^2 * x^2. |
@@ -113,7 +113,7 @@ Definitions of every potential used in the report.
 | 197-234 | `function double_square_barrier` | Symmetric double-barrier scattering potential. |
 
 ### `src/analysis.py`
-Exact benchmark spectra, convergence helpers, CSV export, and double-well sweeps.
+Exact benchmark spectra, convergence helpers, CSV export, and double-well sweeps. This is where the project checks the numerical claims instead of only producing eigenvalues.
 | Lines | Block | Purpose |
 |---:|---|---|
 | 43-60 | `function exact_square_well_energies` | Exact energies for an infinite square well on [-a, a]. |
@@ -159,12 +159,14 @@ Report-ready Matplotlib figures.
 | 481-509 | `function plot_numerov_vs_rk4_errors` | Compare Numerov and RK4 harmonic-oscillator energy errors. |
 
 ## Important numerical checks
-- The Numerov derivative stencil is fourth order when enough points are available. This matters because even inward-shooting states use the condition `psi'(0)=0`.
+- The Numerov derivative stencil is fourth order when enough points are available. This matters because even inward-shooting states use the condition `psi'(0)=0`, so a low-order boundary derivative would spoil the accuracy of the full eigenvalue solve.
 - The parity-based startup in `initial_conditions` includes higher-order Taylor terms, so the first Numerov step does not spoil the observed fourth-order convergence.
-- Harmonic-oscillator inward shooting starts from the decaying forbidden-region tail and integrates toward the origin. This avoids contamination by the growing exponential mode.
+- Harmonic-oscillator inward shooting starts from the decaying forbidden-region tail and integrates toward the origin. This avoids contamination by the growing exponential mode that can dominate outward integration on a truncated infinite domain.
 - The quartic double well can shift its analytic minima to zero. That keeps the physical potential fixed as the grid changes and prevents fake convergence effects from a grid-sampled minimum.
+- Convergence studies are split intentionally: grid-refinement studies vary `h` at fixed domain size, while box-size studies keep `h` approximately fixed and vary `x_max`. That separation lets the project distinguish discretization error from domain-truncation error.
 - RK4 comparison solves the same harmonic oscillator with the same grid sizes so the comparison focuses on the integration formula rather than a different physical setup.
 - The bound-state bisection routine finishes with a few safeguarded secant-style polishing steps inside the final bracket, which noticeably reduces the reported boundary mismatch for steep roots.
+- Normalization is not cosmetic. The code uses numerical quadrature because physically meaningful wavefunctions must satisfy `∫|psi|^2 dx = 1`.
 - Scattering outputs include a conservation check through `T + R`, which should remain close to one.
 - The experiments layer now writes outputs into experiment-specific subdirectories, so the results tree mirrors the project sections instead of mixing all CSV and PNG files in one folder.
 - The tests include analytic benchmarks, convergence-order checks, parity-specific double-well checks, normalization checks, derivative-stencil checks, and scattering sanity checks.

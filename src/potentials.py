@@ -16,9 +16,11 @@ separation is intentional because it lets the same numerical machinery be
 validated on analytic benchmarks and then reused for less trivial systems.
 
 The potentials play distinct roles in the report:
-- infinite square well: basic analytic validation of bound-state shooting
+- infinite square well: basic analytic validation of bound-state shooting and
+  convergence-order checks
 - harmonic oscillator: analytic validation plus inward-shooting stability study
-- finite square well: finite-depth bound-state example
+- finite square well: finite-depth bound-state example showing that only a
+  finite number of bound levels survive below the barrier
 - quartic double well: tunneling splitting and convergence analysis
 - square and double barriers: scattering and resonant-tunneling extension
 

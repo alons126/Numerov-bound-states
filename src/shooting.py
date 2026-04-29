@@ -13,7 +13,7 @@ half-domain x in [0, x_max], then reconstructs the full wavefunction.
 Reviewer guide
 --------------
 This file is the bound-state eigenvalue solver. Conceptually, it turns the
-Schrödinger boundary-value problem into a scalar root-finding problem:
+Schrödinger boundary-value eigenproblem into a practical shooting procedure:
 1. choose a trial energy E
 2. integrate the corresponding trial wavefunction with Numerov
 3. evaluate a boundary mismatch M(E)
@@ -104,12 +104,14 @@ def initial_conditions(
         Starting values (psi0, psi1) for Numerov integration.
     """
     # The Taylor expansion around x=0 supplies the first two Numerov values.
-    # This is where parity enters the shooting calculation.
+    # This is where parity enters the shooting calculation on the half-domain.
     h = x_half[1] - x_half[0]
     q0 = q_half[0]
     # For smooth symmetric potentials, q'(0)=0 but q''(0) generally does not
     # vanish. Including it prevents the startup step from degrading the
-    # observed high-order convergence for center-penetrating states.
+    # observed high-order convergence for center-penetrating states. Without
+    # this term, the startup error can dominate the measured convergence rate
+    # even when the Numerov recurrence itself is higher order.
     q2 = (q_half[2] - 2.0 * q_half[1] + q_half[0]) / (h * h)
 
     if parity == "even":
@@ -155,6 +157,9 @@ def half_domain_wavefunction(
     ndarray
         Unnormalized half-domain wavefunction.
     """
+    # A trial energy does not automatically satisfy the boundary conditions.
+    # Shooting treats the ODE solve as a diagnostic: only special energies
+    # produce a wavefunction that also matches the far boundary.
     q = q_from_energy(V_half, energy)
     psi0, psi1 = initial_conditions(x_half, q, parity)
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
@@ -193,6 +198,8 @@ def boundary_mismatch(
     float
         Scalar mismatch value used in bracketing or diagnostics.
     """
+    # The mismatch M(E) is the scalar quantity whose zero selects an allowed
+    # eigenvalue. This converts the boundary-value problem into root finding.
     psi = half_domain_wavefunction(x_half, V_half, energy, parity)
 
     if mode == "value":
@@ -239,7 +246,8 @@ def find_brackets(
     """
     # Bracketing converts the eigenvalue problem into a set of scalar root
     # searches. Every sign change in the mismatch curve marks one candidate
-    # eigenvalue interval.
+    # eigenvalue interval, which is why the report treats root finding as a
+    # central ingredient rather than a post-processing detail.
     energies = np.linspace(e_min, e_max, n_scan)
     vals = np.array(
         [boundary_mismatch(x_half, V_half, e, parity, mode="value") for e in energies]
@@ -276,7 +284,8 @@ def sample_boundary_mismatch(
     Sample the shooting mismatch over an energy interval.
 
     This is used only for diagnostics and visualization. The eigenvalues are
-    located where the mismatch curve crosses zero.
+    located where the mismatch curve crosses zero, so plotting it makes the
+    root-finding logic visible instead of leaving it as a black box.
     """
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
@@ -404,8 +413,9 @@ def bisect_energy(
         else:
             lo, flo = mid, fmid
 
-    # Bisection makes the energy bracket tiny, but for steep mismatch curves
-    # the midpoint residual can still be visibly nonzero. Finish with a few
+    # Bisection is used because it is robust and easy to justify for a project
+    # writeup. For steep mismatch curves, however, a tiny energy bracket can
+    # still leave a visible residual at the midpoint. Finish with a few
     # safeguarded secant steps inside the last sign-changing bracket to report
     # a much better boundary residual without sacrificing robustness.
     for _ in range(8):
@@ -506,6 +516,9 @@ def solve_state_from_bracket(
     psi_half = half_domain_wavefunction(x_half, V_half, energy, parity)
     x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
     psi_full = normalize_wavefunction(x_full, psi_full)
+    # Report the wall leakage after normalization so the diagnostic is tied to
+    # a physical bound-state scale instead of the arbitrary amplitude of the
+    # unnormalized shooting solution.
     mismatch = float(psi_full[-1])
 
     return StateSolution(
@@ -537,7 +550,7 @@ def inward_decay_initial_conditions(
     """
     dx = abs(x_desc[1] - x_desc[0])
 
-    # In the forbidden region, a decaying bound-state tail satisfies roughly
+    # In the forbidden region, a physical bound-state tail satisfies roughly
     # psi'/psi = -kappa(x), where kappa(x) = sqrt(2[V(x)-E]).
     # Since we integrate inward from x_max to x_max-dx, the physical decaying
     # solution grows by exp(integral kappa dx) over the first step.
@@ -597,6 +610,10 @@ def inward_decay_boundary_mismatch(
 
     Even states should satisfy psi'(0) = 0.
     Odd states should satisfy psi(0) = 0.
+
+    For the harmonic oscillator, this origin mismatch is preferable to checking
+    the far wall after outward integration because the unphysical growing tail
+    contaminates outward shooting on large domains.
     """
     x_desc, psi_desc = inward_decay_half_domain_wavefunction(
         x_max=x_max,
@@ -882,7 +899,8 @@ def solve_symmetric_potential_inward_decay(
     This is especially useful for the harmonic oscillator. Outward shooting from
     the origin can pick up a numerically growing exponential tail in the forbidden
     region. Inward shooting starts from the decaying asymptotic side and imposes
-    parity at the origin, which produces much cleaner wavefunctions.
+    parity at the origin, which produces much cleaner wavefunctions and matches
+    the physical requirement that bound states decay as |x| becomes large.
     """
     if potential_kwargs is None:
         potential_kwargs = {}
@@ -977,6 +995,12 @@ def solve_symmetric_potential(
     -------
     list[StateSolution]
         Bound states sorted by energy.
+
+    Notes
+    -----
+    This is the standard outward half-domain solver used for bounded or
+    effectively boxed problems, where checking the right-edge leakage is a
+    stable way to enforce the second boundary condition.
     """
     if potential_kwargs is None:
         potential_kwargs = {}

@@ -18,6 +18,10 @@ The functions here fall into three groups:
 - parameter-sweep helpers for extracting physical trends such as double-well
   tunneling splitting
 
+This layer exists because numerical computation is approximate, so the project
+has to do more than produce plots. It must check convergence, compare against
+exact solutions when available, and separate different error sources cleanly.
+
 One important reviewer-facing design choice is that the quartic double well
 uses two different convergence strategies:
 - grid-refinement (`convergence_vs_grid_successive`) compares each grid to the

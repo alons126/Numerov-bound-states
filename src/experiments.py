@@ -685,8 +685,9 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     x_max = 8.0
     n_grid = 2500
 
-    # Use inward shooting for the harmonic oscillator. Outward shooting can
-    # pick up the exponentially growing forbidden-region solution.
+    # Use inward shooting for the harmonic oscillator. On a truncated infinite
+    # domain, outward shooting can pick up the exponentially growing forbidden-
+    # region solution instead of the physical decaying tail.
     print("Running harmonic oscillator experiment...")
     states = solve_symmetric_potential_inward_decay(
         x_max=x_max,
@@ -752,7 +753,8 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     # Grid-refinement convergence for all four displayed states. Use the
     # inward-decay solver here as well, so the convergence study matches the
     # stable harmonic-oscillator calculation used for the final figures.
-    # Grid convergence changes h at fixed domain size, isolating discretization error.
+    # Grid convergence changes h at fixed domain size, isolating the
+    # discretization error from the finite-domain truncation error.
     conv_h = convergence_vs_grid(
         potential_fn=harmonic_oscillator,
         potential_kwargs={"omega": omega},
@@ -795,7 +797,8 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     # Box-size convergence should isolate the finite-domain truncation error.
     # Therefore h is kept approximately fixed while x_max changes. Holding
     # n_grid fixed would also change h and mix two different error sources.
-    # Box-size sensitivity changes the physical cutoff while keeping h nearly fixed.
+    # Convergence claims are only meaningful if discretization and
+    # domain-truncation errors are not folded together.
     conv_box = convergence_vs_box_size_fixed_spacing(
         potential_fn=harmonic_oscillator,
         potential_kwargs={"omega": omega},

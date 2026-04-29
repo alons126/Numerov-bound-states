@@ -14,7 +14,8 @@ Reviewer guide
 --------------
 This file is the numerical core of the project. It does not decide which
 eigenvalue is correct; instead it provides the low-level operations that all
-higher layers rely on:
+higher layers rely on when turning the Schrödinger boundary-value eigenproblem
+into a numerical shooting calculation:
 - convert a trial energy into the coefficient q(x)
 - propagate a trial solution with the Numerov recurrence
 - normalize the resulting wavefunction safely
@@ -23,7 +24,8 @@ higher layers rely on:
 Several comments in the report are implemented directly here:
 - `numerov_outward()` rescales large trial solutions during scans so a wrong
   trial energy does not overflow before the mismatch is evaluated
-- `normalize_wavefunction()` rescales before squaring for the same reason
+- `normalize_wavefunction()` uses numerical quadrature because physical bound
+  states must satisfy integral |psi|^2 dx = 1
 - `derivative_at_right_edge()` uses a fourth-order stencil when possible
 
 That last point is not cosmetic. Even-state inward shooting enforces
@@ -151,8 +153,9 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     ndarray
         Wavefunction normalized so that integral |psi|^2 dx = 1.
     """
-    # First scale the wavefunction before squaring it. This avoids overflow
-    # when a non-eigenvalue shooting trial has grown exponentially.
+    # Physical wavefunctions must satisfy integral |psi|^2 dx = 1. Evaluate
+    # that discrete normalization safely by scaling before squaring, which also
+    # avoids overflow when a non-eigenvalue shooting trial has grown strongly.
     scale = np.max(np.abs(psi))
     if scale == 0.0:
         raise ValueError("Cannot normalize a zero wavefunction.")
