@@ -13,10 +13,6 @@ This script runs the full project workflow described in the report:
 3. Convergence and splitting studies
 4. Automated tests for numerical sanity checks
 
-It is intentionally lightweight: all physics and analysis logic lives in src/.
-
-Reviewer guide
---------------
 This script is intentionally small. Its job is orchestration, not numerical
 work. A reviewer reading the project from top to bottom can treat it as the
 "main program":
