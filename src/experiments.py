@@ -67,11 +67,11 @@ from src.shooting import (
     bisection_history,
     bisection_history_inward_decay,
     find_brackets,
-    find_inward_decay_brackets,
+    find_brackets_inward_shooting,
     sample_boundary_mismatch,
     sample_inward_decay_mismatch,
     solve_symmetric_potential,
-    solve_symmetric_potential_inward_decay,
+    solve_symmetric_potential_inward_shooting,
 )
 from src.scattering import (
     find_transmission_peaks,
@@ -452,7 +452,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             e_max=spec["e_max"],
             n_scan=400,
         )
-        brackets = find_inward_decay_brackets(
+        brackets = find_brackets_inward_shooting(
             x_max=x_max,
             n_grid=500,
             potential_fn=harmonic_oscillator,
@@ -707,7 +707,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     # domain, outward shooting can pick up the exponentially growing forbidden-
     # region solution instead of the physical decaying tail.
     print("Running harmonic oscillator experiment...")
-    states = solve_symmetric_potential_inward_decay(
+    states = solve_symmetric_potential_inward_shooting(
         x_max=x_max,
         n_grid=n_grid,
         potential_fn=harmonic_oscillator,
@@ -783,7 +783,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_min=0.1,
         e_max=6.0,
         reference_energies=exact[:4],
-        solver_fn=solve_symmetric_potential_inward_decay,
+        solver_fn=solve_symmetric_potential_inward_shooting,
     )
     conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
     save_csv_rows(
@@ -827,7 +827,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_min=0.1,
         e_max=6.0,
         reference_energies=exact[:4],
-        solver_fn=solve_symmetric_potential_inward_decay,
+        solver_fn=solve_symmetric_potential_inward_shooting,
     )
     save_csv_rows(
         numerov_results_dir

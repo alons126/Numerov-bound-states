@@ -585,9 +585,9 @@ def solve_state_from_bracket(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: inward_decay_initial_conditions
+# FUNCTION: initial_conditions_inward_shooting
 # ---------------------------------------------------------------------------
-def inward_decay_initial_conditions(
+def initial_conditions_inward_shooting(
     x_desc: np.ndarray,
     V_desc: np.ndarray,
     energy: float,
@@ -619,9 +619,9 @@ def inward_decay_initial_conditions(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: inward_decay_half_domain_wavefunction
+# FUNCTION: half_domain_wavefunction_inward_shooting
 # ---------------------------------------------------------------------------
-def inward_decay_half_domain_wavefunction(
+def half_domain_wavefunction_inward_shooting(
     x_max: float,
     n_grid: int,
     potential_fn,
@@ -642,15 +642,15 @@ def inward_decay_half_domain_wavefunction(
     x_desc = np.linspace(x_max, 0.0, n_grid)
     V_desc = potential_fn(x_desc, **potential_kwargs)
     q_desc = q_from_energy(V_desc, energy)
-    psi0, psi1 = inward_decay_initial_conditions(x_desc, V_desc, energy)
+    psi0, psi1 = initial_conditions_inward_shooting(x_desc, V_desc, energy)
     psi_desc = numerov_outward(x_desc, q_desc, psi0=psi0, psi1=psi1)
     return x_desc, psi_desc
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: inward_decay_boundary_mismatch
+# FUNCTION: boundary_mismatch_inward_shooting
 # ---------------------------------------------------------------------------
-def inward_decay_boundary_mismatch(
+def boundary_mismatch_inward_shooting(
     x_max: float,
     n_grid: int,
     potential_fn,
@@ -673,7 +673,7 @@ def inward_decay_boundary_mismatch(
     the far wall after outward integration because the unphysical growing tail
     contaminates outward shooting on large domains.
     """
-    x_desc, psi_desc = inward_decay_half_domain_wavefunction(
+    x_desc, psi_desc = half_domain_wavefunction_inward_shooting(
         x_max=x_max,
         n_grid=n_grid,
         potential_fn=potential_fn,
@@ -710,7 +710,7 @@ def sample_inward_decay_mismatch(
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
         [
-            inward_decay_boundary_mismatch(
+            boundary_mismatch_inward_shooting(
                 x_max,
                 n_grid,
                 potential_fn,
@@ -726,9 +726,9 @@ def sample_inward_decay_mismatch(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: find_inward_decay_brackets
+# FUNCTION: find_brackets_inward_shooting
 # ---------------------------------------------------------------------------
-def find_inward_decay_brackets(
+def find_brackets_inward_shooting(
     x_max: float,
     n_grid: int,
     potential_fn,
@@ -767,9 +767,9 @@ def find_inward_decay_brackets(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: bisect_energy_inward_decay
+# FUNCTION: bisect_energy_inward_shooting
 # ---------------------------------------------------------------------------
-def bisect_energy_inward_decay(
+def bisect_energy_inward_shooting(
     x_max: float,
     n_grid: int,
     potential_fn,
@@ -783,10 +783,10 @@ def bisect_energy_inward_decay(
     Refine an inward-shooting eigenvalue bracket with bisection.
     """
     lo, hi = bracket
-    flo = inward_decay_boundary_mismatch(
+    flo = boundary_mismatch_inward_shooting(
         x_max, n_grid, potential_fn, potential_kwargs, lo, parity
     )
-    fhi = inward_decay_boundary_mismatch(
+    fhi = boundary_mismatch_inward_shooting(
         x_max, n_grid, potential_fn, potential_kwargs, hi, parity
     )
 
@@ -801,7 +801,7 @@ def bisect_energy_inward_decay(
 
     for _ in range(max_iter):
         mid = 0.5 * (lo + hi)
-        fmid = inward_decay_boundary_mismatch(
+        fmid = boundary_mismatch_inward_shooting(
             x_max,
             n_grid,
             potential_fn,
@@ -823,7 +823,7 @@ def bisect_energy_inward_decay(
     mid = 0.5 * (lo + hi)
     # If the loop hit the iteration cap, return the midpoint of the last valid
     # bracket together with its mismatch.
-    return mid, inward_decay_boundary_mismatch(
+    return mid, boundary_mismatch_inward_shooting(
         x_max,
         n_grid,
         potential_fn,
@@ -850,14 +850,14 @@ def bisection_history_inward_decay(
     Record the inward-shooting bisection process for diagnostic plots.
     """
     lo, hi = bracket
-    flo = inward_decay_boundary_mismatch(
+    flo = boundary_mismatch_inward_shooting(
         x_max, n_grid, potential_fn, potential_kwargs, lo, parity
     )
 
     history: list[dict] = []
     for iteration in range(max_iter):
         mid = 0.5 * (lo + hi)
-        fmid = inward_decay_boundary_mismatch(
+        fmid = boundary_mismatch_inward_shooting(
             x_max,
             n_grid,
             potential_fn,
@@ -902,7 +902,7 @@ def solve_state_from_inward_decay_bracket(
     """
     Compute one bound state using inward shooting from the decaying tail.
     """
-    energy, mismatch = bisect_energy_inward_decay(
+    energy, mismatch = bisect_energy_inward_shooting(
         x_max,
         n_grid,
         potential_fn,
@@ -912,7 +912,7 @@ def solve_state_from_inward_decay_bracket(
         tol=tol,
     )
 
-    x_desc, psi_desc = inward_decay_half_domain_wavefunction(
+    x_desc, psi_desc = half_domain_wavefunction_inward_shooting(
         x_max,
         n_grid,
         potential_fn,
@@ -937,9 +937,9 @@ def solve_state_from_inward_decay_bracket(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: solve_symmetric_potential_inward_decay
+# FUNCTION: solve_symmetric_potential_inward_shooting
 # ---------------------------------------------------------------------------
-def solve_symmetric_potential_inward_decay(
+def solve_symmetric_potential_inward_shooting(
     x_max: float,
     n_grid: int,
     potential_fn,
@@ -979,7 +979,7 @@ def solve_symmetric_potential_inward_decay(
     for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
         # Symmetry lets each parity sector be searched independently, which is
         # simpler than trying to recover all states from a full-domain solve.
-        brackets = find_inward_decay_brackets(
+        brackets = find_brackets_inward_shooting(
             x_max,
             n_grid,
             potential_fn,

@@ -56,7 +56,7 @@ from src.scattering import sweep_scattering
 from src.shooting import (
     sample_boundary_mismatch,
     solve_symmetric_potential,
-    solve_symmetric_potential_inward_decay,
+    solve_symmetric_potential_inward_shooting,
 )
 
 
@@ -222,7 +222,7 @@ def test_harmonic_oscillator_inward_decay_first_levels() -> None:
     Verify that the inward-decay harmonic solver resolves the first levels accurately.
     """
     omega = 1.0
-    states = solve_symmetric_potential_inward_decay(
+    states = solve_symmetric_potential_inward_shooting(
         x_max=8.0,
         n_grid=800,
         potential_fn=harmonic_oscillator,

@@ -61,15 +61,15 @@ Bound-state shooting solvers, including parity-based outward shooting and stable
 | 345-432 | `function bisect_energy` | Refine a sign-changing eigenvalue bracket with bisection. |
 | 439-472 | `function build_full_wavefunction` | Reconstruct the full wavefunction from its half-domain representation. |
 | 479-517 | `function solve_state_from_bracket` | Compute one bound state starting from a valid energy bracket. |
-| 524-552 | `function inward_decay_initial_conditions` | Construct stable starting values at x_max for inward shooting. |
-| 559-580 | `function inward_decay_half_domain_wavefunction` | Integrate the decaying tail inward from x_max to x = 0. |
-| 587-614 | `function inward_decay_boundary_mismatch` | Evaluate the parity mismatch at the origin for inward shooting. |
+| 524-552 | `function initial_conditions_inward_shooting` | Construct stable starting values at x_max for inward shooting. |
+| 559-580 | `function half_domain_wavefunction_inward_shooting` | Integrate the decaying tail inward from x_max to x = 0. |
+| 587-614 | `function boundary_mismatch_inward_shooting` | Evaluate the parity mismatch at the origin for inward shooting. |
 | 621-649 | `function sample_inward_decay_mismatch` | Sample the inward-shooting parity mismatch over an energy interval. |
-| 656-691 | `function find_inward_decay_brackets` | Locate sign-changing brackets for inward-shooting eigenvalue searches. |
-| 698-757 | `function bisect_energy_inward_decay` | Refine an inward-shooting eigenvalue bracket with bisection. |
+| 656-691 | `function find_brackets_inward_shooting` | Locate sign-changing brackets for inward-shooting eigenvalue searches. |
+| 698-757 | `function bisect_energy_inward_shooting` | Refine an inward-shooting eigenvalue bracket with bisection. |
 | 764-812 | `function bisection_history_inward_decay` | Record the inward-shooting bisection process for diagnostic plots. |
 | 819-860 | `function solve_state_from_inward_decay_bracket` | Compute one bound state using inward shooting from the decaying tail. |
-| 867-935 | `function solve_symmetric_potential_inward_decay` | Solve symmetric confining potentials by shooting inward from x_max. |
+| 867-935 | `function solve_symmetric_potential_inward_shooting` | Solve symmetric confining potentials by shooting inward from x_max. |
 | 942-1017 | `function solve_symmetric_potential` | Solve for multiple bound states of a symmetric potential. |
 
 ### `src/rk4_compare.py`
