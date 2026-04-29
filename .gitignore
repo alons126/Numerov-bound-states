@@ -7,8 +7,5 @@
 # IDE specific files
 .vscode
 
-# Matplotlib configuration files
-.mplconfig
-
-# Jupyter Notebook checkpoints
-.cache
+# Cache directories
+.cache/
