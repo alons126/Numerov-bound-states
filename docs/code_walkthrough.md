@@ -25,7 +25,7 @@ Regression and sanity tests. These tests protect the validated numerical behavio
 | 128-145 | `function test_square_well_ground_state` | Verify that the square-well ground-state energy matches the exact result. |
 | 152-172 | `function test_square_well_convergence_order` | Check that the square-well energies recover near-fourth-order grid convergence. |
 | 179-196 | `function test_harmonic_oscillator_first_levels` | Verify that the first few harmonic-oscillator energies are accurate. |
-| 203-220 | `function test_harmonic_oscillator_inward_decay_first_levels` | Verify that the inward-decay harmonic solver resolves the first levels accurately. |
+| 203-220 | `function test_harmonic_oscillator_inward_shooting_first_levels` | Verify that the inward-shooting harmonic solver resolves the first levels accurately. |
 | 227-241 | `function test_double_well_splitting_positive` | Check that the first odd state lies above the first even state in the double well. |
 | 248-258 | `function test_quartic_double_well_exact_shifted_minimum` | Check that the shifted double well uses the analytic minimum rather than a grid-dependent sampled minimum. |
 | 265-309 | `function test_double_well_larger_box_improves_low_lying_energies` | Check that enlarging the quartic-double-well box reduces truncation error. |
@@ -56,19 +56,19 @@ Bound-state shooting solvers, including parity-based outward shooting and stable
 | 133-160 | `function half_domain_wavefunction_outward_shooting` | Compute the half-domain trial wavefunction for a given energy. |
 | 167-206 | `function boundary_mismatch_outward_shooting` | Evaluate the mismatch used for eigenvalue shooting. |
 | 213-260 | `function find_brackets_outward_shooting` | Scan an energy interval and locate sign-changing brackets. |
-| 267-286 | `function sample_boundary_mismatch` | Sample the shooting mismatch over an energy interval. |
-| 293-338 | `function bisection_history` | Record the bisection process for one eigenvalue bracket. |
+| 267-286 | `function sample_boundary_mismatch_outward_shooting` | Sample the shooting mismatch over an energy interval. |
+| 293-338 | `function bisection_history_outward_shooting` | Record the bisection process for one eigenvalue bracket. |
 | 345-432 | `function bisect_energy_outward_shooting` | Refine a sign-changing eigenvalue bracket with bisection. |
 | 439-472 | `function build_full_wavefunction` | Reconstruct the full wavefunction from its half-domain representation. |
 | 479-517 | `function solve_state_from_bracket_outward_shooting` | Compute one bound state starting from a valid energy bracket. |
 | 524-552 | `function initial_conditions_inward_shooting` | Construct stable starting values at x_max for inward shooting. |
 | 559-580 | `function half_domain_wavefunction_inward_shooting` | Integrate the decaying tail inward from x_max to x = 0. |
 | 587-614 | `function boundary_mismatch_inward_shooting` | Evaluate the parity mismatch at the origin for inward shooting. |
-| 621-649 | `function sample_inward_decay_mismatch` | Sample the inward-shooting parity mismatch over an energy interval. |
+| 621-649 | `function sample_mismatch_inward_shooting` | Sample the inward-shooting parity mismatch over an energy interval. |
 | 656-691 | `function find_brackets_inward_shooting` | Locate sign-changing brackets for inward-shooting eigenvalue searches. |
 | 698-757 | `function bisect_energy_inward_shooting` | Refine an inward-shooting eigenvalue bracket with bisection. |
-| 764-812 | `function bisection_history_inward_decay` | Record the inward-shooting bisection process for diagnostic plots. |
-| 819-860 | `function solve_state_from_inward_decay_bracket` | Compute one bound state using inward shooting from the decaying tail. |
+| 764-812 | `function bisection_history_inward_shooting` | Record the inward-shooting bisection process for diagnostic plots. |
+| 819-860 | `function solve_state_from_bracket_inward_shooting` | Compute one bound state using inward shooting from the decaying tail. |
 | 867-935 | `function solve_symmetric_potential_inward_shooting` | Solve symmetric confining potentials by shooting inward from x_max. |
 | 942-1017 | `function solve_symmetric_potential_outward_shooting` | Solve for multiple bound states of a symmetric potential. |
 

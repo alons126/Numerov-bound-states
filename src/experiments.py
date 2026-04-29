@@ -64,12 +64,12 @@ from src.potentials import (
     square_barrier,
 )
 from src.shooting import (
-    bisection_history,
-    bisection_history_inward_decay,
+    bisection_history_outward_shooting,
+    bisection_history_inward_shooting,
     find_brackets_outward_shooting,
     find_brackets_inward_shooting,
-    sample_boundary_mismatch,
-    sample_inward_decay_mismatch,
+    sample_boundary_mismatch_outward_shooting,
+    sample_mismatch_inward_shooting,
     solve_symmetric_potential_outward_shooting,
     solve_symmetric_potential_inward_shooting,
 )
@@ -366,7 +366,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
     ]
 
     for spec in diagnostic_specs:
-        energies_scan, mismatches_scan = sample_boundary_mismatch(
+        energies_scan, mismatches_scan = sample_boundary_mismatch_outward_shooting(
             x_half,
             V_half,
             parity=spec["parity"],
@@ -383,7 +383,9 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             n_scan=1600,
         )
         histories = [
-            bisection_history(x_half, V_half, spec["parity"], bracket, max_iter=30)
+            bisection_history_outward_shooting(
+                x_half, V_half, spec["parity"], bracket, max_iter=30
+            )
             for bracket in brackets[: len(spec["state_labels"])]
         ]
 
@@ -442,7 +444,7 @@ def plot_harmonic_oscillator_root_diagnostics(
     ]
 
     for spec in diagnostic_specs:
-        energies_scan, mismatches_scan = sample_inward_decay_mismatch(
+        energies_scan, mismatches_scan = sample_mismatch_inward_shooting(
             x_max=x_max,
             n_grid=500,
             potential_fn=harmonic_oscillator,
@@ -463,7 +465,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             n_scan=400,
         )
         histories = [
-            bisection_history_inward_decay(
+            bisection_history_inward_shooting(
                 x_max=x_max,
                 n_grid=1600,
                 potential_fn=harmonic_oscillator,
@@ -527,7 +529,7 @@ def plot_double_well_root_diagnostics(
     ]
 
     for spec in diagnostic_specs:
-        energies_scan, mismatches_scan = sample_boundary_mismatch(
+        energies_scan, mismatches_scan = sample_boundary_mismatch_outward_shooting(
             x_half,
             V_half,
             parity=spec["parity"],
@@ -544,7 +546,9 @@ def plot_double_well_root_diagnostics(
             n_scan=1600,
         )
         histories = [
-            bisection_history(x_half, V_half, spec["parity"], bracket, max_iter=30)
+            bisection_history_outward_shooting(
+                x_half, V_half, spec["parity"], bracket, max_iter=30
+            )
             for bracket in brackets[: len(spec["state_labels"])]
         ]
 

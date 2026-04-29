@@ -54,7 +54,7 @@ from src.potentials import (
 import src.rk4_compare as rk4_compare
 from src.scattering import sweep_scattering
 from src.shooting import (
-    sample_boundary_mismatch,
+    sample_boundary_mismatch_outward_shooting,
     solve_symmetric_potential_outward_shooting,
     solve_symmetric_potential_inward_shooting,
 )
@@ -215,11 +215,11 @@ def test_harmonic_oscillator_first_levels() -> None:
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: test_harmonic_oscillator_inward_decay_first_levels
+# FUNCTION: test_harmonic_oscillator_inward_shooting_first_levels
 # ---------------------------------------------------------------------------
-def test_harmonic_oscillator_inward_decay_first_levels() -> None:
+def test_harmonic_oscillator_inward_shooting_first_levels() -> None:
     """
-    Verify that the inward-decay harmonic solver resolves the first levels accurately.
+    Verify that the inward-shooting harmonic solver resolves the first levels accurately.
     """
     omega = 1.0
     states = solve_symmetric_potential_inward_shooting(
@@ -402,10 +402,10 @@ def test_double_well_even_odd_mismatch_scans_differ() -> None:
     """
     x_half = np.linspace(0.0, 4.0, 800)
     V_half = quartic_double_well(x_half, a=1.0, b=6.0, shift_min_to_zero=True)
-    energies_even, mismatches_even = sample_boundary_mismatch(
+    energies_even, mismatches_even = sample_boundary_mismatch_outward_shooting(
         x_half, V_half, parity="even", e_min=1.0, e_max=8.5, n_scan=400
     )
-    energies_odd, mismatches_odd = sample_boundary_mismatch(
+    energies_odd, mismatches_odd = sample_boundary_mismatch_outward_shooting(
         x_half, V_half, parity="odd", e_min=1.0, e_max=8.5, n_scan=400
     )
     assert np.allclose(energies_even, energies_odd)
@@ -455,7 +455,7 @@ def run_all_tests() -> None:
     test_square_well_ground_state()
     test_square_well_convergence_order()
     test_harmonic_oscillator_first_levels()
-    test_harmonic_oscillator_inward_decay_first_levels()
+    test_harmonic_oscillator_inward_shooting_first_levels()
     test_double_well_splitting_positive()
     test_scattering_probability_conservation()
     test_run_solver_import_without_experiment_dependencies()

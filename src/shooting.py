@@ -313,10 +313,10 @@ def find_brackets_outward_shooting(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: sample_boundary_mismatch
+# FUNCTION: sample_boundary_mismatch_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-def sample_boundary_mismatch(
+def sample_boundary_mismatch_outward_shooting(
     x_half: np.ndarray,
     V_half: np.ndarray,
     parity: str,
@@ -345,10 +345,10 @@ def sample_boundary_mismatch(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: bisection_history
+# FUNCTION: bisection_history_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-def bisection_history(
+def bisection_history_outward_shooting(
     x_half: np.ndarray,
     V_half: np.ndarray,
     parity: str,
@@ -706,9 +706,9 @@ def boundary_mismatch_inward_shooting(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: sample_inward_decay_mismatch
+# FUNCTION: sample_mismatch_inward_shooting
 # ---------------------------------------------------------------------------
-def sample_inward_decay_mismatch(
+def sample_mismatch_inward_shooting(
     x_max: float,
     n_grid: int,
     potential_fn,
@@ -755,7 +755,7 @@ def find_brackets_inward_shooting(
     """
     Locate sign-changing brackets for inward-shooting eigenvalue searches.
     """
-    energies, vals = sample_inward_decay_mismatch(
+    energies, vals = sample_mismatch_inward_shooting(
         x_max,
         n_grid,
         potential_fn,
@@ -848,9 +848,9 @@ def bisect_energy_inward_shooting(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: bisection_history_inward_decay
+# FUNCTION: bisection_history_inward_shooting
 # ---------------------------------------------------------------------------
-def bisection_history_inward_decay(
+def bisection_history_inward_shooting(
     x_max: float,
     n_grid: int,
     potential_fn,
@@ -902,9 +902,9 @@ def bisection_history_inward_decay(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: solve_state_from_inward_decay_bracket
+# FUNCTION: solve_state_from_bracket_inward_shooting
 # ---------------------------------------------------------------------------
-def solve_state_from_inward_decay_bracket(
+def solve_state_from_bracket_inward_shooting(
     x_max: float,
     n_grid: int,
     potential_fn,
@@ -1014,7 +1014,7 @@ def solve_symmetric_potential_inward_shooting(
             # Each bracket is assumed to isolate one state in this parity
             # sector, so it can be solved independently and appended.
             solutions.append(
-                solve_state_from_inward_decay_bracket(
+                solve_state_from_bracket_inward_shooting(
                     x_max,
                     n_grid,
                     potential_fn,

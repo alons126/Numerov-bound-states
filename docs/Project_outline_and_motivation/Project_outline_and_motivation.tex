@@ -301,7 +301,7 @@
         \item \texttt{derivative\_at\_right\_edge()} estimates the derivative at the boundary when a derivative-based mismatch is needed.
     \end{itemize}
 
-    The startup values used by the recurrence are supplied from \texttt{src/shooting.py}. In particular, \texttt{initial\_conditions()} constructs the parity-based Taylor expansions near the origin, and \texttt{half\_domain\_wavefunction()} uses those values to launch the outward integration on the half domain. The shooting routines then evaluate how well the integrated solution satisfies the target boundary behavior for a given trial energy.
+    The startup values used by the recurrence are supplied from \texttt{src/shooting.py}. In particular, \texttt{initial\_conditions\_outward\_shooting()} constructs the parity-based Taylor expansions near the origin, and \texttt{half\_domain\_wavefunction\_outward\_shooting()} uses those values to launch the outward integration on the half domain. The shooting routines then evaluate how well the integrated solution satisfies the target boundary behavior for a given trial energy.
 
     The overall workflow is therefore:
     \begin{enumerate}
@@ -375,7 +375,7 @@
 
     Therefore, instead of integrating from $-x_{\max}$ to $x_{\max}$, the code integrates only from $0$ to $x_{\max}$.
 
-    In code, \texttt{initial\_conditions()} uses:
+    In code, \texttt{initial\_conditions\_outward\_shooting()} uses:
     \begin{itemize}
         \item even: $\psi(0)=1$, $\psi'(0)=0$,
         \item odd: $\psi(0)=0$, $\psi'(0)=1$.
