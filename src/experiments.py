@@ -131,8 +131,11 @@ def run_harmonic_rk4_comparison(
     n_states = 4
     numerov_h = np.asarray(numerov_convergence["h"], dtype=float)
     numerov_errors = np.asarray(numerov_convergence["energy_errors"], dtype=float)
+    # Convert the Numerov spacing samples back into integer grid sizes so the
+    # RK4 comparison uses matching meshes.
     grid_sizes = [int(round(x_max / h)) + 1 for h in numerov_h]
 
+    # First generate one representative RK4 spectrum table and figure.
     rk4_reference_rows = solve_harmonic_oscillator_rk4_energies(
         x_max=x_max,
         n_grid=1200,
@@ -162,6 +165,8 @@ def run_harmonic_rk4_comparison(
         numerical_label="RK4",
     )
 
+    # Then compute the RK4 convergence curve on the same family of spacings
+    # used by the Numerov study.
     rk4_convergence = rk4_harmonic_convergence_vs_grid(
         x_max=x_max,
         grid_sizes=grid_sizes,
@@ -192,6 +197,8 @@ def run_harmonic_rk4_comparison(
         ("Numerov", numerov_h, numerov_errors),
         ("RK4", rk4_convergence["h"], rk4_convergence["energy_errors"]),
     ]:
+        # Flatten both error tables into one CSV so the report can compare the
+        # methods row by row without special-case parsing.
         for grid_index, h_value in enumerate(h_values):
             row = {"method": method, "h": h_value}
             for state_index in range(errors.shape[1]):
@@ -239,6 +246,8 @@ def run_harmonic_rk4_comparison(
     ]
 
     for spec in diagnostic_specs:
+        # Build one mismatch scan per parity sector, then overlay the bisection
+        # histories for the first two roots in that sector.
         energies_scan, mismatches_scan = sample_rk4_mismatch(
             parity=spec["parity"],
             x_max=x_max,

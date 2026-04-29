@@ -98,11 +98,14 @@ def plot_potential_and_states(
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
 
+    # Very tall artificial walls dominate the y-axis visually, so clip them to
+    # keep the bound states legible without changing the underlying data files.
     V_plot = np.clip(V, None, 25.0)
-    # V_plot = np.clip(V, None, 50.0)
     plt.plot(x, V_plot, label=potential_label)
 
     for i, state in enumerate(states[:n_show]):
+        # Rescale each eigenfunction to a comparable plotting height, then
+        # shift it vertically by its eigenvalue so the state sits on its level.
         psi_scaled = scale * state.psi_full / np.max(np.abs(state.psi_full))
         plt.plot(
             state.x_full,
@@ -258,6 +261,8 @@ def plot_error_curve(
             slope = slopes[i].get("convergence_exponent_p", np.nan)
             if np.isfinite(slope):
                 label = f"state {i}, p={slope:.2f}"
+        # Each column of `errors` corresponds to one state across all sampled
+        # grid spacings or box sizes.
         plt.loglog(xvals, errors[:, i], marker="o", label=label)
 
     plt.xlabel(xlabel)
@@ -365,6 +370,8 @@ def plot_root_finding_diagnostic(
     if nonzero_abs.size == 0:
         linthresh = 1.0
     else:
+        # Use a small data-driven linear region around zero so the plot shows
+        # both the sign of the mismatch and the wide dynamic range away from it.
         linthresh = max(1.0e-12, float(np.quantile(nonzero_abs, 0.05)))
 
     plt.plot(energies, mismatches, label=mismatch_label)
@@ -374,6 +381,7 @@ def plot_root_finding_diagnostic(
         history_labels = [f"state {i} bisection" for i in range(len(histories))]
 
     for i, history in enumerate(histories):
+        # Each history is the sequence of bisection midpoints for one root.
         mids = np.array([row["mid"] for row in history], dtype=float)
         vals = np.array([row["mismatch_mid"] for row in history], dtype=float)
         label = history_labels[i] if i < len(history_labels) else f"state {i} bisection"
@@ -460,6 +468,8 @@ def plot_scattering_potential_and_probability(
         density_scale = 1.0
 
     V_scale = np.max(np.abs(V))
+    # Rescale the potential onto the same vertical range as the probability
+    # density so both shapes can be inspected on one axis.
     V_plot = V / V_scale * density_scale if V_scale > 0.0 else V
 
     plt.figure(figsize=(8, 5))
@@ -494,6 +504,8 @@ def plot_numerov_vs_rk4_errors(
     figure readable while the CSV table retains state-by-state errors.
     """
     _ensure_parent(path)
+    # Collapse the per-state error tables to one conservative curve per method
+    # by plotting the worst low-state error at each spacing.
     numerov_max = np.max(numerov_errors, axis=1)
     rk4_max = np.max(rk4_errors, axis=1)
 

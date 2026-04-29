@@ -54,6 +54,7 @@ def harmonic_oscillator(x: np.ndarray, omega: float = 1.0) -> np.ndarray:
     ndarray
         Potential sampled on the grid.
     """
+    # Evaluate the analytic formula pointwise on the supplied grid.
     return 0.5 * omega**2 * x**2
 
 
@@ -86,6 +87,8 @@ def infinite_square_well_numeric(
     ndarray
         Potential sampled on the grid.
     """
+    # Replace the ideal infinite wall by a very large finite value so the same
+    # grid-based solver can still be used numerically.
     return np.where(np.abs(x) <= a, 0.0, wall_height)
 
 
@@ -115,6 +118,8 @@ def finite_square_well(
     ndarray
         Potential sampled on the grid.
     """
+    # Inside the well the potential is the chosen zero reference level; outside
+    # it jumps to the barrier height V0.
     return np.where(np.abs(x) <= a, 0.0, V0)
 
 
@@ -147,6 +152,8 @@ def quartic_double_well(
     ndarray
         Potential sampled on the grid.
     """
+    # The quartic term confines the particle at large |x|, while the negative
+    # quadratic term carves out the central barrier and two minima.
     v = a * x**4 - b * x**2
     if shift_min_to_zero:
         # Use the analytic minimum rather than the sampled grid minimum. The
@@ -189,6 +196,8 @@ def square_barrier(
         Potential sampled on the grid.
     """
     half_width = 0.5 * width
+    # Mark points inside the barrier interval with height V0 and leave the
+    # asymptotic free regions at zero.
     return np.where(np.abs(x - center) <= half_width, V0, 0.0)
 
 

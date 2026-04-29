@@ -160,6 +160,8 @@ def half_domain_wavefunction(
     # A trial energy does not automatically satisfy the boundary conditions.
     # Shooting treats the ODE solve as a diagnostic: only special energies
     # produce a wavefunction that also matches the far boundary.
+    # Build the Schrödinger coefficient for this energy, convert the parity
+    # condition into the first two grid values, then march to x_max.
     q = q_from_energy(V_half, energy)
     psi0, psi1 = initial_conditions(x_half, q, parity)
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
@@ -203,11 +205,15 @@ def boundary_mismatch(
     psi = half_domain_wavefunction(x_half, V_half, energy, parity)
 
     if mode == "value":
+        # For outward shooting on a boxed domain, a true eigenstate should have
+        # negligible leakage at the far boundary.
         return float(psi[-1])
     if mode == "logder":
         denom = psi[-1]
         if abs(denom) < 1e-14:
             return np.sign(denom) * np.inf if denom != 0.0 else np.inf
+        # The logarithmic derivative is a more scale-invariant alternative, but
+        # most of the project diagnostics use the simpler boundary value itself.
         return float(derivative_at_right_edge(x_half, psi) / denom)
 
     raise ValueError("mode must be 'value' or 'logder'")
@@ -260,9 +266,13 @@ def find_brackets(
         if not np.isfinite(a) or not np.isfinite(b):
             continue
         if a == 0.0:
+            # Keep exact zero hits by inflating them into a tiny bracket so the
+            # downstream bisection code can treat all roots uniformly.
             eps = 1e-10 * max(1.0, abs(energies[i]))
             brackets.append((energies[i] - eps, energies[i] + eps))
         elif np.signbit(a) != np.signbit(b):
+            # A sign change guarantees at least one root if the mismatch stays
+            # continuous across the interval.
             brackets.append((energies[i], energies[i + 1]))
 
     return brackets
@@ -340,6 +350,7 @@ def bisection_history(
         if abs(fmid) < tol or abs(hi - lo) < tol:
             break
         if np.signbit(flo) != np.signbit(fmid):
+            # Keep the half-interval that still brackets the zero.
             hi, fhi = mid, fmid
         else:
             lo, flo = mid, fmid
@@ -422,6 +433,9 @@ def bisect_energy(
         denom = fhi - flo
         if denom == 0.0 or not np.isfinite(denom):
             break
+        # Secant interpolation proposes the root of the line through the two
+        # remaining bracket endpoints, but the step is accepted only if it
+        # stays inside the sign-changing interval.
         trial = lo - flo * (hi - lo) / denom
         if not (min(lo, hi) <= trial <= max(lo, hi)):
             break
@@ -469,9 +483,11 @@ def build_full_wavefunction(
         Full-domain grid and full-domain wavefunction.
     """
     if parity == "even":
+        # Even states mirror with the same sign across x = 0.
         x_left = -x_half[:0:-1]
         psi_left = psi_half[:0:-1]
     elif parity == "odd":
+        # Odd states mirror with a sign flip so psi(0)=0 is preserved.
         x_left = -x_half[:0:-1]
         psi_left = -psi_half[:0:-1]
     else:
@@ -512,6 +528,8 @@ def solve_state_from_bracket(
     StateSolution
         Structured solution object containing energy and wavefunction data.
     """
+    # First determine the eigenvalue, then recompute the corresponding
+    # wavefunction once at that energy for the final normalized output.
     energy, _raw_mismatch = bisect_energy(x_half, V_half, parity, bracket, tol=tol)
     psi_half = half_domain_wavefunction(x_half, V_half, energy, parity)
     x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
@@ -585,6 +603,8 @@ def inward_decay_half_domain_wavefunction(
         A decreasing grid from x_max to 0 and the corresponding unnormalized
         inward-integrated wavefunction.
     """
+    # The grid is descending because Numerov still marches "forward" in index,
+    # while physically we want to start at the asymptotic tail and move inward.
     x_desc = np.linspace(x_max, 0.0, n_grid)
     V_desc = potential_fn(x_desc, **potential_kwargs)
     q_desc = q_from_energy(V_desc, energy)
@@ -624,8 +644,10 @@ def inward_decay_boundary_mismatch(
     )
 
     if parity == "even":
+        # For even states the origin condition is on the derivative.
         return float(derivative_at_right_edge(x_desc, psi_desc))
     if parity == "odd":
+        # For odd states the origin condition is on the value itself.
         return float(psi_desc[-1])
 
     raise ValueError("parity must be 'even' or 'odd'")
@@ -764,6 +786,8 @@ def bisect_energy_inward_decay(
             lo, flo = mid, fmid
 
     mid = 0.5 * (lo + hi)
+    # If the loop hit the iteration cap, return the midpoint of the last valid
+    # bracket together with its mismatch.
     return mid, inward_decay_boundary_mismatch(
         x_max,
         n_grid,
@@ -863,6 +887,8 @@ def solve_state_from_inward_decay_bracket(
         energy,
     )
 
+    # Reverse the inward solution so the rest of the code can reuse the same
+    # full-wavefunction reconstruction logic as the outward solver.
     x_half = x_desc[::-1]
     psi_half = psi_desc[::-1]
     x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
@@ -919,6 +945,8 @@ def solve_symmetric_potential_inward_decay(
     # Solve each parity sector separately, then merge and sort the states by
     # energy. This is cleaner than solving on the full domain for every state.
     for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
+        # Symmetry lets each parity sector be searched independently, which is
+        # simpler than trying to recover all states from a full-domain solve.
         brackets = find_inward_decay_brackets(
             x_max,
             n_grid,
@@ -937,6 +965,8 @@ def solve_symmetric_potential_inward_decay(
             )
 
         for bracket in brackets[:n_needed]:
+            # Each bracket is assumed to isolate one state in this parity
+            # sector, so it can be solved independently and appended.
             solutions.append(
                 solve_state_from_inward_decay_bracket(
                     x_max,
@@ -1009,14 +1039,18 @@ def solve_symmetric_potential(
     V_half = potential_fn(x_half, **potential_kwargs)
 
     if e_min is None:
+        # Bound states typically start near the minimum of the potential.
         e_min = float(np.min(V_half))
     if e_max is None:
+        # The scan ceiling is chosen generously so several low-lying states fit
+        # inside the search window without extra user tuning.
         e_max = float(np.max(V_half))
         e_max = max(e_max, e_min + 30.0)
 
     solutions: list[StateSolution] = []
 
     for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
+        # Solve even and odd sectors separately, then merge by energy.
         brackets = find_brackets(
             x_half,
             V_half,

@@ -151,6 +151,7 @@ def estimate_convergence_slopes(
 
     rows: list[dict] = []
     for i in range(errors.shape[1]):
+        # Ignore non-positive or non-finite entries before taking logarithms.
         valid = (
             np.isfinite(xvals)
             & np.isfinite(errors[:, i])
@@ -238,6 +239,8 @@ def energies_from_states(
             f"Requested {n_states} state energies, but solver returned only "
             f"{len(states)} states."
         )
+    # States are already sorted by energy by the solver, so slicing keeps the
+    # physically lowest levels in order.
     return np.array([s.energy for s in states[:n_states]], dtype=float)
 
 
@@ -287,6 +290,8 @@ def convergence_vs_grid(
     n_states = len(reference_energies)
 
     for n_grid in grid_sizes:
+        # Each loop entry reruns the full eigenvalue search on a new mesh, then
+        # compares the resulting low-lying spectrum to the supplied reference.
         states = solver_fn(
             x_max=x_max,
             n_grid=n_grid,
@@ -370,6 +375,8 @@ def convergence_vs_grid_successive(
         hs.append(x_max / (n_grid - 1))
 
     energies_arr = np.array(energies_by_grid, dtype=float)
+    # Successive differences act as a stand-in error estimate when no exact
+    # spectrum is available, as in the quartic double well.
     successive_errors = np.abs(energies_arr[:-1] - energies_arr[1:])
     return {"h": np.array(hs[:-1]), "energy_errors": successive_errors}
 
@@ -420,6 +427,9 @@ def convergence_vs_box_size(
     n_states = len(reference_energies)
 
     for x_max in x_max_values:
+        # Here n_grid stays fixed, so changing x_max changes both the physical
+        # box size and the spacing h. This helper is mainly for simpler box
+        # sensitivity checks, not clean fixed-h studies.
         states = solver_fn(
             x_max=x_max,
             n_grid=n_grid,
@@ -494,6 +504,8 @@ def convergence_vs_box_size_fixed_spacing(
     n_states = len(reference_energies)
 
     for x_max in x_max_values:
+        # Choose the closest integer grid that preserves the requested nominal
+        # spacing, then record the actual spacing achieved after rounding.
         n_grid = int(round(x_max / target_h)) + 1
         n_grid = max(n_grid, 3)
         actual_h = x_max / (n_grid - 1)
@@ -564,6 +576,8 @@ def splitting_vs_parameter(
     rows: list[dict] = []
 
     for value in varied_values:
+        # Copy the baseline potential parameters, then overwrite only the one
+        # being swept so each solve differs in a controlled way.
         kwargs = dict(base_kwargs)
         kwargs[varied_param] = value
         states = solve_symmetric_potential(
@@ -579,6 +593,8 @@ def splitting_vs_parameter(
 
         e0 = states[0].energy
         e1 = states[1].energy
+        # In a symmetric double well, the lowest two states are the even/odd
+        # tunneling pair, so their splitting is the key physical observable.
         rows.append(
             {
                 varied_param: value,

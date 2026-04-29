@@ -38,6 +38,8 @@ TESTS_DIR = PROJECT_ROOT / "tests"
 
 for path in (PROJECT_ROOT, TESTS_DIR):
     if str(path) not in sys.path:
+        # Prepend these paths so local project modules win over any unrelated
+        # installed packages with the same names.
         sys.path.insert(0, str(path))
 
 from test_solver import run_all_tests
@@ -56,11 +58,15 @@ def main() -> None:
     The routine clears previous outputs, executes all numerical experiments used
     in the project report, and then runs the automated validation tests.
     """
+    # Start from a clean generated-results directory so each run reproduces the
+    # current code state rather than mixing old and new outputs.
     shutil.rmtree(RESULTS, ignore_errors=True)
     RESULTS.mkdir(exist_ok=True)
 
     experiments_import_error: Exception | None = None
     try:
+        # Delay the import so the lightweight test-import check can confirm
+        # that this entry script itself does not require plotting dependencies.
         from src.experiments import (
             run_scattering,
             run_double_well,
@@ -74,6 +80,8 @@ def main() -> None:
     else:
         print("Running experiments...")
 
+        # Keep the execution order aligned with the report structure so the
+        # generated results tree is easy to compare against the writeup.
         print("\n1. Infinite Square Well (Numerov only)...")
         run_square_well(RESULTS)
 
@@ -89,6 +97,8 @@ def main() -> None:
         print("\n5. Scattering and Resonant Tunneling (Numerov only)...")
         run_scattering(RESULTS)
 
+    # Run tests after the experiments so the workflow reproduces the figures
+    # first and then performs a quick regression pass on the codebase.
     print("\nRunning tests...")
     run_all_tests()
 

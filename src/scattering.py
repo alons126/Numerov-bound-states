@@ -100,6 +100,8 @@ def numerov_outward_complex(
     if not np.allclose(np.diff(x), h, rtol=1e-12, atol=1e-14):
         raise ValueError("Numerov integration requires a uniform grid.")
 
+    # The recurrence is identical to the real-valued case, but the storage must
+    # preserve phase information because incident and reflected waves interfere.
     psi = np.zeros(len(x), dtype=complex)
     psi[0] = psi0
     psi[1] = psi1
@@ -108,6 +110,8 @@ def numerov_outward_complex(
     c = h2 / 12.0
 
     for n in range(1, len(x) - 1):
+        # Same Numerov update as in the bound-state solver, now carried out in
+        # complex arithmetic.
         a = 1.0 - c * q[n + 1]
         b = 2.0 * (1.0 + 5.0 * c * q[n]) * psi[n]
         d = (1.0 - c * q[n - 1]) * psi[n - 1]
@@ -137,11 +141,15 @@ def integrate_from_right(
     if energy <= 0.0:
         raise ValueError("Scattering energy must be positive.")
 
+    # In the free regions V=0, the Schrödinger equation admits plane waves with
+    # wave number k = sqrt(2E) in the dimensionless units used here.
     k = np.sqrt(2.0 * energy)
     x_desc = x[::-1]
     V_desc = V[::-1]
     q_desc = q_from_energy(V_desc, energy)
 
+    # Normalize the right asymptotic region to a purely transmitted outgoing
+    # wave. The left incident amplitude will be recovered afterward.
     psi0 = np.exp(1j * k * x_desc[0])
     psi1 = np.exp(1j * k * x_desc[1])
     psi_desc = numerov_outward_complex(x_desc, q_desc, psi0=psi0, psi1=psi1)
@@ -164,6 +172,8 @@ def decompose_left_asymptotic(
     two grid points are used to solve for A_in and A_ref.
     """
     k = np.sqrt(2.0 * energy)
+    # Two grid samples give a 2x2 linear system for the unknown incoming and
+    # reflected amplitudes in the free left region.
     matrix = np.array(
         [
             [np.exp(1j * k * x[0]), np.exp(-1j * k * x[0])],
@@ -196,6 +206,9 @@ def solve_scattering(
     psi = integrate_from_right(x, V, energy)
     incident, reflected = decompose_left_asymptotic(x, psi, energy)
 
+    # The backward solve was normalized to unit transmitted amplitude on the
+    # right, so divide by the recovered left incident amplitude to obtain the
+    # physical transmission/reflection amplitudes for unit incident flux.
     transmitted_amp = 1.0 / incident
     reflection_amp = reflected / incident
     transmission = float(abs(transmitted_amp) ** 2)
@@ -226,6 +239,8 @@ def scattering_wavefunction(
     """
     psi_unit_transmitted = integrate_from_right(x, V, energy)
     result = solve_scattering(x, V, energy)
+    # Convert the intermediate "unit transmitted" normalization to the more
+    # physical convention of unit incident amplitude on the left.
     psi_unit_incident = psi_unit_transmitted / result.incident_amplitude
     return psi_unit_incident, result
 
@@ -242,6 +257,8 @@ def sweep_scattering(
     """
     Compute scattering coefficients for a sequence of energies.
     """
+    # Run the same single-energy solve independently for each sample in the
+    # requested energy sweep.
     return [solve_scattering(x, V, float(energy)) for energy in energies]
 
 
@@ -265,6 +282,8 @@ def find_transmission_peaks(
             transmission[i] >= transmission[i - 1]
             and transmission[i] >= transmission[i + 1]
         ):
+            # A simple local-maximum rule is enough for the smooth resonance
+            # curves generated in this project.
             peaks.append(
                 {
                     "energy": float(energies[i]),

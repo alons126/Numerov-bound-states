@@ -56,8 +56,8 @@ def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     ndarray
         Array q(x) such that psi'' = q psi.
     """
-    # In the dimensionless Schrodinger equation used here,
-    # psi'' = 2(V-E)psi, so this array is the coefficient multiplying psi.
+    # Repackage the Schrödinger equation into the `y'' = q(x) y` form expected
+    # by Numerov. Every trial energy produces a different coefficient field.
     return 2.0 * (V - energy)
 
 
@@ -104,6 +104,8 @@ def numerov_outward(
     if len(x) < 3:
         raise ValueError("Need at least 3 grid points.")
 
+    # Numerov assumes a constant spacing h. The recurrence coefficients below
+    # are valid only on a uniform grid.
     h = x[1] - x[0]
     if not np.allclose(np.diff(x), h, rtol=1e-12, atol=1e-14):
         raise ValueError("Numerov integration requires a uniform grid.")
@@ -120,7 +122,10 @@ def numerov_outward(
     c = h2 / 12.0
 
     for n in range(1, len(x) - 1):
-        # Standard Numerov update for y'' = q y.
+        # Rearranged Numerov recurrence:
+        #   (1 - h^2 q_{n+1}/12) psi_{n+1}
+        # = 2(1 + 5 h^2 q_n/12) psi_n - (1 - h^2 q_{n-1}/12) psi_{n-1}
+        # so each new point uses the previous two solution values.
         a = 1.0 - c * q[n + 1]
         b = 2.0 * (1.0 + 5.0 * c * q[n]) * psi[n]
         d = (1.0 - c * q[n - 1]) * psi[n - 1]
@@ -161,6 +166,8 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
         raise ValueError("Cannot normalize a zero wavefunction.")
 
     psi_scaled = psi / scale
+    # Integrate |psi|^2 on the discrete grid with the trapezoid rule, then
+    # undo the temporary scaling in a numerically safe way.
     norm = scale * np.sqrt(np.trapezoid(np.abs(psi_scaled) ** 2, x))
 
     if norm == 0.0 or not np.isfinite(norm):
@@ -194,6 +201,9 @@ def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
     if len(x) < 3:
         raise ValueError("Need at least 3 points for derivative.")
 
+    # The derivative is requested at the last grid point. For inward shooting
+    # on a decreasing grid, that last point is still x = 0, so the same helper
+    # works without any sign changes or index remapping.
     h = x[1] - x[0]
 
     # The fourth-order stencil is important for even-state inward shooting:

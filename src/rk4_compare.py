@@ -76,6 +76,8 @@ def rk4_step(
 ) -> np.ndarray:
     """Advance the first-order Schrodinger system by one RK4 step."""
     # Four slope evaluations give the classical fourth-order Runge-Kutta step.
+    # Each intermediate stage samples the RHS at a different point inside the
+    # current interval, then combines them into one O(h^5) local update.
     k1 = _harmonic_rhs(x, y, energy, omega)
     k2 = _harmonic_rhs(x + 0.5 * h, y + 0.5 * h * k1, energy, omega)
     k3 = _harmonic_rhs(x + 0.5 * h, y + 0.5 * h * k2, energy, omega)
@@ -110,11 +112,15 @@ def rk4_inward_mismatch(
     # asymptotic forbidden region and integrate toward the symmetry point.
     x_values = np.linspace(x_max, 0.0, n_grid)
     h = x_values[1] - x_values[0]
+    # Estimate the forbidden-region decay rate at the starting edge.
     potential_edge = 0.5 * omega**2 * x_max**2
     kappa = np.sqrt(max(2.0 * (potential_edge - energy), 1.0e-14))
 
     y = np.array([1.0, -kappa], dtype=float)
     for x_value in x_values[:-1]:
+        # The grid spacing `h` is negative here because x decreases from x_max
+        # toward the origin, so the standard RK4 step automatically marches
+        # inward without any separate reversal logic.
         y = rk4_step(x_value, y, h, energy, omega)
 
     psi_at_zero, derivative_at_zero = y
@@ -151,6 +157,8 @@ def find_rk4_brackets(
         if not np.isfinite(a) or not np.isfinite(b):
             continue
         if a == 0.0:
+            # Preserve exact scan hits as tiny brackets for uniform handling by
+            # the downstream bisection solver.
             eps = 1e-10 * max(1.0, abs(energies[i]))
             brackets.append((float(energies[i] - eps), float(energies[i] + eps)))
         elif np.signbit(a) != np.signbit(b):
@@ -273,6 +281,8 @@ def solve_harmonic_oscillator_rk4_energies(
     results: list[RK4EnergyResult] = []
 
     for parity, state_offset in [("even", 0), ("odd", 1)]:
+        # Even and odd harmonic-oscillator states interleave in energy, so each
+        # parity branch maps to every other global state index.
         brackets = find_rk4_brackets(
             parity=parity,
             x_max=x_max,
@@ -330,6 +340,8 @@ def rk4_harmonic_convergence_vs_grid(
     energies = []
 
     for n_grid in grid_sizes:
+        # Use the same post-processed output format as the Numerov convergence
+        # routines so the comparison layer can treat both methods uniformly.
         rows = solve_harmonic_oscillator_rk4_energies(
             x_max=x_max,
             n_grid=n_grid,
@@ -369,6 +381,7 @@ def rk4_harmonic_convergence_vs_box_size_fixed_spacing(
     errors = []
 
     for x_max in x_max_values:
+        # Match the requested spacing as closely as an integer grid allows.
         n_grid = int(round(x_max / target_h)) + 1
         n_grid = max(n_grid, 3)
         actual_h = x_max / (n_grid - 1)
