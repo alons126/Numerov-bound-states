@@ -288,9 +288,7 @@ def find_brackets_outward_shooting(
     energies = np.linspace(e_min, e_max, n_scan)
     vals = np.array(
         [
-            boundary_mismatch_outward_shooting(
-                x_half, V_half, e, parity, mode="value"
-            )
+            boundary_mismatch_outward_shooting(x_half, V_half, e, parity, mode="value")
             for e in energies
         ]
     )
@@ -337,9 +335,7 @@ def sample_boundary_mismatch(
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
         [
-            boundary_mismatch_outward_shooting(
-                x_half, V_half, e, parity, mode="value"
-            )
+            boundary_mismatch_outward_shooting(x_half, V_half, e, parity, mode="value")
             for e in energies
         ],
         dtype=float,
@@ -585,9 +581,7 @@ def solve_state_from_bracket_outward_shooting(
     energy, _raw_mismatch = bisect_energy_outward_shooting(
         x_half, V_half, parity, bracket, tol=tol
     )
-    psi_half = half_domain_wavefunction_outward_shooting(
-        x_half, V_half, energy, parity
-    )
+    psi_half = half_domain_wavefunction_outward_shooting(x_half, V_half, energy, parity)
     x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
     psi_full = normalize_wavefunction(x_full, psi_full)
     # Report the wall leakage after normalization so the diagnostic is tied to

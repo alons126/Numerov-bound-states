@@ -176,12 +176,12 @@
 
     In the code this appears in:
     \begin{itemize}
-        \item \texttt{find\_brackets()}: scans a chosen energy interval, evaluates the outward-shooting mismatch function, and identifies intervals where the mismatch changes sign. These intervals are candidate eigenvalue brackets.
-        \item \texttt{bisect\_energy()}: takes one outward-shooting bracket and repeatedly bisects it until the energy root is isolated accurately. In the latest implementation, it also applies a safeguarded secant-style polishing step to improve the final estimate.
-        \item \texttt{find\_inward\_decay\_brackets()}: performs the same bracketing idea for inward shooting, where the mismatch is the parity residual at the origin after integrating inward from the decaying tail.
-        \item \texttt{bisect\_energy\_inward\_decay()}: refines an inward-shooting energy bracket by bisection until the even or odd parity condition at the origin is satisfied to the required tolerance.
-        \item \texttt{find\_rk4\_brackets()}: scans energies for the RK4 harmonic-oscillator comparison and finds sign-changing brackets of the RK4 mismatch function.
-        \item \texttt{bisect\_rk4\_energy()}: refines an RK4 bracket by bisection to find the harmonic-oscillator eigenvalue computed by the RK4 shooting formulation.
+        \item \texttt{find\_brackets\_outward\_shooting()}: scans a chosen energy interval, evaluates the outward-shooting mismatch function, and identifies intervals where the mismatch changes sign. These intervals are candidate eigenvalue brackets.
+        \item \texttt{bisect\_energy\_outward\_shooting()}: takes one outward-shooting bracket and repeatedly bisects it until the energy root is isolated accurately. In the latest implementation, it also applies a safeguarded secant-style polishing step to improve the final estimate.
+        \item \texttt{find\_brackets\_inward\_shooting()}: performs the same bracketing idea for inward shooting, where the mismatch is the parity residual at the origin after integrating inward from the decaying tail.
+        \item \texttt{bisect\_energy\_inward\_shooting()}: refines an inward-shooting energy bracket by bisection until the even or odd parity condition at the origin is satisfied to the required tolerance.
+        \item \texttt{RK4\_find\_brackets()}: scans energies for the RK4 harmonic-oscillator comparison and finds sign-changing brackets of the RK4 mismatch function.
+        \item \texttt{RK4\_bisect\_energy()}: refines an RK4 bracket by bisection to find the harmonic-oscillator eigenvalue computed by the RK4 shooting formulation.
     \end{itemize}
 
     Bisection is used because it is stable and easy to justify. Newton's method is faster, but it requires derivatives and can fail if the starting guess is poor. Bisection is slower, but it is robust. In the latest solver, the bisection routine was also adjusted so it does not stop too early only because the energy bracket became small; it now uses a safeguarded secant polishing step to improve the final root estimate.
@@ -330,27 +330,27 @@
 
     In \texttt{src/shooting.py}, the outward shooting logic is built from:
     \begin{itemize}
-        \item \texttt{initial\_conditions()},
-        \item \texttt{half\_domain\_wavefunction()},
-        \item \texttt{boundary\_mismatch()},
-        \item \texttt{find\_brackets()},
-        \item \texttt{bisect\_energy()},
-        \item \texttt{solve\_state\_from\_bracket()},
-        \item \texttt{solve\_symmetric\_potential()}.
+        \item \texttt{initial\_conditions\_outward\_shooting()},
+        \item \texttt{half\_domain\_wavefunction\_outward\_shooting()},
+        \item \texttt{boundary\_mismatch\_outward\_shooting()},
+        \item \texttt{find\_brackets\_outward\_shooting()},
+        \item \texttt{bisect\_energy\_outward\_shooting()},
+        \item \texttt{solve\_state\_from\_bracket\_outward\_shooting()},
+        \item \texttt{solve\_symmetric\_potential\_outward\_shooting()}.
     \end{itemize}
 
-    The important function is \texttt{boundary\_mismatch()}. Here, a \emph{mismatch} means the residual error in the boundary condition after integrating the wavefunction for a trial energy. In other words, after the solver marches across the domain, it evaluates how far the computed wavefunction is from satisfying the required boundary behavior at the endpoint. If that residual is not zero, the trial energy is not an eigenvalue. The function \texttt{boundary\_mismatch()} is therefore the code routine that computes this residual for a given energy.
+    The important function is \texttt{boundary\_mismatch\_outward\_shooting()}. Here, a \emph{mismatch} means the residual error in the boundary condition after integrating the wavefunction for a trial energy. In other words, after the solver marches across the domain, it evaluates how far the computed wavefunction is from satisfying the required boundary behavior at the endpoint. If that residual is not zero, the trial energy is not an eigenvalue. The function \texttt{boundary\_mismatch\_outward\_shooting()} is therefore the code routine that computes this residual for a given energy.
 
     The latest solver also changes how the final mismatch is stored. For outward shooting, the code no longer reports the raw, unnormalized boundary amplitude $\psi(x_{\max})$; it stores the normalized boundary leakage after the full wavefunction has been reconstructed and normalized. This makes that residual scale-invariant and physically more meaningful. For inward shooting, however, the stored residual is the final parity mismatch at the origin, because that is the quantity the inward solver actually drives to zero. So the code now treats \texttt{StateSolution.mismatch} as a general final diagnostic residual, with an interpretation that depends on the shooting formulation.
 
     The inward shooting logic is built from:
     \begin{itemize}
-        \item \texttt{inward\_decay\_initial\_conditions()},
-        \item \texttt{inward\_decay\_half\_domain\_wavefunction()},
-        \item \texttt{inward\_decay\_boundary\_mismatch()},
-        \item \texttt{find\_inward\_decay\_brackets()},
-        \item \texttt{bisect\_energy\_inward\_decay()},
-        \item \texttt{solve\_symmetric\_potential\_inward\_decay()}.
+        \item \texttt{initial\_conditions\_inward\_shooting()},
+        \item \texttt{half\_domain\_wavefunction\_inward\_shooting()},
+        \item \texttt{boundary\_mismatch\_inward\_shooting()},
+        \item \texttt{find\_brackets\_inward\_shooting()},
+        \item \texttt{bisect\_energy\_inward\_shooting()},
+        \item \texttt{solve\_symmetric\_potential\_inward\_shooting()}.
     \end{itemize}
 
     Inward shooting is used for confining potentials such as the harmonic oscillator. The physical solution decays at large $x$. If we integrate outward from the origin, the numerical solution can pick up the unphysical growing mode. Inward shooting starts in the forbidden region and integrates toward the origin, giving cleaner harmonic oscillator wavefunctions and more reliable parity enforcement.
