@@ -45,10 +45,10 @@ it avoids growing-mode contamination during outward integration.
 
 This file also contains the most delicate numerical fixes described in the
 reviewer documents:
-- `initial_conditions()` includes higher-order Taylor startup terms, including
+- `initial_conditions_outward_shooting()` includes higher-order Taylor startup terms, including
   the q''(0) contribution, so the first Numerov step does not spoil the
   observed fourth-order convergence
-- `bisect_energy()` finishes with a few safeguarded secant-style polishing
+- `bisect_energy_outward_shooting()` finishes with a few safeguarded secant-style polishing
   steps inside the final sign-changing bracket
 - `StateSolution.mismatch` stores the final residual diagnostic returned by the
   corresponding shooting formulation
@@ -98,10 +98,10 @@ class StateSolution:
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: initial_conditions
+# FUNCTION: initial_conditions_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-def initial_conditions(
+def initial_conditions_outward_shooting(
     x_half: np.ndarray, q_half: np.ndarray, parity: str
 ) -> tuple[float, float]:
     """
@@ -147,10 +147,10 @@ def initial_conditions(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: half_domain_wavefunction
+# FUNCTION: half_domain_wavefunction_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-def half_domain_wavefunction(
+def half_domain_wavefunction_outward_shooting(
     x_half: np.ndarray,
     V_half: np.ndarray,
     energy: float,
@@ -183,16 +183,16 @@ def half_domain_wavefunction(
     """
 
     q = q_from_energy(V_half, energy)
-    psi0, psi1 = initial_conditions(x_half, q, parity)
+    psi0, psi1 = initial_conditions_outward_shooting(x_half, q, parity)
 
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: boundary_mismatch
+# FUNCTION: boundary_mismatch_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-def boundary_mismatch(
+def boundary_mismatch_outward_shooting(
     x_half: np.ndarray,
     V_half: np.ndarray,
     energy: float,
@@ -231,7 +231,7 @@ def boundary_mismatch(
         Scalar mismatch value used in bracketing or diagnostics.
     """
 
-    psi = half_domain_wavefunction(x_half, V_half, energy, parity)
+    psi = half_domain_wavefunction_outward_shooting(x_half, V_half, energy, parity)
 
     if mode == "value":
         # For outward shooting on a boxed domain, a true eigenstate should have
@@ -249,10 +249,10 @@ def boundary_mismatch(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: find_brackets
+# FUNCTION: find_brackets_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-def find_brackets(
+def find_brackets_outward_shooting(
     x_half: np.ndarray,
     V_half: np.ndarray,
     parity: str,
@@ -287,7 +287,12 @@ def find_brackets(
 
     energies = np.linspace(e_min, e_max, n_scan)
     vals = np.array(
-        [boundary_mismatch(x_half, V_half, e, parity, mode="value") for e in energies]
+        [
+            boundary_mismatch_outward_shooting(
+                x_half, V_half, e, parity, mode="value"
+            )
+            for e in energies
+        ]
     )
 
     brackets: list[tuple[float, float]] = []
@@ -331,7 +336,12 @@ def sample_boundary_mismatch(
 
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
-        [boundary_mismatch(x_half, V_half, e, parity, mode="value") for e in energies],
+        [
+            boundary_mismatch_outward_shooting(
+                x_half, V_half, e, parity, mode="value"
+            )
+            for e in energies
+        ],
         dtype=float,
     )
 
@@ -358,8 +368,8 @@ def bisection_history(
     """
 
     lo, hi = bracket
-    flo = boundary_mismatch(x_half, V_half, lo, parity, mode="value")
-    fhi = boundary_mismatch(x_half, V_half, hi, parity, mode="value")
+    flo = boundary_mismatch_outward_shooting(x_half, V_half, lo, parity, mode="value")
+    fhi = boundary_mismatch_outward_shooting(x_half, V_half, hi, parity, mode="value")
 
     if not np.isfinite(flo) or not np.isfinite(fhi):
         raise ValueError("Non-finite function value at bracket endpoints.")
@@ -369,7 +379,9 @@ def bisection_history(
     history: list[dict] = []
     for iteration in range(max_iter):
         mid = 0.5 * (lo + hi)
-        fmid = boundary_mismatch(x_half, V_half, mid, parity, mode="value")
+        fmid = boundary_mismatch_outward_shooting(
+            x_half, V_half, mid, parity, mode="value"
+        )
         history.append(
             {
                 "iteration": iteration,
@@ -393,10 +405,10 @@ def bisection_history(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: bisect_energy
+# FUNCTION: bisect_energy_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-def bisect_energy(
+def bisect_energy_outward_shooting(
     x_half: np.ndarray,
     V_half: np.ndarray,
     parity: str,
@@ -427,8 +439,8 @@ def bisect_energy(
     """
 
     lo, hi = bracket
-    flo = boundary_mismatch(x_half, V_half, lo, parity, mode="value")
-    fhi = boundary_mismatch(x_half, V_half, hi, parity, mode="value")
+    flo = boundary_mismatch_outward_shooting(x_half, V_half, lo, parity, mode="value")
+    fhi = boundary_mismatch_outward_shooting(x_half, V_half, hi, parity, mode="value")
 
     if not np.isfinite(flo) or not np.isfinite(fhi):
         raise ValueError("Non-finite function value at bracket endpoints.")
@@ -441,7 +453,9 @@ def bisect_energy(
 
     for _ in range(max_iter):
         mid = 0.5 * (lo + hi)
-        fmid = boundary_mismatch(x_half, V_half, mid, parity, mode="value")
+        fmid = boundary_mismatch_outward_shooting(
+            x_half, V_half, mid, parity, mode="value"
+        )
 
         if not np.isfinite(fmid):
             raise ValueError("Non-finite mismatch during bisection.")
@@ -472,7 +486,9 @@ def bisect_energy(
         if not (min(lo, hi) <= trial <= max(lo, hi)):
             break
 
-        ftrial = boundary_mismatch(x_half, V_half, trial, parity, mode="value")
+        ftrial = boundary_mismatch_outward_shooting(
+            x_half, V_half, trial, parity, mode="value"
+        )
         if not np.isfinite(ftrial):
             break
         if abs(ftrial) < tol:
@@ -534,10 +550,10 @@ def build_full_wavefunction(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: solve_state_from_bracket
+# FUNCTION: solve_state_from_bracket_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-def solve_state_from_bracket(
+def solve_state_from_bracket_outward_shooting(
     x_half: np.ndarray,
     V_half: np.ndarray,
     parity: str,
@@ -566,8 +582,12 @@ def solve_state_from_bracket(
 
     # First determine the eigenvalue, then recompute the corresponding
     # wavefunction once at that energy for the final normalized output.
-    energy, _raw_mismatch = bisect_energy(x_half, V_half, parity, bracket, tol=tol)
-    psi_half = half_domain_wavefunction(x_half, V_half, energy, parity)
+    energy, _raw_mismatch = bisect_energy_outward_shooting(
+        x_half, V_half, parity, bracket, tol=tol
+    )
+    psi_half = half_domain_wavefunction_outward_shooting(
+        x_half, V_half, energy, parity
+    )
     x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
     psi_full = normalize_wavefunction(x_full, psi_full)
     # Report the wall leakage after normalization so the diagnostic is tied to
@@ -661,7 +681,7 @@ def boundary_mismatch_inward_shooting(
     """
     Evaluate the parity mismatch at the origin for inward shooting.
 
-    This is the inward-shooting counterpart of `boundary_mismatch()`. Instead of
+    This is the inward-shooting counterpart of `boundary_mismatch_outward_shooting()`. Instead of
     starting at x=0 and checking the value at x_max, the solver starts near
     x_max from the expected decaying tail and integrates inward to the origin.
     The origin condition is then used as the scalar root-finding function M(E).
@@ -1016,10 +1036,10 @@ def solve_symmetric_potential_inward_shooting(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: solve_symmetric_potential
+# FUNCTION: solve_symmetric_potential_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-def solve_symmetric_potential(
+def solve_symmetric_potential_outward_shooting(
     x_max: float,
     n_grid: int,
     potential_fn,
@@ -1088,7 +1108,7 @@ def solve_symmetric_potential(
 
     for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
         # Solve even and odd sectors separately, then merge by energy.
-        brackets = find_brackets(
+        brackets = find_brackets_outward_shooting(
             x_half,
             V_half,
             parity,
@@ -1105,7 +1125,9 @@ def solve_symmetric_potential(
 
         for bracket in brackets[:n_needed]:
             solutions.append(
-                solve_state_from_bracket(x_half, V_half, parity, bracket, tol=tol)
+                solve_state_from_bracket_outward_shooting(
+                    x_half, V_half, parity, bracket, tol=tol
+                )
             )
 
     solutions.sort(key=lambda s: s.energy)

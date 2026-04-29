@@ -66,9 +66,9 @@ def _harmonic_rhs(x: float, y: np.ndarray, energy: float, omega: float) -> np.nd
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: rk4_step
+# FUNCTION: RK4_step
 # ---------------------------------------------------------------------------
-def rk4_step(
+def RK4_step(
     x: float, y: np.ndarray, h: float, energy: float, omega: float
 ) -> np.ndarray:
     """Advance the first-order Schrödinger system by one RK4 step."""
@@ -83,9 +83,9 @@ def rk4_step(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: rk4_inward_mismatch
+# FUNCTION: RK4_inward_mismatch
 # ---------------------------------------------------------------------------
-def rk4_inward_mismatch(
+def RK4_inward_mismatch(
     energy: float,
     parity: str,
     x_max: float,
@@ -117,7 +117,7 @@ def rk4_inward_mismatch(
         # The grid spacing `h` is negative here because x decreases from x_max
         # toward the origin, so the standard RK4 step automatically marches
         # inward without any separate reversal logic.
-        y = rk4_step(x_value, y, h, energy, omega)
+        y = RK4_step(x_value, y, h, energy, omega)
 
     psi_at_zero, derivative_at_zero = y
     if parity == "even":
@@ -126,9 +126,9 @@ def rk4_inward_mismatch(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: find_rk4_brackets
+# FUNCTION: RK4_find_brackets
 # ---------------------------------------------------------------------------
-def find_rk4_brackets(
+def RK4_find_brackets(
     parity: str,
     x_max: float,
     n_grid: int,
@@ -141,7 +141,7 @@ def find_rk4_brackets(
     """Locate sign-changing energy brackets for RK4 inward shooting."""
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
-        [rk4_inward_mismatch(e, parity, x_max, n_grid, omega) for e in energies],
+        [RK4_inward_mismatch(e, parity, x_max, n_grid, omega) for e in energies],
         dtype=float,
     )
 
@@ -162,9 +162,9 @@ def find_rk4_brackets(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: sample_rk4_mismatch
+# FUNCTION: RK4_sample_mismatch
 # ---------------------------------------------------------------------------
-def sample_rk4_mismatch(
+def RK4_sample_mismatch(
     parity: str,
     x_max: float,
     n_grid: int,
@@ -176,16 +176,16 @@ def sample_rk4_mismatch(
     """Sample the RK4 inward-shooting mismatch over an energy interval."""
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
-        [rk4_inward_mismatch(e, parity, x_max, n_grid, omega) for e in energies],
+        [RK4_inward_mismatch(e, parity, x_max, n_grid, omega) for e in energies],
         dtype=float,
     )
     return energies, mismatches
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: bisect_rk4_energy
+# FUNCTION: RK4_bisect_energy
 # ---------------------------------------------------------------------------
-def bisect_rk4_energy(
+def RK4_bisect_energy(
     parity: str,
     bracket: tuple[float, float],
     x_max: float,
@@ -196,11 +196,11 @@ def bisect_rk4_energy(
 ) -> float:
     """Refine one RK4 shooting bracket with bisection."""
     lo, hi = bracket
-    flo = rk4_inward_mismatch(lo, parity, x_max, n_grid, omega)
+    flo = RK4_inward_mismatch(lo, parity, x_max, n_grid, omega)
 
     for _ in range(max_iter):
         mid = 0.5 * (lo + hi)
-        fmid = rk4_inward_mismatch(mid, parity, x_max, n_grid, omega)
+        fmid = RK4_inward_mismatch(mid, parity, x_max, n_grid, omega)
 
         if abs(hi - lo) < tol or abs(fmid) < tol:
             return float(mid)
@@ -215,9 +215,9 @@ def bisect_rk4_energy(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: bisection_history_rk4
+# FUNCTION: RK4_bisection_history
 # ---------------------------------------------------------------------------
-def bisection_history_rk4(
+def RK4_bisection_history(
     parity: str,
     bracket: tuple[float, float],
     x_max: float,
@@ -228,12 +228,12 @@ def bisection_history_rk4(
 ) -> list[dict]:
     """Record the RK4 inward-shooting bisection process for one bracket."""
     lo, hi = bracket
-    flo = rk4_inward_mismatch(lo, parity, x_max, n_grid, omega)
+    flo = RK4_inward_mismatch(lo, parity, x_max, n_grid, omega)
 
     history: list[dict] = []
     for iteration in range(max_iter):
         mid = 0.5 * (lo + hi)
-        fmid = rk4_inward_mismatch(mid, parity, x_max, n_grid, omega)
+        fmid = RK4_inward_mismatch(mid, parity, x_max, n_grid, omega)
         history.append(
             {
                 "iteration": iteration,
@@ -257,9 +257,9 @@ def bisection_history_rk4(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: solve_harmonic_oscillator_rk4_energies
+# FUNCTION: RK4_solve_harmonic_oscillator_energies
 # ---------------------------------------------------------------------------
-def solve_harmonic_oscillator_rk4_energies(
+def RK4_solve_harmonic_oscillator_energies(
     x_max: float,
     n_grid: int,
     n_states: int = 4,
@@ -274,7 +274,7 @@ def solve_harmonic_oscillator_rk4_energies(
     for parity, state_offset in [("even", 0), ("odd", 1)]:
         # Even and odd harmonic-oscillator states interleave in energy, so each
         # parity branch maps to every other global state index.
-        brackets = find_rk4_brackets(
+        brackets = RK4_find_brackets(
             parity=parity,
             x_max=x_max,
             n_grid=n_grid,
@@ -287,7 +287,7 @@ def solve_harmonic_oscillator_rk4_energies(
             if state_index >= n_states:
                 break
 
-            energy = bisect_rk4_energy(
+            energy = RK4_bisect_energy(
                 parity=parity,
                 bracket=bracket,
                 x_max=x_max,
@@ -316,9 +316,9 @@ def solve_harmonic_oscillator_rk4_energies(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: rk4_harmonic_convergence_vs_grid
+# FUNCTION: RK4_harmonic_convergence_vs_grid
 # ---------------------------------------------------------------------------
-def rk4_harmonic_convergence_vs_grid(
+def RK4_harmonic_convergence_vs_grid(
     x_max: float,
     grid_sizes: list[int],
     n_states: int = 4,
@@ -332,7 +332,7 @@ def rk4_harmonic_convergence_vs_grid(
     for n_grid in grid_sizes:
         # Use the same post-processed output format as the Numerov convergence
         # routines so the comparison layer can treat both methods uniformly.
-        rows = solve_harmonic_oscillator_rk4_energies(
+        rows = RK4_solve_harmonic_oscillator_energies(
             x_max=x_max,
             n_grid=n_grid,
             n_states=n_states,
@@ -350,9 +350,9 @@ def rk4_harmonic_convergence_vs_grid(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: rk4_harmonic_convergence_vs_box_size_fixed_spacing
+# FUNCTION: RK4_harmonic_convergence_vs_box_size_fixed_spacing
 # ---------------------------------------------------------------------------
-def rk4_harmonic_convergence_vs_box_size_fixed_spacing(
+def RK4_harmonic_convergence_vs_box_size_fixed_spacing(
     x_max_values: list[float],
     target_h: float,
     n_states: int = 4,
@@ -375,7 +375,7 @@ def rk4_harmonic_convergence_vs_box_size_fixed_spacing(
         n_grid = max(n_grid, 3)
         actual_h = x_max / (n_grid - 1)
 
-        rows = solve_harmonic_oscillator_rk4_energies(
+        rows = RK4_solve_harmonic_oscillator_energies(
             x_max=x_max,
             n_grid=n_grid,
             n_states=n_states,

@@ -23,7 +23,7 @@ The suite checks:
 - the top-level script import path behavior
 
 One especially important regression test is the square-well convergence-order
-check. It protects the higher-order startup logic in `initial_conditions()`
+check. It protects the higher-order startup logic in `initial_conditions_outward_shooting()`
 from quietly degrading in the future.
 """
 
@@ -55,7 +55,7 @@ import src.rk4_compare as rk4_compare
 from src.scattering import sweep_scattering
 from src.shooting import (
     sample_boundary_mismatch,
-    solve_symmetric_potential,
+    solve_symmetric_potential_outward_shooting,
     solve_symmetric_potential_inward_shooting,
 )
 
@@ -94,7 +94,7 @@ def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
     """
     Check that RK4 bracketing keeps roots that land exactly on a scan point.
     """
-    original = rk4_compare.rk4_inward_mismatch
+    original = rk4_compare.RK4_inward_mismatch
 
     def fake_mismatch(
         energy: float, parity: str, x_max: float, n_grid: int, omega: float = 1.0
@@ -102,9 +102,9 @@ def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
         values = {0.1: -1.0, 0.3: -0.2, 0.5: 0.0, 0.7: 0.4, 0.9: 1.0}
         return values[round(float(energy), 1)]
 
-    rk4_compare.rk4_inward_mismatch = fake_mismatch
+    rk4_compare.RK4_inward_mismatch = fake_mismatch
     try:
-        brackets = rk4_compare.find_rk4_brackets(
+        brackets = rk4_compare.RK4_find_brackets(
             parity="even",
             x_max=8.0,
             n_grid=500,
@@ -113,7 +113,7 @@ def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
             n_scan=5,
         )
     finally:
-        rk4_compare.rk4_inward_mismatch = original
+        rk4_compare.RK4_inward_mismatch = original
 
     assert any(lo < 0.5 < hi for lo, hi in brackets)
 
@@ -126,7 +126,7 @@ def test_square_well_ground_state() -> None:
     Verify that the square-well ground-state energy matches the exact result.
     """
     a = 1.0
-    states = solve_symmetric_potential(
+    states = solve_symmetric_potential_outward_shooting(
         x_max=1.2,
         n_grid=1600,
         potential_fn=infinite_square_well_numeric,
@@ -199,7 +199,7 @@ def test_harmonic_oscillator_first_levels() -> None:
     Verify that the first few harmonic-oscillator energies are accurate.
     """
     omega = 1.0
-    states = solve_symmetric_potential(
+    states = solve_symmetric_potential_outward_shooting(
         x_max=8.0,
         n_grid=2000,
         potential_fn=harmonic_oscillator,
@@ -244,7 +244,7 @@ def test_double_well_splitting_positive() -> None:
     """
     Check that the first odd state lies above the first even state in the double well.
     """
-    states = solve_symmetric_potential(
+    states = solve_symmetric_potential_outward_shooting(
         x_max=3.0,
         n_grid=2400,
         potential_fn=quartic_double_well,
@@ -281,7 +281,7 @@ def test_double_well_larger_box_improves_low_lying_energies() -> None:
     Check that enlarging the double-well box reduces truncation error.
     """
     kwargs = {"a": 1.0, "b": 6.0, "shift_min_to_zero": True}
-    states_small = solve_symmetric_potential(
+    states_small = solve_symmetric_potential_outward_shooting(
         x_max=3.0,
         n_grid=1500,
         potential_fn=quartic_double_well,
@@ -291,7 +291,7 @@ def test_double_well_larger_box_improves_low_lying_energies() -> None:
         e_min=0.0,
         e_max=20.0,
     )
-    states_large = solve_symmetric_potential(
+    states_large = solve_symmetric_potential_outward_shooting(
         x_max=4.0,
         n_grid=2000,
         potential_fn=quartic_double_well,
@@ -301,7 +301,7 @@ def test_double_well_larger_box_improves_low_lying_energies() -> None:
         e_min=0.0,
         e_max=20.0,
     )
-    states_ref = solve_symmetric_potential(
+    states_ref = solve_symmetric_potential_outward_shooting(
         x_max=5.0,
         n_grid=2500,
         potential_fn=quartic_double_well,
@@ -379,7 +379,7 @@ def test_double_well_low_state_mismatches_are_polished() -> None:
     Check that the low double-well roots are polished beyond the bisection width floor.
     """
     kwargs = {"a": 1.0, "b": 6.0, "shift_min_to_zero": True}
-    states = solve_symmetric_potential(
+    states = solve_symmetric_potential_outward_shooting(
         x_max=4.0,
         n_grid=2000,
         potential_fn=quartic_double_well,

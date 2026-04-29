@@ -66,11 +66,11 @@ from src.potentials import (
 from src.shooting import (
     bisection_history,
     bisection_history_inward_decay,
-    find_brackets,
+    find_brackets_outward_shooting,
     find_brackets_inward_shooting,
     sample_boundary_mismatch,
     sample_inward_decay_mismatch,
-    solve_symmetric_potential,
+    solve_symmetric_potential_outward_shooting,
     solve_symmetric_potential_inward_shooting,
 )
 from src.scattering import (
@@ -79,12 +79,12 @@ from src.scattering import (
     sweep_scattering,
 )
 from src.rk4_compare import (
-    bisection_history_rk4,
-    find_rk4_brackets,
-    rk4_harmonic_convergence_vs_grid,
-    rk4_harmonic_convergence_vs_box_size_fixed_spacing,
-    sample_rk4_mismatch,
-    solve_harmonic_oscillator_rk4_energies,
+    RK4_bisection_history,
+    RK4_find_brackets,
+    RK4_harmonic_convergence_vs_grid,
+    RK4_harmonic_convergence_vs_box_size_fixed_spacing,
+    RK4_sample_mismatch,
+    RK4_solve_harmonic_oscillator_energies,
 )
 
 
@@ -141,7 +141,7 @@ def run_harmonic_rk4_comparison(
     grid_sizes = [int(round(x_max / h)) + 1 for h in numerov_h]
 
     # First generate one representative RK4 spectrum table and figure.
-    rk4_reference_rows = solve_harmonic_oscillator_rk4_energies(
+    rk4_reference_rows = RK4_solve_harmonic_oscillator_energies(
         x_max=x_max,
         n_grid=1200,
         n_states=n_states,
@@ -172,7 +172,7 @@ def run_harmonic_rk4_comparison(
 
     # Then compute the RK4 convergence curve on the same family of spacings
     # used by the Numerov study.
-    rk4_convergence = rk4_harmonic_convergence_vs_grid(
+    rk4_convergence = RK4_harmonic_convergence_vs_grid(
         x_max=x_max,
         grid_sizes=grid_sizes,
         n_states=n_states,
@@ -249,7 +249,7 @@ def run_harmonic_rk4_comparison(
     for spec in diagnostic_specs:
         # Build one mismatch scan per parity sector, then overlay the bisection
         # histories for the first two roots in that sector.
-        energies_scan, mismatches_scan = sample_rk4_mismatch(
+        energies_scan, mismatches_scan = RK4_sample_mismatch(
             parity=spec["parity"],
             x_max=x_max,
             n_grid=500,
@@ -258,7 +258,7 @@ def run_harmonic_rk4_comparison(
             omega=omega,
             n_scan=400,
         )
-        brackets = find_rk4_brackets(
+        brackets = RK4_find_brackets(
             parity=spec["parity"],
             x_max=x_max,
             n_grid=500,
@@ -268,7 +268,7 @@ def run_harmonic_rk4_comparison(
             n_scan=400,
         )
         histories = [
-            bisection_history_rk4(
+            RK4_bisection_history(
                 parity=spec["parity"],
                 bracket=bracket,
                 x_max=x_max,
@@ -290,7 +290,7 @@ def run_harmonic_rk4_comparison(
         )
 
     if target_h is not None:
-        rk4_box = rk4_harmonic_convergence_vs_box_size_fixed_spacing(
+        rk4_box = RK4_harmonic_convergence_vs_box_size_fixed_spacing(
             x_max_values=[4.0, 5.0, 6.0, 7.0, 8.0, 10.0],
             target_h=target_h,
             n_states=n_states,
@@ -374,7 +374,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             e_max=spec["e_max"],
             n_scan=1600,
         )
-        brackets = find_brackets(
+        brackets = find_brackets_outward_shooting(
             x_half,
             V_half,
             parity=spec["parity"],
@@ -535,7 +535,7 @@ def plot_double_well_root_diagnostics(
             e_max=spec["e_max"],
             n_scan=1600,
         )
-        brackets = find_brackets(
+        brackets = find_brackets_outward_shooting(
             x_half,
             V_half,
             parity=spec["parity"],
@@ -585,7 +585,7 @@ def run_square_well(results_dir: Path) -> None:
 
     # Run the solver to find the first four bound states of the infinite square well
     print("Solving infinite square well experiment...")
-    states = solve_symmetric_potential(
+    states = solve_symmetric_potential_outward_shooting(
         x_max=x_max,
         n_grid=n_grid,
         potential_fn=infinite_square_well_numeric,
@@ -878,7 +878,7 @@ def run_double_well(results_dir: Path) -> None:
     n_grid = 4000
 
     print("Running quartic double well experiment...")
-    states = solve_symmetric_potential(
+    states = solve_symmetric_potential_outward_shooting(
         x_max=x_max,
         n_grid=n_grid,
         potential_fn=quartic_double_well,
@@ -959,7 +959,7 @@ def run_double_well(results_dir: Path) -> None:
 
     # For box-size convergence, compare against a larger box while keeping h
     # approximately fixed so the curve mostly reflects boundary truncation.
-    reference_states_box = solve_symmetric_potential(
+    reference_states_box = solve_symmetric_potential_outward_shooting(
         x_max=5.0,
         n_grid=5000,
         potential_fn=quartic_double_well,
@@ -1060,7 +1060,7 @@ def run_finite_square_well(results_dir: Path) -> None:
     kwargs = {"V0": 12.0, "a": 1.0}
 
     print("Running finite square well experiment...")
-    states = solve_symmetric_potential(
+    states = solve_symmetric_potential_outward_shooting(
         x_max=x_max,
         n_grid=n_grid,
         potential_fn=finite_square_well,

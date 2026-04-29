@@ -37,7 +37,7 @@ from pathlib import Path
 
 import numpy as np
 
-from src.shooting import StateSolution, solve_symmetric_potential
+from src.shooting import StateSolution, solve_symmetric_potential_outward_shooting
 
 
 # ---------------------------------------------------------------------------
@@ -259,7 +259,7 @@ def convergence_vs_grid(
     e_min: float,
     e_max: float,
     reference_energies: np.ndarray,
-    solver_fn=solve_symmetric_potential,
+    solver_fn=solve_symmetric_potential_outward_shooting,
 ) -> dict[str, np.ndarray]:
     """
     Study eigenvalue convergence as the grid is refined.
@@ -323,7 +323,7 @@ def convergence_vs_grid_successive(
     n_odd: int,
     e_min: float,
     e_max: float,
-    solver_fn=solve_symmetric_potential,
+    solver_fn=solve_symmetric_potential_outward_shooting,
 ) -> dict[str, np.ndarray]:
     """
     Study grid convergence using successive refinements on a fixed box.
@@ -395,7 +395,7 @@ def convergence_vs_box_size(
     e_min: float,
     e_max: float,
     reference_energies: np.ndarray,
-    solver_fn=solve_symmetric_potential,
+    solver_fn=solve_symmetric_potential_outward_shooting,
 ) -> dict[str, np.ndarray]:
     """
     Study eigenvalue convergence as the computational box size changes.
@@ -460,7 +460,7 @@ def convergence_vs_box_size_fixed_spacing(
     e_min: float,
     e_max: float,
     reference_energies: np.ndarray,
-    solver_fn=solve_symmetric_potential,
+    solver_fn=solve_symmetric_potential_outward_shooting,
 ) -> dict[str, np.ndarray]:
     """
     Study box-size convergence while keeping grid spacing approximately fixed.
@@ -578,7 +578,7 @@ def splitting_vs_parameter(
         # being swept so each solve differs in a controlled way.
         kwargs = dict(base_kwargs)
         kwargs[varied_param] = value
-        states = solve_symmetric_potential(
+        states = solve_symmetric_potential_outward_shooting(
             x_max=x_max,
             n_grid=n_grid,
             potential_fn=potential_fn,

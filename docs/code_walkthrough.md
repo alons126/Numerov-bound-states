@@ -52,15 +52,15 @@ Bound-state shooting solvers, including parity-based outward shooting and stable
 | Lines | Block | Purpose |
 |---:|---|---|
 | 57-81 | `class StateSolution` | Container for a single bound-state solution. |
-| 88-126 | `function initial_conditions` | Construct parity-consistent starting values near x = 0. |
-| 133-160 | `function half_domain_wavefunction` | Compute the half-domain trial wavefunction for a given energy. |
-| 167-206 | `function boundary_mismatch` | Evaluate the mismatch used for eigenvalue shooting. |
-| 213-260 | `function find_brackets` | Scan an energy interval and locate sign-changing brackets. |
+| 88-126 | `function initial_conditions_outward_shooting` | Construct parity-consistent starting values near x = 0. |
+| 133-160 | `function half_domain_wavefunction_outward_shooting` | Compute the half-domain trial wavefunction for a given energy. |
+| 167-206 | `function boundary_mismatch_outward_shooting` | Evaluate the mismatch used for eigenvalue shooting. |
+| 213-260 | `function find_brackets_outward_shooting` | Scan an energy interval and locate sign-changing brackets. |
 | 267-286 | `function sample_boundary_mismatch` | Sample the shooting mismatch over an energy interval. |
 | 293-338 | `function bisection_history` | Record the bisection process for one eigenvalue bracket. |
-| 345-432 | `function bisect_energy` | Refine a sign-changing eigenvalue bracket with bisection. |
+| 345-432 | `function bisect_energy_outward_shooting` | Refine a sign-changing eigenvalue bracket with bisection. |
 | 439-472 | `function build_full_wavefunction` | Reconstruct the full wavefunction from its half-domain representation. |
-| 479-517 | `function solve_state_from_bracket` | Compute one bound state starting from a valid energy bracket. |
+| 479-517 | `function solve_state_from_bracket_outward_shooting` | Compute one bound state starting from a valid energy bracket. |
 | 524-552 | `function initial_conditions_inward_shooting` | Construct stable starting values at x_max for inward shooting. |
 | 559-580 | `function half_domain_wavefunction_inward_shooting` | Integrate the decaying tail inward from x_max to x = 0. |
 | 587-614 | `function boundary_mismatch_inward_shooting` | Evaluate the parity mismatch at the origin for inward shooting. |
@@ -70,7 +70,7 @@ Bound-state shooting solvers, including parity-based outward shooting and stable
 | 764-812 | `function bisection_history_inward_decay` | Record the inward-shooting bisection process for diagnostic plots. |
 | 819-860 | `function solve_state_from_inward_decay_bracket` | Compute one bound state using inward shooting from the decaying tail. |
 | 867-935 | `function solve_symmetric_potential_inward_shooting` | Solve symmetric confining potentials by shooting inward from x_max. |
-| 942-1017 | `function solve_symmetric_potential` | Solve for multiple bound states of a symmetric potential. |
+| 942-1017 | `function solve_symmetric_potential_outward_shooting` | Solve for multiple bound states of a symmetric potential. |
 
 ### `src/rk4_compare.py`
 Fourth-order Runge-Kutta implementation used only for the harmonic-oscillator method comparison.
@@ -78,15 +78,15 @@ Fourth-order Runge-Kutta implementation used only for the harmonic-oscillator me
 |---:|---|---|
 | 40-49 | `class RK4EnergyResult` | One RK4 eigenvalue result for the harmonic oscillator. |
 | 56-67 | `function _harmonic_rhs` | Right-hand side for the first-order Schrodinger system. |
-| 74-83 | `function rk4_step` | Advance the first-order Schrodinger system by one RK4 step. |
-| 90-123 | `function rk4_inward_mismatch` | Compute the parity mismatch using inward RK4 shooting. |
-| 130-158 | `function find_rk4_brackets` | Locate sign-changing energy brackets for RK4 inward shooting. |
-| 165-180 | `function sample_rk4_mismatch` | Sample the RK4 inward-shooting mismatch over an energy interval. |
-| 187-213 | `function bisect_rk4_energy` | Refine one RK4 shooting bracket with bisection. |
-| 220-256 | `function bisection_history_rk4` | Record the RK4 inward-shooting bisection process for one bracket. |
-| 263-314 | `function solve_harmonic_oscillator_rk4_energies` | Compute the lowest harmonic-oscillator energies using RK4 shooting. |
-| 321-347 | `function rk4_harmonic_convergence_vs_grid` | Return RK4 harmonic-oscillator energies and errors for several grids. |
-| 354-398 | `function rk4_harmonic_convergence_vs_box_size_fixed_spacing` | Return RK4 harmonic-oscillator errors versus box size at fixed spacing. |
+| 74-83 | `function RK4_step` | Advance the first-order Schrodinger system by one RK4 step. |
+| 90-123 | `function RK4_inward_mismatch` | Compute the parity mismatch using inward RK4 shooting. |
+| 130-158 | `function RK4_find_brackets` | Locate sign-changing energy brackets for RK4 inward shooting. |
+| 165-180 | `function RK4_sample_mismatch` | Sample the RK4 inward-shooting mismatch over an energy interval. |
+| 187-213 | `function RK4_bisect_energy` | Refine one RK4 shooting bracket with bisection. |
+| 220-256 | `function RK4_bisection_history` | Record the RK4 inward-shooting bisection process for one bracket. |
+| 263-314 | `function RK4_solve_harmonic_oscillator_energies` | Compute the lowest harmonic-oscillator energies using RK4 shooting. |
+| 321-347 | `function RK4_harmonic_convergence_vs_grid` | Return RK4 harmonic-oscillator energies and errors for several grids. |
+| 354-398 | `function RK4_harmonic_convergence_vs_box_size_fixed_spacing` | Return RK4 harmonic-oscillator errors versus box size at fixed spacing. |
 
 ### `src/scattering.py`
 Complex Numerov scattering solver for transmission, reflection, and double-barrier resonances.
@@ -160,7 +160,7 @@ Report-ready Matplotlib figures.
 
 ## Important numerical checks
 - The Numerov derivative stencil is fourth order when enough points are available. This matters because even inward-shooting states use the condition `psi'(0)=0`, so a low-order boundary derivative would spoil the accuracy of the full eigenvalue solve.
-- The parity-based startup in `initial_conditions` includes higher-order Taylor terms, so the first Numerov step does not spoil the observed fourth-order convergence.
+- The parity-based startup in `initial_conditions_outward_shooting` includes higher-order Taylor terms, so the first Numerov step does not spoil the observed fourth-order convergence.
 - Harmonic-oscillator inward shooting starts from the decaying forbidden-region tail and integrates toward the origin. This avoids contamination by the growing exponential mode that can dominate outward integration on a truncated infinite domain.
 - The quartic double well can shift its analytic minima to zero. That keeps the physical potential fixed as the grid changes and prevents fake convergence effects from a grid-sampled minimum.
 - Convergence studies are split intentionally: grid-refinement studies vary `h` at fixed domain size, while box-size studies keep `h` approximately fixed and vary `x_max`. That separation lets the project distinguish discretization error from domain-truncation error.
