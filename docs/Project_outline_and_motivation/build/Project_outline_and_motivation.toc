@@ -1,0 +1,39 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{Table of Contents}{1}{section*.1}%
+\contentsline {section}{List of Figures}{3}{section*.3}%
+\contentsline {section}{\numberline {1}What problem are we solving?}{4}{section.1}%
+\contentsline {section}{\numberline {2}Which course topics are used?}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Lecture 1: Numerical errors and computational project expectations}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Lecture 3: Numerical differentiation and integration}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Lecture 4: Root finding}{5}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Lecture 5: ODEs, boundary-value problems, eigenvalue problems, and shooting}{5}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Lecture 6: PDEs and Schr\"odinger equation context}{6}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}What is not used}{6}{subsection.2.6}%
+\contentsline {section}{\numberline {3}The Numerov algorithm}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}In-depth explanation of the Numerov algorithm}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Why Numerov?}{8}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}How the code uses the Numerov algorithm}{8}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Why shooting?}{9}{section.4}%
+\contentsline {section}{\numberline {5}Why parity?}{10}{section.5}%
+\contentsline {section}{\numberline {6}Why root finding and bisection?}{10}{section.6}%
+\contentsline {section}{\numberline {7}What each code file does}{11}{section.7}%
+\contentsline {subsection}{\numberline {7.1}\texttt {src/potentials.py}}{11}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}\texttt {src/numerov.py}}{12}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}\texttt {src/shooting.py}}{12}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}\texttt {src/analysis.py}}{13}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.5}\texttt {src/rk4\_compare.py}}{13}{subsection.7.5}%
+\contentsline {subsection}{\numberline {7.6}\texttt {src/scattering.py}}{13}{subsection.7.6}%
+\contentsline {subsection}{\numberline {7.7}\texttt {src/plotting.py}}{14}{subsection.7.7}%
+\contentsline {subsection}{\numberline {7.8}\texttt {src/experiments.py}}{14}{subsection.7.8}%
+\contentsline {subsection}{\numberline {7.9}\texttt {scripts/run\_solver.py}}{15}{subsection.7.9}%
+\contentsline {subsection}{\numberline {7.10}\texttt {tests/test\_solver.py}}{15}{subsection.7.10}%
+\contentsline {section}{\numberline {8}What the project demonstrates}{16}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Level 1: Exact benchmarks}{16}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Level 2: Convergence}{16}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Level 3: New physics}{17}{subsection.8.3}%
+\contentsline {section}{\numberline {9}What is apparent from the lectures and what is beyond them?}{17}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Clearly from the lectures}{17}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Partly from the lectures, but specialized to quantum mechanics}{17}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Beyond the slides}{18}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.4}Not used from the lectures}{18}{subsection.9.4}%
+\contentsline {section}{\numberline {10}The clean explanation for a reviewer}{19}{section.10}%
