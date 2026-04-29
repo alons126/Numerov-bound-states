@@ -143,7 +143,14 @@
         \int |\psi(x)|^2\,dx = 1.
     \end{equation}
 
+
     Therefore, normalization is not optional. It makes the solution physically meaningful.
+
+    The trapezoidal rule is used for this integration rather than more elaborate quadrature methods. In general, higher-order integration rules can be more accurate when the integrand is smooth and the grid satisfies the assumptions of the method. However, the best numerical method is not always the highest-order one; it should match the role the calculation plays in the algorithm. Here, normalization is only a post-processing step. It rescales a wavefunction that has already been computed by the ODE solver, and it is not the step that determines the eigenvalue. The main sources of error in the project come from ODE discretization, boundary conditions, domain truncation, and root-finding accuracy, not from the final normalization integral.
+
+    This is why the trapezoidal rule is sufficient and appropriate here. The wavefunctions are already sampled on the same uniform grid used by the Numerov solver, and they are smooth and well resolved in the accepted solutions. A more complicated integration rule would not materially change the physical conclusions, such as the eigenvalues, node structure, tunneling splitting, or scattering behavior. It would mainly add extra assumptions and implementation details.
+
+    Simpson's rule is a good example. It is higher order than the trapezoidal rule for smooth functions, so it would also be a valid choice for normalization in many cases. But Simpson's rule usually requires a compatible number of intervals and a uniform grid structure that fits its stencil. Since the project changes grid sizes in convergence studies and uses the integral only to normalize already-computed states, Simpson's rule would add bookkeeping constraints without improving the dominant numerical accuracy. Therefore, the trapezoidal rule is chosen because it is simple, robust, grid-flexible, and accurate enough for the purpose it serves in this project.
 
     Numerical differentiation is also used in \texttt{derivative\_at\_right\_edge()}. This is especially important for inward shooting. For even states, the condition at the origin is
     \begin{equation}
@@ -315,7 +322,7 @@
 
     The important function is \texttt{boundary\_mismatch()}. Here, a \emph{mismatch} means the residual error in the boundary condition after integrating the wavefunction for a trial energy. In other words, after the solver marches across the domain, it evaluates how far the computed wavefunction is from satisfying the required boundary behavior at the endpoint. If that residual is not zero, the trial energy is not an eigenvalue. The function \texttt{boundary\_mismatch()} is therefore the code routine that computes this residual for a given energy.
 
-    The latest solver also changes how the final mismatch is stored. Instead of reporting the raw, unnormalized boundary amplitude $\psi(x_{\max})$, the code now stores the normalized boundary leakage after the full wavefunction has been reconstructed and normalized. This makes the residual scale-invariant and physically more meaningful. In practice, this changed the low-state double-well residuals from raw values around $10^{-6}$--$10^{-5}$ to normalized leakage values around $2\times10^{-7}$.
+    The latest solver also changes how the final mismatch is stored. For outward shooting, the code no longer reports the raw, unnormalized boundary amplitude $\psi(x_{\max})$; it stores the normalized boundary leakage after the full wavefunction has been reconstructed and normalized. This makes that residual scale-invariant and physically more meaningful. For inward shooting, however, the stored residual is the final parity mismatch at the origin, because that is the quantity the inward solver actually drives to zero. So the code now treats \texttt{StateSolution.mismatch} as a general final diagnostic residual, with an interpretation that depends on the shooting formulation.
 
     The inward shooting logic is built from:
     \begin{itemize}
@@ -453,7 +460,7 @@
         \item \texttt{solve\_symmetric\_potential\_inward\_decay()}.
     \end{itemize}
 
-    Important latest details: \texttt{initial\_conditions()} now includes higher Taylor terms so the first Numerov step does not reduce the convergence order. For the quartic double well, the startup was also extended with the $q''(0)$ contribution. This fixed the square-well convergence slope problem and restored the expected high-order convergence for the problematic double-well state. The bisection routine was also strengthened with a safeguarded secant polishing step, and \texttt{StateSolution.mismatch} now stores normalized boundary leakage rather than raw unnormalized wall amplitude.
+    Important latest details: \texttt{initial\_conditions()} now includes higher Taylor terms so the first Numerov step does not reduce the convergence order. For the quartic double well, the startup was also extended with the $q''(0)$ contribution. This fixed the square-well convergence slope problem and restored the expected high-order convergence for the problematic double-well state. The bisection routine was also strengthened with a safeguarded secant polishing step. In addition, \texttt{StateSolution.mismatch} now stores the final solver residual in a formulation-aware way: normalized boundary leakage for outward shooting, and the final origin-parity mismatch for inward shooting.
 
     \subsection{\texttt{src/analysis.py}}
 
@@ -473,6 +480,8 @@
     This is what turns the code from ``it runs'' into ``it was verified scientifically.''
 
     For cases without analytic solutions, such as the quartic double well, the code now distinguishes between two convergence strategies. The box-size study is compared against a larger-box reference, while the grid-spacing study uses successive refinements, comparing each grid to the next finer one. This avoids pretending that there is an exact spectrum and avoids introducing an artificial reference floor into the $h$-convergence study.
+
+    A related motivation also appears in the harmonic-oscillator and RK4 studies. When the code measures sensitivity to $x_{\max}$, it does not keep \texttt{n\_grid} fixed. Instead it keeps the spacing $h$ approximately fixed while the box size changes. Otherwise a box-size study would also change the discretization error and mix two different effects into the same curve. This is why the project includes \texttt{convergence\_vs\_box\_size\_fixed\_spacing()} and its RK4 analogue.
 
     \subsection{\texttt{src/rk4\_compare.py}}
 
@@ -562,6 +571,8 @@
         \item each experiment now writes into its own subdirectory under \texttt{results/}, for example \texttt{results/3\_double\_well\_Numerov/}.
     \end{itemize}
 
+    The same convergence-separation logic is also used in the harmonic-oscillator comparison workflow. The harmonic and RK4 box-size studies keep $h$ approximately fixed while varying $x_{\max}$, so the resulting curves mainly measure finite-domain truncation rather than a mixture of truncation and discretization error.
+
     \subsection{\texttt{scripts/run\_solver.py}}
 
     This is the entry point. It:
@@ -573,6 +584,8 @@
     \end{itemize}
 
     It is intentionally lightweight. Most logic lives in \texttt{src/}. The latest runner keeps a single canonical results root at \texttt{PROJECT\_ROOT/results} and each experiment writes its CSV and PNG outputs into its own dedicated subdirectory there.
+
+    There is also a small but important software-design motivation here: the experiment modules are imported only inside \texttt{main()}. This keeps the runner lightweight to import, allows the test suite to check \texttt{run\_solver} import behavior without forcing plotting dependencies immediately, and keeps orchestration separate from the scientific computation itself.
 
     \subsection{\texttt{tests/test\_solver.py}}
 
@@ -628,7 +641,7 @@
         \item domain size $x_{\max}$.
     \end{itemize}
 
-    The goal is to show that the energies stabilize. This addresses truncation error, resolution dependence, finite-domain effects, floating-point limits, and root-finding limits. For the quartic double well, the convergence studies now deliberately separate grid refinement from box-size effects: $h$-convergence uses successive refinements at fixed domain size, while $x_{\max}$-convergence compares against a larger-domain reference.
+    The goal is to show that the energies stabilize. This addresses truncation error, resolution dependence, finite-domain effects, floating-point limits, and root-finding limits. A general lesson in the code is that grid refinement and box truncation should be separated whenever possible. For the quartic double well, $h$-convergence uses successive refinements at fixed domain size, while $x_{\max}$-convergence compares against a larger-domain reference. For the harmonic-oscillator and RK4 box-size studies, the code instead keeps $h$ approximately fixed while varying $x_{\max}$ so that the curves primarily measure finite-domain truncation.
 
     A key interpretation point is that if a convergence slope is slightly above 4, this does not mean the method is truly higher than fourth order. It usually means the errors are very small and the log-log fit is being affected by numerical floors, root-finding tolerance, or floating-point limits.
 
@@ -644,7 +657,7 @@
         \item convergence versus $h$ using successive refinements,
         \item convergence versus $x_{\max}$ using a larger-box reference,
         \item an analytic zero shift based on $V_{\min}=-b^2/(4a)$,
-        \item normalized boundary leakage as the residual diagnostic.
+        \item a formulation-aware residual diagnostic: normalized boundary leakage for outward shooting, and final origin-parity mismatch for inward shooting.
     \end{itemize}
 
     \section{What is apparent from the lectures and what is beyond them?}
@@ -687,7 +700,7 @@
         \item startup expansion terms involving $q''(0)$ for the quartic double well,
         \item high-order derivative stencil at the boundary,
         \item safeguarded secant polishing after bisection,
-        \item scale-invariant normalized boundary leakage as a residual,
+        \item formulation-aware final residual diagnostics, including scale-invariant normalized boundary leakage for outward shooting,
         \item inward shooting from the forbidden region,
         \item successive-refinement convergence for non-analytic potentials,
         \item high-resolution larger-box reference for domain-size studies,
@@ -719,7 +732,7 @@
     Here is the project summary in reviewer language:
 
     \begin{quote}
-    I am solving the one-dimensional time-independent Schr\"odinger equation as a boundary-value eigenvalue problem. I discretize space on a uniform grid and use the Numerov method to integrate the second-order ODE for a trial energy. Since only special energies satisfy the required boundary conditions, I use a shooting method. The boundary mismatch becomes a scalar function of energy, and I find its roots using bracketing and bisection. For symmetric potentials I use parity to reduce the calculation to the half domain, then reconstruct and normalize the full wavefunction. I validate the solver on the infinite square well and harmonic oscillator, study convergence with grid spacing and domain size, and then apply it to a finite square well and quartic double well to analyze nontrivial bound states and tunneling-induced splitting. For the double well, I separate grid and domain convergence, use an analytic potential shift, and report normalized boundary leakage as the residual diagnostic. I also compare Numerov with RK4 for the harmonic oscillator and include scattering through finite and double barriers as a secondary extension.
+    I am solving the one-dimensional time-independent Schr\"odinger equation as a boundary-value eigenvalue problem. I discretize space on a uniform grid and use the Numerov method to integrate the second-order ODE for a trial energy. Since only special energies satisfy the required boundary conditions, I use a shooting method. The boundary mismatch becomes a scalar function of energy, and I find its roots using bracketing and bisection. For symmetric potentials I use parity to reduce the calculation to the half domain, then reconstruct and normalize the full wavefunction. I validate the solver on the infinite square well and harmonic oscillator, study convergence with grid spacing and domain size, and then apply it to a finite square well and quartic double well to analyze nontrivial bound states and tunneling-induced splitting. For the double well, I separate grid and domain convergence, use an analytic potential shift, and report solver residuals in a formulation-aware way. I also compare Numerov with RK4 for the harmonic oscillator and include scattering through finite and double barriers as a secondary extension.
     \end{quote}
 
     That is the full logic of the project.
