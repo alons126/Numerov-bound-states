@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  29 APR 2026 12:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  29 APR 2026 12:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -843,20 +843,20 @@ Overfull \hbox (0.97324pt too wide) in paragraph at lines 9--9
 \tf@lof=\write7
 \openout7 = `Project_outline_and_motivation.lof'.
 
- [3] [4{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [5] [6] [7] [8] [9] [10]
+ [3] [4{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [5] [6] [7] [8] [9] [10] [11] [12]
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 402.
- [11]
-Overfull \hbox (11.47006pt too wide) in paragraph at lines 445--446
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 440.
+ [13]
+Overfull \hbox (11.47006pt too wide) in paragraph at lines 483--484
 []\T1/cmtt/m/n/10.95 numerov_outward() \T1/cmr/m/n/10.95 in-cludes dy-namic rescal-ing to avoid over-flow when a non-eigenvalue
  []
 
-[12] [13] [14] [15] [16] [17] [18]
-Overfull \hbox (13.64638pt too wide) in paragraph at lines 703--704
+[14] [15] [16] [17] [18] [19]
+Overfull \hbox (13.64638pt too wide) in paragraph at lines 741--742
 []\T1/cmr/m/n/10.95 formulation-aware fi-nal resid-ual di-ag-nos-tics, in-clud-ing scale-invariant nor-mal-ized bound-
  []
 
-[19] [20] (build/Project_outline_and_motivation.aux)
+[20] [21] (build/Project_outline_and_motivation.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -868,18 +868,18 @@ Package logreq Info: Writing requests to 'Project_outline_and_motivation.run.xml
 
  ) 
 Here is how much of TeX's memory you used:
- 24647 strings out of 467525
- 421463 string characters out of 5418982
+ 24651 strings out of 467525
+ 421503 string characters out of 5418982
  1295187 words of memory out of 5000000
  53163 multiletter control sequences out of 15000+600000
  641736 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,8n,90p,1191b,2326s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on build/Project_outline_and_motivation.pdf (20 pages, 323391 bytes).
+Output written on build/Project_outline_and_motivation.pdf (21 pages, 329746 bytes).
 PDF statistics:
- 431 PDF objects out of 1000 (max. 8388607)
- 372 compressed objects within 4 object streams
- 97 named destinations out of 1000 (max. 500000)
+ 438 PDF objects out of 1000 (max. 8388607)
+ 378 compressed objects within 4 object streams
+ 101 named destinations out of 1000 (max. 500000)
  305 words of extra memory for PDF output out of 10000 (max. 10000000)
 

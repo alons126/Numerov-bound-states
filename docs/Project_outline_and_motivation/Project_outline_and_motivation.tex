@@ -143,7 +143,6 @@
         \int |\psi(x)|^2\,dx = 1.
     \end{equation}
 
-
     Therefore, normalization is not optional. It makes the solution physically meaningful.
 
     The trapezoidal rule is used for this integration rather than more elaborate quadrature methods. In general, higher-order integration rules can be more accurate when the integrand is smooth and the grid satisfies the assumptions of the method. However, the best numerical method is not always the highest-order one; it should match the role the calculation plays in the algorithm. Here, normalization is only a post-processing step. It rescales a wavefunction that has already been computed by the ODE solver, and it is not the step that determines the eigenvalue. The main sources of error in the project come from ODE discretization, boundary conditions, domain truncation, and root-finding accuracy, not from the final normalization integral.
@@ -157,7 +156,12 @@
         \psi'(0)=0.
     \end{equation}
 
+
     If the derivative is computed with a low-order stencil, then the whole eigenvalue calculation can lose accuracy even if the Numerov recurrence itself is high order. This happened in the harmonic oscillator case. The code now uses a fourth-order backward stencil when enough points are available. This keeps the boundary-condition accuracy consistent with the rest of the method.
+
+    The function \texttt{derivative\_at\_right\_edge()} uses a backward finite-difference stencil to estimate the derivative at the boundary. This choice is dictated by the location of the evaluation point: at the right edge of the grid there are no points available to the right, so a forward or central difference would require values outside the computational domain. A backward stencil uses only existing grid points $x_N, x_{N-1}, x_{N-2}, \ldots$ and is therefore the natural choice.
+
+    When enough grid points are available, the implementation uses a fourth-order backward stencil. This is important because the overall solver is high order due to the Numerov recurrence. If the derivative used to enforce the boundary condition were only second order, it would become the dominant error and reduce the accuracy of the eigenvalue calculation. The high-order backward stencil ensures that the derivative-based boundary check, such as $\psi'(0)=0$ for even states in inward shooting, remains consistent with the accuracy of the integration method.
 
     \subsection{Lecture 4: Root finding}
 
@@ -165,12 +169,12 @@
 
     In the code this appears in:
     \begin{itemize}
-        \item \texttt{find\_brackets()},
-        \item \texttt{bisect\_energy()},
-        \item \texttt{find\_inward\_decay\_brackets()},
-        \item \texttt{bisect\_energy\_inward\_decay()},
-        \item \texttt{find\_rk4\_brackets()},
-        \item \texttt{bisect\_rk4\_energy()}.
+        \item \texttt{find\_brackets()}: scans a chosen energy interval, evaluates the outward-shooting mismatch function, and identifies intervals where the mismatch changes sign. These intervals are candidate eigenvalue brackets.
+        \item \texttt{bisect\_energy()}: takes one outward-shooting bracket and repeatedly bisects it until the energy root is isolated accurately. In the latest implementation, it also applies a safeguarded secant-style polishing step to improve the final estimate.
+        \item \texttt{find\_inward\_decay\_brackets()}: performs the same bracketing idea for inward shooting, where the mismatch is the parity residual at the origin after integrating inward from the decaying tail.
+        \item \texttt{bisect\_energy\_inward\_decay()}: refines an inward-shooting energy bracket by bisection until the even or odd parity condition at the origin is satisfied to the required tolerance.
+        \item \texttt{find\_rk4\_brackets()}: scans energies for the RK4 harmonic-oscillator comparison and finds sign-changing brackets of the RK4 mismatch function.
+        \item \texttt{bisect\_rk4\_energy()}: refines an RK4 bracket by bisection to find the harmonic-oscillator eigenvalue computed by the RK4 shooting formulation.
     \end{itemize}
 
     Bisection is used because it is stable and easy to justify. Newton's method is faster, but it requires derivatives and can fail if the starting guess is poor. Bisection is slower, but it is robust. In the latest solver, the bisection routine was also adjusted so it does not stop too early only because the energy bracket became small; it now uses a safeguarded secant polishing step to improve the final root estimate.
@@ -195,7 +199,15 @@
         \item inward shooting from $x_{\max}$ to $x=0$.
     \end{itemize}
 
+    Here $x_{\max}$ denotes the finite boundary used to approximate an infinite or sufficiently large spatial domain. In practice, the continuous problem is truncated to the interval $[0, x_{\max}]$ (or $[-x_{\max}, x_{\max}]$ before using parity). The value of $x_{\max}$ must be chosen large enough so that the wavefunction has effectively decayed to zero at the boundary for bound states. The sensitivity of the results to this choice is studied explicitly through convergence with respect to domain size.
+
     Outward shooting is used for many symmetric finite-domain or effectively finite-domain problems. Inward shooting is used mainly for the harmonic oscillator. This is because the harmonic oscillator is defined on an infinite domain, and outward integration can pick up the unphysical growing exponential tail. Inward shooting starts from the decaying asymptotic side and imposes the parity condition at the origin.
+
+    Inward shooting is therefore not universally better than outward shooting. It is better only when the physical boundary condition is easiest and most stable to impose at large distance. This is true for confining potentials with exponentially decaying bound states, such as the harmonic oscillator. For finite-domain or symmetric bound-state problems, outward shooting from the origin is usually more natural because the parity conditions at $x=0$ are exact and do not require approximating an asymptotic tail. For scattering problems, the physical boundary conditions are incoming, reflected, and transmitted waves rather than exponential decay, so inward bound-state shooting is not the correct formulation. The general rule is that the shooting direction should be chosen according to where the physical boundary condition is clearest and most numerically stable.
+
+    This does not introduce an inconsistency in the numerical method. The overall framework remains the same for all potentials: the Schr\"odinger equation is integrated numerically, a boundary mismatch function $F(E)$ is defined, and the eigenvalues are obtained by solving $F(E)=0$ using root finding. What changes between inward and outward shooting is not the method itself, but the location at which the boundary condition is imposed.
+
+    This choice does not rely on the existence of an analytic solution. Instead, it follows from qualitative properties of the potential, such as symmetry, finite or infinite domain, and asymptotic behavior. For symmetric finite-domain or effectively finite-domain problems, outward shooting is natural because the parity conditions at $x=0$ are exact. For confining potentials on an infinite domain, inward shooting is more stable because the physically correct solution decays at large $x$. The numerical strategy is therefore consistent across all cases, while still adapting to the physics of each potential to ensure stability and accuracy.
 
     \subsection{Lecture 6: PDEs and Schr\"odinger equation context}
 
@@ -374,6 +386,32 @@
     \begin{equation}
         F(E)=\text{mismatch}(E).
     \end{equation}
+
+    The precise definition of the mismatch depends on the shooting direction and on which boundary condition is being enforced.
+
+    \textbf{Outward shooting (from $x=0$ to $x_{\max}$):}
+    \begin{equation}
+        F(E)=\psi_E(x_{\max}).
+    \end{equation}
+    For a true bound state, the wavefunction must vanish at the boundary, so the condition is $\psi_E(x_{\max})=0$.
+
+    In the implementation, this is evaluated after constructing and normalizing the full wavefunction, so the stored mismatch represents the normalized boundary leakage, which is scale-invariant and physically meaningful.
+
+    \textbf{Inward shooting (from $x_{\max}$ to $x=0$):}
+
+    For even states:
+    \begin{equation}
+        F(E)=\psi'_E(0),
+    \end{equation}
+
+    For odd states:
+    \begin{equation}
+        F(E)=\psi_E(0).
+    \end{equation}
+
+    In this case, the mismatch measures how well the parity condition at the origin is satisfied after integrating inward from the decaying tail.
+
+    In both formulations, the eigenvalue problem is reduced to solving $F(E)=0$, but the definition of $F(E)$ reflects the boundary where the physical condition is imposed.
     This $F(E)$ is the \emph{mismatch function}: it takes an energy $E$ as input and returns the boundary-condition residual produced by the shooting calculation. Its sign and magnitude indicate how the trial solution fails to satisfy the boundary condition.
 
     Allowed eigenvalues satisfy
