@@ -1,5 +1,92 @@
 {
   "python.analysis.extraPaths": ["."],
   "python.testing.pytestEnabled": true,
-  "python.testing.unittestEnabled": false
+  "python.testing.unittestEnabled": false,
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.outDir": "%DIR%/build",
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "active-document",
+      "tools": ["active-latexmk"]
+    },
+    {
+      "name": "report",
+      "tools": ["report-latexmk", "copy-report-pdf"]
+    },
+    {
+      "name": "proposal",
+      "tools": ["proposal-latexmk"]
+    },
+    {
+      "name": "project-outline-and-motivation",
+      "tools": ["project-outline-latexmk"]
+    }
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "active-latexmk",
+      "command": "sh",
+      "args": [
+        "-c",
+        "latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"$1\" && if [ \"$2\" = \"report\" ]; then cp \"$3/build/report.pdf\" \"$3/../../report.pdf\"; fi",
+        "latexmk-active",
+        "%DOC%",
+        "%DOCFILE%",
+        "%DIR%"
+      ]
+    },
+    {
+      "name": "report-latexmk",
+      "command": "latexmk",
+      "args": [
+        "-cd",
+        "-outdir=build",
+        "-pdf",
+        "-interaction=nonstopmode",
+        "-synctex=1",
+        "-f",
+        "docs/Writeup/report.tex"
+      ]
+    },
+    {
+      "name": "copy-report-pdf",
+      "command": "cp",
+      "args": ["docs/Writeup/build/report.pdf", "report.pdf"]
+    },
+    {
+      "name": "proposal-latexmk",
+      "command": "latexmk",
+      "args": [
+        "-cd",
+        "-outdir=build",
+        "-pdf",
+        "-interaction=nonstopmode",
+        "-synctex=1",
+        "-f",
+        "docs/Proposal/proposal.tex"
+      ]
+    },
+    {
+      "name": "project-outline-latexmk",
+      "command": "latexmk",
+      "args": [
+        "-cd",
+        "-outdir=build",
+        "-pdf",
+        "-interaction=nonstopmode",
+        "-synctex=1",
+        "-f",
+        "docs/Project_outline_and_motivation/Project_outline_and_motivation.tex"
+      ]
+    }
+  ],
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": ".*",
+        "isAsync": true,
+        "cmd": "cd \"${workspaceFolder}\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Writeup/report.tex\" && cp \"docs/Writeup/build/report.pdf\" \"${workspaceFolder}/report.pdf\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Proposal/proposal.tex\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Project_outline_and_motivation/Project_outline_and_motivation.tex\""
+      }
+    ]
+  }
 }

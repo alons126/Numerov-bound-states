@@ -1,10 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  28 APR 2026 16:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  29 APR 2026 10:55
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/alon/Projects/Numerov-bound-states/docs/report.tex
-(/Users/alon/Projects/Numerov-bound-states/docs/report.tex
+**Project_outline_and_motivation.tex
+(./Project_outline_and_motivation.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (/usr/local/texlive/2026/texmf-dist/tex/latex/base/article.cls
@@ -348,6 +347,12 @@ Package: lineno 2026/03/08 line numbers on paragraphs v5.9
 \bframesep=\dimen190
 \bframebox=\box58
 \@LN@amsmath@ams@eqpen=\count336
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2024/02/08 v1.3d Input encoding file
+\inpenc@prehook=\toks27
+\inpenc@posthook=\toks28
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/biblatex.sty
 Package: biblatex 2025/07/10 v3.21 programmable bibliographies (PK/MW)
  (/usr/local/texlive/2026/texmf-dist/tex/latex/logreq/logreq.sty
@@ -589,7 +594,7 @@ Package: rotating 2025/01/14 v2.16e rotated objects in LaTeX
 \rotFPtop=\skip82
 \rotFPbot=\skip83
 \rot@float@box=\box59
-\rot@mess@toks=\toks27
+\rot@mess@toks=\toks29
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/pdfpages/pdfpages.sty
 Package: pdfpages 2025/07/23 v0.6g Insert pages of external PDF documents (AM)
  (/usr/local/texlive/2026/texmf-dist/tex/latex/tools/calc.sty
@@ -633,10 +638,10 @@ File: pppdftex.def 2025/07/23 v0.6g Pdfpages driver for pdfTeX (AM)
 )
 \pdfpages@includegraphics@status=\count469
 \AM@pagebox=\box60
-\AM@global@opts=\toks28
+\AM@global@opts=\toks30
 \AM@pagecnt=\count470
-\AM@toc@title=\toks29
-\AM@lof@heading=\toks30
+\AM@toc@title=\toks31
+\AM@lof@heading=\toks32
 \c@AM@survey=\count471
 \AM@templatesizebox=\box61
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/csquotes/csquotes.sty
@@ -647,7 +652,7 @@ Package: csquotes 2024-04-04 v5.2o context-sensitive quotations (JAW)
 \csq@qlevel=\count475
 \csq@maxlvl=\count476
 \csq@tshold=\count477
-\csq@ltx@everypar=\toks31
+\csq@ltx@everypar=\toks33
  (/usr/local/texlive/2026/texmf-dist/tex/latex/csquotes/csquotes.def
 File: csquotes.def 2024-04-04 v5.2o csquotes generic definitions (JAW)
 )
@@ -662,19 +667,19 @@ Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
 \col@sep=\dimen199
 \ar@mcellbox=\box62
 \extrarowheight=\dimen256
-\NC@list=\toks32
+\NC@list=\toks34
 \extratabsurround=\skip87
 \backup@length=\skip88
 \ar@cellbox=\box63
 )
-\everycr=\toks33
+\everycr=\toks35
 \minrowclearance=\skip89
 \rownum=\count478
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 \rotheadsize=\dimen257
 \c@nlinenum=\count479
-\TeXr@lab=\toks34
+\TeXr@lab=\toks36
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/sidecap/sidecap.sty
 Package: sidecap 2023/01/24 v1.7a SideCap Package (RN/HjG)
 \SC@BOXWD=\dimen258
@@ -688,27 +693,27 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
- (./report.aux)
-\openout1 = `report.aux'.
+ (build/Project_outline_and_motivation.aux)
+\openout1 = `Project_outline_and_motivation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 72.
-LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
@@ -724,14 +729,14 @@ Package caption Info: End \AtBeginDocument code.
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
+* h-part:(L,W,R)=(85.35826pt, 426.79135pt, 85.35826pt)
 * v-part:(T,H,B)=(56.9055pt, 731.23584pt, 56.9055pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
-* \textwidth=455.24411pt
+* \textwidth=426.79135pt
 * \textheight=731.23584pt
-* \oddsidemargin=-1.1381pt
-* \evensidemargin=-1.1381pt
+* \oddsidemargin=13.08827pt
+* \evensidemargin=13.08827pt
 * \topmargin=-52.36449pt
 * \headheight=12.0pt
 * \headsep=25.0pt
@@ -757,22 +762,22 @@ Package caption Info: End \AtBeginDocument code.
 \scratchbox=\box65
 \nofMPsegments=\count482
 \nofMParguments=\count483
-\everyMPshowfont=\toks35
+\everyMPshowfont=\toks37
 \MPscratchCnt=\count484
 \MPscratchDim=\dimen263
 \MPnumerator=\count485
 \makeMPintoPDFobject=\count486
-\everyMPtoPDFconversion=\toks36
+\everyMPtoPDFconversion=\toks38
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/usr/local/texlive/2026/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 72.
- (./report.out) (./report.out)
+Package hyperref Info: Link coloring ON on input line 77.
+ (build/Project_outline_and_motivation.out) (build/Project_outline_and_motivation.out)
 \@outlinefile=\write5
-\openout5 = `report.out'.
+\openout5 = `Project_outline_and_motivation.out'.
 
 \c@lstlisting=\count487
 Package biblatex Info: Trying to load language 'english'...
@@ -783,14 +788,15 @@ File: english.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
-\openout4 = `report.bcf'.
+\openout4 = `Project_outline_and_motivation.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'report.bbl' found.
- (./report.bbl)
-Package biblatex Info: Reference section=0 on input line 72.
-Package biblatex Info: Reference segment=0 on input line 72.
- (/usr/local/texlive/2026/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+Package biblatex Info: ... file 'Project_outline_and_motivation.bbl' not found.
+
+No file Project_outline_and_motivation.bbl.
+Package biblatex Info: Reference section=0 on input line 77.
+Package biblatex Info: Reference segment=0 on input line 77.
+(/usr/local/texlive/2026/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2025-06-23 v0.14 Display of landscape pages in PDF
  (/usr/local/texlive/2026/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
 Package: pdflscape-nometadata 2025-06-23 v0.14 Display of landscape pages in PDF (HO)
@@ -814,488 +820,61 @@ Package: ragged2e 2023/06/22 v3.6 ragged2e Package
 \RaggedLeftParindent=\skip101
 \RaggedRightParindent=\skip102
 \JustifyingParindent=\skip103
-) (./report.toc
-LaTeX Font Info:    Trying to load font information for U+msa on input line 5.
+) (build/Project_outline_and_motivation.toc
+LaTeX Font Info:    Trying to load font information for U+msa on input line 6.
  (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 5.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 6.
  (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
+)
+Overfull \hbox (0.97324pt too wide) in paragraph at lines 9--9
+ [][] [][][]\T1/cmr/m/n/10.95 Lecture 5: ODEs, boundary-value prob-lems, eigen-value prob-lems, and shoot- 
+ []
+
+[1
+
+{/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}])
 \tf@toc=\write6
-\openout6 = `report.toc'.
+\openout6 = `Project_outline_and_motivation.toc'.
 
-\blx@maxsegment@1=\count488
-\blx@sectionciteorder@1=\count489
-Package biblatex Info: Reference section=1 on input line 86.
-Package biblatex Info: Setting label 'refsection:1' on input line 86.
- [1
+ [2] (build/Project_outline_and_motivation.lof)
+\tf@lof=\write7
+\openout7 = `Project_outline_and_motivation.lof'.
 
-{/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 94--95
-
+ [3] [4{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [5] [6] [7] [8] [9] [10]
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 395.
+ [11]
+Overfull \hbox (11.47006pt too wide) in paragraph at lines 438--439
+[]\T1/cmtt/m/n/10.95 numerov_outward() \T1/cmr/m/n/10.95 in-cludes dy-namic rescal-ing to avoid over-flow when a non-eigenvalue
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 96--97
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 108--110
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 117--119
-
- []
-
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 140--142
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 143--144
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 145--146
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 147--148
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 149--150
-
- []
-
-<../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png, id=123, 505.89pt x 325.215pt>
-File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png Graphic file (type png)
-<use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png  used on input line 156.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png, id=125, 578.16pt x 361.35pt>
-File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png Graphic file (type png)
-<use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png  used on input line 163.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-<../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png, id=126, 578.16pt x 361.35pt>
-File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png Graphic file (type png)
-<use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png  used on input line 174.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 174--175
- [][] 
- []
-
-<../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png, id=127, 578.16pt x 361.35pt>
-File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png Graphic file (type png)
-<use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png  used on input line 180.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 180--181
- [][] 
- []
-
-<../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png, id=128, 505.89pt x 325.215pt>
-File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png Graphic file (type png)
-<use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png  used on input line 192.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png, id=129, 578.16pt x 361.35pt>
-File: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png Graphic file (type png)
-<use ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png>
-Package pdftex.def Info: ../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png  used on input line 199.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-[3] [4 <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png> <../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 210--212
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 213--214
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 215--216
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 217--218
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 219--220
-
- []
-
-
-Overfull \hbox (9.55353pt too wide) in paragraph at lines 221--222
-[]\OT1/cmr/m/n/10.95 The de-pen-dence on do-main size (Fig. [][]10[][]) shows the ex-pected truncation-to-discretization crossover.
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 221--222
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 223--224
-
- []
-
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png, id=156, 505.89pt x 325.215pt>
-File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png Graphic file (type png)
-<use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png  used on input line 230.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png, id=157, 578.16pt x 361.35pt>
-File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png Graphic file (type png)
-<use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png  used on input line 237.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png, id=158, 578.16pt x 361.35pt>
-File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png Graphic file (type png)
-<use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png  used on input line 248.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 248--249
- [][] 
- []
-
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png, id=159, 578.16pt x 361.35pt>
-File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png Graphic file (type png)
-<use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png  used on input line 254.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 254--255
- [][] 
- []
-
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png, id=160, 505.89pt x 325.215pt>
-File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png Graphic file (type png)
-<use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png  used on input line 268.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png, id=161, 505.89pt x 325.215pt>
-File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png Graphic file (type png)
-<use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png  used on input line 275.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png, id=162, 578.16pt x 361.35pt>
-File: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png Graphic file (type png)
-<use ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png>
-Package pdftex.def Info: ../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png  used on input line 284.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-<../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png, id=163, 505.89pt x 325.215pt>
-File: ../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png Graphic file (type png)
-<use ../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png>
-Package pdftex.def Info: ../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png  used on input line 291.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 302--304
-
- []
-
-[5] [6 <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png>] [7 <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png> <../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png> <../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 305--306
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 313--315
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 316--317
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 318--319
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 320--321
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 322--323
-
- []
-
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 324--325
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 326--327
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 328--329
-
- []
-
-<../results/3_double_well_Numerov/3_double_well_Numerov_states.png, id=204, 578.16pt x 361.35pt>
-File: ../results/3_double_well_Numerov/3_double_well_Numerov_states.png Graphic file (type png)
-<use ../results/3_double_well_Numerov/3_double_well_Numerov_states.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_states.png  used on input line 335.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-<../results/3_double_well_Numerov/3_double_well_Numerov_densities.png, id=205, 578.16pt x 361.35pt>
-File: ../results/3_double_well_Numerov/3_double_well_Numerov_densities.png Graphic file (type png)
-<use ../results/3_double_well_Numerov/3_double_well_Numerov_densities.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_densities.png  used on input line 342.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-<../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png, id=206, 578.16pt x 361.35pt>
-File: ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png Graphic file (type png)
-<use ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png  used on input line 353.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 353--354
- [][] 
- []
-
-<../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png, id=207, 578.16pt x 361.35pt>
-File: ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png Graphic file (type png)
-<use ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png  used on input line 359.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 359--360
- [][] 
- []
-
-<../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png, id=208, 505.89pt x 325.215pt>
-File: ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png Graphic file (type png)
-<use ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png  used on input line 373.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png, id=209, 505.89pt x 325.215pt>
-File: ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png Graphic file (type png)
-<use ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png  used on input line 380.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png, id=210, 505.89pt x 325.215pt>
-File: ../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png Graphic file (type png)
-<use ../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png>
-Package pdftex.def Info: ../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png  used on input line 389.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 402--404
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 405--406
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 407--408
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 409--410
-
- []
-
-[9] [10 <../results/3_double_well_Numerov/3_double_well_Numerov_states.png> <../results/3_double_well_Numerov/3_double_well_Numerov_densities.png> <../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png> <../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png>] [11 <../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png> <../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png> <../results/3_double_well_Numerov/3_double_well_Numerov_splitting_vs_b.png>]
-<../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png, id=235, 578.16pt x 361.35pt>
-File: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png Graphic file (type png)
-<use ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png>
-Package pdftex.def Info: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png  used on input line 414.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 415.
-See the caption package documentation for explanation.
-
-<../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png, id=236, 578.16pt x 361.35pt>
-File: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png Graphic file (type png)
-<use ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png>
-Package pdftex.def Info: ../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png  used on input line 421.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 422.
-See the caption package documentation for explanation.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 428--429
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 430--431
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 432--433
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 434--435
-
- []
-
-<../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png, id=238, 578.16pt x 361.35pt>
-File: ../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png Graphic file (type png)
-<use ../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png>
-Package pdftex.def Info: ../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png  used on input line 438.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 444--445
-
- []
-
-[12 <../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png> <../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 446--447
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 448--449
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 450--451
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 452--453
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 454--455
-
- []
-
-<../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png, id=248, 578.16pt x 361.35pt>
-File: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png Graphic file (type png)
-<use ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png>
-Package pdftex.def Info: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png  used on input line 459.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 460.
-See the caption package documentation for explanation.
-
-<../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png, id=249, 578.16pt x 361.35pt>
-File: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png Graphic file (type png)
-<use ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png>
-Package pdftex.def Info: ../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png  used on input line 466.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 467.
-See the caption package documentation for explanation.
-
-[13 <../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_TR.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 475--476
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 477--478
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 481--482
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 483--484
-
- []
-
-[14 <../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonances.png> <../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_resonant_state.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 485--486
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 491--492
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 493--494
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 495--496
-
- []
-
-Package biblatex Info: Reference section=0 on input line 503.
-
-Package caption Warning: Unused \captionsetup[table] on input line 16.
-See the caption package documentation for explanation.
-
-[15] (./report.aux)
+[12] [13] [14] [15] [16] [17] [18] [19] (build/Project_outline_and_motivation.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: E9BBAE9D10E22B55DF504258104BE03E;3295.
-Package logreq Info: Writing requests to 'report.run.xml'.
-\openout1 = `report.run.xml'.
+Package rerunfilecheck Info: File `Project_outline_and_motivation.out' has not changed.
+(rerunfilecheck)             Checksum: E2501B3E387A051513C236637FFA7034;8346.
+Package logreq Info: Writing requests to 'Project_outline_and_motivation.run.xml'.
+\openout1 = `Project_outline_and_motivation.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24800 strings out of 467525
- 440013 string characters out of 5418982
- 1296547 words of memory out of 5000000
- 53373 multiletter control sequences out of 15000+600000
- 637452 words of font info for 77 fonts, out of 8000000 for 9000
+ 24646 strings out of 467525
+ 421456 string characters out of 5418982
+ 1295187 words of memory out of 5000000
+ 53163 multiletter control sequences out of 15000+600000
+ 641736 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,10n,90p,965b,1911s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on report.pdf (15 pages, 1897285 bytes).
+ 75i,8n,90p,1202b,2326s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
+Output written on build/Project_outline_and_motivation.pdf (19 pages, 320716 bytes).
 PDF statistics:
- 344 PDF objects out of 1000 (max. 8388607)
- 244 compressed objects within 3 object streams
- 54 named destinations out of 1000 (max. 500000)
- 275 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 426 PDF objects out of 1000 (max. 8388607)
+ 368 compressed objects within 4 object streams
+ 96 named destinations out of 1000 (max. 500000)
+ 305 words of extra memory for PDF output out of 10000 (max. 10000000)
 
