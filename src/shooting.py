@@ -27,6 +27,22 @@ unbounded confining systems:
   oscillator, where outward shooting is numerically contaminated by the growing
   forbidden-region solution
 
+Outward shooting case:
+The initial conditions are imposed at the symmetry point x=0 using parity. For
+an even state, psi(0)=1 and psi'(0)=0; for an odd state, psi(0)=0 and psi'(0)=1.
+The trial wavefunction is then integrated outward to x_max. The mismatch is the
+right-edge leakage, M(E)=psi_E(x_max). An allowed energy is found when this
+mismatch vanishes. This is the natural setup when the outer boundary is known
+or when the finite computational box is part of the approximation being tested.
+
+Inward shooting case:
+The initial conditions are imposed near x_max using the expected decaying tail of
+a bound state in a forbidden region. The wavefunction is integrated inward toward
+x=0, where parity supplies the boundary condition. For an even state the mismatch
+is M(E)=psi'_E(0), while for an odd state it is M(E)=psi_E(0). This is more stable
+for confining infinite-domain potentials such as the harmonic oscillator, because
+it avoids growing-mode contamination during outward integration.
+
 This file also contains the most delicate numerical fixes described in the
 reviewer documents:
 - `initial_conditions()` includes higher-order Taylor startup terms, including
@@ -52,7 +68,6 @@ from src.numerov import (
 
 # ---------------------------------------------------------------------------
 # DATA CLASS: StateSolution
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 @dataclass
 class StateSolution:
@@ -84,7 +99,7 @@ class StateSolution:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: initial_conditions
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def initial_conditions(
     x_half: np.ndarray, q_half: np.ndarray, parity: str
@@ -104,10 +119,12 @@ def initial_conditions(
     tuple[float, float]
         Starting values (psi0, psi1) for Numerov integration.
     """
+
     # The Taylor expansion around x=0 supplies the first two Numerov values.
     # This is where parity enters the shooting calculation on the half-domain.
     h = x_half[1] - x_half[0]
     q0 = q_half[0]
+
     # For smooth symmetric potentials, q'(0)=0 but q''(0) generally does not
     # vanish. Including it prevents the startup step from degrading the
     # observed high-order convergence for center-penetrating states. Without
@@ -131,7 +148,7 @@ def initial_conditions(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: half_domain_wavefunction
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def half_domain_wavefunction(
     x_half: np.ndarray,
@@ -141,6 +158,12 @@ def half_domain_wavefunction(
 ) -> np.ndarray:
     """
     Compute the half-domain trial wavefunction for a given energy.
+
+    A trial energy does not automatically satisfy the boundary conditions.
+    Shooting treats the ODE solve as a diagnostic: only special energies
+    produce a wavefunction that also matches the far boundary.
+    Build the Schrödinger coefficient for this energy, convert the parity
+    condition into the first two grid values, then march to x_max.
 
     Parameters
     ----------
@@ -158,19 +181,16 @@ def half_domain_wavefunction(
     ndarray
         Unnormalized half-domain wavefunction.
     """
-    # A trial energy does not automatically satisfy the boundary conditions.
-    # Shooting treats the ODE solve as a diagnostic: only special energies
-    # produce a wavefunction that also matches the far boundary.
-    # Build the Schrödinger coefficient for this energy, convert the parity
-    # condition into the first two grid values, then march to x_max.
+
     q = q_from_energy(V_half, energy)
     psi0, psi1 = initial_conditions(x_half, q, parity)
+
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
 
 
 # ---------------------------------------------------------------------------
 # FUNCTION: boundary_mismatch
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def boundary_mismatch(
     x_half: np.ndarray,
@@ -181,6 +201,15 @@ def boundary_mismatch(
 ) -> float:
     """
     Evaluate the mismatch used for eigenvalue shooting.
+
+    The mismatch M(E) is the scalar quantity whose zero selects an allowed
+    eigenvalue. This converts the boundary-value problem into root finding.
+
+    This function is used for the outward-shooting case. The wavefunction is
+    started at x=0 using parity, integrated outward to x_max, and then checked
+    at the far boundary. In the standard "value" mode, the mismatch is
+    M(E)=psi_E(x_max). Therefore a correct bound-state energy is one for which
+    the trial wavefunction reaches the outer boundary with zero leakage.
 
     Parameters
     ----------
@@ -201,8 +230,7 @@ def boundary_mismatch(
     float
         Scalar mismatch value used in bracketing or diagnostics.
     """
-    # The mismatch M(E) is the scalar quantity whose zero selects an allowed
-    # eigenvalue. This converts the boundary-value problem into root finding.
+
     psi = half_domain_wavefunction(x_half, V_half, energy, parity)
 
     if mode == "value":
@@ -222,7 +250,7 @@ def boundary_mismatch(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: find_brackets
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def find_brackets(
     x_half: np.ndarray,
@@ -234,6 +262,11 @@ def find_brackets(
 ) -> list[tuple[float, float]]:
     """
     Scan an energy interval and locate sign-changing brackets.
+
+    Bracketing converts the eigenvalue problem into a set of scalar root
+    searches. Every sign change in the mismatch curve marks one candidate
+    eigenvalue interval, which is why the report treats root finding as a
+    central ingredient rather than a post-processing detail.
 
     Parameters
     ----------
@@ -251,10 +284,7 @@ def find_brackets(
     list[tuple[float, float]]
         Brackets suitable for bisection.
     """
-    # Bracketing converts the eigenvalue problem into a set of scalar root
-    # searches. Every sign change in the mismatch curve marks one candidate
-    # eigenvalue interval, which is why the report treats root finding as a
-    # central ingredient rather than a post-processing detail.
+
     energies = np.linspace(e_min, e_max, n_scan)
     vals = np.array(
         [boundary_mismatch(x_half, V_half, e, parity, mode="value") for e in energies]
@@ -281,7 +311,7 @@ def find_brackets(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: sample_boundary_mismatch
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def sample_boundary_mismatch(
     x_half: np.ndarray,
@@ -298,17 +328,19 @@ def sample_boundary_mismatch(
     located where the mismatch curve crosses zero, so plotting it makes the
     root-finding logic visible instead of leaving it as a black box.
     """
+
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
         [boundary_mismatch(x_half, V_half, e, parity, mode="value") for e in energies],
         dtype=float,
     )
+
     return energies, mismatches
 
 
 # ---------------------------------------------------------------------------
 # FUNCTION: bisection_history
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def bisection_history(
     x_half: np.ndarray,
@@ -324,6 +356,7 @@ def bisection_history(
     Returns a list of dictionaries containing the lower edge, upper edge,
     midpoint, and mismatch at each bisection iteration.
     """
+
     lo, hi = bracket
     flo = boundary_mismatch(x_half, V_half, lo, parity, mode="value")
     fhi = boundary_mismatch(x_half, V_half, hi, parity, mode="value")
@@ -361,7 +394,7 @@ def bisection_history(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: bisect_energy
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def bisect_energy(
     x_half: np.ndarray,
@@ -392,6 +425,7 @@ def bisect_energy(
     tuple[float, float]
         Refined eigenvalue estimate and final mismatch.
     """
+
     lo, hi = bracket
     flo = boundary_mismatch(x_half, V_half, lo, parity, mode="value")
     fhi = boundary_mismatch(x_half, V_half, hi, parity, mode="value")
@@ -425,11 +459,8 @@ def bisect_energy(
         else:
             lo, flo = mid, fmid
 
-    # Bisection is used because it is robust and easy to justify for a project
-    # writeup. For steep mismatch curves, however, a tiny energy bracket can
-    # still leave a visible residual at the midpoint. Finish with a few
-    # safeguarded secant steps inside the last sign-changing bracket to report
-    # a much better boundary residual without sacrificing robustness.
+    # Finish with a few safeguarded secant steps inside the last sign-changing
+    # bracket to report a much better boundary residual without sacrificing robustness
     for _ in range(8):
         denom = fhi - flo
         if denom == 0.0 or not np.isfinite(denom):
@@ -454,12 +485,13 @@ def bisect_energy(
 
     if abs(flo) <= abs(fhi):
         return lo, flo
+
     return hi, fhi
 
 
 # ---------------------------------------------------------------------------
 # FUNCTION: build_full_wavefunction
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def build_full_wavefunction(
     x_half: np.ndarray,
@@ -483,6 +515,7 @@ def build_full_wavefunction(
     tuple[ndarray, ndarray]
         Full-domain grid and full-domain wavefunction.
     """
+
     if parity == "even":
         # Even states mirror with the same sign across x = 0.
         x_left = -x_half[:0:-1]
@@ -496,12 +529,13 @@ def build_full_wavefunction(
 
     x_full = np.concatenate([x_left, x_half])
     psi_full = np.concatenate([psi_left, psi_half])
+
     return x_full, psi_full
 
 
 # ---------------------------------------------------------------------------
 # FUNCTION: solve_state_from_bracket
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def solve_state_from_bracket(
     x_half: np.ndarray,
@@ -529,6 +563,7 @@ def solve_state_from_bracket(
     StateSolution
         Structured solution object containing energy and wavefunction data.
     """
+
     # First determine the eigenvalue, then recompute the corresponding
     # wavefunction once at that energy for the final normalized output.
     energy, _raw_mismatch = bisect_energy(x_half, V_half, parity, bracket, tol=tol)
@@ -551,7 +586,6 @@ def solve_state_from_bracket(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: inward_decay_initial_conditions
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def inward_decay_initial_conditions(
     x_desc: np.ndarray,
@@ -586,7 +620,6 @@ def inward_decay_initial_conditions(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: inward_decay_half_domain_wavefunction
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def inward_decay_half_domain_wavefunction(
     x_max: float,
@@ -616,7 +649,6 @@ def inward_decay_half_domain_wavefunction(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: inward_decay_boundary_mismatch
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def inward_decay_boundary_mismatch(
     x_max: float,
@@ -629,8 +661,13 @@ def inward_decay_boundary_mismatch(
     """
     Evaluate the parity mismatch at the origin for inward shooting.
 
-    Even states should satisfy psi'(0) = 0.
-    Odd states should satisfy psi(0) = 0.
+    This is the inward-shooting counterpart of `boundary_mismatch()`. Instead of
+    starting at x=0 and checking the value at x_max, the solver starts near
+    x_max from the expected decaying tail and integrates inward to the origin.
+    The origin condition is then used as the scalar root-finding function M(E).
+
+    Even states should satisfy psi'(0) = 0, so M(E)=psi'_E(0).
+    Odd states should satisfy psi(0) = 0, so M(E)=psi_E(0).
 
     For the harmonic oscillator, this origin mismatch is preferable to checking
     the far wall after outward integration because the unphysical growing tail
@@ -656,7 +693,6 @@ def inward_decay_boundary_mismatch(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: sample_inward_decay_mismatch
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def sample_inward_decay_mismatch(
     x_max: float,
@@ -691,7 +727,6 @@ def sample_inward_decay_mismatch(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: find_inward_decay_brackets
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def find_inward_decay_brackets(
     x_max: float,
@@ -733,7 +768,6 @@ def find_inward_decay_brackets(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: bisect_energy_inward_decay
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def bisect_energy_inward_decay(
     x_max: float,
@@ -801,7 +835,6 @@ def bisect_energy_inward_decay(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: bisection_history_inward_decay
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def bisection_history_inward_decay(
     x_max: float,
@@ -856,7 +889,6 @@ def bisection_history_inward_decay(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: solve_state_from_inward_decay_bracket
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def solve_state_from_inward_decay_bracket(
     x_max: float,
@@ -906,7 +938,6 @@ def solve_state_from_inward_decay_bracket(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: solve_symmetric_potential_inward_decay
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def solve_symmetric_potential_inward_decay(
     x_max: float,
@@ -986,7 +1017,7 @@ def solve_symmetric_potential_inward_decay(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: solve_symmetric_potential
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def solve_symmetric_potential(
     x_max: float,
@@ -1012,7 +1043,9 @@ def solve_symmetric_potential(
     potential_fn : callable
         Potential function V(x, **kwargs).
     potential_kwargs : dict, optional
-        Keyword arguments passed to the potential.
+        Optional dictionary of named parameters forwarded to `potential_fn`
+        as `potential_fn(x, **potential_kwargs)`, for example well depth,
+        width, or oscillator frequency.
     n_even, n_odd : int, optional
         Number of even and odd states requested.
     e_min, e_max : float, optional
@@ -1033,6 +1066,9 @@ def solve_symmetric_potential(
     effectively boxed problems, where checking the right-edge leakage is a
     stable way to enforce the second boundary condition.
     """
+
+    # If there are no user-specified potential kwargs, use an empty dict to avoid
+    # passing None to the potential function.
     if potential_kwargs is None:
         potential_kwargs = {}
 
@@ -1073,4 +1109,5 @@ def solve_symmetric_potential(
             )
 
     solutions.sort(key=lambda s: s.energy)
+
     return solutions

@@ -36,7 +36,6 @@ import numpy as np
 
 # ---------------------------------------------------------------------------
 # FUNCTION: harmonic_oscillator
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def harmonic_oscillator(x: np.ndarray, omega: float = 1.0) -> np.ndarray:
     """
@@ -60,7 +59,7 @@ def harmonic_oscillator(x: np.ndarray, omega: float = 1.0) -> np.ndarray:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: infinite_square_well_numeric
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def infinite_square_well_numeric(
     x: np.ndarray,
@@ -87,6 +86,7 @@ def infinite_square_well_numeric(
     ndarray
         Potential sampled on the grid.
     """
+
     # Replace the ideal infinite wall by a very large finite value so the same
     # grid-based solver can still be used numerically.
     return np.where(np.abs(x) <= a, 0.0, wall_height)
@@ -94,7 +94,6 @@ def infinite_square_well_numeric(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: finite_square_well
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def finite_square_well(
     x: np.ndarray,
@@ -125,7 +124,6 @@ def finite_square_well(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: quartic_double_well
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def quartic_double_well(
     x: np.ndarray,
@@ -168,7 +166,6 @@ def quartic_double_well(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: square_barrier
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def square_barrier(
     x: np.ndarray,
@@ -203,7 +200,6 @@ def square_barrier(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: double_square_barrier
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def double_square_barrier(
     x: np.ndarray,

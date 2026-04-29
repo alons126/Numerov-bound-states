@@ -32,7 +32,6 @@ import numpy as np
 
 # ---------------------------------------------------------------------------
 # FUNCTION: _ensure_parent
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def _ensure_parent(path: str | Path) -> None:
     """
@@ -52,7 +51,7 @@ def _ensure_parent(path: str | Path) -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_potential_and_states
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_potential_and_states(
     x: np.ndarray,
@@ -95,6 +94,7 @@ def plot_potential_and_states(
     Extremely large wall values are clipped for visualization so that the
     wavefunctions remain visible in square-well plots.
     """
+
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
 
@@ -124,7 +124,7 @@ def plot_potential_and_states(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_probability_densities
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_probability_densities(
     states,
@@ -171,7 +171,7 @@ def plot_probability_densities(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_energy_comparison
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_energy_comparison(
     numerical: np.ndarray,
@@ -203,6 +203,7 @@ def plot_energy_comparison(
     -------
     None
     """
+
     _ensure_parent(path)
     n = np.arange(len(exact))
 
@@ -218,8 +219,9 @@ def plot_energy_comparison(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
 # FUNCTION: plot_error_curve
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_error_curve(
     xvals: np.ndarray,
@@ -252,6 +254,7 @@ def plot_error_curve(
     -------
     None
     """
+
     _ensure_parent(path)
     plt.figure(figsize=(7, 4.5))
 
@@ -276,7 +279,6 @@ def plot_error_curve(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_splitting_curve
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def plot_splitting_curve(
     xvals: np.ndarray,
@@ -325,7 +327,6 @@ def plot_splitting_curve(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_root_finding_diagnostic
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def plot_root_finding_diagnostic(
     energies: np.ndarray,
@@ -360,6 +361,7 @@ def plot_root_finding_diagnostic(
     mismatch_label : str, optional
         Legend label for the mismatch curve.
     """
+
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
 
@@ -399,7 +401,6 @@ def plot_root_finding_diagnostic(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_scattering_coefficients
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def plot_scattering_coefficients(
     energies: np.ndarray,
@@ -445,7 +446,6 @@ def plot_scattering_coefficients(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_scattering_potential_and_probability
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def plot_scattering_potential_and_probability(
     x: np.ndarray,
@@ -486,7 +486,6 @@ def plot_scattering_potential_and_probability(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_numerov_vs_rk4_errors
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def plot_numerov_vs_rk4_errors(
     h_numerov: np.ndarray,

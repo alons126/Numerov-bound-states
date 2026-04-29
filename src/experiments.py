@@ -88,6 +88,10 @@ from src.rk4_compare import (
 )
 
 
+# --------------------------------------------------------------------------
+# FUNCTION: _experiment_results_dir
+# --------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 def _experiment_results_dir(results_root: Path, name: str) -> Path:
     """
     Return the output directory for one experiment and create it if needed.
@@ -104,14 +108,15 @@ def _experiment_results_dir(results_root: Path, name: str) -> Path:
     Path
         Created output directory for the experiment.
     """
+
     path = results_root / name
     path.mkdir(parents=True, exist_ok=True)
+
     return path
 
 
 # ---------------------------------------------------------------------------
 # FUNCTION: run_harmonic_rk4_comparison
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def run_harmonic_rk4_comparison(
     rk4_results_dir: Path,
@@ -323,7 +328,7 @@ def run_harmonic_rk4_comparison(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_infinite_well_root_diagnostics
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> None:
     """
@@ -334,6 +339,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
     - even sector: global states n=0 and n=2
     - odd sector: global states n=1 and n=3
     """
+
     x_half = np.linspace(0.0, a, 900)
     V_half = infinite_square_well_numeric(x_half, a=a, wall_height=1e6)
 
@@ -394,7 +400,6 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_harmonic_oscillator_root_diagnostics
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def plot_harmonic_oscillator_root_diagnostics(
     results_dir: Path,
@@ -483,7 +488,6 @@ def plot_harmonic_oscillator_root_diagnostics(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_double_well_root_diagnostics
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def plot_double_well_root_diagnostics(
     results_dir: Path,
@@ -557,7 +561,7 @@ def plot_double_well_root_diagnostics(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: run_square_well
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def run_square_well(results_dir: Path) -> None:
     """
@@ -568,15 +572,19 @@ def run_square_well(results_dir: Path) -> None:
     If x_max is larger than a, the convergence plot mixes grid error with the
     error caused by replacing an infinite wall with a finite numerical barrier.
     """
+
+    # Create an output folder under results_dir for this experiment
     experiment_dir = _experiment_results_dir(
         results_dir, "1_infinite_square_well_Numerov"
     )
 
-    a = 1.0
-    x_max = a
-    n_grid = 2500
+    # Define the physical and numerical parameters for the experiment
+    a = 1.0  # Well half-width, so the full well is [-a, a]
+    x_max = a  # The solver's spatial domain will be [-x_max, x_max]
+    n_grid = 2500  # Number of grid points for the Numerov solver, including boundaries
 
-    print("Running infinite square well experiment...")
+    # Run the solver to find the first four bound states of the infinite square well
+    print("Solving infinite square well experiment...")
     states = solve_symmetric_potential(
         x_max=x_max,
         n_grid=n_grid,
@@ -588,9 +596,14 @@ def run_square_well(results_dir: Path) -> None:
         e_max=80.0,
     )
 
+    # Tabulate the numerical energies and compare them to the exact formula
+    # E_n = ((n+1)^2 * pi^2) / (8 * a^2)
     numerical = np.array([s.energy for s in states[:4]])
     exact = exact_square_well_energies(np.arange(1, 5), a=a)
 
+    # Save a CSV comparing the numerical and exact energies, along with the relative
+    # error.
+    print("Tabulating infinite square well energies...")
     rows = []
     for i, (en, ex) in enumerate(zip(numerical, exact)):
         rows.append(
@@ -632,6 +645,9 @@ def run_square_well(results_dir: Path) -> None:
         numerical_label="numerical",
     )
 
+    # Convergence study: vary the grid spacing h at fixed x_max=a, so the error is
+    # purely from the discretization and not from the finite-domain truncation.
+    print("Running infinite square well convergence study...")
     conv = convergence_vs_grid(
         potential_fn=infinite_square_well_numeric,
         potential_kwargs={"a": a, "wall_height": 1e6},
@@ -667,7 +683,6 @@ def run_square_well(results_dir: Path) -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: run_harmonic_oscillator
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def run_harmonic_oscillator(results_dir: Path) -> None:
     """
@@ -745,7 +760,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         "Harmonic oscillator energies",
         exact_label=r"exact: $E_n=\omega\left(n+\frac{1}{2}\right)$",
     )
-    
+
     print("Plotting harmonic oscillator root-finding diagnostics...")
     plot_harmonic_oscillator_root_diagnostics(
         numerov_results_dir,
@@ -845,7 +860,6 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: run_double_well
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def run_double_well(results_dir: Path) -> None:
     """
@@ -908,7 +922,7 @@ def run_double_well(results_dir: Path) -> None:
         experiment_dir / "3_double_well_Numerov_densities.png",
         "Quartic double well densities",
     )
-    
+
     print("Plotting quartic double well root-finding diagnostics...")
     plot_double_well_root_diagnostics(
         experiment_dir,
@@ -1029,7 +1043,6 @@ def run_double_well(results_dir: Path) -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: run_finite_square_well
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def run_finite_square_well(results_dir: Path) -> None:
     """
@@ -1071,7 +1084,7 @@ def run_finite_square_well(results_dir: Path) -> None:
 
     x = states[0].x_full
     V = finite_square_well(x, **kwargs)
-    
+
     print("Plotting finite square well results...")
     plot_potential_and_states(
         x,
@@ -1089,7 +1102,6 @@ def run_finite_square_well(results_dir: Path) -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: run_scattering
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def run_scattering(results_dir: Path) -> None:
     """
@@ -1120,7 +1132,7 @@ def run_scattering(results_dir: Path) -> None:
     single_kwargs = {"V0": 5.0, "width": 1.2, "center": 0.0}
     V_single = square_barrier(x, **single_kwargs)
     energies_single = np.linspace(0.2, 10.0, 240)
-    
+
     print("Running single-barrier scattering experiment...")
     single_results = sweep_scattering(x, V_single, energies_single)
 
@@ -1140,7 +1152,7 @@ def run_scattering(results_dir: Path) -> None:
 
     T_single = np.array([result.transmission for result in single_results], dtype=float)
     R_single = np.array([result.reflection for result in single_results], dtype=float)
-    
+
     print("Plotting single-barrier scattering results...")
     plot_scattering_coefficients(
         energies_single,
@@ -1156,7 +1168,7 @@ def run_scattering(results_dir: Path) -> None:
     double_kwargs = {"V0": 5.0, "barrier_width": 0.6, "well_width": 1.4, "center": 0.0}
     V_double = double_square_barrier(x, **double_kwargs)
     energies_double = np.linspace(0.2, 5.0, 420)
-    
+
     print("Running double-barrier scattering experiment...")
     double_results = sweep_scattering(x, V_double, energies_double)
 

@@ -163,6 +163,13 @@
 
     When enough grid points are available, the implementation uses a fourth-order backward stencil. This is important because the overall solver is high order due to the Numerov recurrence. If the derivative used to enforce the boundary condition were only second order, it would become the dominant error and reduce the accuracy of the eigenvalue calculation. The high-order backward stencil ensures that the derivative-based boundary check, such as $\psi'(0)=0$ for even states in inward shooting, remains consistent with the accuracy of the integration method.
 
+    To compute this derivative explicitly, the fourth-order backward stencil has the form
+    \begin{equation}
+        \psi'(x_N) \approx
+        \frac{25\psi_N - 48\psi_{N-1} + 36\psi_{N-2} - 16\psi_{N-3} + 3\psi_{N-4}}{12h}.
+    \end{equation}
+    This expression uses only grid points inside the domain and achieves $O(h^4)$ accuracy. Including this higher-order stencil is essential so that the boundary-derivative evaluation does not reduce the overall convergence order of the Numerov method.
+
     \subsection{Lecture 4: Root finding}
 
     Root finding is used to determine the allowed energies. The project uses bisection: first detect a sign change, then repeatedly cut the interval in half.

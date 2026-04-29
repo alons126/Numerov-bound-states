@@ -38,7 +38,7 @@ import numpy as np
 
 # ---------------------------------------------------------------------------
 # FUNCTION: q_from_energy
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     """
@@ -56,6 +56,7 @@ def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     ndarray
         Array q(x) such that psi'' = q psi.
     """
+
     # Repackage the Schrödinger equation into the `y'' = q(x) y` form expected
     # by Numerov. Every trial energy produces a different coefficient field.
     return 2.0 * (V - energy)
@@ -63,7 +64,7 @@ def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: numerov_outward
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def numerov_outward(
     x: np.ndarray,
@@ -99,6 +100,7 @@ def numerov_outward(
     A simple dynamic rescaling step is included to reduce overflow when trial
     solutions grow exponentially for non-eigenvalue energies.
     """
+
     if x.ndim != 1 or q.ndim != 1 or len(x) != len(q):
         raise ValueError("x and q must be 1D arrays with the same length.")
     if len(x) < 3:
@@ -140,11 +142,16 @@ def numerov_outward(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: normalize_wavefunction
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     """
     Normalize a wavefunction safely on a discrete grid.
+
+    Physical wavefunctions must satisfy the normalization condition
+    integral |psi|^2 dx = 1. Evaluate that discrete normalization safely by
+    scaling before squaring, which also avoids overflow when a non-eigenvalue
+    shooting trial has grown strongly.
 
     Parameters
     ----------
@@ -159,15 +166,13 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
         Wavefunction normalized so that the discrete approximation to
         integral |psi|^2 dx equals 1.
     """
-    # Physical wavefunctions must satisfy the normalization condition
-    # integral |psi|^2 dx = 1. Evaluate that discrete normalization safely by
-    # scaling before squaring, which also avoids overflow when a non-eigenvalue
-    # shooting trial has grown strongly.
+
     scale = np.max(np.abs(psi))
     if scale == 0.0:
         raise ValueError("Cannot normalize a zero wavefunction.")
 
     psi_scaled = psi / scale
+
     # Integrate |psi|^2 on the discrete grid with the trapezoid rule, then
     # undo the temporary scaling in a numerically safe way.
     norm = scale * np.sqrt(np.trapezoid(np.abs(psi_scaled) ** 2, x))
@@ -180,7 +185,7 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: derivative_at_right_edge
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
     """
@@ -200,6 +205,7 @@ def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
         stencil when at least five grid points are available, otherwise falls
         back to the standard second-order formula.
     """
+
     if len(x) < 3:
         raise ValueError("Need at least 3 points for derivative.")
 

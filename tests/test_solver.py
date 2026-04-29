@@ -62,7 +62,6 @@ from src.shooting import (
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_normalization
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_normalization() -> None:
     """
@@ -77,7 +76,6 @@ def test_normalization() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_derivative_at_right_edge_polynomial
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_derivative_at_right_edge_polynomial() -> None:
     """
@@ -91,7 +89,6 @@ def test_derivative_at_right_edge_polynomial() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_find_rk4_brackets_accepts_exact_zero_hit
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
     """
@@ -123,7 +120,6 @@ def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_square_well_ground_state
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_square_well_ground_state() -> None:
     """
@@ -147,7 +143,6 @@ def test_square_well_ground_state() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_square_well_convergence_order
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_square_well_convergence_order() -> None:
     """
@@ -174,7 +169,6 @@ def test_square_well_convergence_order() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_square_well_convergence_includes_four_requested_states
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_square_well_convergence_includes_four_requested_states() -> None:
     """
@@ -199,7 +193,6 @@ def test_square_well_convergence_includes_four_requested_states() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_harmonic_oscillator_first_levels
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_harmonic_oscillator_first_levels() -> None:
     """
@@ -223,7 +216,6 @@ def test_harmonic_oscillator_first_levels() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_harmonic_oscillator_inward_decay_first_levels
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_harmonic_oscillator_inward_decay_first_levels() -> None:
     """
@@ -247,7 +239,6 @@ def test_harmonic_oscillator_inward_decay_first_levels() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_double_well_splitting_positive
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_double_well_splitting_positive() -> None:
     """
@@ -268,7 +259,6 @@ def test_double_well_splitting_positive() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_quartic_double_well_exact_shifted_minimum
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_quartic_double_well_exact_shifted_minimum() -> None:
     """
@@ -285,7 +275,6 @@ def test_quartic_double_well_exact_shifted_minimum() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_double_well_larger_box_improves_low_lying_energies
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_double_well_larger_box_improves_low_lying_energies() -> None:
     """
@@ -336,7 +325,6 @@ def test_double_well_larger_box_improves_low_lying_energies() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_double_well_same_box_grid_errors_decrease
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_double_well_same_box_grid_errors_decrease() -> None:
     """
@@ -361,7 +349,6 @@ def test_double_well_same_box_grid_errors_decrease() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_double_well_successive_convergence_order
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_double_well_successive_convergence_order() -> None:
     """
@@ -386,7 +373,6 @@ def test_double_well_successive_convergence_order() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_double_well_low_state_mismatches_are_polished
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_double_well_low_state_mismatches_are_polished() -> None:
     """
@@ -409,7 +395,6 @@ def test_double_well_low_state_mismatches_are_polished() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_double_well_even_odd_mismatch_scans_differ
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_double_well_even_odd_mismatch_scans_differ() -> None:
     """
@@ -429,7 +414,6 @@ def test_double_well_even_odd_mismatch_scans_differ() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_scattering_probability_conservation
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_scattering_probability_conservation() -> None:
     """
@@ -445,7 +429,6 @@ def test_scattering_probability_conservation() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: test_run_solver_import_without_experiment_dependencies
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def test_run_solver_import_without_experiment_dependencies() -> None:
     """
@@ -461,7 +444,6 @@ def test_run_solver_import_without_experiment_dependencies() -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: run_all_tests
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def run_all_tests() -> None:
     """

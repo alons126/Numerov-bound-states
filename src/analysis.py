@@ -42,7 +42,7 @@ from src.shooting import StateSolution, solve_symmetric_potential
 
 # ---------------------------------------------------------------------------
 # FUNCTION: exact_square_well_energies
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarray:
     """
@@ -60,13 +60,14 @@ def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarr
     ndarray
         Exact eigenvalues in the dimensionless units used by the project.
     """
+
     n_values = np.asarray(n_values, dtype=float)
+
     return (n_values * np.pi / (2.0 * a)) ** 2 / 2.0
 
 
 # ---------------------------------------------------------------------------
 # FUNCTION: exact_harmonic_oscillator_energies
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def exact_harmonic_oscillator_energies(
     n_values: np.ndarray,
@@ -93,7 +94,6 @@ def exact_harmonic_oscillator_energies(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: relative_error
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def relative_error(numerical: np.ndarray, exact: np.ndarray) -> np.ndarray:
     """
@@ -118,7 +118,7 @@ def relative_error(numerical: np.ndarray, exact: np.ndarray) -> np.ndarray:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: estimate_convergence_slopes
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def estimate_convergence_slopes(
     xvals: np.ndarray,
@@ -146,6 +146,7 @@ def estimate_convergence_slopes(
     list[dict]
         Rows containing state_index and the fitted exponent p.
     """
+
     xvals = np.asarray(xvals, dtype=float)
     errors = np.asarray(errors, dtype=float)
 
@@ -180,7 +181,7 @@ def estimate_convergence_slopes(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: save_csv_rows
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
     """
@@ -197,6 +198,7 @@ def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
     -------
     None
     """
+
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -211,7 +213,6 @@ def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: energies_from_states
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def energies_from_states(
     states: list[StateSolution],
@@ -246,7 +247,7 @@ def energies_from_states(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: convergence_vs_grid
-# Reviewer note: this named block is one logical unit of the implementation.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def convergence_vs_grid(
     potential_fn,
@@ -285,6 +286,7 @@ def convergence_vs_grid(
     dict[str, ndarray]
         Dictionary with grid spacing h and energy error arrays.
     """
+
     hs = []
     errors = []
     n_states = len(reference_energies)
@@ -311,7 +313,6 @@ def convergence_vs_grid(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: convergence_vs_grid_successive
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def convergence_vs_grid_successive(
     potential_fn,
@@ -383,7 +384,6 @@ def convergence_vs_grid_successive(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: convergence_vs_box_size
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def convergence_vs_box_size(
     potential_fn,
@@ -449,7 +449,6 @@ def convergence_vs_box_size(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: convergence_vs_box_size_fixed_spacing
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def convergence_vs_box_size_fixed_spacing(
     potential_fn,
@@ -536,7 +535,6 @@ def convergence_vs_box_size_fixed_spacing(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: splitting_vs_parameter
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def splitting_vs_parameter(
     potential_fn,

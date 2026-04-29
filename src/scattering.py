@@ -40,7 +40,6 @@ from src.numerov import q_from_energy
 
 # ---------------------------------------------------------------------------
 # DATA CLASS: ScatteringResult
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 @dataclass
 class ScatteringResult:
@@ -77,7 +76,6 @@ class ScatteringResult:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: numerov_outward_complex
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def numerov_outward_complex(
     x: np.ndarray,
@@ -125,7 +123,6 @@ def numerov_outward_complex(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: integrate_from_right
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def integrate_from_right(
     x: np.ndarray,
@@ -158,7 +155,6 @@ def integrate_from_right(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: decompose_left_asymptotic
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def decompose_left_asymptotic(
     x: np.ndarray,
@@ -188,7 +184,6 @@ def decompose_left_asymptotic(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: solve_scattering
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def solve_scattering(
     x: np.ndarray,
@@ -227,7 +222,6 @@ def solve_scattering(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: scattering_wavefunction
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def scattering_wavefunction(
     x: np.ndarray,
@@ -247,7 +241,6 @@ def scattering_wavefunction(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: sweep_scattering
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def sweep_scattering(
     x: np.ndarray,
@@ -264,7 +257,6 @@ def sweep_scattering(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: find_transmission_peaks
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def find_transmission_peaks(
     energies: np.ndarray,

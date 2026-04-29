@@ -35,7 +35,6 @@ from src.analysis import exact_harmonic_oscillator_energies
 
 # ---------------------------------------------------------------------------
 # DATA CLASS: RK4EnergyResult
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 @dataclass
 class RK4EnergyResult:
@@ -51,7 +50,6 @@ class RK4EnergyResult:
 
 # ---------------------------------------------------------------------------
 # FUNCTION: _harmonic_rhs
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def _harmonic_rhs(x: float, y: np.ndarray, energy: float, omega: float) -> np.ndarray:
     """
@@ -69,7 +67,6 @@ def _harmonic_rhs(x: float, y: np.ndarray, energy: float, omega: float) -> np.nd
 
 # ---------------------------------------------------------------------------
 # FUNCTION: rk4_step
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def rk4_step(
     x: float, y: np.ndarray, h: float, energy: float, omega: float
@@ -87,7 +84,6 @@ def rk4_step(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: rk4_inward_mismatch
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def rk4_inward_mismatch(
     energy: float,
@@ -131,7 +127,6 @@ def rk4_inward_mismatch(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: find_rk4_brackets
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def find_rk4_brackets(
     parity: str,
@@ -168,7 +163,6 @@ def find_rk4_brackets(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: sample_rk4_mismatch
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def sample_rk4_mismatch(
     parity: str,
@@ -190,7 +184,6 @@ def sample_rk4_mismatch(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: bisect_rk4_energy
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def bisect_rk4_energy(
     parity: str,
@@ -223,7 +216,6 @@ def bisect_rk4_energy(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: bisection_history_rk4
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def bisection_history_rk4(
     parity: str,
@@ -266,7 +258,6 @@ def bisection_history_rk4(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: solve_harmonic_oscillator_rk4_energies
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def solve_harmonic_oscillator_rk4_energies(
     x_max: float,
@@ -326,7 +317,6 @@ def solve_harmonic_oscillator_rk4_energies(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: rk4_harmonic_convergence_vs_grid
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def rk4_harmonic_convergence_vs_grid(
     x_max: float,
@@ -361,7 +351,6 @@ def rk4_harmonic_convergence_vs_grid(
 
 # ---------------------------------------------------------------------------
 # FUNCTION: rk4_harmonic_convergence_vs_box_size_fixed_spacing
-# Reviewer note: this named block is one logical unit of the implementation.
 # ---------------------------------------------------------------------------
 def rk4_harmonic_convergence_vs_box_size_fixed_spacing(
     x_max_values: list[float],
