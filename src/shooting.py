@@ -10,20 +10,18 @@ For a symmetric potential, low-lying eigenstates can be separated into:
 This module exploits that symmetry to solve the bound-state problem on the
 half-domain x in [0, x_max], then reconstructs the full wavefunction.
 
-Reviewer guide
---------------
 This file is the bound-state eigenvalue solver. Conceptually, it turns the
 Schrödinger boundary-value eigenproblem into a practical shooting procedure:
-1. choose a trial energy E
-2. integrate the corresponding trial wavefunction with Numerov
-3. evaluate a boundary mismatch M(E)
-4. bracket sign changes of M(E)
-5. refine the roots to obtain eigenvalues
+1. Choose a trial energy E
+2. Integrate the corresponding trial wavefunction with Numerov
+3. Evaluate a boundary mismatch M(E)
+4. Bracket sign changes of M(E)
+5. Refine the roots to obtain eigenvalues
 
 Two formulations are implemented because the project studies both bounded and
 unbounded confining systems:
-- outward shooting from x=0 for finite-domain or effectively boxed problems
-- inward shooting from x_max for decaying-tail problems such as the harmonic
+- Outward shooting from x=0 for finite-domain or effectively boxed problems
+- Inward shooting from x_max for decaying-tail problems such as the harmonic
   oscillator, where outward shooting is numerically contaminated by the growing
   forbidden-region solution
 
@@ -42,22 +40,13 @@ x=0, where parity supplies the boundary condition. For an even state the mismatc
 is M(E)=psi'_E(0), while for an odd state it is M(E)=psi_E(0). This is more stable
 for confining infinite-domain potentials such as the harmonic oscillator, because
 it avoids growing-mode contamination during outward integration.
-
-This file also contains the most delicate numerical fixes described in the
-reviewer documents:
-- `initial_conditions_outward_shooting()` includes higher-order Taylor startup terms, including
-  the q''(0) contribution, so the first Numerov step does not spoil the
-  observed fourth-order convergence
-- `bisect_energy_outward_shooting()` finishes with a few safeguarded secant-style polishing
-  steps inside the final sign-changing bracket
-- `StateSolution.mismatch` stores the final residual diagnostic returned by the
-  corresponding shooting formulation
 """
 
 from dataclasses import dataclass
 
 import numpy as np
 
+# Make the project root and tests directory importable when this file is run
 from src.numerov import (
     derivative_at_right_edge,
     normalize_wavefunction,
@@ -67,7 +56,9 @@ from src.numerov import (
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # DATA CLASS: StateSolution
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 @dataclass
 class StateSolution:
@@ -98,6 +89,7 @@ class StateSolution:
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: initial_conditions_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
@@ -111,6 +103,12 @@ def initial_conditions_outward_shooting(
     ----------
     x_half : ndarray
         Half-domain grid beginning at x = 0.
+    q_half : ndarray
+        Numerov coefficient sampled on the same half-domain grid, with
+        ``q(x) = 2 [V(x) - E]`` so the Schrödinger equation is written as
+        ``psi'' = q psi`` for the current trial energy. The first few entries
+        are used to build the parity-consistent Taylor startup values near the
+        origin.
     parity : str
         State parity, either "even" or "odd".
 
@@ -137,6 +135,7 @@ def initial_conditions_outward_shooting(
         # Include the full h^4 term. For y'' = q(x) y, the even Taylor series
         # is y(h) = 1 + q0 h^2 / 2 + (q0^2 + q''(0)) h^4 / 24 + O(h^6).
         return 1.0, 1.0 + 0.5 * q0 * h**2 + ((q0**2 + q2) * h**4) / 24.0
+    
     if parity == "odd":
         # psi(0) = 0 and psi'(0) = 1.
         # Include the full h^5 term. For odd states the series is
@@ -146,6 +145,7 @@ def initial_conditions_outward_shooting(
     raise ValueError("parity must be 'even' or 'odd'")
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: half_domain_wavefunction_outward_shooting
 # ---------------------------------------------------------------------------
@@ -188,6 +188,7 @@ def half_domain_wavefunction_outward_shooting(
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: boundary_mismatch_outward_shooting
 # ---------------------------------------------------------------------------
@@ -237,17 +238,20 @@ def boundary_mismatch_outward_shooting(
         # For outward shooting on a boxed domain, a true eigenstate should have
         # negligible leakage at the far boundary.
         return float(psi[-1])
+    
     if mode == "logder":
+        # The logarithmic derivative is a more scale-invariant alternative, but
+        # most of the project diagnostics use the simpler boundary value itself.
         denom = psi[-1]
         if abs(denom) < 1e-14:
             return np.sign(denom) * np.inf if denom != 0.0 else np.inf
-        # The logarithmic derivative is a more scale-invariant alternative, but
-        # most of the project diagnostics use the simpler boundary value itself.
+
         return float(derivative_at_right_edge(x_half, psi) / denom)
 
     raise ValueError("mode must be 'value' or 'logder'")
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: find_brackets_outward_shooting
 # ---------------------------------------------------------------------------
@@ -265,8 +269,8 @@ def find_brackets_outward_shooting(
 
     Bracketing converts the eigenvalue problem into a set of scalar root
     searches. Every sign change in the mismatch curve marks one candidate
-    eigenvalue interval, which is why the report treats root finding as a
-    central ingredient rather than a post-processing detail.
+    eigenvalue interval, which is why we treat root finding as a central
+    ingredient rather than a post-processing detail.
 
     Parameters
     ----------
@@ -297,8 +301,10 @@ def find_brackets_outward_shooting(
 
     for i in range(len(energies) - 1):
         a, b = vals[i], vals[i + 1]
+
         if not np.isfinite(a) or not np.isfinite(b):
             continue
+        
         if a == 0.0:
             # Keep exact zero hits by inflating them into a tiny bracket so the
             # downstream bisection code can treat all roots uniformly.
@@ -312,6 +318,7 @@ def find_brackets_outward_shooting(
     return brackets
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: sample_boundary_mismatch_outward_shooting
 # ---------------------------------------------------------------------------
@@ -330,6 +337,29 @@ def sample_boundary_mismatch_outward_shooting(
     This is used only for diagnostics and visualization. The eigenvalues are
     located where the mismatch curve crosses zero, so plotting it makes the
     root-finding logic visible instead of leaving it as a black box.
+
+    Parameters
+    ----------
+    x_half : ndarray
+        Half-domain grid on which the outward Numerov shooting solve is run.
+    V_half : ndarray
+        Potential sampled on the same half-domain grid.
+    parity : str
+        State parity to enforce during shooting, either ``"even"`` or
+        ``"odd"``.
+    e_min : float
+        Lower end of the trial-energy interval to scan.
+    e_max : float
+        Upper end of the trial-energy interval to scan.
+    n_scan : int, default=1000
+        Number of equally spaced trial energies used to sample the mismatch
+        curve between ``e_min`` and ``e_max``.
+
+    Returns
+    -------
+    tuple[ndarray, ndarray]
+        Pair ``(energies, mismatches)`` containing the sampled trial energies
+        and the corresponding boundary mismatch values.
     """
 
     energies = np.linspace(e_min, e_max, n_scan)
@@ -344,6 +374,7 @@ def sample_boundary_mismatch_outward_shooting(
     return energies, mismatches
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: bisection_history_outward_shooting
 # ---------------------------------------------------------------------------
@@ -361,6 +392,30 @@ def bisection_history_outward_shooting(
 
     Returns a list of dictionaries containing the lower edge, upper edge,
     midpoint, and mismatch at each bisection iteration.
+
+    Parameters
+    ----------
+    x_half : ndarray
+        Half-domain grid on which the outward shooting solve is performed.
+    V_half : ndarray
+        Potential sampled on the same half-domain grid.
+    parity : str
+        State parity whose mismatch function is being bisected, either
+        ``"even"`` or ``"odd"``.
+    bracket : tuple[float, float]
+        Energy interval ``(lo, hi)`` that must already contain a sign change
+        in the outward-shooting boundary mismatch.
+    tol : float, default=1e-12
+        Stopping tolerance applied to both the midpoint mismatch magnitude and
+        the remaining bracket width.
+    max_iter : int, default=80
+        Maximum number of bisection iterations to record before stopping.
+
+    Returns
+    -------
+    list[dict]
+        Per-iteration diagnostics containing the current bracket endpoints,
+        midpoint, midpoint mismatch, and bracket width.
     """
 
     lo, hi = bracket
@@ -369,6 +424,7 @@ def bisection_history_outward_shooting(
 
     if not np.isfinite(flo) or not np.isfinite(fhi):
         raise ValueError("Non-finite function value at bracket endpoints.")
+    
     if np.signbit(flo) == np.signbit(fhi):
         raise ValueError("Bisection history requires a sign-changing bracket.")
 
@@ -391,6 +447,7 @@ def bisection_history_outward_shooting(
 
         if abs(fmid) < tol or abs(hi - lo) < tol:
             break
+        
         if np.signbit(flo) != np.signbit(fmid):
             # Keep the half-interval that still brackets the zero.
             hi, fhi = mid, fmid
@@ -400,6 +457,7 @@ def bisection_history_outward_shooting(
     return history
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: bisect_energy_outward_shooting
 # ---------------------------------------------------------------------------
@@ -440,10 +498,13 @@ def bisect_energy_outward_shooting(
 
     if not np.isfinite(flo) or not np.isfinite(fhi):
         raise ValueError("Non-finite function value at bracket endpoints.")
+    
     if flo == 0.0:
         return lo, flo
+    
     if fhi == 0.0:
         return hi, fhi
+    
     if np.signbit(flo) == np.signbit(fhi):
         raise ValueError("Bisection requires a sign-changing bracket.")
 
@@ -455,13 +516,16 @@ def bisect_energy_outward_shooting(
 
         if not np.isfinite(fmid):
             raise ValueError("Non-finite mismatch during bisection.")
+        
         if abs(fmid) < tol:
             return mid, fmid
+        
         if abs(hi - lo) < tol:
             if np.signbit(flo) != np.signbit(fmid):
                 hi, fhi = mid, fmid
             else:
                 lo, flo = mid, fmid
+                
             break
 
         if np.signbit(flo) != np.signbit(fmid):
@@ -475,6 +539,7 @@ def bisect_energy_outward_shooting(
         denom = fhi - flo
         if denom == 0.0 or not np.isfinite(denom):
             break
+
         # Secant interpolation proposes the root of the line through the two
         # remaining bracket endpoints, but the step is accepted only if it
         # stays inside the sign-changing interval.
@@ -487,6 +552,7 @@ def bisect_energy_outward_shooting(
         )
         if not np.isfinite(ftrial):
             break
+        
         if abs(ftrial) < tol:
             return trial, ftrial
 
@@ -501,6 +567,7 @@ def bisect_energy_outward_shooting(
     return hi, fhi
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: build_full_wavefunction
 # ---------------------------------------------------------------------------
@@ -546,6 +613,7 @@ def build_full_wavefunction(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: solve_state_from_bracket_outward_shooting
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
@@ -584,6 +652,7 @@ def solve_state_from_bracket_outward_shooting(
     psi_half = half_domain_wavefunction_outward_shooting(x_half, V_half, energy, parity)
     x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
     psi_full = normalize_wavefunction(x_full, psi_full)
+
     # Report the wall leakage after normalization so the diagnostic is tied to
     # a physical bound-state scale instead of the arbitrary amplitude of the
     # unnormalized shooting solution.
@@ -599,7 +668,9 @@ def solve_state_from_bracket_outward_shooting(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: initial_conditions_inward_shooting
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def initial_conditions_inward_shooting(
     x_desc: np.ndarray,
@@ -614,7 +685,26 @@ def initial_conditions_inward_shooting(
     at large x and integrating inward suppresses the unphysical growing tail.
 
     The asymptotic estimate uses psi'/psi ~= -sqrt(2(V-E)) at x_max.
+
+    Parameters
+    ----------
+    x_desc : ndarray
+        Descending half-domain grid, ordered from ``x_max`` down to ``0``, on
+        which the inward Numerov integration is carried out.
+    V_desc : ndarray
+        Potential sampled on the same descending grid. Its first entries are
+        used to estimate the forbidden-region decay rate near ``x_max``.
+    energy : float
+        Trial energy used to build the asymptotic tail scale
+        ``sqrt(2[V(x)-E])`` at the outer boundary.
+
+    Returns
+    -------
+    tuple[float, float]
+        Starting values ``(psi0, psi1)`` at the first two descending-grid
+        points for inward Numerov shooting.
     """
+
     dx = abs(x_desc[1] - x_desc[0])
 
     # In the forbidden region, a physical bound-state tail satisfies roughly
@@ -629,11 +719,14 @@ def initial_conditions_inward_shooting(
 
     psi0 = 1.0
     psi1 = psi0 * np.exp(exponent)
+
     return psi0, psi1
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: half_domain_wavefunction_inward_shooting
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def half_domain_wavefunction_inward_shooting(
     x_max: float,
@@ -645,12 +738,31 @@ def half_domain_wavefunction_inward_shooting(
     """
     Integrate the decaying tail inward from x_max to x = 0.
 
+    Parameters
+    ----------
+    x_max : float
+        Outer truncation point of the half-domain. Inward shooting starts here
+        in the forbidden-region tail and integrates toward the origin.
+    n_grid : int
+        Number of grid points on the descending half-domain mesh from
+        ``x_max`` to ``0``.
+    potential_fn : callable
+        Potential function evaluated on the descending grid to generate the
+        sampled potential profile for this trial solve.
+    potential_kwargs : dict
+        Keyword arguments forwarded to ``potential_fn`` when building the
+        descending-grid potential values.
+    energy : float
+        Trial energy used to form the Numerov coefficient and the asymptotic
+        inward-shooting startup values.
+
     Returns
     -------
     tuple[ndarray, ndarray]
         A decreasing grid from x_max to 0 and the corresponding unnormalized
         inward-integrated wavefunction.
     """
+
     # The grid is descending because Numerov still marches "forward" in index,
     # while physically we want to start at the asymptotic tail and move inward.
     x_desc = np.linspace(x_max, 0.0, n_grid)
@@ -658,11 +770,14 @@ def half_domain_wavefunction_inward_shooting(
     q_desc = q_from_energy(V_desc, energy)
     psi0, psi1 = initial_conditions_inward_shooting(x_desc, V_desc, energy)
     psi_desc = numerov_outward(x_desc, q_desc, psi0=psi0, psi1=psi1)
+
     return x_desc, psi_desc
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: boundary_mismatch_inward_shooting
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def boundary_mismatch_inward_shooting(
     x_max: float,
@@ -675,8 +790,8 @@ def boundary_mismatch_inward_shooting(
     """
     Evaluate the parity mismatch at the origin for inward shooting.
 
-    This is the inward-shooting counterpart of `boundary_mismatch_outward_shooting()`. Instead of
-    starting at x=0 and checking the value at x_max, the solver starts near
+    This is the inward-shooting counterpart of `boundary_mismatch_outward_shooting()`.
+    Instead of starting at x=0 and checking the value at x_max, the solver starts near
     x_max from the expected decaying tail and integrates inward to the origin.
     The origin condition is then used as the scalar root-finding function M(E).
 
@@ -686,7 +801,34 @@ def boundary_mismatch_inward_shooting(
     For the harmonic oscillator, this origin mismatch is preferable to checking
     the far wall after outward integration because the unphysical growing tail
     contaminates outward shooting on large domains.
+
+    Parameters
+    ----------
+    x_max : float
+        Outer truncation point of the half-domain used for inward shooting.
+    n_grid : int
+        Number of grid points on the descending mesh from ``x_max`` to ``0``.
+    potential_fn : callable
+        Potential function used to evaluate the confining potential on that
+        descending grid.
+    potential_kwargs : dict
+        Keyword arguments forwarded to ``potential_fn`` when constructing the
+        sampled potential values.
+    energy : float
+        Trial energy at which the inward-shooting mismatch function is
+        evaluated.
+    parity : str
+        Symmetry sector of the trial state, either ``"even"`` or ``"odd"``,
+        which determines whether the origin mismatch is taken from ``psi'(0)``
+        or ``psi(0)``.
+
+    Returns
+    -------
+    float
+        Scalar origin mismatch used for root finding: ``psi'_E(0)`` for even
+        states or ``psi_E(0)`` for odd states.
     """
+
     x_desc, psi_desc = half_domain_wavefunction_inward_shooting(
         x_max=x_max,
         n_grid=n_grid,
@@ -698,6 +840,7 @@ def boundary_mismatch_inward_shooting(
     if parity == "even":
         # For even states the origin condition is on the derivative.
         return float(derivative_at_right_edge(x_desc, psi_desc))
+    
     if parity == "odd":
         # For odd states the origin condition is on the value itself.
         return float(psi_desc[-1])
@@ -706,7 +849,9 @@ def boundary_mismatch_inward_shooting(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: sample_mismatch_inward_shooting
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def sample_mismatch_inward_shooting(
     x_max: float,
@@ -720,7 +865,37 @@ def sample_mismatch_inward_shooting(
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     Sample the inward-shooting parity mismatch over an energy interval.
+
+    Parameters
+    ----------
+    x_max : float
+        Outer truncation point of the half-domain used for inward shooting.
+    n_grid : int
+        Number of grid points on the descending mesh from ``x_max`` to ``0``.
+    potential_fn : callable
+        Potential function evaluated on the descending grid for each trial
+        energy.
+    potential_kwargs : dict
+        Keyword arguments forwarded to ``potential_fn`` when building the
+        sampled potential values.
+    parity : str
+        State parity whose inward origin mismatch is being sampled, either
+        ``"even"`` or ``"odd"``.
+    e_min : float
+        Lower end of the trial-energy interval to scan.
+    e_max : float
+        Upper end of the trial-energy interval to scan.
+    n_scan : int, default=1000
+        Number of equally spaced trial energies used to sample the mismatch
+        curve between ``e_min`` and ``e_max``.
+
+    Returns
+    -------
+    tuple[ndarray, ndarray]
+        Pair ``(energies, mismatches)`` containing the sampled trial energies
+        and the corresponding inward-shooting origin mismatch values.
     """
+
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
         [
@@ -736,11 +911,14 @@ def sample_mismatch_inward_shooting(
         ],
         dtype=float,
     )
+
     return energies, mismatches
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: find_brackets_inward_shooting
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def find_brackets_inward_shooting(
     x_max: float,
@@ -754,7 +932,37 @@ def find_brackets_inward_shooting(
 ) -> list[tuple[float, float]]:
     """
     Locate sign-changing brackets for inward-shooting eigenvalue searches.
+
+    Parameters
+    ----------
+    x_max : float
+        Outer truncation point of the half-domain used for inward shooting.
+    n_grid : int
+        Number of grid points on the descending mesh from ``x_max`` to ``0``.
+    potential_fn : callable
+        Potential function evaluated on the descending grid for each trial
+        energy in the scan.
+    potential_kwargs : dict
+        Keyword arguments forwarded to ``potential_fn`` when constructing the
+        sampled potential values.
+    parity : str
+        State parity whose inward-shooting mismatch is scanned, either
+        ``"even"`` or ``"odd"``.
+    e_min : float
+        Lower end of the trial-energy interval to scan for sign changes.
+    e_max : float
+        Upper end of the trial-energy interval to scan for sign changes.
+    n_scan : int, default=2000
+        Number of sampled trial energies used to detect sign-changing mismatch
+        intervals.
+
+    Returns
+    -------
+    list[tuple[float, float]]
+        Energy brackets that contain inward-shooting mismatch zeros and can be
+        passed to a root-refinement routine.
     """
+
     energies, vals = sample_mismatch_inward_shooting(
         x_max,
         n_grid,
@@ -769,8 +977,10 @@ def find_brackets_inward_shooting(
     brackets: list[tuple[float, float]] = []
     for i in range(len(energies) - 1):
         a, b = vals[i], vals[i + 1]
+        
         if not np.isfinite(a) or not np.isfinite(b):
             continue
+        
         if a == 0.0:
             eps = 1e-10 * max(1.0, abs(energies[i]))
             brackets.append((energies[i] - eps, energies[i] + eps))
@@ -781,7 +991,9 @@ def find_brackets_inward_shooting(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: bisect_energy_inward_shooting
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def bisect_energy_inward_shooting(
     x_max: float,
@@ -795,7 +1007,38 @@ def bisect_energy_inward_shooting(
 ) -> tuple[float, float]:
     """
     Refine an inward-shooting eigenvalue bracket with bisection.
+
+    Parameters
+    ----------
+    x_max : float
+        Outer truncation point of the half-domain used for inward shooting.
+    n_grid : int
+        Number of grid points on the descending mesh from ``x_max`` to ``0``.
+    potential_fn : callable
+        Potential function evaluated on the descending grid for each trial
+        energy tested during bisection.
+    potential_kwargs : dict
+        Keyword arguments forwarded to ``potential_fn`` when constructing the
+        sampled potential values.
+    parity : str
+        State parity whose inward mismatch root is being refined, either
+        ``"even"`` or ``"odd"``.
+    bracket : tuple[float, float]
+        Energy interval ``(lo, hi)`` that must already contain a sign change in
+        the inward-shooting mismatch.
+    tol : float, default=1e-12
+        Stopping tolerance applied to both the mismatch magnitude and the
+        remaining bracket width.
+    max_iter : int, default=200
+        Maximum number of bisection iterations before the routine returns the
+        midpoint of the last valid bracket.
+
+    Returns
+    -------
+    tuple[float, float]
+        Refined energy estimate and its final inward-shooting mismatch value.
     """
+
     lo, hi = bracket
     flo = boundary_mismatch_inward_shooting(
         x_max, n_grid, potential_fn, potential_kwargs, lo, parity
@@ -806,15 +1049,19 @@ def bisect_energy_inward_shooting(
 
     if not np.isfinite(flo) or not np.isfinite(fhi):
         raise ValueError("Non-finite function value at bracket endpoints.")
+
     if flo == 0.0:
         return lo, flo
+
     if fhi == 0.0:
         return hi, fhi
+
     if np.signbit(flo) == np.signbit(fhi):
         raise ValueError("Bisection requires a sign-changing bracket.")
 
     for _ in range(max_iter):
         mid = 0.5 * (lo + hi)
+        
         fmid = boundary_mismatch_inward_shooting(
             x_max,
             n_grid,
@@ -826,6 +1073,7 @@ def bisect_energy_inward_shooting(
 
         if not np.isfinite(fmid):
             raise ValueError("Non-finite mismatch during bisection.")
+
         if abs(fmid) < tol or abs(hi - lo) < tol:
             return mid, fmid
 
@@ -835,6 +1083,7 @@ def bisect_energy_inward_shooting(
             lo, flo = mid, fmid
 
     mid = 0.5 * (lo + hi)
+
     # If the loop hit the iteration cap, return the midpoint of the last valid
     # bracket together with its mismatch.
     return mid, boundary_mismatch_inward_shooting(
@@ -848,7 +1097,9 @@ def bisect_energy_inward_shooting(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: bisection_history_inward_shooting
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def bisection_history_inward_shooting(
     x_max: float,
@@ -862,7 +1113,38 @@ def bisection_history_inward_shooting(
 ) -> list[dict]:
     """
     Record the inward-shooting bisection process for diagnostic plots.
+
+    Parameters
+    ----------
+    x_max : float
+        Outer truncation point of the half-domain used for inward shooting.
+    n_grid : int
+        Number of grid points on the descending mesh from ``x_max`` to ``0``.
+    potential_fn : callable
+        Potential function evaluated on the descending grid for each trial
+        energy visited during the recorded bisection process.
+    potential_kwargs : dict
+        Keyword arguments forwarded to ``potential_fn`` when constructing the
+        sampled potential values.
+    parity : str
+        State parity whose inward mismatch root is being traced, either
+        ``"even"`` or ``"odd"``.
+    bracket : tuple[float, float]
+        Energy interval ``(lo, hi)`` that must already bracket a sign change in
+        the inward-shooting mismatch.
+    tol : float, default=1e-12
+        Stopping tolerance applied to both the midpoint mismatch magnitude and
+        the remaining bracket width.
+    max_iter : int, default=80
+        Maximum number of bisection iterations to record before stopping.
+
+    Returns
+    -------
+    list[dict]
+        Per-iteration diagnostics containing the current bracket endpoints,
+        midpoint, and midpoint mismatch.
     """
+
     lo, hi = bracket
     flo = boundary_mismatch_inward_shooting(
         x_max, n_grid, potential_fn, potential_kwargs, lo, parity
@@ -871,6 +1153,7 @@ def bisection_history_inward_shooting(
     history: list[dict] = []
     for iteration in range(max_iter):
         mid = 0.5 * (lo + hi)
+
         fmid = boundary_mismatch_inward_shooting(
             x_max,
             n_grid,
@@ -902,7 +1185,9 @@ def bisection_history_inward_shooting(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: solve_state_from_bracket_inward_shooting
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def solve_state_from_bracket_inward_shooting(
     x_max: float,
@@ -915,7 +1200,34 @@ def solve_state_from_bracket_inward_shooting(
 ) -> StateSolution:
     """
     Compute one bound state using inward shooting from the decaying tail.
+
+    Parameters
+    ----------
+    x_max : float
+        Outer truncation point of the half-domain used for inward shooting.
+    n_grid : int
+        Number of grid points on the descending mesh from ``x_max`` to ``0``.
+    potential_fn : callable
+        Potential function used to evaluate the confining potential on the
+        inward-shooting grid.
+    potential_kwargs : dict
+        Keyword arguments forwarded to ``potential_fn`` when constructing the
+        sampled potential values.
+    parity : str
+        Symmetry sector of the desired state, either ``"even"`` or ``"odd"``.
+    bracket : tuple[float, float]
+        Energy interval that brackets the target eigenvalue in the selected
+        parity sector.
+    tol : float, default=1e-12
+        Root-finding tolerance passed to the inward-shooting bisection solver.
+
+    Returns
+    -------
+    StateSolution
+        Normalized full-domain bound-state solution together with its energy,
+        parity label, and final inward-shooting mismatch.
     """
+
     energy, mismatch = bisect_energy_inward_shooting(
         x_max,
         n_grid,
@@ -951,7 +1263,9 @@ def solve_state_from_bracket_inward_shooting(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: solve_symmetric_potential_inward_shooting
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def solve_symmetric_potential_inward_shooting(
     x_max: float,
@@ -973,7 +1287,45 @@ def solve_symmetric_potential_inward_shooting(
     region. Inward shooting starts from the decaying asymptotic side and imposes
     parity at the origin, which produces much cleaner wavefunctions and matches
     the physical requirement that bound states decay as |x| becomes large.
+
+    Parameters
+    ----------
+    x_max : float
+        Outer truncation point of the symmetric half-domain.
+    n_grid : int
+        Number of grid points on the half-domain mesh used for inward shooting.
+    potential_fn : callable
+        Symmetric confining potential function to evaluate on the spatial grid.
+    potential_kwargs : dict | None, default=None
+        Optional keyword arguments forwarded to ``potential_fn``. If omitted,
+        an empty dictionary is used.
+    n_even : int, default=3
+        Number of even-parity bound states to compute.
+    n_odd : int, default=3
+        Number of odd-parity bound states to compute.
+    e_min : float | None, default=None
+        Lower end of the trial-energy scan. If omitted, the solver uses the
+        minimum sampled potential value on ``[0, x_max]``.
+    e_max : float | None, default=None
+        Upper end of the trial-energy scan. If omitted, the solver uses the
+        maximum sampled potential value on ``[0, x_max]`` and enlarges it if
+        needed to ensure a reasonably wide search window.
+    scan_points : int, default=1200
+        Number of trial energies used when scanning each parity sector for
+        sign-changing mismatch brackets.
+    tol : float, default=1e-12
+        Root-finding tolerance passed to the inward-shooting bisection solver
+        for each bracketed state.
+
+    Returns
+    -------
+    list[StateSolution]
+        Solved even and odd bound states, merged and sorted by increasing
+        energy.
     """
+
+    # If there are no user-specified potential kwargs, use an empty dict to avoid
+    # passing None to the potential function.
     if potential_kwargs is None:
         potential_kwargs = {}
 
@@ -982,6 +1334,7 @@ def solve_symmetric_potential_inward_shooting(
 
     if e_min is None:
         e_min = float(np.min(V_probe))
+
     if e_max is None:
         e_max = float(np.max(V_probe))
         e_max = max(e_max, e_min + 30.0)
@@ -1026,9 +1379,11 @@ def solve_symmetric_potential_inward_shooting(
             )
 
     solutions.sort(key=lambda s: s.energy)
+
     return solutions
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: solve_symmetric_potential_outward_shooting
 # ---------------------------------------------------------------------------
@@ -1092,6 +1447,7 @@ def solve_symmetric_potential_outward_shooting(
     if e_min is None:
         # Bound states typically start near the minimum of the potential.
         e_min = float(np.min(V_half))
+        
     if e_max is None:
         # The scan ceiling is chosen generously so several low-lying states fit
         # inside the search window without extra user tuning.
