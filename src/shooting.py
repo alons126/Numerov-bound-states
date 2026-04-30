@@ -46,7 +46,11 @@ from dataclasses import dataclass
 
 import numpy as np
 
-# Make the project root and tests directory importable when this file is run
+# The shooting code depends on the same Numerov framework as the bound-state
+# solver, so we can reuse the same q_from_energy function to compute the effective
+# q(x) = 2(V(x) - E) for the shooting problem. The other Numerov utilities are
+# also used to build the initial conditions and normalize the final wavefunction,
+# so we import them here as well for convenience.
 from src.numerov import (
     derivative_at_right_edge,
     normalize_wavefunction,
@@ -135,7 +139,7 @@ def initial_conditions_outward_shooting(
         # Include the full h^4 term. For y'' = q(x) y, the even Taylor series
         # is y(h) = 1 + q0 h^2 / 2 + (q0^2 + q''(0)) h^4 / 24 + O(h^6).
         return 1.0, 1.0 + 0.5 * q0 * h**2 + ((q0**2 + q2) * h**4) / 24.0
-    
+
     if parity == "odd":
         # psi(0) = 0 and psi'(0) = 1.
         # Include the full h^5 term. For odd states the series is
@@ -238,7 +242,7 @@ def boundary_mismatch_outward_shooting(
         # For outward shooting on a boxed domain, a true eigenstate should have
         # negligible leakage at the far boundary.
         return float(psi[-1])
-    
+
     if mode == "logder":
         # The logarithmic derivative is a more scale-invariant alternative, but
         # most of the project diagnostics use the simpler boundary value itself.
@@ -304,7 +308,7 @@ def find_brackets_outward_shooting(
 
         if not np.isfinite(a) or not np.isfinite(b):
             continue
-        
+
         if a == 0.0:
             # Keep exact zero hits by inflating them into a tiny bracket so the
             # downstream bisection code can treat all roots uniformly.
@@ -424,7 +428,7 @@ def bisection_history_outward_shooting(
 
     if not np.isfinite(flo) or not np.isfinite(fhi):
         raise ValueError("Non-finite function value at bracket endpoints.")
-    
+
     if np.signbit(flo) == np.signbit(fhi):
         raise ValueError("Bisection history requires a sign-changing bracket.")
 
@@ -447,7 +451,7 @@ def bisection_history_outward_shooting(
 
         if abs(fmid) < tol or abs(hi - lo) < tol:
             break
-        
+
         if np.signbit(flo) != np.signbit(fmid):
             # Keep the half-interval that still brackets the zero.
             hi, fhi = mid, fmid
@@ -498,13 +502,13 @@ def bisect_energy_outward_shooting(
 
     if not np.isfinite(flo) or not np.isfinite(fhi):
         raise ValueError("Non-finite function value at bracket endpoints.")
-    
+
     if flo == 0.0:
         return lo, flo
-    
+
     if fhi == 0.0:
         return hi, fhi
-    
+
     if np.signbit(flo) == np.signbit(fhi):
         raise ValueError("Bisection requires a sign-changing bracket.")
 
@@ -516,16 +520,16 @@ def bisect_energy_outward_shooting(
 
         if not np.isfinite(fmid):
             raise ValueError("Non-finite mismatch during bisection.")
-        
+
         if abs(fmid) < tol:
             return mid, fmid
-        
+
         if abs(hi - lo) < tol:
             if np.signbit(flo) != np.signbit(fmid):
                 hi, fhi = mid, fmid
             else:
                 lo, flo = mid, fmid
-                
+
             break
 
         if np.signbit(flo) != np.signbit(fmid):
@@ -552,7 +556,7 @@ def bisect_energy_outward_shooting(
         )
         if not np.isfinite(ftrial):
             break
-        
+
         if abs(ftrial) < tol:
             return trial, ftrial
 
@@ -840,7 +844,7 @@ def boundary_mismatch_inward_shooting(
     if parity == "even":
         # For even states the origin condition is on the derivative.
         return float(derivative_at_right_edge(x_desc, psi_desc))
-    
+
     if parity == "odd":
         # For odd states the origin condition is on the value itself.
         return float(psi_desc[-1])
@@ -977,10 +981,10 @@ def find_brackets_inward_shooting(
     brackets: list[tuple[float, float]] = []
     for i in range(len(energies) - 1):
         a, b = vals[i], vals[i + 1]
-        
+
         if not np.isfinite(a) or not np.isfinite(b):
             continue
-        
+
         if a == 0.0:
             eps = 1e-10 * max(1.0, abs(energies[i]))
             brackets.append((energies[i] - eps, energies[i] + eps))
@@ -1061,7 +1065,7 @@ def bisect_energy_inward_shooting(
 
     for _ in range(max_iter):
         mid = 0.5 * (lo + hi)
-        
+
         fmid = boundary_mismatch_inward_shooting(
             x_max,
             n_grid,
@@ -1447,7 +1451,7 @@ def solve_symmetric_potential_outward_shooting(
     if e_min is None:
         # Bound states typically start near the minimum of the potential.
         e_min = float(np.min(V_half))
-        
+
     if e_max is None:
         # The scan ceiling is chosen generously so several low-lying states fit
         # inside the search window without extra user tuning.
