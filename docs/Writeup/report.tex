@@ -114,7 +114,7 @@
             \begin{align}
             \text{even states:}\quad M(E) = \psi'_E(0),\,\,\,\,\,\,\,\,\,\,\text{odd states:}\quad M(E) = \psi_E(0)
             \end{align}
-            Eigenvalues correspond to the roots of $M(E)=0$, which are located by bracketing sign changes and then refined numerically. To make the procedure transparent, we plot the mismatch versus $E$ and mark the bisection iterates; the diagnostic figures use a scaled version of the mismatch so the zeros are unchanged but the vertical axis is easier to interpret across different potentials. Zero crossings identify the allowed energies. \\
+            Eigenvalues correspond to the roots of $M(E)=0$, which are located by bracketing sign changes and then refined numerically. To make the procedure transparent, we plot the mismatch versus $E$ and mark the bisection iterates; the diagnostic figures use an $L^2$-scaled version of the mismatch, meaning the raw mismatch is divided by the half-domain norm $\|\psi_E\|_2$. This leaves the zeros unchanged while making the vertical axis easier to interpret across different potentials. Zero crossings identify the allowed energies. \\
 
             In the implementation, the inward even-state mismatch uses a fourth-order backward finite-difference stencil to approximate $\psi'(0)$ from the last few points of the inward integration grid. This is important because a lower-order boundary derivative would spoil the fourth-order behavior otherwise expected from the Numerov recurrence in the harmonic-oscillator study.
 
@@ -180,7 +180,7 @@
                         \caption{}
                     \end{subfigure}
 
-                    \captionof{figure}{Scaled boundary mismatch functions for even (a) and odd (b) states. The zero crossings correspond to the physical eigenvalues found by the shooting method.}
+                    \captionof{figure}{$L^2$-scaled boundary mismatch functions for even (a) and odd (b) states. The zero crossings correspond to the physical eigenvalues found by the shooting method.}
                     \label{fig:infwell_shooting}
                 \end{minipage}
 
@@ -213,7 +213,7 @@
 
                 The probability densities (Fig.~\ref{fig:ho_densities}) show the expected structure: the ground state is centered and Gaussian-like, while the excited states alternate in parity and gain one additional node at each step. The support also broadens with increasing energy, consistent with the classical turning points moving outward. This confirms both physical correctness and stability of the integration on the truncated domain. \\
 
-                The shooting mismatch functions (Fig.~\ref{fig:ho_shooting}) exhibit clear zero crossings at the expected energies. In the even sector the roots lie near $E\approx0.5$ and $E\approx2.5$, while in the odd sector they lie near $E\approx1.5$ and $E\approx3.5$. The plotted mismatch is scaled for readability, so the curves remain visually well behaved while preserving the same root locations used by the solver. The sign changes remain sharp and the roots alternate even--odd as they should. \\
+                The shooting mismatch functions (Fig.~\ref{fig:ho_shooting}) exhibit clear zero crossings at the expected energies. In the even sector the roots lie near $E\approx0.5$ and $E\approx2.5$, while in the odd sector they lie near $E\approx1.5$ and $E\approx3.5$. The plotted mismatch is scaled by $\|\psi_E\|_2$ for readability, so the curves remain visually well behaved while preserving the same root locations used by the solver. The sign changes remain sharp and the roots alternate even--odd as they should. \\
 
                 Convergence with respect to grid spacing $h$ (Fig.~\ref{fig:ho_convergence_h}) is overall consistent with fourth-order behavior. The saved study gives fitted slopes $p\approx5.30$, $3.97$, $4.57$, and $4.00$ for the first four states. The two slopes above four are not evidence of true superconvergence: they occur only after the errors have already dropped to the $10^{-11}$--$10^{-12}$ range, where root-finding tolerance and floating-point effects distort a short log--log fit. The raw errors themselves still decrease in the expected high-order way, from about $3.2\times10^{-9}$--$2.6\times10^{-8}$ on the coarsest grid to $5.1\times10^{-13}$--$2.6\times10^{-11}$ on the finest grid. \\
 
@@ -254,7 +254,7 @@
                             \caption{}
                         \end{subfigure}
 
-                        \captionof{figure}{Scaled boundary mismatch functions for even (a) and odd (b) states. The zero crossings correspond to the physical eigenvalues.}
+                        \captionof{figure}{$L^2$-scaled boundary mismatch functions for even (a) and odd (b) states. The zero crossings correspond to the physical eigenvalues.}
                         \label{fig:ho_shooting}
                     \end{minipage}
                 \end{figure}
@@ -359,7 +359,7 @@
                         \caption{}
                     \end{subfigure}
 
-                    \captionof{figure}{Scaled shooting mismatch functions for even (top) and odd (bottom) double-well states. The zero crossings define the numerical eigenvalues.}
+                    \captionof{figure}{$L^2$-scaled shooting mismatch functions for even (top) and odd (bottom) double-well states. The zero crossings define the numerical eigenvalues.}
                     \label{fig:dw_shooting}
                 \end{minipage}
             \end{figure}

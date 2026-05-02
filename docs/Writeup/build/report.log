@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  2 MAY 2026 17:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  2 MAY 2026 17:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -986,78 +986,93 @@ Underfull \hbox (badness 10000) in paragraph at lines 148--149
 
  []
 
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_en
-ergy_comparison.png, id=123, 505.89pt x 325.215pt>
-File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numer
-ov_energy_comparison.png Graphic file (type png)
-<use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numero
-v_energy_comparison.png>
-Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinit
-e_square_well_Numerov_energy_comparison.png  used on input line 155.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_de
-nsities.png, id=125, 578.16pt x 361.35pt>
-File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numer
-ov_densities.png Graphic file (type png)
-<use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numero
-v_densities.png>
-Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinit
-e_square_well_Numerov_densities.png  used on input line 162.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
+
+LaTeX Warning: File `../../results/1_infinite_square_well_Numerov/1_infinite_sq
+uare_well_Numerov_energy_comparison.png' not found on input line 155.
+
+
+! Package pdftex.def Error: File `../../results/1_infinite_square_well_Numerov/
+1_infinite_square_well_Numerov_energy_comparison.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.155 ...quare_well_Numerov_energy_comparison.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `../../results/1_infinite_square_well_Numerov/1_infinite_sq
+uare_well_Numerov_densities.png' not found on input line 162.
+
+
+! Package pdftex.def Error: File `../../results/1_infinite_square_well_Numerov/
+1_infinite_square_well_Numerov_densities.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.162 ...finite_square_well_Numerov_densities.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_ro
-ot_finding_even.png, id=126, 578.16pt x 361.35pt>
+ot_finding_even.png, id=123, 578.16pt x 433.62pt>
 File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numer
 ov_root_finding_even.png Graphic file (type png)
 <use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numero
 v_root_finding_even.png>
 Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinit
 e_square_well_Numerov_root_finding_even.png  used on input line 173.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 173--174
- [][] 
- []
-
+(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
 <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_ro
-ot_finding_odd.png, id=127, 578.16pt x 361.35pt>
+ot_finding_odd.png, id=125, 578.16pt x 433.62pt>
 File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numer
 ov_root_finding_odd.png Graphic file (type png)
 <use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numero
 v_root_finding_odd.png>
 Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinit
 e_square_well_Numerov_root_finding_odd.png  used on input line 179.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
+(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
 
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 179--180
- [][] 
- []
+LaTeX Warning: File `../../results/1_infinite_square_well_Numerov/1_infinite_sq
+uare_well_Numerov_convergence_vs_h.png' not found on input line 191.
 
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_co
-nvergence_vs_h.png, id=128, 505.89pt x 325.215pt>
-File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numer
-ov_convergence_vs_h.png Graphic file (type png)
-<use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numero
-v_convergence_vs_h.png>
-Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinit
-e_square_well_Numerov_convergence_vs_h.png  used on input line 191.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
+
+! Package pdftex.def Error: File `../../results/1_infinite_square_well_Numerov/
+1_infinite_square_well_Numerov_convergence_vs_h.png' not found: using draft set
+ting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.191 ...square_well_Numerov_convergence_vs_h.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_st
-ates.png, id=129, 578.16pt x 361.35pt>
+ates.png, id=126, 578.16pt x 433.62pt>
 File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numer
 ov_states.png Graphic file (type png)
 <use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numero
 v_states.png>
 Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinit
 e_square_well_Numerov_states.png  used on input line 198.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
+(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
+
+LaTeX Warning: Float too large for page by 26.98409pt on input line 202.
+
 [3] [4 <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Num
-erov_energy_comparison.png> <../../results/1_infinite_square_well_Numerov/1_inf
-inite_square_well_Numerov_densities.png> <../../results/1_infinite_square_well_
-Numerov/1_infinite_square_well_Numerov_root_finding_even.png> <../../results/1_
-infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.pn
-g> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov
-_convergence_vs_h.png> <../../results/1_infinite_square_well_Numerov/1_infinite
-_square_well_Numerov_states.png>]
+erov_root_finding_even.png> <../../results/1_infinite_square_well_Numerov/1_inf
+inite_square_well_Numerov_root_finding_odd.png> <../../results/1_infinite_squar
+e_well_Numerov/1_infinite_square_well_Numerov_states.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 209--211
 
  []
@@ -1092,103 +1107,131 @@ Underfull \hbox (badness 10000) in paragraph at lines 222--223
 
  []
 
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_en
-ergy_comparison.png, id=156, 505.89pt x 325.215pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numer
-ov_energy_comparison.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numero
-v_energy_comparison.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmon
-ic_oscillator_Numerov_energy_comparison.png  used on input line 229.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_de
-nsities.png, id=157, 578.16pt x 361.35pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numer
-ov_densities.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numero
-v_densities.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmon
-ic_oscillator_Numerov_densities.png  used on input line 236.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
+
+LaTeX Warning: File `../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_o
+scillator_Numerov_energy_comparison.png' not found on input line 229.
+
+
+! Package pdftex.def Error: File `../../results/2a_harmonic_oscillator_Numerov/
+2a_harmonic_oscillator_Numerov_energy_comparison.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.229 ...oscillator_Numerov_energy_comparison.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_o
+scillator_Numerov_densities.png' not found on input line 236.
+
+
+! Package pdftex.def Error: File `../../results/2a_harmonic_oscillator_Numerov/
+2a_harmonic_oscillator_Numerov_densities.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.236 ...armonic_oscillator_Numerov_densities.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_ro
-ot_finding_even.png, id=158, 578.16pt x 361.35pt>
+ot_finding_even.png, id=151, 578.16pt x 433.62pt>
 File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numer
 ov_root_finding_even.png Graphic file (type png)
 <use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numero
 v_root_finding_even.png>
 Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmon
 ic_oscillator_Numerov_root_finding_even.png  used on input line 247.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
-
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 247--248
- [][] 
- []
-
+(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
 <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_ro
-ot_finding_odd.png, id=159, 578.16pt x 361.35pt>
+ot_finding_odd.png, id=152, 578.16pt x 433.62pt>
 File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numer
 ov_root_finding_odd.png Graphic file (type png)
 <use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numero
 v_root_finding_odd.png>
 Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmon
 ic_oscillator_Numerov_root_finding_odd.png  used on input line 253.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
+(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
 
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 253--254
- [][] 
- []
+LaTeX Warning: File `../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_o
+scillator_Numerov_convergence_vs_h.png' not found on input line 267.
 
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_co
-nvergence_vs_h.png, id=160, 505.89pt x 325.215pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numer
-ov_convergence_vs_h.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numero
-v_convergence_vs_h.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmon
-ic_oscillator_Numerov_convergence_vs_h.png  used on input line 267.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_co
-nvergence_vs_x_max.png, id=161, 505.89pt x 325.215pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numer
-ov_convergence_vs_x_max.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numero
-v_convergence_vs_x_max.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmon
-ic_oscillator_Numerov_convergence_vs_x_max.png  used on input line 274.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
+
+! Package pdftex.def Error: File `../../results/2a_harmonic_oscillator_Numerov/
+2a_harmonic_oscillator_Numerov_convergence_vs_h.png' not found: using draft set
+ting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.267 ..._oscillator_Numerov_convergence_vs_h.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_o
+scillator_Numerov_convergence_vs_x_max.png' not found on input line 274.
+
+
+! Package pdftex.def Error: File `../../results/2a_harmonic_oscillator_Numerov/
+2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png' not found: using draft
+ setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.274 ...illator_Numerov_convergence_vs_x_max.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_st
-ates.png, id=162, 578.16pt x 361.35pt>
+ates.png, id=153, 578.16pt x 433.62pt>
 File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numer
 ov_states.png Graphic file (type png)
 <use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numero
 v_states.png>
 Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmon
 ic_oscillator_Numerov_states.png  used on input line 283.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-<../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_num
-erov_vs_rk4.png, id=163, 505.89pt x 325.215pt>
-File: ../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmoni
-c_numerov_vs_rk4.png Graphic file (type png)
-<use ../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic
-_numerov_vs_rk4.png>
-Package pdftex.def Info: ../../results/2c_harmonic_oscillator_Numerov_VS_RK4_co
-mparison/2c_harmonic_numerov_vs_rk4.png  used on input line 290.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
+(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
+
+LaTeX Warning: File `../../results/2c_harmonic_oscillator_Numerov_VS_RK4_compar
+ison/2c_harmonic_numerov_vs_rk4.png' not found on input line 290.
+
+
+! Package pdftex.def Error: File `../../results/2c_harmonic_oscillator_Numerov_
+VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png' not found: using draft settin
+g.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.290 ...omparison/2c_harmonic_numerov_vs_rk4.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 Underfull \hbox (badness 10000) in paragraph at lines 301--303
 
  []
 
 [5] [6 <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Num
-erov_energy_comparison.png> <../../results/2a_harmonic_oscillator_Numerov/2a_ha
-rmonic_oscillator_Numerov_densities.png> <../../results/2a_harmonic_oscillator_
-Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png> <../../results/2a
-_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.pn
-g>] [7 <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Num
-erov_convergence_vs_h.png> <../../results/2a_harmonic_oscillator_Numerov/2a_har
-monic_oscillator_Numerov_convergence_vs_x_max.png> <../../results/2a_harmonic_o
-scillator_Numerov/2a_harmonic_oscillator_Numerov_states.png> <../../results/2c_
-harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png>]
+erov_root_finding_even.png> <../../results/2a_harmonic_oscillator_Numerov/2a_ha
+rmonic_oscillator_Numerov_root_finding_odd.png>] [7 <../../results/2a_harmonic_
+oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 304--305
 
  []
@@ -1233,77 +1276,125 @@ Underfull \hbox (badness 10000) in paragraph at lines 327--328
 
  []
 
-<../../results/3_double_well_Numerov/3_double_well_Numerov_states.png, id=204, 
-578.16pt x 361.35pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_states.png Grap
-hic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_states.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Nume
-rov_states.png  used on input line 334.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_densities.png, id=20
-5, 578.16pt x 361.35pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_densities.png G
-raphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_densities.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Nume
-rov_densities.png  used on input line 341.
-(pdftex.def)             Requested size: 218.51521pt x 136.57007pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.pn
-g, id=206, 578.16pt x 361.35pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_ev
-en.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_eve
-n.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Nume
-rov_root_finding_even.png  used on input line 352.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
 
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 352--353
- [][] 
- []
+LaTeX Warning: File `../../results/3_double_well_Numerov/3_double_well_Numerov_
+states.png' not found on input line 334.
 
-<../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png
-, id=207, 578.16pt x 361.35pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_od
-d.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd
-.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Nume
-rov_root_finding_odd.png  used on input line 358.
-(pdftex.def)             Requested size: 227.62523pt x 142.26378pt.
 
-Overfull \hbox (6.83156pt too wide) in paragraph at lines 358--359
- [][] 
- []
+! Package pdftex.def Error: File `../../results/3_double_well_Numerov/3_double_
+well_Numerov_states.png' not found: using draft setting.
 
-<../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png
-, id=208, 505.89pt x 325.215pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_
-h.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h
-.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Nume
-rov_convergence_vs_h.png  used on input line 372.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max
-.png, id=209, 505.89pt x 325.215pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_
-x_max.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x
-_max.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Nume
-rov_convergence_vs_x_max.png  used on input line 379.
-(pdftex.def)             Requested size: 218.51521pt x 140.4749pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting_vs_
-b.png, id=210, 578.16pt x 433.62pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splittin
-g_vs_b.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting
-_vs_b.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Nume
-rov_energy_splitting_vs_b.png  used on input line 388.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.334 ...Numerov/3_double_well_Numerov_states.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `../../results/3_double_well_Numerov/3_double_well_Numerov_
+densities.png' not found on input line 341.
+
+
+! Package pdftex.def Error: File `../../results/3_double_well_Numerov/3_double_
+well_Numerov_densities.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.341 ...erov/3_double_well_Numerov_densities.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `../../results/3_double_well_Numerov/3_double_well_Numerov_
+root_finding_even.png' not found on input line 352.
+
+
+! Package pdftex.def Error: File `../../results/3_double_well_Numerov/3_double_
+well_Numerov_root_finding_even.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.352 ...ouble_well_Numerov_root_finding_even.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `../../results/3_double_well_Numerov/3_double_well_Numerov_
+root_finding_odd.png' not found on input line 358.
+
+
+! Package pdftex.def Error: File `../../results/3_double_well_Numerov/3_double_
+well_Numerov_root_finding_odd.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.358 ...double_well_Numerov_root_finding_odd.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `../../results/3_double_well_Numerov/3_double_well_Numerov_
+convergence_vs_h.png' not found on input line 372.
+
+
+! Package pdftex.def Error: File `../../results/3_double_well_Numerov/3_double_
+well_Numerov_convergence_vs_h.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.372 ...double_well_Numerov_convergence_vs_h.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `../../results/3_double_well_Numerov/3_double_well_Numerov_
+convergence_vs_x_max.png' not found on input line 379.
+
+
+! Package pdftex.def Error: File `../../results/3_double_well_Numerov/3_double_
+well_Numerov_convergence_vs_x_max.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.379 ...le_well_Numerov_convergence_vs_x_max.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+LaTeX Warning: File `../../results/3_double_well_Numerov/3_double_well_Numerov_
+energy_splitting_vs_b.png' not found on input line 388.
+
+
+! Package pdftex.def Error: File `../../results/3_double_well_Numerov/3_double_
+well_Numerov_energy_splitting_vs_b.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.388 ...e_well_Numerov_energy_splitting_vs_b.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 Underfull \hbox (badness 10000) in paragraph at lines 401--403
 
@@ -1324,38 +1415,47 @@ Underfull \hbox (badness 10000) in paragraph at lines 408--409
 
  []
 
-[9] [10 <../../results/3_double_well_Numerov/3_double_well_Numerov_states.png> 
-<../../results/3_double_well_Numerov/3_double_well_Numerov_densities.png> <../.
-./results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png> <.
-./../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png>]
-[11 <../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h
-.png> <../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs
-_x_max.png> <../../results/3_double_well_Numerov/3_double_well_Numerov_energy_s
-plitting_vs_b.png>]
-<../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states
-.png, id=235, 578.16pt x 433.62pt>
-File: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_s
-tates.png Graphic file (type png)
-<use ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_st
-ates.png>
-Package pdftex.def Info: ../../results/4_finite_square_well_Numerov/4_finite_sq
-uare_well_Numerov_states.png  used on input line 413.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
+[9] [10] [11]
+
+LaTeX Warning: File `../../results/4_finite_square_well_Numerov/4_finite_square
+_well_Numerov_states.png' not found on input line 413.
+
+
+! Package pdftex.def Error: File `../../results/4_finite_square_well_Numerov/4_
+finite_square_well_Numerov_states.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.413 .../4_finite_square_well_Numerov_states.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 414.
 See the caption package documentation for explanation.
 
-<../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_state_
-densities.png, id=236, 578.16pt x 433.62pt>
-File: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_s
-tate_densities.png Graphic file (type png)
-<use ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_st
-ate_densities.png>
-Package pdftex.def Info: ../../results/4_finite_square_well_Numerov/4_finite_sq
-uare_well_Numerov_state_densities.png  used on input line 420.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
+
+LaTeX Warning: File `../../results/4_finite_square_well_Numerov/4_finite_square
+_well_Numerov_state_densities.png' not found on input line 420.
+
+
+! Package pdftex.def Error: File `../../results/4_finite_square_well_Numerov/4_
+finite_square_well_Numerov_state_densities.png' not found: using draft setting.
+
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.420 ..._square_well_Numerov_state_densities.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 421.
@@ -1381,27 +1481,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 433--434
 
  []
 
-<../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_
-Numerov_transmission_reflection.png, id=238, 578.16pt x 433.62pt>
-File: ../../results/5_scattering_single_barrier_Numerov/5_scattering_single_bar
-rier_Numerov_transmission_reflection.png Graphic file (type png)
-<use ../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barr
-ier_Numerov_transmission_reflection.png>
-Package pdftex.def Info: ../../results/5_scattering_single_barrier_Numerov/5_sc
-attering_single_barrier_Numerov_transmission_reflection.png  used on input line
- 437.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
+[12]
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: File `../../results/5_scattering_single_barrier_Numerov/5_scatte
+ring_single_barrier_Numerov_transmission_reflection.png' not found on input lin
+e 437.
+
+
+! Package pdftex.def Error: File `../../results/5_scattering_single_barrier_Num
+erov/5_scattering_single_barrier_Numerov_transmission_reflection.png' not found
+: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.437 ...rier_Numerov_transmission_reflection.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 443--444
 
  []
 
-[12 <../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_st
-ates.png> <../../results/4_finite_square_well_Numerov/4_finite_square_well_Nume
-rov_state_densities.png>]
+
 Underfull \hbox (badness 10000) in paragraph at lines 445--446
 
  []
@@ -1426,38 +1531,55 @@ Underfull \hbox (badness 10000) in paragraph at lines 453--454
 
  []
 
-<../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_
-Numerov_transmission_reflection.png, id=248, 578.16pt x 433.62pt>
-File: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_bar
-rier_Numerov_transmission_reflection.png Graphic file (type png)
-<use ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barr
-ier_Numerov_transmission_reflection.png>
-Package pdftex.def Info: ../../results/6_scattering_double_barrier_Numerov/6_sc
-attering_double_barrier_Numerov_transmission_reflection.png  used on input line
- 458.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
+
+LaTeX Warning: File `../../results/6_scattering_double_barrier_Numerov/6_scatte
+ring_double_barrier_Numerov_transmission_reflection.png' not found on input lin
+e 458.
+
+
+! Package pdftex.def Error: File `../../results/6_scattering_double_barrier_Num
+erov/6_scattering_double_barrier_Numerov_transmission_reflection.png' not found
+: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.458 ...rier_Numerov_transmission_reflection.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 459.
 See the caption package documentation for explanation.
 
-<../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_
-Numerov_state_probability_density.png, id=249, 578.16pt x 433.62pt>
-File: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_bar
-rier_Numerov_state_probability_density.png Graphic file (type png)
-<use ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barr
-ier_Numerov_state_probability_density.png>
-Package pdftex.def Info: ../../results/6_scattering_double_barrier_Numerov/6_sc
-attering_double_barrier_Numerov_state_probability_density.png  used on input li
-ne 465.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
+
+LaTeX Warning: File `../../results/6_scattering_double_barrier_Numerov/6_scatte
+ring_double_barrier_Numerov_state_probability_density.png' not found on input l
+ine 465.
+
+
+! Package pdftex.def Error: File `../../results/6_scattering_double_barrier_Num
+erov/6_scattering_double_barrier_Numerov_state_probability_density.png' not fou
+nd: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.465 ...er_Numerov_state_probability_density.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 466.
 See the caption package documentation for explanation.
 
-[13 <../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barr
-ier_Numerov_transmission_reflection.png>]
+[13]
 Underfull \hbox (badness 10000) in paragraph at lines 474--475
 
  []
@@ -1477,10 +1599,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 480--481
 
  []
 
-[14 <../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barr
-ier_Numerov_transmission_reflection.png> <../../results/6_scattering_double_bar
-rier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png>
-]
+[14]
 Underfull \hbox (badness 10000) in paragraph at lines 482--483
 
  []
@@ -1522,11 +1641,11 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24800 strings out of 467525
- 440919 string characters out of 5418982
+ 25263 strings out of 467525
+ 487702 string characters out of 5418982
  1296583 words of memory out of 5000000
- 53373 multiletter control sequences out of 15000+600000
- 637452 words of font info for 77 fonts, out of 8000000 for 9000
+ 53835 multiletter control sequences out of 15000+600000
+ 637620 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,10n,90p,918b,1911s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
@@ -1542,11 +1661,12 @@ exlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texl
 ive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive
 /2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/
 2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/20
-26/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on build/report.pdf (15 pages, 1956981 bytes).
+26/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2026
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on build/report.pdf (15 pages, 595883 bytes).
 PDF statistics:
- 344 PDF objects out of 1000 (max. 8388607)
- 244 compressed objects within 3 object streams
+ 309 PDF objects out of 1000 (max. 8388607)
+ 247 compressed objects within 3 object streams
  54 named destinations out of 1000 (max. 500000)
- 275 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 175 words of extra memory for PDF output out of 10000 (max. 10000000)
 

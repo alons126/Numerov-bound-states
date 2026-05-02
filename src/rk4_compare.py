@@ -206,9 +206,9 @@ def RK4_diagnostic_mismatch(
 
     The inward RK4 trial solution is initialized with an arbitrary tail
     amplitude, so the raw origin mismatch can become very large away from the
-    roots. For plotting only, divide the mismatch by ``max(abs(psi))`` along
-    the half-domain. This keeps the zeros fixed while making the diagnostic
-    curve easier to compare with the Numerov plots.
+    roots. For plotting only, divide the mismatch by the half-domain ``L2``
+    norm of the trial wavefunction. This keeps the zeros fixed while making
+    the diagnostic curve easier to compare with the Numerov plots.
     """
 
     if parity not in {"even", "odd"}:
@@ -229,7 +229,10 @@ def RK4_diagnostic_mismatch(
         y = RK4_step(x_value, y, h, energy, omega)
         psi_values[i] = y[0]
 
-    scale = max(float(np.max(np.abs(psi_values))), 1.0e-300)
+    scale = max(
+        float(np.sqrt(np.trapezoid(np.abs(psi_values[::-1]) ** 2, x_values[::-1]))),
+        1.0e-300,
+    )
     psi_at_zero, derivative_at_zero = y
 
     if parity == "even":

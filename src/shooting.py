@@ -259,13 +259,14 @@ def diagnostic_mismatch_outward_shooting(
     """
     Evaluate a scale-invariant outward-shooting mismatch for plotting.
 
-    For diagnostic plots, divide the wall mismatch by ``max(abs(psi))`` on the
-    half-domain so the plotted curve reflects root structure rather than the
-    arbitrary amplitude of the unnormalized trial solution.
+    For diagnostic plots, divide the wall mismatch by the half-domain
+    ``L2`` norm of the trial wavefunction so the plotted curve reflects root
+    structure rather than the arbitrary amplitude of the unnormalized trial
+    solution.
     """
 
     psi = half_domain_wavefunction_outward_shooting(x_half, V_half, energy, parity)
-    scale = max(float(np.max(np.abs(psi))), 1.0e-300)
+    scale = max(float(np.sqrt(np.trapezoid(np.abs(psi) ** 2, x_half))), 1.0e-300)
 
     return float(psi[-1] / scale)
 
@@ -371,9 +372,9 @@ def sample_boundary_mismatch_outward_shooting(
         Number of equally spaced trial energies used to sample the mismatch
         curve between ``e_min`` and ``e_max``.
     diagnostic_scale : bool, default=False
-        If ``True``, divide the boundary mismatch by ``max(abs(psi))`` on the
-        half-domain for plotting. This preserves the zeros while removing the
-        arbitrary amplitude scale of the trial solution.
+        If ``True``, divide the boundary mismatch by the half-domain ``L2``
+        norm of the trial solution for plotting. This preserves the zeros
+        while removing the arbitrary amplitude scale of the trial solution.
 
     Returns
     -------
@@ -441,9 +442,9 @@ def bisection_history_outward_shooting(
     max_iter : int, default=80
         Maximum number of bisection iterations to record before stopping.
     diagnostic_scale : bool, default=False
-        If ``True``, record ``mismatch_mid`` after dividing by
-        ``max(abs(psi))`` on the half-domain for plotting only. The raw
-        mismatch sign is still used to update the bisection bracket.
+        If ``True``, record ``mismatch_mid`` after dividing by the half-domain
+        ``L2`` norm for plotting only. The raw mismatch sign is still used to
+        update the bisection bracket.
 
     Returns
     -------
@@ -893,9 +894,9 @@ def diagnostic_mismatch_inward_shooting(
     The inward solver starts from an arbitrary tail amplitude at ``x_max``.
     That amplitude does not affect the root locations, but it can make the raw
     mismatch span many orders of magnitude and visually dominate diagnostic
-    plots. For plotting only, divide the origin mismatch by a positive trial
-    wavefunction scale so the zeros are unchanged while the curve becomes
-    easier to interpret.
+    plots. For plotting only, divide the origin mismatch by the half-domain
+    ``L2`` norm of the trial wavefunction so the zeros are unchanged while the
+    curve becomes easier to interpret.
 
     Parameters
     ----------
@@ -918,7 +919,7 @@ def diagnostic_mismatch_inward_shooting(
     Returns
     -------
     float
-        Origin mismatch divided by ``max(abs(psi))`` on the half-domain.
+        Origin mismatch divided by the half-domain ``L2`` norm.
     """
 
     x_desc, psi_desc = half_domain_wavefunction_inward_shooting(
@@ -928,7 +929,12 @@ def diagnostic_mismatch_inward_shooting(
         potential_kwargs=potential_kwargs,
         energy=energy,
     )
-    scale = max(float(np.max(np.abs(psi_desc))), 1.0e-300)
+    x_asc = x_desc[::-1]
+    psi_asc = psi_desc[::-1]
+    scale = max(
+        float(np.sqrt(np.trapezoid(np.abs(psi_asc) ** 2, x_asc))),
+        1.0e-300,
+    )
 
     if parity == "even":
         return float(derivative_at_right_edge(x_desc, psi_desc) / scale)
