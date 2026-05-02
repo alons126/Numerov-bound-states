@@ -10,16 +10,14 @@ time-independent Schrödinger equation in dimensionless form,
 
 using the Numerov method on a uniform grid.
 
-Reviewer guide
---------------
 This file is the numerical core of the project. It does not decide which
 eigenvalue is correct; instead it provides the low-level operations that all
 higher layers rely on when turning the Schrödinger boundary-value eigenproblem
 into a numerical shooting calculation:
-- convert a trial energy into the coefficient q(x)
-- propagate a trial solution with the Numerov recurrence
-- normalize the resulting wavefunction safely
-- estimate boundary derivatives needed by parity-based shooting
+- Convert a trial energy into the coefficient q(x)
+- Propagate a trial solution with the Numerov recurrence
+- Normalize the resulting wavefunction safely
+- Estimate boundary derivatives needed by parity-based shooting
 
 Several comments in the report are implemented directly here:
 - `numerov_outward()` rescales large trial solutions during scans so a wrong
@@ -36,6 +34,7 @@ look worse than the Numerov recurrence itself really is.
 import numpy as np
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: q_from_energy
 # ---------------------------------------------------------------------------
@@ -62,6 +61,7 @@ def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     return 2.0 * (V - energy)
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: numerov_outward
 # ---------------------------------------------------------------------------
@@ -103,12 +103,14 @@ def numerov_outward(
 
     if x.ndim != 1 or q.ndim != 1 or len(x) != len(q):
         raise ValueError("x and q must be 1D arrays with the same length.")
+
     if len(x) < 3:
         raise ValueError("Need at least 3 grid points.")
 
     # Numerov assumes a constant spacing h. The recurrence coefficients below
     # are valid only on a uniform grid.
     h = x[1] - x[0]
+
     if not np.allclose(np.diff(x), h, rtol=1e-12, atol=1e-14):
         raise ValueError("Numerov integration requires a uniform grid.")
 
@@ -125,12 +127,14 @@ def numerov_outward(
 
     for n in range(1, len(x) - 1):
         # Rearranged Numerov recurrence:
-        #   (1 - h^2 q_{n+1}/12) psi_{n+1}
-        # = 2(1 + 5 h^2 q_n/12) psi_n - (1 - h^2 q_{n-1}/12) psi_{n-1}
+        # (1 - h^2 * q_{n+1}/12) * psi_{n+1} =
+        #   = 2 * (1 + 5 * h^2 * q_n/12) * psi_n -
+        #     - (1 - h^2 * q_{n-1}/12) * psi_{n-1}
         # so each new point uses the previous two solution values.
         a = 1.0 - c * q[n + 1]
         b = 2.0 * (1.0 + 5.0 * c * q[n]) * psi[n]
         d = (1.0 - c * q[n - 1]) * psi[n - 1]
+
         psi[n + 1] = (b - d) / a
 
         # Keep trial solutions numerically manageable during bracket scans.
@@ -140,6 +144,7 @@ def numerov_outward(
     return psi
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: normalize_wavefunction
 # ---------------------------------------------------------------------------
@@ -168,6 +173,7 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     """
 
     scale = np.max(np.abs(psi))
+
     if scale == 0.0:
         raise ValueError("Cannot normalize a zero wavefunction.")
 
@@ -183,6 +189,7 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     return psi / norm
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: derivative_at_right_edge
 # ---------------------------------------------------------------------------
