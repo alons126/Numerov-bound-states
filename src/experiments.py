@@ -7,33 +7,27 @@ Each function in this module runs one physical case study, writes tabulated data
 to CSV, and saves the associated figures into a dedicated subdirectory under
 the results directory.
 
-Reviewer guide
---------------
 This file is the experiment plan in executable form. The lower-level modules
 know how to solve or analyze a problem; this module chooses which problems to
 run, which outputs to save, and which comparisons support the report.
 
 The major cases are:
-- square well: analytic validation and clean outward-shooting diagnostics
-- harmonic oscillator: inward-shooting validation plus Numerov versus RK4
-- quartic double well: tunneling splitting and the most careful convergence
-  study in the project
-- finite square well: additional finite-depth bound-state example
-- scattering: single- and double-barrier transmission study
-
-The quartic double-well workflow includes several choices that are documented
-in the README and reviewer notes:
-- a larger default box than earlier drafts, because x_max=3 was visibly too
-  small for the low-lying tails
-- separate h-convergence and x_max-convergence studies
-- successive-refinement error estimates for grid convergence
-- parity-separated root-diagnostic plots for the double well itself
+- Square well: analytic validation with clean outward-shooting diagnostics
+- Harmonic oscillator: analytic validation with inward shooting plus Numerov
+  versus RK4
+- Quartic double well: outward-shooting tunneling splitting and the most
+  careful convergence study in the project
+- Finite square well: additional finite-depth outward-shooting bound-state
+  example
+- Scattering: single- and double-barrier transmission study
 """
 
 from pathlib import Path
 
 import numpy as np
 
+# Import analysis helpers used to build convergence studies, exact benchmarks,
+# and CSV outputs for the experiments
 from src.analysis import (
     convergence_vs_box_size_fixed_spacing,
     convergence_vs_grid,
@@ -44,6 +38,8 @@ from src.analysis import (
     save_csv_rows,
     splitting_vs_parameter,
 )
+
+# Import plotting helpers used to generate the report figures
 from src.plotting import (
     plot_energy_comparison,
     plot_error_curve,
@@ -55,6 +51,9 @@ from src.plotting import (
     plot_scattering_potential_and_probability,
     plot_splitting_curve,
 )
+
+# Import potential definitions that specify the physical systems studied by the
+# experiments
 from src.potentials import (
     double_square_barrier,
     finite_square_well,
@@ -63,6 +62,8 @@ from src.potentials import (
     quartic_double_well,
     square_barrier,
 )
+
+# Import bound-state shooting diagnostics and solvers
 from src.shooting import (
     bisection_history_outward_shooting,
     bisection_history_inward_shooting,
@@ -73,11 +74,16 @@ from src.shooting import (
     solve_symmetric_potential_outward_shooting,
     solve_symmetric_potential_inward_shooting,
 )
+
+# Import scattering utilities for transmission, reflection, and resonant-state
+# calculations
 from src.scattering import (
     find_transmission_peaks,
     scattering_wavefunction,
     sweep_scattering,
 )
+
+# Import RK4-based harmonic-oscillator comparison routines and diagnostics
 from src.rk4_compare import (
     RK4_bisection_history,
     RK4_find_brackets,
@@ -88,6 +94,7 @@ from src.rk4_compare import (
 )
 
 
+# --------------------------------------------------------------------------
 # --------------------------------------------------------------------------
 # FUNCTION: _experiment_results_dir
 # --------------------------------------------------------------------------
@@ -116,7 +123,192 @@ def _experiment_results_dir(results_root: Path, name: str) -> Path:
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_infinite_well_root_diagnostics
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> None:
+    """
+    Plot shooting/root-finding diagnostics for all four infinite-well states.
+
+    Even and odd states use different parity boundary conditions at x = 0, so
+    the cleanest visualization is two separate mismatch plots:
+    - Even sector: global states n=0 and n=2
+    - Odd sector: global states n=1 and n=3
+
+    Parameters
+    ----------
+    results_dir : Path
+        Directory where the diagnostic figures for this experiment are written.
+    a : float, optional
+        Half-width of the square well, so the numerical domain on the half-line
+        is ``[0, a]``.
+    """
+
+    x_half = np.linspace(0.0, a, 900)
+    V_half = infinite_square_well_numeric(x_half, a=a, wall_height=1e6)
+
+    diagnostic_specs = [
+        {
+            "parity": "even",
+            "e_min": 0.1,
+            "e_max": 15.0,
+            "state_labels": ["state 0, even", "state 2, even"],
+            "path": results_dir
+            / "1_infinite_square_well_Numerov_root_finding_even.png",
+            "title": "Infinite well shooting roots, even states",
+            "mismatch_label": r"raw mismatch: $M(E)=\psi_E(a)$",
+        },
+        {
+            "parity": "odd",
+            "e_min": 2.0,
+            "e_max": 25.0,
+            "state_labels": ["state 1, odd", "state 3, odd"],
+            "path": results_dir / "1_infinite_square_well_Numerov_root_finding_odd.png",
+            "title": "Infinite well shooting roots, odd states",
+            "mismatch_label": r"raw mismatch: $M(E)=\psi_E(a)$",
+        },
+    ]
+
+    for spec in diagnostic_specs:
+        energies_scan, mismatches_scan = sample_boundary_mismatch_outward_shooting(
+            x_half,
+            V_half,
+            parity=spec["parity"],
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            n_scan=1600,
+        )
+        brackets = find_brackets_outward_shooting(
+            x_half,
+            V_half,
+            parity=spec["parity"],
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            n_scan=1600,
+        )
+        histories = [
+            bisection_history_outward_shooting(
+                x_half, V_half, spec["parity"], bracket, max_iter=30
+            )
+            for bracket in brackets[: len(spec["state_labels"])]
+        ]
+
+        plot_root_finding_diagnostic(
+            energies_scan,
+            mismatches_scan,
+            histories,
+            spec["path"],
+            spec["title"],
+            history_labels=spec["state_labels"],
+            mismatch_label=spec["mismatch_label"],
+        )
+
+
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_harmonic_oscillator_root_diagnostics
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+def plot_harmonic_oscillator_root_diagnostics(
+    results_dir: Path,
+    omega: float = 1.0,
+    x_max: float = 8.0,
+) -> None:
+    """
+    Plot shooting/root-finding diagnostics for the first four
+    harmonic-oscillator states.
+
+    Even and odd harmonic-oscillator states use different parity boundary conditions:
+    - Even sector: global states n=0 and n=2
+    - Odd sector: global states n=1 and n=3
+
+    The mismatch is now sampled with the stable inward-shooting formulation.
+    The roots enforce parity at the origin: M(E)=psi'_E(0) for even states and
+    M(E)=psi_E(0) for odd states.
+
+    Parameters
+    ----------
+    results_dir : Path
+        Directory where the harmonic-oscillator diagnostic figures are saved.
+    omega : float, optional
+        Harmonic-oscillator frequency in
+        ``V(x)=\frac{1}{2}\omega^2 x^2``.
+    x_max : float, optional
+        Half-width of the truncated numerical domain used by the inward solver.
+    """
+
+    diagnostic_specs = [
+        {
+            "parity": "even",
+            "e_min": 0.1,
+            "e_max": 3.2,
+            "state_labels": ["state 0, even", "state 2, even"],
+            "path": results_dir
+            / "2a_harmonic_oscillator_Numerov_root_finding_even.png",
+            "title": "Harmonic oscillator shooting roots, even states",
+            "mismatch_label": r"raw mismatch: $M(E)=\psi'_E(0)$",
+        },
+        {
+            "parity": "odd",
+            "e_min": 0.7,
+            "e_max": 4.3,
+            "state_labels": ["state 1, odd", "state 3, odd"],
+            "path": results_dir / "2a_harmonic_oscillator_Numerov_root_finding_odd.png",
+            "title": "Harmonic oscillator shooting roots, odd states",
+            "mismatch_label": r"raw mismatch: $M(E)=\psi_E(0)$",
+        },
+    ]
+
+    for spec in diagnostic_specs:
+        energies_scan, mismatches_scan = sample_mismatch_inward_shooting(
+            x_max=x_max,
+            n_grid=500,
+            potential_fn=harmonic_oscillator,
+            potential_kwargs={"omega": omega},
+            parity=spec["parity"],
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            n_scan=400,
+        )
+        brackets = find_brackets_inward_shooting(
+            x_max=x_max,
+            n_grid=500,
+            potential_fn=harmonic_oscillator,
+            potential_kwargs={"omega": omega},
+            parity=spec["parity"],
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            n_scan=400,
+        )
+        histories = [
+            bisection_history_inward_shooting(
+                x_max=x_max,
+                n_grid=1600,
+                potential_fn=harmonic_oscillator,
+                potential_kwargs={"omega": omega},
+                parity=spec["parity"],
+                bracket=bracket,
+                max_iter=30,
+            )
+            for bracket in brackets[: len(spec["state_labels"])]
+        ]
+
+        plot_root_finding_diagnostic(
+            energies_scan,
+            mismatches_scan,
+            histories,
+            spec["path"],
+            spec["title"],
+            history_labels=spec["state_labels"],
+            mismatch_label=spec["mismatch_label"],
+        )
+
+
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: run_harmonic_rk4_comparison
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def run_harmonic_rk4_comparison(
     rk4_results_dir: Path,
@@ -132,10 +324,30 @@ def run_harmonic_rk4_comparison(
     The harmonic oscillator is used because it has an exact spectrum and a
     smooth potential. Both methods use inward shooting, so the comparison mainly
     isolates the difference between the Numerov and RK4 integration formulas.
+
+    Parameters
+    ----------
+    rk4_results_dir : Path
+        Output directory for RK4-only tables and figures.
+    comparison_results_dir : Path
+        Output directory for direct Numerov-versus-RK4 comparison data and plots.
+    numerov_convergence : dict[str, np.ndarray]
+        Precomputed Numerov grid-convergence data, expected to include matching
+        ``"h"`` and ``"energy_errors"`` arrays for the first four states.
+    omega : float, optional
+        Harmonic-oscillator frequency in the potential
+        ``V(x)=\frac{1}{2}\omega^2 x^2``.
+    x_max : float, optional
+        Half-width of the truncated spatial domain used for both solvers.
+    target_h : float | None, optional
+        Nominal grid spacing for the optional RK4 box-size study. If ``None``,
+        that box-size comparison is skipped.
     """
+
     n_states = 4
     numerov_h = np.asarray(numerov_convergence["h"], dtype=float)
     numerov_errors = np.asarray(numerov_convergence["energy_errors"], dtype=float)
+
     # Convert the Numerov spacing samples back into integer grid sizes so the
     # RK4 comparison uses matching meshes.
     grid_sizes = [int(round(x_max / h)) + 1 for h in numerov_h]
@@ -147,6 +359,7 @@ def run_harmonic_rk4_comparison(
         n_states=n_states,
         omega=omega,
     )
+
     save_csv_rows(
         rk4_results_dir / "2b_harmonic_rk4_energies.csv",
         [
@@ -161,6 +374,7 @@ def run_harmonic_rk4_comparison(
             for row in rk4_reference_rows
         ],
     )
+
     plot_energy_comparison(
         np.array([row.energy for row in rk4_reference_rows], dtype=float),
         np.array([row.exact_energy for row in rk4_reference_rows], dtype=float),
@@ -178,12 +392,15 @@ def run_harmonic_rk4_comparison(
         n_states=n_states,
         omega=omega,
     )
+
     rk4_slopes = estimate_convergence_slopes(
         rk4_convergence["h"], rk4_convergence["energy_errors"]
     )
+
     save_csv_rows(
         rk4_results_dir / "2b_harmonic_rk4_convergence_slopes.csv", rk4_slopes
     )
+
     plot_error_curve(
         rk4_convergence["h"],
         rk4_convergence["energy_errors"],
@@ -298,6 +515,7 @@ def run_harmonic_rk4_comparison(
             e_min=0.1,
             e_max=6.0,
         )
+
         save_csv_rows(
             rk4_results_dir / "2b_harmonic_rk4_convergence_vs_x_max_data.csv",
             [
@@ -317,6 +535,7 @@ def run_harmonic_rk4_comparison(
                 )
             ],
         )
+
         plot_error_curve(
             rk4_box["x_max"],
             rk4_box["energy_errors"],
@@ -327,169 +546,9 @@ def run_harmonic_rk4_comparison(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: plot_infinite_well_root_diagnostics
-# ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
-def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> None:
-    """
-    Plot shooting/root-finding diagnostics for all four infinite-well states.
-
-    Even and odd states use different parity boundary conditions at x = 0, so
-    the cleanest visualization is two separate mismatch plots:
-    - even sector: global states n=0 and n=2
-    - odd sector: global states n=1 and n=3
-    """
-
-    x_half = np.linspace(0.0, a, 900)
-    V_half = infinite_square_well_numeric(x_half, a=a, wall_height=1e6)
-
-    diagnostic_specs = [
-        {
-            "parity": "even",
-            "e_min": 0.1,
-            "e_max": 15.0,
-            "state_labels": ["state 0, even", "state 2, even"],
-            "path": results_dir
-            / "1_infinite_square_well_Numerov_root_finding_even.png",
-            "title": "Infinite well shooting roots, even states",
-            "mismatch_label": r"raw mismatch: $M(E)=\psi_E(a)$",
-        },
-        {
-            "parity": "odd",
-            "e_min": 2.0,
-            "e_max": 25.0,
-            "state_labels": ["state 1, odd", "state 3, odd"],
-            "path": results_dir / "1_infinite_square_well_Numerov_root_finding_odd.png",
-            "title": "Infinite well shooting roots, odd states",
-            "mismatch_label": r"raw mismatch: $M(E)=\psi_E(a)$",
-        },
-    ]
-
-    for spec in diagnostic_specs:
-        energies_scan, mismatches_scan = sample_boundary_mismatch_outward_shooting(
-            x_half,
-            V_half,
-            parity=spec["parity"],
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            n_scan=1600,
-        )
-        brackets = find_brackets_outward_shooting(
-            x_half,
-            V_half,
-            parity=spec["parity"],
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            n_scan=1600,
-        )
-        histories = [
-            bisection_history_outward_shooting(
-                x_half, V_half, spec["parity"], bracket, max_iter=30
-            )
-            for bracket in brackets[: len(spec["state_labels"])]
-        ]
-
-        plot_root_finding_diagnostic(
-            energies_scan,
-            mismatches_scan,
-            histories,
-            spec["path"],
-            spec["title"],
-            history_labels=spec["state_labels"],
-            mismatch_label=spec["mismatch_label"],
-        )
-
-
-# ---------------------------------------------------------------------------
-# FUNCTION: plot_harmonic_oscillator_root_diagnostics
-# ---------------------------------------------------------------------------
-def plot_harmonic_oscillator_root_diagnostics(
-    results_dir: Path,
-    omega: float = 1.0,
-    x_max: float = 8.0,
-) -> None:
-    """
-    Plot shooting/root-finding diagnostics for the first four
-    harmonic-oscillator states.
-
-    Even and odd harmonic-oscillator states use different parity boundary conditions:
-    - even sector: global states n=0 and n=2
-    - odd sector: global states n=1 and n=3
-
-    The mismatch is now sampled with the stable inward-shooting formulation.
-    The roots enforce parity at the origin: M(E)=psi'_E(0) for even states and
-    M(E)=psi_E(0) for odd states.
-    """
-
-    diagnostic_specs = [
-        {
-            "parity": "even",
-            "e_min": 0.1,
-            "e_max": 3.2,
-            "state_labels": ["state 0, even", "state 2, even"],
-            "path": results_dir
-            / "2a_harmonic_oscillator_Numerov_root_finding_even.png",
-            "title": "Harmonic oscillator shooting roots, even states",
-            "mismatch_label": r"raw mismatch: $M(E)=\psi'_E(0)$",
-        },
-        {
-            "parity": "odd",
-            "e_min": 0.7,
-            "e_max": 4.3,
-            "state_labels": ["state 1, odd", "state 3, odd"],
-            "path": results_dir / "2a_harmonic_oscillator_Numerov_root_finding_odd.png",
-            "title": "Harmonic oscillator shooting roots, odd states",
-            "mismatch_label": r"raw mismatch: $M(E)=\psi_E(0)$",
-        },
-    ]
-
-    for spec in diagnostic_specs:
-        energies_scan, mismatches_scan = sample_mismatch_inward_shooting(
-            x_max=x_max,
-            n_grid=500,
-            potential_fn=harmonic_oscillator,
-            potential_kwargs={"omega": omega},
-            parity=spec["parity"],
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            n_scan=400,
-        )
-        brackets = find_brackets_inward_shooting(
-            x_max=x_max,
-            n_grid=500,
-            potential_fn=harmonic_oscillator,
-            potential_kwargs={"omega": omega},
-            parity=spec["parity"],
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            n_scan=400,
-        )
-        histories = [
-            bisection_history_inward_shooting(
-                x_max=x_max,
-                n_grid=1600,
-                potential_fn=harmonic_oscillator,
-                potential_kwargs={"omega": omega},
-                parity=spec["parity"],
-                bracket=bracket,
-                max_iter=30,
-            )
-            for bracket in brackets[: len(spec["state_labels"])]
-        ]
-
-        plot_root_finding_diagnostic(
-            energies_scan,
-            mismatches_scan,
-            histories,
-            spec["path"],
-            spec["title"],
-            history_labels=spec["state_labels"],
-            mismatch_label=spec["mismatch_label"],
-        )
-
-
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_double_well_root_diagnostics
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_double_well_root_diagnostics(
     results_dir: Path,
@@ -503,7 +562,19 @@ def plot_double_well_root_diagnostics(
     As in the harmonic benchmark, the even and odd parity sectors are shown in
     separate panels so the first two states of each sector can be tracked
     cleanly through the mismatch and bisection curves.
+
+    Parameters
+    ----------
+    results_dir : Path
+        Directory where the quartic double-well diagnostic figures are saved.
+    potential_kwargs : dict[str, float | bool]
+        Keyword arguments forwarded to `quartic_double_well()` to define the
+        physical potential used in the diagnostic scans.
+    x_max : float, optional
+        Half-width of the half-line domain ``[0, x_max]`` used for outward
+        shooting in the diagnostic plots.
     """
+
     x_half = np.linspace(0.0, x_max, 1200)
     V_half = quartic_double_well(x_half, **potential_kwargs)
 
@@ -564,6 +635,7 @@ def plot_double_well_root_diagnostics(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: run_square_well
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
@@ -575,6 +647,12 @@ def run_square_well(results_dir: Path) -> None:
     This is important because the exact boundary condition is psi(a)=0.
     If x_max is larger than a, the convergence plot mixes grid error with the
     error caused by replacing an infinite wall with a finite numerical barrier.
+
+    Parameters
+    ----------
+    results_dir : Path
+        Root results directory under which this experiment creates its own
+        output subdirectory.
     """
 
     # Create an output folder under results_dir for this experiment
@@ -588,7 +666,7 @@ def run_square_well(results_dir: Path) -> None:
     n_grid = 2500  # Number of grid points for the Numerov solver, including boundaries
 
     # Run the solver to find the first four bound states of the infinite square well
-    print("Solving infinite square well experiment...")
+    print("Running infinite square well experiment...")
     states = solve_symmetric_potential_outward_shooting(
         x_max=x_max,
         n_grid=n_grid,
@@ -607,7 +685,7 @@ def run_square_well(results_dir: Path) -> None:
 
     # Save a CSV comparing the numerical and exact energies, along with the relative
     # error.
-    print("Tabulating infinite square well energies...")
+    print("Saving infinite square well energy table...")
     rows = []
     for i, (en, ex) in enumerate(zip(numerical, exact)):
         rows.append(
@@ -619,6 +697,7 @@ def run_square_well(results_dir: Path) -> None:
                 "relative_error": abs((en - ex) / ex),
             }
         )
+
     save_csv_rows(experiment_dir / "1_infinite_square_well_Numerov_energies.csv", rows)
 
     # For visualization only, draw the artificial walls slightly outside the
@@ -626,7 +705,7 @@ def run_square_well(results_dir: Path) -> None:
     x_plot = np.linspace(-1.2 * a, 1.2 * a, 1200)
     V_plot = infinite_square_well_numeric(x_plot, a=a, wall_height=1e6)
 
-    print("Plotting infinite square well results...")
+    print("Plotting infinite square well figures...")
     plot_potential_and_states(
         x_plot,
         V_plot,
@@ -635,11 +714,13 @@ def run_square_well(results_dir: Path) -> None:
         "Infinite well states",
         potential_label=r"$V(x)=0$ for $|x|\leq a$, $V_0$ for $|x|>a$ (numerically: $V_0 \gg 1$)",
     )
+
     plot_probability_densities(
         states,
         experiment_dir / "1_infinite_square_well_Numerov_densities.png",
         "Infinite well densities",
     )
+
     plot_energy_comparison(
         numerical,
         exact,
@@ -667,6 +748,7 @@ def run_square_well(results_dir: Path) -> None:
         reference_energies=exact,
     )
     conv_slopes = estimate_convergence_slopes(conv["h"], conv["energy_errors"])
+
     save_csv_rows(
         experiment_dir / "1_infinite_square_well_Numerov_convergence_slopes.csv",
         conv_slopes,
@@ -686,7 +768,9 @@ def run_square_well(results_dir: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: run_harmonic_oscillator
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def run_harmonic_oscillator(results_dir: Path) -> None:
     """
@@ -694,7 +778,14 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
 
     This experiment validates the solver against the exact ladder spectrum and
     produces both grid-refinement and box-size convergence studies.
+
+    Parameters
+    ----------
+    results_dir : Path
+        Root results directory under which the Numerov, RK4, and comparison
+        subdirectories are created.
     """
+
     numerov_results_dir = _experiment_results_dir(
         results_dir, "2a_harmonic_oscillator_Numerov"
     )
@@ -736,12 +827,13 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
                 "relative_error": abs((en - ex) / ex),
             }
         )
+
     save_csv_rows(
         numerov_results_dir / "2a_harmonic_oscillator_Numerov_energies.csv",
         rows,
     )
 
-    print("Plotting harmonic oscillator results...")
+    print("Plotting harmonic oscillator figures...")
     x = states[0].x_full
     V = harmonic_oscillator(x, omega=omega)
     plot_potential_and_states(
@@ -752,11 +844,13 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         "Harmonic oscillator states",
         potential_label=r"$V(x)=\frac{1}{2}\omega^2x^2$",
     )
+
     plot_probability_densities(
         states,
         numerov_results_dir / "2a_harmonic_oscillator_Numerov_densities.png",
         "Harmonic oscillator densities",
     )
+
     plot_energy_comparison(
         numerical,
         exact,
@@ -790,6 +884,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         solver_fn=solve_symmetric_potential_inward_shooting,
     )
     conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
+
     save_csv_rows(
         numerov_results_dir / "2a_harmonic_oscillator_Numerov_convergence_slopes.csv",
         conv_h_slopes,
@@ -804,9 +899,10 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         slopes=conv_h_slopes,
     )
 
-    print("Comparing harmonic oscillator Numerov and RK4 convergence...")
+    print("Running harmonic oscillator Numerov-versus-RK4 comparison...")
     # Keep the same nominal spacing for the RK4 and Numerov box-size studies.
     target_h = x_max / (n_grid - 1)
+
     run_harmonic_rk4_comparison(
         rk4_results_dir=rk4_results_dir,
         comparison_results_dir=comparison_results_dir,
@@ -833,6 +929,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         reference_energies=exact[:4],
         solver_fn=solve_symmetric_potential_inward_shooting,
     )
+
     save_csv_rows(
         numerov_results_dir
         / "2a_harmonic_oscillator_Numerov_convergence_vs_x_max_data.csv",
@@ -853,6 +950,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
             )
         ],
     )
+
     plot_error_curve(
         conv_box["x_max"],
         conv_box["energy_errors"],
@@ -863,7 +961,9 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: run_double_well
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def run_double_well(results_dir: Path) -> None:
     """
@@ -871,7 +971,14 @@ def run_double_well(results_dir: Path) -> None:
 
     In addition to plotting the low-lying states, this experiment sweeps the
     double-well parameter b and records the tunneling splitting E1 - E0.
+
+    Parameters
+    ----------
+    results_dir : Path
+        Root results directory under which this experiment creates its output
+        subdirectory.
     """
+
     experiment_dir = _experiment_results_dir(results_dir, "3_double_well_Numerov")
 
     base_kwargs = {"a": 1.0, "b": 6.0, "shift_min_to_zero": True}
@@ -903,12 +1010,13 @@ def run_double_well(results_dir: Path) -> None:
                 "mismatch": s.mismatch,
             }
         )
+
     save_csv_rows(experiment_dir / "3_double_well_Numerov_energies.csv", rows)
 
     x = states[0].x_full
     V = quartic_double_well(x, **base_kwargs)
 
-    print("Plotting quartic double well results...")
+    print("Plotting quartic double well figures...")
     plot_potential_and_states(
         x,
         V,
@@ -948,10 +1056,12 @@ def run_double_well(results_dir: Path) -> None:
         e_max=20.0,
     )
     conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
+
     save_csv_rows(
         experiment_dir / "3_double_well_Numerov_convergence_slopes.csv",
         conv_h_slopes,
     )
+
     plot_error_curve(
         conv_h["h"],
         conv_h["energy_errors"],
@@ -989,6 +1099,7 @@ def run_double_well(results_dir: Path) -> None:
         e_max=20.0,
         reference_energies=reference_energies_box,
     )
+
     save_csv_rows(
         experiment_dir / "3_double_well_Numerov_convergence_vs_x_max_data.csv",
         [
@@ -1008,6 +1119,7 @@ def run_double_well(results_dir: Path) -> None:
             )
         ],
     )
+
     plot_error_curve(
         conv_box["x_max"],
         conv_box["energy_errors"],
@@ -1026,6 +1138,7 @@ def run_double_well(results_dir: Path) -> None:
         e_min=0.0,
         e_max=25.0,
     )
+
     save_csv_rows(
         experiment_dir / "3_double_well_Numerov_splitting_vs_b.csv", sweep_rows
     )
@@ -1046,7 +1159,9 @@ def run_double_well(results_dir: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: run_finite_square_well
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def run_finite_square_well(results_dir: Path) -> None:
     """
@@ -1054,7 +1169,14 @@ def run_finite_square_well(results_dir: Path) -> None:
 
     This case demonstrates that the same solver handles a finite number of bound
     states when the confining walls have finite height.
+
+    Parameters
+    ----------
+    results_dir : Path
+        Root results directory under which this experiment creates its output
+        subdirectory.
     """
+
     experiment_dir = _experiment_results_dir(
         results_dir, "4_finite_square_well_Numerov"
     )
@@ -1084,12 +1206,13 @@ def run_finite_square_well(results_dir: Path) -> None:
                 "energy": s.energy,
             }
         )
+
     save_csv_rows(experiment_dir / "4_finite_square_well_Numerov_energies.csv", rows)
 
     x = states[0].x_full
     V = finite_square_well(x, **kwargs)
 
-    print("Plotting finite square well results...")
+    print("Plotting finite square well figures...")
     plot_potential_and_states(
         x,
         V,
@@ -1105,7 +1228,9 @@ def run_finite_square_well(results_dir: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: run_scattering
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def run_scattering(results_dir: Path) -> None:
     """
@@ -1115,7 +1240,14 @@ def run_scattering(results_dir: Path) -> None:
     single finite barrier and a double-barrier resonant tunneling structure. The
     double-barrier case is the important extension: resonant transmission peaks
     appear when the energy matches a quasi-bound state in the central well.
+
+    Parameters
+    ----------
+    results_dir : Path
+        Root results directory under which the single- and double-barrier
+        scattering output subdirectories are created.
     """
+
     single_results_dir = _experiment_results_dir(
         results_dir, "5_scattering_single_barrier_Numerov"
     )
@@ -1149,6 +1281,7 @@ def run_scattering(results_dir: Path) -> None:
         }
         for result in single_results
     ]
+
     save_csv_rows(
         single_results_dir / "5_scattering_single_barrier_Numerov.csv",
         single_rows,
@@ -1157,7 +1290,7 @@ def run_scattering(results_dir: Path) -> None:
     T_single = np.array([result.transmission for result in single_results], dtype=float)
     R_single = np.array([result.reflection for result in single_results], dtype=float)
 
-    print("Plotting single-barrier scattering results...")
+    print("Plotting single-barrier scattering figures...")
     plot_scattering_coefficients(
         energies_single,
         T_single,
@@ -1189,12 +1322,13 @@ def run_scattering(results_dir: Path) -> None:
         }
         for result in double_results
     ]
+
     save_csv_rows(
         double_results_dir / "6_scattering_double_barrier_Numerov.csv",
         double_rows,
     )
 
-    print("Plotting double-barrier scattering results...")
+    print("Plotting double-barrier scattering figures...")
     plot_scattering_coefficients(
         energies_double,
         T_double,
