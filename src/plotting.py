@@ -8,18 +8,6 @@ of the project code can focus on the numerical calculations.
 
 This file is deliberately separate from the numerical solvers. It contains only
 presentation logic: turning validated data into figures used in the report.
-
-The plotting choices are part of the reviewer story, not just aesthetics:
-- state and density plots show parity, node structure, and localization
-- error curves show convergence with respect to h or x_max
-- root-diagnostic plots show that eigenvalues come from zeros of a mismatch
-  function rather than from opaque black-box optimization
-- scattering plots show T(E), R(E), and the conservation check T(E)+R(E)
-
-Recent reviewer-facing changes keep more information visible:
-- state labels now show energies with higher precision
-- root-diagnostic plots display the raw mismatch on a symmetric log scale so
-  both even and odd scans remain interpretable near zero
 """
 
 from pathlib import Path
@@ -68,6 +56,12 @@ def plot_potential_and_states(
     """
     Plot the potential together with several shifted eigenstates.
 
+    Each displayed wavefunction is first normalized to a comparable visual
+    height, then shifted vertically by its eigenenergy before plotting. This
+    produces the standard bound-state visualization in which each state is
+    drawn on top of its corresponding energy level, rather than around
+    y = 0 as an unshifted wavefunction would be.
+
     Parameters
     ----------
     x : ndarray
@@ -97,12 +91,16 @@ def plot_potential_and_states(
     wavefunctions remain visible in square-well plots.
     """
 
+    # Make sure the output directory exists before plotting
     _ensure_parent(path)
+
+    # Create a new Matplotlib figure
     plt.figure(figsize=(8, 5))
 
     # Very tall artificial walls dominate the y-axis visually, so clip them to
     # keep the bound states legible without changing the underlying data files.
     V_plot = np.clip(V, None, 25.0)
+
     plt.plot(x, V_plot, label=potential_label)
 
     for i, state in enumerate(states[:n_show]):
@@ -116,7 +114,7 @@ def plot_potential_and_states(
             label=f"n={i}, {state.parity}, E={state.energy:.6f}",
         )
 
-    plt.xlabel("x")
+    plt.xlabel("$x$")
     plt.ylabel("Energy / shifted wavefunction")
     plt.title(title)
     plt.legend(fontsize=8)
@@ -155,7 +153,10 @@ def plot_probability_densities(
     None
     """
 
+    # Make sure the output directory exists before plotting
     _ensure_parent(path)
+
+    # Create a new Matplotlib figure
     plt.figure(figsize=(8, 5))
 
     for i, state in enumerate(states[:n_show]):
@@ -165,7 +166,7 @@ def plot_probability_densities(
             label=f"n={i}, E={state.energy:.6f}",
         )
 
-    plt.xlabel("x")
+    plt.xlabel("$x$")
     plt.ylabel(r"$|\psi(x)|^2$")
     plt.title(title)
     plt.legend(fontsize=8)
@@ -174,6 +175,7 @@ def plot_probability_densities(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_energy_comparison
 # ---------------------------------------------------------------------------
@@ -209,13 +211,17 @@ def plot_energy_comparison(
     None
     """
 
-    _ensure_parent(path)
     n = np.arange(len(exact))
 
+    # Make sure the output directory exists before plotting
+    _ensure_parent(path)
+
+    # Create a new Matplotlib figure
     plt.figure(figsize=(4, 3))
+
     plt.plot(n, exact, marker="o", markersize=9, label=exact_label)
     plt.plot(n, numerical, marker="s", label=numerical_label)
-    plt.xlabel("state index n")
+    plt.xlabel("state index $n$")
     plt.ylabel("Energy")
     plt.title(title)
     plt.legend()
@@ -261,7 +267,10 @@ def plot_error_curve(
     None
     """
 
+    # Make sure the output directory exists before plotting
     _ensure_parent(path)
+
+    # Create a new Matplotlib figure
     plt.figure(figsize=(4, 3))
 
     for i in range(errors.shape[1]):
@@ -323,9 +332,12 @@ def plot_splitting_curve(
     None
     """
 
+    # Make sure the output directory exists before plotting
     _ensure_parent(path)
 
+    # Create a new Matplotlib figure
     plt.figure(figsize=(4, 3))
+
     plt.plot(xvals, e0, marker="o", label="E0")
     plt.plot(xvals, e1, marker="s", label="E1")
     plt.plot(xvals, splitting, marker="^", label="E1 - E0")
@@ -380,7 +392,7 @@ def plot_root_finding_diagnostic(
     # Make sure the output directory exists before plotting
     _ensure_parent(path)
 
-    #
+    # Create a new Matplotlib figure
     plt.figure(figsize=(8, 5))
 
     finite_curve = np.asarray(mismatches[np.isfinite(mismatches)], dtype=float)
@@ -408,11 +420,12 @@ def plot_root_finding_diagnostic(
         mids = np.array([row["mid"] for row in history], dtype=float)
         vals = np.array([row["mismatch_mid"] for row in history], dtype=float)
         label = history_labels[i] if i < len(history_labels) else f"state {i} bisection"
+
         plt.scatter(mids, vals, s=18, label=label)
 
     plt.yscale("symlog", linthresh=linthresh)
-    plt.xlabel("trial energy E")
-    plt.ylabel("boundary mismatch")
+    plt.xlabel("Trial energy $E$")
+    plt.ylabel("Boundary mismatch")
     plt.title(title)
     plt.legend(fontsize=8)
     plt.tight_layout()
@@ -456,13 +469,14 @@ def plot_scattering_coefficients(
     # Make sure the output directory exists before plotting
     _ensure_parent(path)
 
+    # Create a new Matplotlib figure
     plt.figure(figsize=(8, 5))
 
     plt.plot(energies, transmission, label="transmission $T(E)$")
     plt.plot(energies, reflection, linestyle=":", label="reflection $R(E)$")
     plt.plot(energies, transmission + reflection, linestyle="--", label="$T(E)+R(E)$")
-    plt.xlabel("incident energy E")
-    plt.ylabel("probability")
+    plt.xlabel("Incident energy $E$")
+    plt.ylabel("Probability")
     plt.title(title)
     plt.ylim(-0.05, 1.08)
     plt.legend(fontsize=8)
@@ -507,27 +521,28 @@ def plot_scattering_potential_and_probability(
         Figure title displayed above the plot.
     """
 
-    # Make sure the output directory exists before plotting
-    _ensure_parent(path)
-
     density = np.abs(psi) ** 2
     density_scale = np.max(density)
-    
+
     if density_scale == 0.0 or not np.isfinite(density_scale):
         density_scale = 1.0
 
     V_scale = np.max(np.abs(V))
-    
+
     # Rescale the potential onto the same vertical range as the probability
     # density so both shapes can be inspected on one axis.
     V_plot = V / V_scale * density_scale if V_scale > 0.0 else V
 
+    # Make sure the output directory exists before plotting
+    _ensure_parent(path)
+
+    # Create a new Matplotlib figure
     plt.figure(figsize=(8, 5))
-    
+
     plt.plot(x, density, label=rf"$|\psi(x)|^2$, $E={energy:.3f}$")
     plt.plot(x, V_plot, linestyle="--", label="rescaled $V(x)$")
-    plt.xlabel("x")
-    plt.ylabel("relative scale")
+    plt.xlabel("$x$")
+    plt.ylabel("Relative scale")
     plt.title(title)
     plt.legend(fontsize=8)
     plt.tight_layout()
@@ -572,20 +587,22 @@ def plot_numerov_vs_rk4_errors(
     title : str
         Figure title displayed above the plot.
     """
-    
-    # Make sure the output directory exists before plotting
-    _ensure_parent(path)
-    
+
     # Collapse the per-state error tables to one conservative curve per method
     # by plotting the worst low-state error at each spacing.
     numerov_max = np.max(numerov_errors, axis=1)
     rk4_max = np.max(rk4_errors, axis=1)
 
+    # Make sure the output directory exists before plotting
+    _ensure_parent(path)
+
+    # Create a new Matplotlib figure
     plt.figure(figsize=(4, 3))
+
     plt.loglog(h_numerov, numerov_max, marker="o", label="Numerov, max state error")
     plt.loglog(h_rk4, rk4_max, marker="s", label="RK4, max state error")
-    plt.xlabel("grid spacing h")
-    plt.ylabel("max absolute energy error")
+    plt.xlabel("Grid spacing $h$")
+    plt.ylabel("Max absolute energy error")
     plt.title(title)
     plt.legend(fontsize=8)
     plt.tight_layout()
