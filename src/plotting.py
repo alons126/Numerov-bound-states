@@ -91,7 +91,7 @@ def plot_potential_and_states(
     _ensure_parent(path)
 
     # Create a new Matplotlib figure
-    plt.figure(figsize=(8, 5))
+    plt.figure(figsize=(8, 6))
 
     # Very tall artificial walls dominate the y-axis visually, so clip them to
     # keep the bound states legible without changing the underlying data files.
@@ -113,7 +113,7 @@ def plot_potential_and_states(
     plt.xlabel("$x$")
     plt.ylabel("Energy / shifted wavefunction")
     plt.title(title)
-    plt.legend(fontsize=8)
+    plt.legend(fontsize=8, loc="upper left")
     plt.tight_layout()
     plt.savefig(path, dpi=160)
     plt.close()
@@ -151,19 +151,19 @@ def plot_probability_densities(
     _ensure_parent(path)
 
     # Create a new Matplotlib figure
-    plt.figure(figsize=(8, 5))
+    plt.figure(figsize=(8, 6))
 
     for i, state in enumerate(states[:n_show]):
         plt.plot(
             state.x_full,
             np.abs(state.psi_full) ** 2,
-            label=f"n={i}, E={state.energy:.6f}",
+            label=f"$n={i}$, $E={state.energy:.6f}$",
         )
 
     plt.xlabel("$x$")
     plt.ylabel(r"$|\psi(x)|^2$")
     plt.title(title)
-    plt.legend(fontsize=8)
+    plt.legend(fontsize=8, loc="upper left")
     plt.tight_layout()
     plt.savefig(path, dpi=160)
     plt.close()
@@ -209,11 +209,11 @@ def plot_energy_comparison(
     _ensure_parent(path)
 
     # Create a new Matplotlib figure
-    plt.figure(figsize=(4, 3))
+    plt.figure(figsize=(8, 6))
 
     plt.plot(n, exact, marker="o", markersize=9, label=exact_label)
     plt.plot(n, numerical, marker="s", label=numerical_label)
-    plt.xlabel("state index $n$")
+    plt.xlabel("State index $n$")
     plt.ylabel("Energy")
     plt.title(title)
     plt.legend()
@@ -261,23 +261,23 @@ def plot_error_curve(
     _ensure_parent(path)
 
     # Create a new Matplotlib figure
-    plt.figure(figsize=(4, 3))
+    plt.figure(figsize=(8, 6))
 
     for i in range(errors.shape[1]):
-        label = f"state {i}"
+        label = f"State {i}"
 
         if slopes is not None and i < len(slopes):
             slope = slopes[i].get("convergence_exponent_p", np.nan)
 
             if np.isfinite(slope):
-                label = f"state {i}, p={slope:.2f}"
+                label = f"State ${i}$, $p = {slope:.2f}$"
 
         # Each column of `errors` corresponds to one state across all sampled
         # grid spacings or box sizes.
         plt.loglog(xvals, errors[:, i], marker="o", label=label)
 
     plt.xlabel(xlabel)
-    plt.ylabel("Absolute energy error")
+    plt.ylabel("Energy error = |numerical - exact|")
     plt.title(title)
     plt.legend()
     plt.tight_layout()
@@ -324,7 +324,7 @@ def plot_splitting_curve(
     _ensure_parent(path)
 
     # Create a new Matplotlib figure
-    plt.figure(figsize=(4, 3))
+    plt.figure(figsize=(8, 6))
 
     plt.plot(xvals, e0, marker="o", label="E0")
     plt.plot(xvals, e1, marker="s", label="E1")
@@ -379,7 +379,7 @@ def plot_root_finding_diagnostic(
     _ensure_parent(path)
 
     # Create a new Matplotlib figure
-    plt.figure(figsize=(8, 5))
+    plt.figure(figsize=(8, 6))
 
     finite_curve = np.asarray(mismatches[np.isfinite(mismatches)], dtype=float)
 
@@ -396,16 +396,16 @@ def plot_root_finding_diagnostic(
         linthresh = max(1.0e-12, float(np.quantile(nonzero_abs, 0.05)))
 
     plt.plot(energies, mismatches, label=mismatch_label)
-    plt.axhline(0.0, linestyle=":", label="target mismatch = 0")
+    plt.axhline(0.0, linestyle=":", label="Target mismatch = 0")
 
     if history_labels is None:
-        history_labels = [f"state {i} bisection" for i in range(len(histories))]
+        history_labels = [f"State {i} bisection" for i in range(len(histories))]
 
     for i, history in enumerate(histories):
         # Each history is the sequence of bisection midpoints for one root.
         mids = np.array([row["mid"] for row in history], dtype=float)
         vals = np.array([row["mismatch_mid"] for row in history], dtype=float)
-        label = history_labels[i] if i < len(history_labels) else f"state {i} bisection"
+        label = history_labels[i] if i < len(history_labels) else f"State {i} bisection"
 
         plt.scatter(mids, vals, s=18, label=label)
 
@@ -413,7 +413,7 @@ def plot_root_finding_diagnostic(
     plt.xlabel("Trial energy $E$")
     plt.ylabel("Boundary mismatch")
     plt.title(title)
-    plt.legend(fontsize=8)
+    plt.legend(fontsize=8, loc="lower right")
     plt.tight_layout()
     plt.savefig(path, dpi=160)
     plt.close()
@@ -454,7 +454,7 @@ def plot_scattering_coefficients(
     _ensure_parent(path)
 
     # Create a new Matplotlib figure
-    plt.figure(figsize=(8, 5))
+    plt.figure(figsize=(8, 6))
 
     plt.plot(energies, transmission, label="transmission $T(E)$")
     plt.plot(energies, reflection, linestyle=":", label="reflection $R(E)$")
@@ -519,7 +519,7 @@ def plot_scattering_potential_and_probability(
     _ensure_parent(path)
 
     # Create a new Matplotlib figure
-    plt.figure(figsize=(8, 5))
+    plt.figure(figsize=(8, 6))
 
     plt.plot(x, density, label=rf"$|\psi(x)|^2$, $E={energy:.3f}$")
     plt.plot(x, V_plot, linestyle="--", label="rescaled $V(x)$")
@@ -577,7 +577,7 @@ def plot_numerov_vs_rk4_errors(
     _ensure_parent(path)
 
     # Create a new Matplotlib figure
-    plt.figure(figsize=(4, 3))
+    plt.figure(figsize=(8, 6))
 
     plt.loglog(h_numerov, numerov_max, marker="o", label="Numerov, max state error")
     plt.loglog(h_rk4, rk4_max, marker="s", label="RK4, max state error")

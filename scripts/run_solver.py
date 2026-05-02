@@ -81,29 +81,29 @@ def main() -> None:
         # Keep the execution order aligned with the report structure so the
         # generated results tree is easy to compare against the writeup.
         print("\n1. Infinite Square Well (Numerov only)")
-        print("\n------------------------------------------------------------------")
+        print("------------------------------------------------------------------\n")
         run_square_well(RESULTS)
 
         print("\n2. Harmonic Oscillator (Numerov & RK4)")
-        print("\n------------------------------------------------------------------")
+        print("------------------------------------------------------------------\n")
         run_harmonic_oscillator(RESULTS)
 
         print("\n3. Double Well (Numerov only)")
-        print("\n------------------------------------------------------------------")
+        print("------------------------------------------------------------------\n")
         run_double_well(RESULTS)
 
         print("\n4. Finite Square Well (Numerov only)")
-        print("\n------------------------------------------------------------------")
+        print("------------------------------------------------------------------\n")
         run_finite_square_well(RESULTS)
 
         print("\n5. Scattering and Resonant Tunneling (Numerov only)")
-        print("\n------------------------------------------------------------------")
+        print("------------------------------------------------------------------\n")
         run_scattering(RESULTS)
 
     # Run tests after the experiments so the workflow reproduces the figures
     # first and then performs a quick regression pass on the codebase.
     print("\nRunning tests")
-    print("\n------------------------------------------------------------------")
+    print("------------------------------------------------------------------\n")
     run_all_tests()
 
     if experiments_import_error is None:

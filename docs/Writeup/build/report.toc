@@ -13,7 +13,7 @@
 \contentsline {subsection}{\numberline {3.4}Finite square well}{9}{subsection.3.4}%
 \contentsline {subsection}{\numberline {3.5}Scattering and resonant tunneling}{12}{subsection.3.5}%
 \contentsline {subsubsection}{\numberline {3.5.1}Single barrier potential}{12}{subsubsection.3.5.1}%
-\contentsline {subsubsection}{\numberline {3.5.2}Double barrier potential}{12}{subsubsection.3.5.2}%
+\contentsline {subsubsection}{\numberline {3.5.2}Double barrier potential}{13}{subsubsection.3.5.2}%
 \contentsline {section}{\numberline {4}Discussion}{14}{section.4}%
 \contentsline {section}{\numberline {5}Conclusion}{15}{section.5}%
 \contentsline {section}{References}{15}{section*.9}%
