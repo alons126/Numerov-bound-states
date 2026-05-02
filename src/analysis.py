@@ -7,29 +7,14 @@ This module collects functions that turn raw solver output into quantities used
 in the report: exact benchmark spectra, error tables, convergence trends, and
 double-well splitting data.
 
-Reviewer guide
---------------
 This module is the scientific validation layer. It is what turns the project
 from "the code runs" into "the numerical claims are checked."
 
 The functions here fall into three groups:
-- exact benchmark helpers for problems with known spectra
-- convergence helpers for studying discretization and truncation error
-- parameter-sweep helpers for extracting physical trends such as double-well
+- Exact benchmark helpers for problems with known spectra
+- Convergence helpers for studying discretization and truncation error
+- Parameter-sweep helpers for extracting physical trends such as double-well
   tunneling splitting
-
-This layer exists because numerical computation is approximate, so the project
-has to do more than produce plots. It must check convergence, compare against
-exact solutions when available, and separate different error sources cleanly.
-
-One important reviewer-facing design choice is that the quartic double well
-uses two different convergence strategies:
-- grid-refinement (`convergence_vs_grid_successive`) compares each grid to the
-  next finer grid on the same domain, because there is no exact closed-form
-  spectrum to compare against
-- box-size studies (`convergence_vs_box_size_fixed_spacing`) keep the spacing
-  approximately fixed so that changing x_max mainly measures finite-domain
-  truncation rather than also changing h
 """
 
 import csv
@@ -37,9 +22,12 @@ from pathlib import Path
 
 import numpy as np
 
+# Import the solver's state container for type annotations and the default
+# outward-shooting routine used by the convergence/parameter-sweep helpers.
 from src.shooting import StateSolution, solve_symmetric_potential_outward_shooting
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: exact_square_well_energies
 # ---------------------------------------------------------------------------
@@ -67,7 +55,9 @@ def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarr
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: exact_harmonic_oscillator_energies
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def exact_harmonic_oscillator_energies(
     n_values: np.ndarray,
@@ -88,12 +78,16 @@ def exact_harmonic_oscillator_energies(
     ndarray
         Exact eigenvalues.
     """
+
     n_values = np.asarray(n_values, dtype=float)
+
     return omega * (n_values + 0.5)
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: relative_error
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def relative_error(numerical: np.ndarray, exact: np.ndarray) -> np.ndarray:
     """
@@ -111,11 +105,14 @@ def relative_error(numerical: np.ndarray, exact: np.ndarray) -> np.ndarray:
     ndarray
         Relative errors |numerical - exact| / |exact|.
     """
+
     numerical = np.asarray(numerical, dtype=float)
     exact = np.asarray(exact, dtype=float)
+
     return np.abs((numerical - exact) / exact)
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: estimate_convergence_slopes
 # ---------------------------------------------------------------------------
@@ -180,6 +177,7 @@ def estimate_convergence_slopes(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: save_csv_rows
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
@@ -212,7 +210,9 @@ def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: energies_from_states
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def energies_from_states(
     states: list[StateSolution],
@@ -233,18 +233,22 @@ def energies_from_states(
     ndarray
         Extracted energy values.
     """
+
     if n_states is None:
         return np.array([s.energy for s in states], dtype=float)
+
     if len(states) < n_states:
         raise ValueError(
             f"Requested {n_states} state energies, but solver returned only "
             f"{len(states)} states."
         )
+
     # States are already sorted by energy by the solver, so slicing keeps the
     # physically lowest levels in order.
     return np.array([s.energy for s in states[:n_states]], dtype=float)
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: convergence_vs_grid
 # ---------------------------------------------------------------------------
@@ -312,7 +316,9 @@ def convergence_vs_grid(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: convergence_vs_grid_successive
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def convergence_vs_grid_successive(
     potential_fn,
@@ -354,6 +360,7 @@ def convergence_vs_grid_successive(
     dict[str, ndarray]
         Dictionary with coarse-grid spacings h and successive-difference arrays.
     """
+
     if len(grid_sizes) < 2:
         raise ValueError("Need at least two grid sizes for successive convergence.")
 
@@ -379,11 +386,14 @@ def convergence_vs_grid_successive(
     # Successive differences act as a stand-in error estimate when no exact
     # spectrum is available, as in the quartic double well.
     successive_errors = np.abs(energies_arr[:-1] - energies_arr[1:])
+
     return {"h": np.array(hs[:-1]), "energy_errors": successive_errors}
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: convergence_vs_box_size
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def convergence_vs_box_size(
     potential_fn,
@@ -422,6 +432,7 @@ def convergence_vs_box_size(
     dict[str, ndarray]
         Dictionary with x_max values and energy error arrays.
     """
+
     xs = []
     errors = []
     n_states = len(reference_energies)
@@ -448,7 +459,9 @@ def convergence_vs_box_size(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: convergence_vs_box_size_fixed_spacing
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def convergence_vs_box_size_fixed_spacing(
     potential_fn,
@@ -496,6 +509,7 @@ def convergence_vs_box_size_fixed_spacing(
         Dictionary with x_max values, actual h values, n_grid values, and
         energy error arrays.
     """
+
     xs = []
     hs = []
     grid_sizes = []
@@ -534,7 +548,9 @@ def convergence_vs_box_size_fixed_spacing(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: splitting_vs_parameter
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def splitting_vs_parameter(
     potential_fn,
@@ -571,6 +587,7 @@ def splitting_vs_parameter(
     list[dict]
         Rows containing the varied parameter, E0, E1, and the splitting.
     """
+
     rows: list[dict] = []
 
     for value in varied_values:
