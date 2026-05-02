@@ -1,0 +1,35 @@
+digraph G {
+  rankdir="LR";
+  graph [labeljust="l", labelloc="t", fontsize=20, fontname="Helvetica"];
+  label="Module-Level Flow";
+  node [shape=box, style="rounded,filled", fillcolor="#EFF6FF", color="#1D4ED8", fontname="Helvetica", fontsize=12];
+  edge [color="#64748B", arrowsize=0.8];
+  scripts_run_solver [label="scripts.run_solver"];
+  src_analysis [label="src.analysis"];
+  src_experiments [label="src.experiments"];
+  src_numerov [label="src.numerov"];
+  src_plotting [label="src.plotting"];
+  src_potentials [label="src.potentials"];
+  src_rk4_compare [label="src.rk4_compare"];
+  src_scattering [label="src.scattering"];
+  src_shooting [label="src.shooting"];
+  tests_test_solver [label="tests.test_solver"];
+  scripts_run_solver -> src_experiments;
+  scripts_run_solver -> tests_test_solver;
+  src_analysis -> src_shooting;
+  src_experiments -> src_analysis;
+  src_experiments -> src_plotting;
+  src_experiments -> src_potentials;
+  src_experiments -> src_rk4_compare;
+  src_experiments -> src_scattering;
+  src_experiments -> src_shooting;
+  src_rk4_compare -> src_analysis;
+  src_scattering -> src_numerov;
+  src_shooting -> src_numerov;
+  tests_test_solver -> src_analysis;
+  tests_test_solver -> src_numerov;
+  tests_test_solver -> src_potentials;
+  tests_test_solver -> src_rk4_compare;
+  tests_test_solver -> src_scattering;
+  tests_test_solver -> src_shooting;
+}

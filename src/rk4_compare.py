@@ -8,8 +8,6 @@ harmonic-oscillator shooting problem with a fourth-order Runge-Kutta integrator
 so the project can compare a general ODE method with the specialized Numerov
 scheme.
 
-Reviewer guide
---------------
 This module exists to make one methodological comparison precise: how does the
 specialized Numerov integrator compare with a standard general-purpose RK4
 integrator on the same physical problem?
@@ -370,7 +368,7 @@ def RK4_bisect_energy(
 
     for _ in range(max_iter):
         mid = 0.5 * (lo + hi)
-        
+
         fmid = RK4_inward_mismatch(mid, parity, x_max, n_grid, omega)
 
         if abs(hi - lo) < tol or abs(fmid) < tol:

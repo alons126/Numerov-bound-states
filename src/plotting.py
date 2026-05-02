@@ -6,8 +6,6 @@ Plotting helpers for report-ready figures.
 The functions in this module keep all Matplotlib logic in one place so the rest
 of the project code can focus on the numerical calculations.
 
-Reviewer guide
---------------
 This file is deliberately separate from the numerical solvers. It contains only
 presentation logic: turning validated data into figures used in the report.
 
@@ -31,7 +29,9 @@ import numpy as np
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: _ensure_parent
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def _ensure_parent(path: str | Path) -> None:
     """
@@ -46,9 +46,11 @@ def _ensure_parent(path: str | Path) -> None:
     -------
     None
     """
+
     Path(path).parent.mkdir(parents=True, exist_ok=True)
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_potential_and_states
 # ---------------------------------------------------------------------------
@@ -107,6 +109,7 @@ def plot_potential_and_states(
         # Rescale each eigenfunction to a comparable plotting height, then
         # shift it vertically by its eigenvalue so the state sits on its level.
         psi_scaled = scale * state.psi_full / np.max(np.abs(state.psi_full))
+
         plt.plot(
             state.x_full,
             state.energy + psi_scaled,
@@ -122,6 +125,7 @@ def plot_potential_and_states(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_probability_densities
 # ---------------------------------------------------------------------------
@@ -150,6 +154,7 @@ def plot_probability_densities(
     -------
     None
     """
+
     _ensure_parent(path)
     plt.figure(figsize=(8, 5))
 
@@ -207,7 +212,7 @@ def plot_energy_comparison(
     _ensure_parent(path)
     n = np.arange(len(exact))
 
-    plt.figure(figsize=(7, 4.5))
+    plt.figure(figsize=(4, 3))
     plt.plot(n, exact, marker="o", markersize=9, label=exact_label)
     plt.plot(n, numerical, marker="s", label=numerical_label)
     plt.xlabel("state index n")
@@ -219,6 +224,7 @@ def plot_energy_comparison(
     plt.close()
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_error_curve
 # ---------------------------------------------------------------------------
@@ -256,14 +262,17 @@ def plot_error_curve(
     """
 
     _ensure_parent(path)
-    plt.figure(figsize=(7, 4.5))
+    plt.figure(figsize=(4, 3))
 
     for i in range(errors.shape[1]):
         label = f"state {i}"
+
         if slopes is not None and i < len(slopes):
             slope = slopes[i].get("convergence_exponent_p", np.nan)
+
             if np.isfinite(slope):
                 label = f"state {i}, p={slope:.2f}"
+
         # Each column of `errors` corresponds to one state across all sampled
         # grid spacings or box sizes.
         plt.loglog(xvals, errors[:, i], marker="o", label=label)
@@ -278,7 +287,9 @@ def plot_error_curve(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: plot_splitting_curve
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_splitting_curve(
     xvals: np.ndarray,
@@ -311,8 +322,10 @@ def plot_splitting_curve(
     -------
     None
     """
+
     _ensure_parent(path)
-    plt.figure(figsize=(7, 4.5))
+
+    plt.figure(figsize=(4, 3))
     plt.plot(xvals, e0, marker="o", label="E0")
     plt.plot(xvals, e1, marker="s", label="E1")
     plt.plot(xvals, splitting, marker="^", label="E1 - E0")
@@ -326,7 +339,9 @@ def plot_splitting_curve(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: plot_root_finding_diagnostic
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_root_finding_diagnostic(
     energies: np.ndarray,
@@ -362,13 +377,19 @@ def plot_root_finding_diagnostic(
         Legend label for the mismatch curve.
     """
 
+    # Make sure the output directory exists before plotting
     _ensure_parent(path)
+
+    #
     plt.figure(figsize=(8, 5))
 
     finite_curve = np.asarray(mismatches[np.isfinite(mismatches)], dtype=float)
+
     if finite_curve.size == 0:
         finite_curve = np.array([1.0], dtype=float)
+
     nonzero_abs = np.abs(finite_curve[np.abs(finite_curve) > 0.0])
+
     if nonzero_abs.size == 0:
         linthresh = 1.0
     else:
@@ -400,7 +421,9 @@ def plot_root_finding_diagnostic(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: plot_scattering_coefficients
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_scattering_coefficients(
     energies: np.ndarray,
@@ -429,8 +452,12 @@ def plot_scattering_coefficients(
     -------
     None
     """
+
+    # Make sure the output directory exists before plotting
     _ensure_parent(path)
+
     plt.figure(figsize=(8, 5))
+
     plt.plot(energies, transmission, label="transmission $T(E)$")
     plt.plot(energies, reflection, linestyle=":", label="reflection $R(E)$")
     plt.plot(energies, transmission + reflection, linestyle="--", label="$T(E)+R(E)$")
@@ -445,7 +472,9 @@ def plot_scattering_coefficients(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: plot_scattering_potential_and_probability
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_scattering_potential_and_probability(
     x: np.ndarray,
@@ -460,19 +489,41 @@ def plot_scattering_potential_and_probability(
 
     The potential is rescaled for visualization so that the wave intensity and
     barrier shape can be shown on one axis.
+
+    Parameters
+    ----------
+    x : ndarray
+        Spatial grid on which the scattering state and potential are sampled.
+    V : ndarray
+        Potential values evaluated on the same grid.
+    psi : ndarray
+        Complex scattering wavefunction whose probability density
+        ``|psi(x)|^2`` is plotted.
+    energy : float
+        Incident scattering energy shown in the plot label.
+    path : str | Path
+        Output file path where the figure is written.
+    title : str
+        Figure title displayed above the plot.
     """
+
+    # Make sure the output directory exists before plotting
     _ensure_parent(path)
+
     density = np.abs(psi) ** 2
     density_scale = np.max(density)
+    
     if density_scale == 0.0 or not np.isfinite(density_scale):
         density_scale = 1.0
 
     V_scale = np.max(np.abs(V))
+    
     # Rescale the potential onto the same vertical range as the probability
     # density so both shapes can be inspected on one axis.
     V_plot = V / V_scale * density_scale if V_scale > 0.0 else V
 
     plt.figure(figsize=(8, 5))
+    
     plt.plot(x, density, label=rf"$|\psi(x)|^2$, $E={energy:.3f}$")
     plt.plot(x, V_plot, linestyle="--", label="rescaled $V(x)$")
     plt.xlabel("x")
@@ -485,7 +536,9 @@ def plot_scattering_potential_and_probability(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: plot_numerov_vs_rk4_errors
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def plot_numerov_vs_rk4_errors(
     h_numerov: np.ndarray,
@@ -501,14 +554,34 @@ def plot_numerov_vs_rk4_errors(
     The plotted value is the maximum absolute energy error among the displayed
     low-lying states for each grid spacing. This keeps the method-comparison
     figure readable while the CSV table retains state-by-state errors.
+
+    Parameters
+    ----------
+    h_numerov : ndarray
+        Grid spacings used for the Numerov convergence study.
+    numerov_errors : ndarray
+        Numerov absolute energy-error table, with one row per grid spacing and
+        one column per displayed state.
+    h_rk4 : ndarray
+        Grid spacings used for the RK4 convergence study.
+    rk4_errors : ndarray
+        RK4 absolute energy-error table, with one row per grid spacing and one
+        column per displayed state.
+    path : str | Path
+        Output file path where the comparison figure is written.
+    title : str
+        Figure title displayed above the plot.
     """
+    
+    # Make sure the output directory exists before plotting
     _ensure_parent(path)
+    
     # Collapse the per-state error tables to one conservative curve per method
     # by plotting the worst low-state error at each spacing.
     numerov_max = np.max(numerov_errors, axis=1)
     rk4_max = np.max(rk4_errors, axis=1)
 
-    plt.figure(figsize=(7, 4.5))
+    plt.figure(figsize=(4, 3))
     plt.loglog(h_numerov, numerov_max, marker="o", label="Numerov, max state error")
     plt.loglog(h_rk4, rk4_max, marker="s", label="RK4, max state error")
     plt.xlabel("grid spacing h")

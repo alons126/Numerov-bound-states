@@ -7,8 +7,6 @@ All functions in this module accept a NumPy array x and return the potential
 evaluated at the same locations. Keeping potentials separate from the solver
 makes it easy to test multiple physical systems with the same numerical method.
 
-Reviewer guide
---------------
 This module is the "physics definition" layer of the project. The solvers in
 `src/shooting.py`, `src/numerov.py`, and `src/scattering.py` do not know which
 system is being solved; they only require sampled values of V(x). That
@@ -35,7 +33,9 @@ import numpy as np
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: harmonic_oscillator
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def harmonic_oscillator(x: np.ndarray, omega: float = 1.0) -> np.ndarray:
     """
@@ -53,10 +53,12 @@ def harmonic_oscillator(x: np.ndarray, omega: float = 1.0) -> np.ndarray:
     ndarray
         Potential sampled on the grid.
     """
+
     # Evaluate the analytic formula pointwise on the supplied grid.
     return 0.5 * omega**2 * x**2
 
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # FUNCTION: infinite_square_well_numeric
 # ---------------------------------------------------------------------------
@@ -93,7 +95,9 @@ def infinite_square_well_numeric(
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: finite_square_well
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def finite_square_well(
     x: np.ndarray,
@@ -117,13 +121,16 @@ def finite_square_well(
     ndarray
         Potential sampled on the grid.
     """
+
     # Inside the well the potential is the chosen zero reference level; outside
     # it jumps to the barrier height V0.
     return np.where(np.abs(x) <= a, 0.0, V0)
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: quartic_double_well
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def quartic_double_well(
     x: np.ndarray,
@@ -132,7 +139,7 @@ def quartic_double_well(
     shift_min_to_zero: bool = True,
 ) -> np.ndarray:
     """
-    Quartic double-well potential V(x) = a x^4 - b x^2.
+    Quartic double-well potential V(x) = a x^4 - b * x^2.
 
     Parameters
     ----------
@@ -150,22 +157,28 @@ def quartic_double_well(
     ndarray
         Potential sampled on the grid.
     """
+
     # The quartic term confines the particle at large |x|, while the negative
     # quadratic term carves out the central barrier and two minima.
     v = a * x**4 - b * x**2
+
     if shift_min_to_zero:
         # Use the analytic minimum rather than the sampled grid minimum. The
         # latter drifts with h and contaminates convergence studies by changing
         # the potential itself as the grid is refined.
         if a <= 0.0:
             raise ValueError("quartic_double_well requires a > 0.")
+
         v_min = -(b**2) / (4.0 * a) if b > 0.0 else 0.0
         v = v - v_min
+
     return v
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: square_barrier
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def square_barrier(
     x: np.ndarray,
@@ -192,14 +205,18 @@ def square_barrier(
     ndarray
         Potential sampled on the grid.
     """
+
     half_width = 0.5 * width
+
     # Mark points inside the barrier interval with height V0 and leave the
     # asymptotic free regions at zero.
     return np.where(np.abs(x - center) <= half_width, V0, 0.0)
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # FUNCTION: double_square_barrier
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def double_square_barrier(
     x: np.ndarray,
@@ -234,8 +251,10 @@ def double_square_barrier(
     ndarray
         Potential sampled on the grid.
     """
+
     left_center = center - 0.5 * (well_width + barrier_width)
     right_center = center + 0.5 * (well_width + barrier_width)
     left_barrier = np.abs(x - left_center) <= 0.5 * barrier_width
     right_barrier = np.abs(x - right_center) <= 0.5 * barrier_width
+
     return np.where(left_barrier | right_barrier, V0, 0.0)
