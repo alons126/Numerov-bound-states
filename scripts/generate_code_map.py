@@ -9,10 +9,10 @@ direct project-internal function calls between them.
 
 The output is intentionally split into several artifacts under
 `docs/code_map/`:
-- a Markdown overview with Mermaid diagrams and per-module call tables
-- a module-level Graphviz `.dot` file and rendered `.svg`
-- a solver-core Graphviz `.dot` file and rendered `.svg`
-- an experiments/tests Graphviz `.dot` file and rendered `.svg`
+- A Markdown overview with Mermaid diagrams and per-module call tables
+- A module-level Graphviz `.dot` file and rendered `.svg`
+- A solver-core Graphviz `.dot` file and rendered `.svg`
+- An experiments/tests Graphviz `.dot` file and rendered `.svg`
 
 This file is not part of the numerical solver itself. It is a documentation
 and code-reading utility for the repository. The goal is to make the project
@@ -47,9 +47,7 @@ SOURCE_DIRS = ("src", "scripts", "tests")
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # DATA CLASS: PotentialMapSpec
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 @dataclass(frozen=True)
 class PotentialMapSpec:
@@ -146,9 +144,7 @@ POTENTIAL_MAP_SPECS = (
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: project_python_files
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def project_python_files() -> list[Path]:
     """
@@ -172,9 +168,7 @@ def project_python_files() -> list[Path]:
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: module_name
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def module_name(path: Path) -> str:
     """
@@ -193,13 +187,12 @@ def module_name(path: Path) -> str:
     """
 
     rel = path.relative_to(PROJECT_ROOT).with_suffix("")
+
     return ".".join(rel.parts)
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: short_name
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def short_name(qualified_name: str) -> str:
     """
@@ -220,9 +213,7 @@ def short_name(qualified_name: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: file_key
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def file_key(qualified_name: str) -> str:
     """
@@ -241,13 +232,12 @@ def file_key(qualified_name: str) -> str:
     """
 
     parts = qualified_name.split(".")
+
     return ".".join(parts[:2])
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: build_function_index
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def build_function_index(files: list[Path]) -> tuple[dict[str, str], dict[str, str]]:
     """
@@ -275,6 +265,7 @@ def build_function_index(files: list[Path]) -> tuple[dict[str, str], dict[str, s
     for path in files:
         module = module_name(path)
         tree = ast.parse(path.read_text(), filename=str(path))
+
         for node in tree.body:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 qualified = f"{module}.{node.name}"
@@ -285,9 +276,7 @@ def build_function_index(files: list[Path]) -> tuple[dict[str, str], dict[str, s
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # CLASS: CallCollector
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 class CallCollector(ast.NodeVisitor):
     """
@@ -341,9 +330,7 @@ class CallCollector(ast.NodeVisitor):
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: build_call_graph
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def build_call_graph(
     files: list[Path], qualified_by_local_name: dict[str, str]
@@ -370,6 +357,7 @@ def build_call_graph(
     for path in files:
         module = module_name(path)
         tree = ast.parse(path.read_text(), filename=str(path))
+
         for node in tree.body:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 collector = CallCollector(qualified_by_local_name)
@@ -380,9 +368,7 @@ def build_call_graph(
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: module_edges
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def module_edges(graph: dict[str, list[str]]) -> set[tuple[str, str]]:
     """
@@ -403,17 +389,17 @@ def module_edges(graph: dict[str, list[str]]) -> set[tuple[str, str]]:
     edges: set[tuple[str, str]] = set()
     for caller, callees in graph.items():
         caller_module = file_key(caller)
+
         for callee in callees:
             callee_module = file_key(callee)
             if caller_module != callee_module:
                 edges.add((caller_module, callee_module))
+
     return edges
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: mermaid_id
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def mermaid_id(name: str) -> str:
     """
@@ -434,9 +420,7 @@ def mermaid_id(name: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: render_module_graph
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def render_module_graph(edges: set[tuple[str, str]]) -> list[str]:
     """
@@ -458,14 +442,14 @@ def render_module_graph(edges: set[tuple[str, str]]) -> list[str]:
         lines.append(
             f"    {mermaid_id(caller)}[{caller}] --> {mermaid_id(callee)}[{callee}]"
         )
+
     lines.append("```")
+
     return lines
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: reachable_functions
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def reachable_functions(
     graph: dict[str, list[str]], root_functions: tuple[str, ...]
@@ -491,8 +475,10 @@ def reachable_functions(
 
     while stack:
         current = stack.pop()
+
         if current in visited:
             continue
+
         visited.add(current)
         stack.extend(
             callee for callee in graph.get(current, []) if callee not in visited
@@ -502,13 +488,9 @@ def reachable_functions(
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: functions_for_spec
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
-def functions_for_spec(
-    graph: dict[str, list[str]], spec: PotentialMapSpec
-) -> set[str]:
+def functions_for_spec(graph: dict[str, list[str]], spec: PotentialMapSpec) -> set[str]:
     """
     Resolve the concrete function set for one potential-specific map spec.
 
@@ -526,15 +508,15 @@ def functions_for_spec(
     """
 
     included = reachable_functions(graph, spec.root_functions)
+
     if spec.allowed_functions is not None:
         included &= spec.allowed_functions
+
     return included
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: render_selected_focus_graph
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def render_selected_focus_graph(
     title: str,
@@ -560,9 +542,11 @@ def render_selected_focus_graph(
     """
 
     lines = [f"## {title}", "", "```mermaid", "flowchart TD"]
+
     for caller in sorted(included_functions):
         node_id = mermaid_id(caller)
         lines.append(f"    {node_id}[{short_name(caller)}]")
+
         for callee in graph[caller]:
             if callee in included_functions:
                 lines.append(
@@ -570,13 +554,12 @@ def render_selected_focus_graph(
                 )
 
     lines.append("```")
+
     return lines
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: render_focus_graph
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def render_focus_graph(
     title: str,
@@ -602,13 +585,12 @@ def render_focus_graph(
     """
 
     included_functions = {func for func in graph if file_key(func) in include_modules}
+
     return render_selected_focus_graph(title, graph, included_functions)
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: render_call_tables
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def render_call_tables(graph: dict[str, list[str]]) -> list[str]:
     """
@@ -626,29 +608,33 @@ def render_call_tables(graph: dict[str, list[str]]) -> list[str]:
     """
 
     by_module: dict[str, list[tuple[str, list[str]]]] = defaultdict(list)
+
     for caller, callees in sorted(graph.items()):
         by_module[file_key(caller)].append(
             (short_name(caller), [short_name(c) for c in callees])
         )
 
     lines = ["## Direct Function Calls", ""]
+
     for module in sorted(by_module):
         lines.append(f"### {module}")
         lines.append("")
+
         for caller, callees in by_module[module]:
             if callees:
                 joined = ", ".join(callees)
             else:
                 joined = "(no direct project-function calls)"
+
             lines.append(f"- `{caller}` -> {joined}")
+
         lines.append("")
+
     return lines
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: dot_id
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def dot_id(name: str) -> str:
     """
@@ -669,9 +655,7 @@ def dot_id(name: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: render_dot_graph
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def render_dot_graph(
     title: str,
@@ -697,13 +681,12 @@ def render_dot_graph(
     """
 
     included_functions = {func for func in graph if file_key(func) in include_modules}
+
     return render_selected_dot_graph(title, graph, included_functions)
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: render_selected_dot_graph
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def render_selected_dot_graph(
     title: str,
@@ -746,13 +729,12 @@ def render_selected_dot_graph(
                 lines.append(f"  {dot_id(caller)} -> {dot_id(callee)};")
 
     lines.append("}")
+
     return "\n".join(lines) + "\n"
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: render_module_dot
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def render_module_dot(edges: set[tuple[str, str]]) -> str:
     """
@@ -779,6 +761,7 @@ def render_module_dot(edges: set[tuple[str, str]]) -> str:
     ]
 
     modules = sorted({module for edge in edges for module in edge})
+
     for module in modules:
         lines.append(f'  {dot_id(module)} [label="{module}"];')
 
@@ -786,13 +769,12 @@ def render_module_dot(edges: set[tuple[str, str]]) -> str:
         lines.append(f"  {dot_id(caller)} -> {dot_id(callee)};")
 
     lines.append("}")
+
     return "\n".join(lines) + "\n"
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: render_svg
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def render_svg(dot_path: Path, svg_path: Path) -> None:
     """
@@ -818,6 +800,7 @@ def render_svg(dot_path: Path, svg_path: Path) -> None:
     """
 
     dot_executable = shutil.which("dot")
+
     if dot_executable is None:
         raise RuntimeError(
             "Graphviz `dot` was not found on PATH, so SVG code maps cannot be rendered."
@@ -830,9 +813,7 @@ def render_svg(dot_path: Path, svg_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: build_markdown
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def build_markdown(graph: dict[str, list[str]]) -> str:
     """
@@ -870,6 +851,7 @@ def build_markdown(graph: dict[str, list[str]]) -> str:
         "## Potential-Specific Maps",
         "",
     ]
+
     for spec in POTENTIAL_MAP_SPECS:
         lines.extend(
             [
@@ -883,8 +865,8 @@ def build_markdown(graph: dict[str, list[str]]) -> str:
 
     lines.extend(
         [
-        "## Module-Level Flow",
-        "",
+            "## Module-Level Flow",
+            "",
         ]
     )
     lines.extend(render_module_graph(module_edges(graph)))
@@ -911,6 +893,7 @@ def build_markdown(graph: dict[str, list[str]]) -> str:
         )
     )
     lines.append("")
+
     for spec in POTENTIAL_MAP_SPECS:
         lines.extend(
             render_selected_focus_graph(
@@ -922,13 +905,12 @@ def build_markdown(graph: dict[str, list[str]]) -> str:
         lines.append("")
 
     lines.extend(render_call_tables(graph))
+
     return "\n".join(lines).rstrip() + "\n"
 
 
 # ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # FUNCTION: main
-# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 def main() -> None:
     """
@@ -970,6 +952,7 @@ def main() -> None:
             },
         )
     )
+
     for spec in POTENTIAL_MAP_SPECS:
         dot_path = CODE_MAP_DIR / f"code_map_{spec.slug}.dot"
         svg_path = CODE_MAP_DIR / f"code_map_{spec.slug}.svg"
