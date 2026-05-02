@@ -302,241 +302,6 @@ def plot_harmonic_oscillator_root_diagnostics(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: run_harmonic_rk4_comparison
-# ---------------------------------------------------------------------------
-def run_harmonic_rk4_comparison(
-    rk4_results_dir: Path,
-    comparison_results_dir: Path,
-    numerov_convergence: dict[str, np.ndarray],
-    omega: float = 1.0,
-    x_max: float = 8.0,
-    target_h: float | None = None,
-) -> None:
-    """
-    Compare the specialized Numerov integrator with general RK4 shooting.
-
-    The harmonic oscillator is used because it has an exact spectrum and a
-    smooth potential. Both methods use inward shooting, so the comparison mainly
-    isolates the difference between the Numerov and RK4 integration formulas.
-
-    Parameters
-    ----------
-    rk4_results_dir : Path
-        Output directory for RK4-only tables and figures.
-    comparison_results_dir : Path
-        Output directory for direct Numerov-versus-RK4 comparison data and plots.
-    numerov_convergence : dict[str, np.ndarray]
-        Precomputed Numerov grid-convergence data, expected to include matching
-        ``"h"`` and ``"energy_errors"`` arrays for the first four states.
-    omega : float, optional
-        Harmonic-oscillator frequency in the potential
-        ``V(x)=\\frac{1}{2}\\omega^2 x^2``.
-    x_max : float, optional
-        Half-width of the truncated spatial domain used for both solvers.
-    target_h : float | None, optional
-        Nominal grid spacing for the optional RK4 box-size study. If ``None``,
-        that box-size comparison is skipped.
-    """
-
-    n_states = 4
-    numerov_h = np.asarray(numerov_convergence["h"], dtype=float)
-    numerov_errors = np.asarray(numerov_convergence["energy_errors"], dtype=float)
-
-    # Convert the Numerov spacing samples back into integer grid sizes so the
-    # RK4 comparison uses matching meshes.
-    grid_sizes = [int(round(x_max / h)) + 1 for h in numerov_h]
-
-    # First generate one representative RK4 spectrum table and figure.
-    rk4_reference_rows = RK4_solve_harmonic_oscillator_energies(
-        x_max=x_max,
-        n_grid=1200,
-        n_states=n_states,
-        omega=omega,
-    )
-    save_csv_rows(
-        rk4_results_dir / "2b_harmonic_rk4_energies.csv",
-        [
-            {
-                "state_index": row.state_index,
-                "parity": row.parity,
-                "rk4_energy": row.energy,
-                "exact_energy": row.exact_energy,
-                "absolute_error": row.absolute_error,
-                "relative_error": row.relative_error,
-            }
-            for row in rk4_reference_rows
-        ],
-    )
-
-    plot_energy_comparison(
-        np.array([row.energy for row in rk4_reference_rows], dtype=float),
-        np.array([row.exact_energy for row in rk4_reference_rows], dtype=float),
-        rk4_results_dir / "2b_harmonic_rk4_state_energy_comparison.png",
-        "Harmonic oscillator RK4 - state energies",
-        exact_label=r"exact: $E_n=\omega\left(n+\frac{1}{2}\right)$",
-        numerical_label="RK4",
-    )
-
-    # Then compute the RK4 convergence curve on the same family of spacings
-    # used by the Numerov study.
-    rk4_convergence = RK4_harmonic_convergence_vs_grid(
-        x_max=x_max,
-        grid_sizes=grid_sizes,
-        n_states=n_states,
-        omega=omega,
-    )
-
-    rk4_slopes = estimate_convergence_slopes(
-        rk4_convergence["h"], rk4_convergence["energy_errors"]
-    )
-    save_csv_rows(
-        rk4_results_dir / "2b_harmonic_rk4_convergence_slopes.csv", rk4_slopes
-    )
-
-    plot_error_curve(
-        rk4_convergence["h"],
-        rk4_convergence["energy_errors"],
-        "Grid spacing $h$",
-        rk4_results_dir / "2b_harmonic_rk4_energy_convergence_vs_h.png",
-        "Harmonic oscillator (RK4) - energy convergence vs grid spacing $h$",
-        slopes=rk4_slopes,
-    )
-
-    if not np.allclose(numerov_h, rk4_convergence["h"]):
-        raise ValueError("Numerov and RK4 comparisons must use identical h values.")
-
-    comparison_rows = []
-
-    for method, h_values, errors in [
-        ("Numerov", numerov_h, numerov_errors),
-        ("RK4", rk4_convergence["h"], rk4_convergence["energy_errors"]),
-    ]:
-        # Flatten both error tables into one CSV so the report can compare the
-        # methods row by row without special-case parsing.
-        for grid_index, h_value in enumerate(h_values):
-            row = {"method": method, "h": h_value}
-            for state_index in range(errors.shape[1]):
-                row[f"state_{state_index}_abs_error"] = errors[grid_index, state_index]
-            row["max_abs_error"] = float(np.max(errors[grid_index, :]))
-            comparison_rows.append(row)
-    save_csv_rows(
-        comparison_results_dir / "2c_harmonic_numerov_vs_rk4.csv",
-        comparison_rows,
-    )
-
-    plot_numerov_vs_rk4_errors(
-        numerov_h,
-        numerov_errors,
-        rk4_convergence["h"],
-        rk4_convergence["energy_errors"],
-        comparison_results_dir / "2c_harmonic_numerov_vs_rk4.png",
-        "Harmonic oscillator: Numerov vs RK4 - state errors",
-    )
-
-    diagnostic_specs = [
-        {
-            "parity": "even",
-            "e_min": 0.1,
-            "e_max": 3.2,
-            "state_labels": ["State 0, even", "State 2, even"],
-            "path": rk4_results_dir / "2b_harmonic_rk4_root_finding_even.png",
-            "title": "Harmonic oscillator RK4 roots, even states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi'_E(0)$",
-        },
-        {
-            "parity": "odd",
-            "e_min": 0.7,
-            "e_max": 4.3,
-            "state_labels": ["State 1, odd", "State 3, odd"],
-            "path": rk4_results_dir / "2b_harmonic_rk4_root_finding_odd.png",
-            "title": "Harmonic oscillator RK4 roots, odd states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(0)$",
-        },
-    ]
-
-    for spec in diagnostic_specs:
-        # Build one mismatch scan per parity sector, then overlay the bisection
-        # histories for the first two roots in that sector.
-        energies_scan, mismatches_scan = RK4_sample_mismatch(
-            parity=spec["parity"],
-            x_max=x_max,
-            n_grid=500,
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            omega=omega,
-            n_scan=400,
-        )
-        brackets = RK4_find_brackets(
-            parity=spec["parity"],
-            x_max=x_max,
-            n_grid=500,
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            omega=omega,
-            n_scan=400,
-        )
-        histories = [
-            RK4_bisection_history(
-                parity=spec["parity"],
-                bracket=bracket,
-                x_max=x_max,
-                n_grid=1600,
-                omega=omega,
-                max_iter=30,
-            )
-            for bracket in brackets[: len(spec["state_labels"])]
-        ]
-
-        plot_root_finding_diagnostic(
-            energies_scan,
-            mismatches_scan,
-            histories,
-            spec["path"],
-            spec["title"],
-            history_labels=spec["state_labels"],
-            mismatch_label=spec["mismatch_label"],
-        )
-
-    if target_h is not None:
-        rk4_box = RK4_harmonic_convergence_vs_box_size_fixed_spacing(
-            x_max_values=[4.0, 5.0, 6.0, 7.0, 8.0, 10.0],
-            target_h=target_h,
-            n_states=n_states,
-            omega=omega,
-            e_min=0.1,
-            e_max=6.0,
-        )
-
-        save_csv_rows(
-            rk4_results_dir / "2b_harmonic_rk4_convergence_vs_x_max_data.csv",
-            [
-                {
-                    "x_max": x_val,
-                    "n_grid": int(n_val),
-                    "h": h_val,
-                    **{
-                        f"state_{state_index}_abs_error": rk4_box["energy_errors"][
-                            row_index, state_index
-                        ]
-                        for state_index in range(rk4_box["energy_errors"].shape[1])
-                    },
-                }
-                for row_index, (x_val, n_val, h_val) in enumerate(
-                    zip(rk4_box["x_max"], rk4_box["n_grid"], rk4_box["h"])
-                )
-            ],
-        )
-
-        plot_error_curve(
-            rk4_box["x_max"],
-            rk4_box["energy_errors"],
-            "Box size $x_{\\max}$",
-            rk4_results_dir / "2b_harmonic_rk4_convergence_vs_x_max.png",
-            "Harmonic oscillator RK4 convergence vs box size $x_{\\max}$",
-        )
-
-
-# ---------------------------------------------------------------------------
 # FUNCTION: plot_double_well_root_diagnostics
 # ---------------------------------------------------------------------------
 def plot_double_well_root_diagnostics(
@@ -767,6 +532,261 @@ def run_square_well(results_dir: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
+# FUNCTION: run_harmonic_rk4_comparison
+# ---------------------------------------------------------------------------
+def run_harmonic_rk4_comparison(
+    rk4_results_dir: Path,
+    comparison_results_dir: Path,
+    numerov_convergence: dict[str, np.ndarray],
+    omega: float = 1.0,
+    x_max: float = 8.0,
+    target_h: float | None = None,
+) -> None:
+    """
+    Compare the specialized Numerov integrator with general RK4 shooting.
+
+    The harmonic oscillator is used because it has an exact spectrum and a
+    smooth potential. Both methods use inward shooting, so the comparison mainly
+    isolates the difference between the Numerov and RK4 integration formulas.
+
+    Parameters
+    ----------
+    rk4_results_dir : Path
+        Output directory for RK4-only tables and figures.
+    comparison_results_dir : Path
+        Output directory for direct Numerov-versus-RK4 comparison data and plots.
+    numerov_convergence : dict[str, np.ndarray]
+        Precomputed Numerov grid-convergence data, expected to include matching
+        ``"h"`` and ``"energy_errors"`` arrays for the first four states.
+    omega : float, optional
+        Harmonic-oscillator frequency in the potential
+        ``V(x)=\\frac{1}{2}\\omega^2 x^2``.
+    x_max : float, optional
+        Half-width of the truncated spatial domain used for both solvers.
+    target_h : float | None, optional
+        Nominal grid spacing for the optional RK4 box-size study. If ``None``,
+        that box-size comparison is skipped.
+    """
+
+    # =====================================================
+    # Set up the comparison
+    # =====================================================
+
+    n_states = 4
+    numerov_h = np.asarray(numerov_convergence["h"], dtype=float)
+    numerov_errors = np.asarray(numerov_convergence["energy_errors"], dtype=float)
+
+    # Convert the Numerov spacing samples back into integer grid sizes so the
+    # RK4 comparison uses matching meshes.
+    grid_sizes = [int(round(x_max / h)) + 1 for h in numerov_h]
+
+    # =====================================================
+    # Run the RK4 calculations
+    # =====================================================
+
+    # First generate one representative RK4 spectrum table and figure.
+    rk4_reference_rows = RK4_solve_harmonic_oscillator_energies(
+        x_max=x_max,
+        n_grid=1200,
+        n_states=n_states,
+        omega=omega,
+    )
+    save_csv_rows(
+        rk4_results_dir / "2b_harmonic_rk4_energies.csv",
+        [
+            {
+                "state_index": row.state_index,
+                "parity": row.parity,
+                "rk4_energy": row.energy,
+                "exact_energy": row.exact_energy,
+                "absolute_error": row.absolute_error,
+                "relative_error": row.relative_error,
+            }
+            for row in rk4_reference_rows
+        ],
+    )
+
+    plot_energy_comparison(
+        np.array([row.energy for row in rk4_reference_rows], dtype=float),
+        np.array([row.exact_energy for row in rk4_reference_rows], dtype=float),
+        rk4_results_dir / "2b_harmonic_rk4_state_energy_comparison.png",
+        "Harmonic oscillator RK4 - state energies",
+        exact_label=r"exact: $E_n=\omega\left(n+\frac{1}{2}\right)$",
+        numerical_label="RK4",
+    )
+
+    # Then compute the RK4 convergence curve on the same family of spacings
+    # used by the Numerov study.
+    rk4_convergence = RK4_harmonic_convergence_vs_grid(
+        x_max=x_max,
+        grid_sizes=grid_sizes,
+        n_states=n_states,
+        omega=omega,
+    )
+
+    # =====================================================
+    # Analyze and save the results
+    # =====================================================
+
+    rk4_slopes = estimate_convergence_slopes(
+        rk4_convergence["h"], rk4_convergence["energy_errors"]
+    )
+    save_csv_rows(
+        rk4_results_dir / "2b_harmonic_rk4_convergence_slopes.csv", rk4_slopes
+    )
+
+    plot_error_curve(
+        rk4_convergence["h"],
+        rk4_convergence["energy_errors"],
+        "Grid spacing $h$",
+        rk4_results_dir / "2b_harmonic_rk4_energy_convergence_vs_h.png",
+        "Harmonic oscillator (RK4) - energy convergence vs grid spacing $h$",
+        slopes=rk4_slopes,
+    )
+
+    if not np.allclose(numerov_h, rk4_convergence["h"]):
+        raise ValueError("Numerov and RK4 comparisons must use identical h values.")
+
+    comparison_rows = []
+
+    for method, h_values, errors in [
+        ("Numerov", numerov_h, numerov_errors),
+        ("RK4", rk4_convergence["h"], rk4_convergence["energy_errors"]),
+    ]:
+        # Flatten both error tables into one CSV so the report can compare the
+        # methods row by row without special-case parsing.
+        for grid_index, h_value in enumerate(h_values):
+            row = {"method": method, "h": h_value}
+            for state_index in range(errors.shape[1]):
+                row[f"state_{state_index}_abs_error"] = errors[grid_index, state_index]
+            row["max_abs_error"] = float(np.max(errors[grid_index, :]))
+            comparison_rows.append(row)
+    save_csv_rows(
+        comparison_results_dir / "2c_harmonic_numerov_vs_rk4.csv",
+        comparison_rows,
+    )
+
+    plot_numerov_vs_rk4_errors(
+        numerov_h,
+        numerov_errors,
+        rk4_convergence["h"],
+        rk4_convergence["energy_errors"],
+        comparison_results_dir / "2c_harmonic_numerov_vs_rk4.png",
+        "Harmonic oscillator: Numerov vs RK4 - state errors",
+    )
+
+    diagnostic_specs = [
+        {
+            "parity": "even",
+            "e_min": 0.1,
+            "e_max": 3.2,
+            "state_labels": ["State 0, even", "State 2, even"],
+            "path": rk4_results_dir / "2b_harmonic_rk4_root_finding_even.png",
+            "title": "Harmonic oscillator RK4 roots, even states",
+            "mismatch_label": r"Raw mismatch: $M(E)=\psi'_E(0)$",
+        },
+        {
+            "parity": "odd",
+            "e_min": 0.7,
+            "e_max": 4.3,
+            "state_labels": ["State 1, odd", "State 3, odd"],
+            "path": rk4_results_dir / "2b_harmonic_rk4_root_finding_odd.png",
+            "title": "Harmonic oscillator RK4 roots, odd states",
+            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(0)$",
+        },
+    ]
+
+    for spec in diagnostic_specs:
+        # Build one mismatch scan per parity sector, then overlay the bisection
+        # histories for the first two roots in that sector.
+        energies_scan, mismatches_scan = RK4_sample_mismatch(
+            parity=spec["parity"],
+            x_max=x_max,
+            n_grid=500,
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            omega=omega,
+            n_scan=400,
+        )
+        brackets = RK4_find_brackets(
+            parity=spec["parity"],
+            x_max=x_max,
+            n_grid=500,
+            e_min=spec["e_min"],
+            e_max=spec["e_max"],
+            omega=omega,
+            n_scan=400,
+        )
+        histories = [
+            RK4_bisection_history(
+                parity=spec["parity"],
+                bracket=bracket,
+                x_max=x_max,
+                n_grid=1600,
+                omega=omega,
+                max_iter=30,
+            )
+            for bracket in brackets[: len(spec["state_labels"])]
+        ]
+
+        plot_root_finding_diagnostic(
+            energies_scan,
+            mismatches_scan,
+            histories,
+            spec["path"],
+            spec["title"],
+            history_labels=spec["state_labels"],
+            mismatch_label=spec["mismatch_label"],
+        )
+
+    if target_h is not None:
+        # =====================================================
+        # Run the fixed-spacing box-size study
+        # =====================================================
+
+        rk4_box = RK4_harmonic_convergence_vs_box_size_fixed_spacing(
+            x_max_values=[4.0, 5.0, 6.0, 7.0, 8.0, 10.0],
+            target_h=target_h,
+            n_states=n_states,
+            omega=omega,
+            e_min=0.1,
+            e_max=6.0,
+        )
+
+        # =====================================================
+        # Analyze and save the box-size results
+        # =====================================================
+
+        save_csv_rows(
+            rk4_results_dir / "2b_harmonic_rk4_convergence_vs_x_max_data.csv",
+            [
+                {
+                    "x_max": x_val,
+                    "n_grid": int(n_val),
+                    "h": h_val,
+                    **{
+                        f"state_{state_index}_abs_error": rk4_box["energy_errors"][
+                            row_index, state_index
+                        ]
+                        for state_index in range(rk4_box["energy_errors"].shape[1])
+                    },
+                }
+                for row_index, (x_val, n_val, h_val) in enumerate(
+                    zip(rk4_box["x_max"], rk4_box["n_grid"], rk4_box["h"])
+                )
+            ],
+        )
+
+        plot_error_curve(
+            rk4_box["x_max"],
+            rk4_box["energy_errors"],
+            "Box size $x_{\\max}$",
+            rk4_results_dir / "2b_harmonic_rk4_convergence_vs_x_max.png",
+            "Harmonic oscillator RK4 convergence vs box size $x_{\\max}$",
+        )
+
+
+# ---------------------------------------------------------------------------
 # FUNCTION: run_harmonic_oscillator
 # ---------------------------------------------------------------------------
 def run_harmonic_oscillator(results_dir: Path) -> None:
@@ -981,8 +1001,9 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         "Running harmonic oscillator RK4 comparison and box-size convergence studies..."
     )
 
-    # The RK4 comparison uses the same grid spacings as the Numerov convergence study,
-    # so the two methods are compared on similar meshes as the domain size changes
+    # The RK4 comparison reuses the same grid spacings as the Numerov
+    # grid-convergence study, so both methods are compared on matched meshes at
+    # the same fixed domain size.
     run_harmonic_rk4_comparison(
         rk4_results_dir=rk4_results_dir,
         comparison_results_dir=comparison_results_dir,
@@ -1030,10 +1051,9 @@ def run_double_well(results_dir: Path) -> None:
     print("Running quartic double well experiment...")
 
     # Run the solver to find the first four bound states of the quartic double
-    # well. Use outward shooting here because the states are more localized and
-    # the forbidden-region tails are more extended than in the harmonic case, so
-    # inward shooting would be more susceptible to picking up the growing tail
-    # instead of the physical decaying solution
+    # well. This experiment uses the project's standard outward half-domain
+    # solver, treating the finite box at x_max as part of the numerical
+    # approximation being studied.
     states = solve_symmetric_potential_outward_shooting(
         x_max=x_max,
         n_grid=n_grid,
@@ -1248,11 +1268,9 @@ def run_finite_square_well(results_dir: Path) -> None:
 
     print("Running finite square well experiment (Numerov)...")
 
-    # Run the solver to find the first four bound states of the finite square well.
-    # Use outward shooting here because the states are more localized and the
-    # forbidden-region tails are more extended than in the harmonic case, so inward
-    # shooting would be more susceptible to picking up the growing tail instead of
-    # the physical decaying solution
+    # Run the solver to find the first four bound states of the finite square
+    # well. As in the infinite-well and quartic boxed studies, this uses the
+    # outward half-domain solver and checks the boundary leakage at x_max.
     states = solve_symmetric_potential_outward_shooting(
         x_max=x_max,
         n_grid=n_grid,
@@ -1270,8 +1288,7 @@ def run_finite_square_well(results_dir: Path) -> None:
 
     print("Analyzing finite square well results...")
 
-    # Save a CSV comparing the numerical and exact energies, along with the relative
-    # error
+    # Save the numerical bound-state energies for the first four states.
     rows = []
     for i, s in enumerate(states[:4]):
         rows.append(
@@ -1308,7 +1325,7 @@ def run_finite_square_well(results_dir: Path) -> None:
 # ---------------------------------------------------------------------------
 def run_scattering(results_dir: Path) -> None:
     """
-    Run the Pang-style scattering extension.
+    Run the scattering extension.
 
     This experiment computes transmission and reflection probabilities for a
     single finite barrier and a double-barrier resonant tunneling structure. The
@@ -1401,10 +1418,11 @@ def run_scattering(results_dir: Path) -> None:
     V_double = double_square_barrier(x, **double_kwargs)
     energies_double = np.linspace(0.2, 5.0, 420)
 
-    # The double-barrier case is the main point of this experiment, so the energy sweep is finer and focused on the region where resonant tunneling peaks are expected to appear. The single-barrier sweep is more of a sanity check, so it is coarser and extends to higher energies to show the transition from tunneling to over-barrier scattering.
+    # The double-barrier sweep is finer and focused on the energy range where
+    # resonant peaks are expected.
     double_results = sweep_scattering(x, V_double, energies_double)
 
-    # Extract the transmission and reflection coefficients into separate arrays for plotting and peak-finding. The CSV saved below contains the same data in a more accessible format for analysis and comparison, and the peak-finding is done on the arrays to identify the resonant tunneling peaks.
+    # Extract arrays for plotting and peak finding after the sweep is complete.
     T_double = np.array([result.transmission for result in double_results], dtype=float)
     R_double = np.array([result.reflection for result in double_results], dtype=float)
     peaks = find_transmission_peaks(energies_double, T_double, threshold=0.65)
@@ -1415,7 +1433,8 @@ def run_scattering(results_dir: Path) -> None:
 
     print("Analyzing double-barrier scattering results...")
 
-    # Tabulate the transmission and reflection coefficients for the double barrier, along with the sum T + R to check unitarity. The CSV is saved before plotting so the numerical data is available even if the plotting code has issues. The peak-finding is done on the arrays extracted from the results, and the identified peaks are saved in a separate CSV for easy reference. The CSV saved below contains the same data in a more accessible format for analysis and comparison, and the peak-finding is done on the arrays to identify the resonant tunneling peaks, which are then saved in a separate CSV for easy reference.
+    # Save transmission, reflection, and the conservation check T + R for the
+    # double-barrier sweep. Resonance peaks are saved separately below.
     double_rows = [
         {
             "energy": result.energy,
