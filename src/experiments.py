@@ -155,7 +155,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             "path": results_dir
             / "1_infinite_square_well_Numerov_root_finding_even.png",
             "title": "Infinite square well - shooting roots - even states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(a)$",
+            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(a)/\max|\psi_E|$",
         },
         {
             "parity": "odd",
@@ -164,7 +164,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             "state_labels": ["State 1, odd", "State 3, odd"],
             "path": results_dir / "1_infinite_square_well_Numerov_root_finding_odd.png",
             "title": "Infinite square well - shooting roots - odd states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(a)$",
+            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(a)/\max|\psi_E|$",
         },
     ]
 
@@ -176,6 +176,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             e_min=spec["e_min"],
             e_max=spec["e_max"],
             n_scan=1600,
+            diagnostic_scale=True,
         )
         brackets = find_brackets_outward_shooting(
             x_half,
@@ -187,7 +188,12 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
         )
         histories = [
             bisection_history_outward_shooting(
-                x_half, V_half, spec["parity"], bracket, max_iter=30
+                x_half,
+                V_half,
+                spec["parity"],
+                bracket,
+                max_iter=30,
+                diagnostic_scale=True,
             )
             for bracket in brackets[: len(spec["state_labels"])]
         ]
@@ -243,7 +249,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             "path": results_dir
             / "2a_harmonic_oscillator_Numerov_root_finding_even.png",
             "title": "Harmonic oscillator - shooting roots - even states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi'_E(0)$",
+            "mismatch_label": r"Scaled mismatch: $M(E)=\psi'_E(0)/\max|\psi_E|$",
         },
         {
             "parity": "odd",
@@ -252,7 +258,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             "state_labels": ["State 1, odd", "State 3, odd"],
             "path": results_dir / "2a_harmonic_oscillator_Numerov_root_finding_odd.png",
             "title": "Harmonic oscillator - shooting roots - odd states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(0)$",
+            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(0)/\max|\psi_E|$",
         },
     ]
 
@@ -266,6 +272,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             e_min=spec["e_min"],
             e_max=spec["e_max"],
             n_scan=400,
+            diagnostic_scale=True,
         )
         brackets = find_brackets_inward_shooting(
             x_max=x_max,
@@ -286,6 +293,7 @@ def plot_harmonic_oscillator_root_diagnostics(
                 parity=spec["parity"],
                 bracket=bracket,
                 max_iter=30,
+                diagnostic_scale=True,
             )
             for bracket in brackets[: len(spec["state_labels"])]
         ]
@@ -340,7 +348,7 @@ def plot_double_well_root_diagnostics(
             "state_labels": ["State 0, even", "State 2, even"],
             "path": results_dir / "3_double_well_Numerov_root_finding_even.png",
             "title": "Quartic double well - shooting roots - even states",
-            "mismatch_label": r"$M(E)=\psi_E(x_{\max})$, even sector",
+            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(x_{\max})/\max|\psi_E|$",
         },
         {
             "parity": "odd",
@@ -349,7 +357,7 @@ def plot_double_well_root_diagnostics(
             "state_labels": ["State 1, odd", "State 3, odd"],
             "path": results_dir / "3_double_well_Numerov_root_finding_odd.png",
             "title": "Quartic double well - shooting roots - odd states",
-            "mismatch_label": r"$M(E)=\psi_E(x_{\max})$, odd sector",
+            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(x_{\max})/\max|\psi_E|$",
         },
     ]
 
@@ -361,6 +369,7 @@ def plot_double_well_root_diagnostics(
             e_min=spec["e_min"],
             e_max=spec["e_max"],
             n_scan=1600,
+            diagnostic_scale=True,
         )
         brackets = find_brackets_outward_shooting(
             x_half,
@@ -372,7 +381,12 @@ def plot_double_well_root_diagnostics(
         )
         histories = [
             bisection_history_outward_shooting(
-                x_half, V_half, spec["parity"], bracket, max_iter=30
+                x_half,
+                V_half,
+                spec["parity"],
+                bracket,
+                max_iter=30,
+                diagnostic_scale=True,
             )
             for bracket in brackets[: len(spec["state_labels"])]
         ]
@@ -692,7 +706,7 @@ def run_harmonic_oscillator_RK4_comparison(
             "path": rk4_results_dir
             / "2b_harmonic_oscillator_RK4_root_finding_even.png",
             "title": "Harmonic oscillator (RK4) - shooting roots - even states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi'_E(0)$",
+            "mismatch_label": r"Scaled mismatch: $M(E)=\psi'_E(0)/\max|\psi_E|$",
         },
         {
             "parity": "odd",
@@ -701,7 +715,7 @@ def run_harmonic_oscillator_RK4_comparison(
             "state_labels": ["State 1, odd", "State 3, odd"],
             "path": rk4_results_dir / "2b_harmonic_oscillator_RK4_root_finding_odd.png",
             "title": "Harmonic oscillator (RK4) - shooting roots - odd states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(0)$",
+            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(0)/\max|\psi_E|$",
         },
     ]
 
@@ -716,6 +730,7 @@ def run_harmonic_oscillator_RK4_comparison(
             e_max=spec["e_max"],
             omega=omega,
             n_scan=400,
+            diagnostic_scale=True,
         )
         brackets = RK4_find_brackets(
             parity=spec["parity"],
@@ -734,6 +749,7 @@ def run_harmonic_oscillator_RK4_comparison(
                 n_grid=1600,
                 omega=omega,
                 max_iter=30,
+                diagnostic_scale=True,
             )
             for bracket in brackets[: len(spec["state_labels"])]
         ]

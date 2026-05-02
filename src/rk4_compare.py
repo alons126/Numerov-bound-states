@@ -192,6 +192,53 @@ def RK4_inward_mismatch(
 
 
 # ---------------------------------------------------------------------------
+# FUNCTION: RK4_diagnostic_mismatch
+# ---------------------------------------------------------------------------
+def RK4_diagnostic_mismatch(
+    energy: float,
+    parity: str,
+    x_max: float,
+    n_grid: int,
+    omega: float = 1.0,
+) -> float:
+    """
+    Compute a scale-invariant RK4 mismatch for diagnostic plots.
+
+    The inward RK4 trial solution is initialized with an arbitrary tail
+    amplitude, so the raw origin mismatch can become very large away from the
+    roots. For plotting only, divide the mismatch by ``max(abs(psi))`` along
+    the half-domain. This keeps the zeros fixed while making the diagnostic
+    curve easier to compare with the Numerov plots.
+    """
+
+    if parity not in {"even", "odd"}:
+        raise ValueError("parity must be 'even' or 'odd'.")
+
+    if n_grid < 3:
+        raise ValueError("n_grid must be at least 3.")
+
+    x_values = np.linspace(x_max, 0.0, n_grid)
+    h = x_values[1] - x_values[0]
+    potential_edge = 0.5 * omega**2 * x_max**2
+    kappa = np.sqrt(max(2.0 * (potential_edge - energy), 1.0e-14))
+
+    y = np.array([1.0, -kappa], dtype=float)
+    psi_values = np.empty(n_grid, dtype=float)
+    psi_values[0] = y[0]
+    for i, x_value in enumerate(x_values[:-1], start=1):
+        y = RK4_step(x_value, y, h, energy, omega)
+        psi_values[i] = y[0]
+
+    scale = max(float(np.max(np.abs(psi_values))), 1.0e-300)
+    psi_at_zero, derivative_at_zero = y
+
+    if parity == "even":
+        return float(derivative_at_zero / scale)
+
+    return float(psi_at_zero / scale)
+
+
+# ---------------------------------------------------------------------------
 # FUNCTION: RK4_find_brackets
 # ---------------------------------------------------------------------------
 def RK4_find_brackets(
@@ -269,6 +316,7 @@ def RK4_sample_mismatch(
     e_max: float,
     omega: float = 1.0,
     n_scan: int = 1000,
+    diagnostic_scale: bool = False,
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     Sample the RK4 inward-shooting mismatch over an energy interval.
@@ -291,6 +339,8 @@ def RK4_sample_mismatch(
     n_scan : int, default=1000
         Number of equally spaced trial energies used to sample the mismatch
         curve.
+    diagnostic_scale : bool, default=False
+        If ``True``, return a scale-invariant mismatch intended for plotting.
 
     Returns
     -------
@@ -301,7 +351,12 @@ def RK4_sample_mismatch(
 
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
-        [RK4_inward_mismatch(e, parity, x_max, n_grid, omega) for e in energies],
+        [
+            RK4_diagnostic_mismatch(e, parity, x_max, n_grid, omega)
+            if diagnostic_scale
+            else RK4_inward_mismatch(e, parity, x_max, n_grid, omega)
+            for e in energies
+        ],
         dtype=float,
     )
 
@@ -380,6 +435,7 @@ def RK4_bisection_history(
     omega: float = 1.0,
     tol: float = 1.0e-12,
     max_iter: int = 80,
+    diagnostic_scale: bool = False,
 ) -> list[dict]:
     """
     Record the RK4 inward-shooting bisection process for one bracket.
@@ -402,6 +458,9 @@ def RK4_bisection_history(
         Stopping tolerance applied to the midpoint mismatch and bracket width.
     max_iter : int, default=80
         Maximum number of recorded bisection iterations.
+    diagnostic_scale : bool, default=False
+        If ``True``, record a scale-invariant mismatch for plotting while the
+        bisection itself still uses the raw mismatch signs.
 
     Returns
     -------
@@ -424,7 +483,11 @@ def RK4_bisection_history(
                 "lo": lo,
                 "hi": hi,
                 "mid": mid,
-                "mismatch_mid": fmid,
+                "mismatch_mid": (
+                    RK4_diagnostic_mismatch(mid, parity, x_max, n_grid, omega)
+                    if diagnostic_scale
+                    else fmid
+                ),
             }
         )
 

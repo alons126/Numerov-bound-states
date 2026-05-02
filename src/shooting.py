@@ -248,6 +248,29 @@ def boundary_mismatch_outward_shooting(
 
 
 # ---------------------------------------------------------------------------
+# FUNCTION: diagnostic_mismatch_outward_shooting
+# ---------------------------------------------------------------------------
+def diagnostic_mismatch_outward_shooting(
+    x_half: np.ndarray,
+    V_half: np.ndarray,
+    energy: float,
+    parity: str,
+) -> float:
+    """
+    Evaluate a scale-invariant outward-shooting mismatch for plotting.
+
+    For diagnostic plots, divide the wall mismatch by ``max(abs(psi))`` on the
+    half-domain so the plotted curve reflects root structure rather than the
+    arbitrary amplitude of the unnormalized trial solution.
+    """
+
+    psi = half_domain_wavefunction_outward_shooting(x_half, V_half, energy, parity)
+    scale = max(float(np.max(np.abs(psi))), 1.0e-300)
+
+    return float(psi[-1] / scale)
+
+
+# ---------------------------------------------------------------------------
 # FUNCTION: find_brackets_outward_shooting
 # ---------------------------------------------------------------------------
 def find_brackets_outward_shooting(
@@ -322,6 +345,7 @@ def sample_boundary_mismatch_outward_shooting(
     e_min: float,
     e_max: float,
     n_scan: int = 1000,
+    diagnostic_scale: bool = False,
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     Sample the shooting mismatch over an energy interval.
@@ -346,6 +370,10 @@ def sample_boundary_mismatch_outward_shooting(
     n_scan : int, default=1000
         Number of equally spaced trial energies used to sample the mismatch
         curve between ``e_min`` and ``e_max``.
+    diagnostic_scale : bool, default=False
+        If ``True``, divide the boundary mismatch by ``max(abs(psi))`` on the
+        half-domain for plotting. This preserves the zeros while removing the
+        arbitrary amplitude scale of the trial solution.
 
     Returns
     -------
@@ -355,13 +383,24 @@ def sample_boundary_mismatch_outward_shooting(
     """
 
     energies = np.linspace(e_min, e_max, n_scan)
-    mismatches = np.array(
-        [
-            boundary_mismatch_outward_shooting(x_half, V_half, e, parity, mode="value")
-            for e in energies
-        ],
-        dtype=float,
-    )
+    if diagnostic_scale:
+        mismatches = np.array(
+            [
+                diagnostic_mismatch_outward_shooting(x_half, V_half, e, parity)
+                for e in energies
+            ],
+            dtype=float,
+        )
+    else:
+        mismatches = np.array(
+            [
+                boundary_mismatch_outward_shooting(
+                    x_half, V_half, e, parity, mode="value"
+                )
+                for e in energies
+            ],
+            dtype=float,
+        )
 
     return energies, mismatches
 
@@ -376,6 +415,7 @@ def bisection_history_outward_shooting(
     bracket: tuple[float, float],
     tol: float = 1e-12,
     max_iter: int = 80,
+    diagnostic_scale: bool = False,
 ) -> list[dict]:
     """
     Record the bisection process for one eigenvalue bracket.
@@ -400,6 +440,10 @@ def bisection_history_outward_shooting(
         the remaining bracket width.
     max_iter : int, default=80
         Maximum number of bisection iterations to record before stopping.
+    diagnostic_scale : bool, default=False
+        If ``True``, record ``mismatch_mid`` after dividing by
+        ``max(abs(psi))`` on the half-domain for plotting only. The raw
+        mismatch sign is still used to update the bisection bracket.
 
     Returns
     -------
@@ -424,13 +468,19 @@ def bisection_history_outward_shooting(
         fmid = boundary_mismatch_outward_shooting(
             x_half, V_half, mid, parity, mode="value"
         )
+        if diagnostic_scale:
+            mismatch_mid_plot = diagnostic_mismatch_outward_shooting(
+                x_half, V_half, mid, parity
+            )
+        else:
+            mismatch_mid_plot = fmid
         history.append(
             {
                 "iteration": iteration,
                 "lo": lo,
                 "hi": hi,
                 "mid": mid,
-                "mismatch_mid": fmid,
+                "mismatch_mid": mismatch_mid_plot,
                 "width": hi - lo,
             }
         )
@@ -827,6 +877,69 @@ def boundary_mismatch_inward_shooting(
 
 
 # ---------------------------------------------------------------------------
+# FUNCTION: diagnostic_mismatch_inward_shooting
+# ---------------------------------------------------------------------------
+def diagnostic_mismatch_inward_shooting(
+    x_max: float,
+    n_grid: int,
+    potential_fn,
+    potential_kwargs: dict,
+    energy: float,
+    parity: str,
+) -> float:
+    """
+    Evaluate a scale-invariant inward-shooting mismatch for plotting.
+
+    The inward solver starts from an arbitrary tail amplitude at ``x_max``.
+    That amplitude does not affect the root locations, but it can make the raw
+    mismatch span many orders of magnitude and visually dominate diagnostic
+    plots. For plotting only, divide the origin mismatch by a positive trial
+    wavefunction scale so the zeros are unchanged while the curve becomes
+    easier to interpret.
+
+    Parameters
+    ----------
+    x_max : float
+        Outer truncation point of the half-domain used for inward shooting.
+    n_grid : int
+        Number of grid points on the descending mesh from ``x_max`` to ``0``.
+    potential_fn : callable
+        Potential function used to evaluate the confining potential on that
+        descending grid.
+    potential_kwargs : dict
+        Keyword arguments forwarded to ``potential_fn`` when constructing the
+        sampled potential values.
+    energy : float
+        Trial energy at which the inward-shooting diagnostic mismatch is
+        evaluated.
+    parity : str
+        Symmetry sector of the trial state, either ``"even"`` or ``"odd"``.
+
+    Returns
+    -------
+    float
+        Origin mismatch divided by ``max(abs(psi))`` on the half-domain.
+    """
+
+    x_desc, psi_desc = half_domain_wavefunction_inward_shooting(
+        x_max=x_max,
+        n_grid=n_grid,
+        potential_fn=potential_fn,
+        potential_kwargs=potential_kwargs,
+        energy=energy,
+    )
+    scale = max(float(np.max(np.abs(psi_desc))), 1.0e-300)
+
+    if parity == "even":
+        return float(derivative_at_right_edge(x_desc, psi_desc) / scale)
+
+    if parity == "odd":
+        return float(psi_desc[-1] / scale)
+
+    raise ValueError("parity must be 'even' or 'odd'")
+
+
+# ---------------------------------------------------------------------------
 # FUNCTION: sample_mismatch_inward_shooting
 # ---------------------------------------------------------------------------
 def sample_mismatch_inward_shooting(
@@ -838,6 +951,7 @@ def sample_mismatch_inward_shooting(
     e_min: float,
     e_max: float,
     n_scan: int = 1000,
+    diagnostic_scale: bool = False,
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     Sample the inward-shooting parity mismatch over an energy interval.
@@ -864,6 +978,9 @@ def sample_mismatch_inward_shooting(
     n_scan : int, default=1000
         Number of equally spaced trial energies used to sample the mismatch
         curve between ``e_min`` and ``e_max``.
+    diagnostic_scale : bool, default=False
+        If ``True``, return a scale-invariant mismatch intended for plotting.
+        This does not change the root locations, only the vertical scaling.
 
     Returns
     -------
@@ -876,6 +993,15 @@ def sample_mismatch_inward_shooting(
     mismatches = np.array(
         [
             boundary_mismatch_inward_shooting(
+                x_max,
+                n_grid,
+                potential_fn,
+                potential_kwargs,
+                energy,
+                parity,
+            )
+            if not diagnostic_scale
+            else diagnostic_mismatch_inward_shooting(
                 x_max,
                 n_grid,
                 potential_fn,
@@ -1080,6 +1206,7 @@ def bisection_history_inward_shooting(
     bracket: tuple[float, float],
     tol: float = 1e-12,
     max_iter: int = 80,
+    diagnostic_scale: bool = False,
 ) -> list[dict]:
     """
     Record the inward-shooting bisection process for diagnostic plots.
@@ -1107,6 +1234,9 @@ def bisection_history_inward_shooting(
         the remaining bracket width.
     max_iter : int, default=80
         Maximum number of bisection iterations to record before stopping.
+    diagnostic_scale : bool, default=False
+        If ``True``, record a scale-invariant mismatch for plotting while still
+        using the raw mismatch signs to drive the bisection logic.
 
     Returns
     -------
@@ -1138,7 +1268,18 @@ def bisection_history_inward_shooting(
                 "lo": lo,
                 "hi": hi,
                 "mid": mid,
-                "mismatch_mid": fmid,
+                "mismatch_mid": (
+                    diagnostic_mismatch_inward_shooting(
+                        x_max,
+                        n_grid,
+                        potential_fn,
+                        potential_kwargs,
+                        mid,
+                        parity,
+                    )
+                    if diagnostic_scale
+                    else fmid
+                ),
             }
         )
 
