@@ -36,6 +36,34 @@ def _ensure_parent(path: str | Path) -> None:
     Path(path).parent.mkdir(parents=True, exist_ok=True)
 
 
+def _symlog_linthresh(values: np.ndarray) -> float:
+    """
+    Choose a stable linear threshold for a symlog y-axis.
+
+    Parameters
+    ----------
+    values : ndarray
+        Finite y-values that will be displayed on a symlog axis.
+
+    Returns
+    -------
+    float
+        Positive linear-threshold value for Matplotlib's symlog scale.
+    """
+
+    finite_values = np.asarray(values[np.isfinite(values)], dtype=float)
+
+    if finite_values.size == 0:
+        return 1.0
+
+    nonzero_abs = np.abs(finite_values[np.abs(finite_values) > 0.0])
+
+    if nonzero_abs.size == 0:
+        return 1.0
+
+    return max(1.0e-12, float(np.quantile(nonzero_abs, 0.05)))
+
+
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_potential_and_states
 # ---------------------------------------------------------------------------
@@ -381,19 +409,7 @@ def plot_root_finding_diagnostic(
     # Create a new Matplotlib figure
     plt.figure(figsize=(8, 6))
 
-    finite_curve = np.asarray(mismatches[np.isfinite(mismatches)], dtype=float)
-
-    if finite_curve.size == 0:
-        finite_curve = np.array([1.0], dtype=float)
-
-    nonzero_abs = np.abs(finite_curve[np.abs(finite_curve) > 0.0])
-
-    if nonzero_abs.size == 0:
-        linthresh = 1.0
-    else:
-        # Use a small data-driven linear region around zero so the plot shows
-        # both the sign of the mismatch and the wide dynamic range away from it.
-        linthresh = max(1.0e-12, float(np.quantile(nonzero_abs, 0.05)))
+    linthresh = _symlog_linthresh(mismatches)
 
     plt.plot(energies, mismatches, label=mismatch_label)
     plt.axhline(0.0, linestyle=":", label="Target mismatch = 0")
@@ -402,12 +418,89 @@ def plot_root_finding_diagnostic(
         history_labels = [f"State {i} bisection" for i in range(len(histories))]
 
     for i, history in enumerate(histories):
-        # Each history is the sequence of bisection midpoints for one root.
-        mids = np.array([row["mid"] for row in history], dtype=float)
-        vals = np.array([row["mismatch_mid"] for row in history], dtype=float)
+        # On the global plot, show only the final recorded midpoint so the
+        # roots are visible without cluttering the curve with the full
+        # bisection sequence.
+        final_row = history[-1]
+        mids = np.array([final_row["mid"]], dtype=float)
+        vals = np.array([final_row["mismatch_mid"]], dtype=float)
         label = history_labels[i] if i < len(history_labels) else f"State {i} bisection"
 
-        plt.scatter(mids, vals, s=18, label=label)
+        plt.scatter(mids, vals, s=28, label=label)
+
+    plt.yscale("symlog", linthresh=linthresh)
+    plt.xlabel("Trial energy $E$")
+    plt.ylabel("Boundary mismatch")
+    plt.title(title)
+    plt.legend(fontsize=8, loc="lower right")
+    plt.tight_layout()
+    plt.savefig(path, dpi=160)
+    plt.close()
+
+
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_root_finding_zoom
+# ---------------------------------------------------------------------------
+def plot_root_finding_zoom(
+    energies: np.ndarray,
+    mismatches: np.ndarray,
+    history: list[dict],
+    path: str | Path,
+    title: str,
+    history_label: str,
+    mismatch_label: str = r"boundary mismatch $M(E)$",
+) -> None:
+    """
+    Plot a zoomed root-finding diagnostic for a single bracketed state.
+
+    The zoom view focuses on one initial sign-changing bracket and overlays all
+    recorded bisection midpoints so the local convergence can be inspected
+    without cluttering the global mismatch scan.
+
+    Parameters
+    ----------
+    energies : ndarray
+        Trial energies used to sample the local mismatch curve.
+    mismatches : ndarray
+        Raw mismatch values for the local energy scan.
+    history : list[dict]
+        Recorded bisection history for one root.
+    path : str or Path
+        Output image path.
+    title : str
+        Figure title.
+    history_label : str
+        Legend label for the bisection history.
+    mismatch_label : str, optional
+        Legend label for the mismatch curve.
+    """
+
+    _ensure_parent(path)
+
+    plt.figure(figsize=(8, 6))
+
+    mids = np.array([row["mid"] for row in history], dtype=float)
+    vals = np.array([row["mismatch_mid"] for row in history], dtype=float)
+    final_mid = mids[-1]
+    final_val = vals[-1]
+    linthresh = _symlog_linthresh(np.concatenate([mismatches, vals]))
+
+    plt.plot(energies, mismatches, label=mismatch_label)
+    plt.axhline(0.0, linestyle=":", label="Target mismatch = 0")
+    plt.scatter(mids, vals, s=20, label=history_label)
+    plt.scatter(
+        [final_mid],
+        [final_val],
+        s=36,
+        color="tab:red",
+        zorder=3,
+        label="Final root estimate",
+    )
+
+    initial_lo = history[0]["lo"]
+    initial_hi = history[0]["hi"]
+    padding = 0.15 * max(initial_hi - initial_lo, 1.0e-12)
+    plt.xlim(initial_lo - padding, initial_hi + padding)
 
     plt.yscale("symlog", linthresh=linthresh)
     plt.xlabel("Trial energy $E$")

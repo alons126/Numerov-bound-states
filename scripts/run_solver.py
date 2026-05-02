@@ -96,9 +96,9 @@ def main() -> None:
         print("------------------------------------------------------------------\n")
         run_finite_square_well(RESULTS)
 
-        print("\n5. Scattering and Resonant Tunneling (Numerov only)")
-        print("------------------------------------------------------------------\n")
-        run_scattering(RESULTS)
+        # print("\n5. Scattering and Resonant Tunneling (Numerov only)")
+        # print("------------------------------------------------------------------\n")
+        # run_scattering(RESULTS)
 
     # Run tests after the experiments so the workflow reproduces the figures
     # first and then performs a quick regression pass on the codebase.

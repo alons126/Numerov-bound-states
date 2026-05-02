@@ -47,6 +47,7 @@ from src.plotting import (
     plot_potential_and_states,
     plot_probability_densities,
     plot_root_finding_diagnostic,
+    plot_root_finding_zoom,
     plot_scattering_coefficients,
     plot_scattering_potential_and_probability,
     plot_splitting_curve,
@@ -122,6 +123,24 @@ def _experiment_results_dir(results_root: Path, name: str) -> Path:
     return path
 
 
+def _diagnostic_label_slug(label: str) -> str:
+    """
+    Convert a human-readable diagnostic label into a filename-safe suffix.
+
+    Parameters
+    ----------
+    label : str
+        Plot label such as ``"State 0, even"``.
+
+    Returns
+    -------
+    str
+        Lowercase, underscore-separated slug suitable for filenames.
+    """
+
+    return label.lower().replace(",", "").replace(" ", "_")
+
+
 # ---------------------------------------------------------------------------
 # FUNCTION: plot_infinite_well_root_diagnostics
 # ---------------------------------------------------------------------------
@@ -155,7 +174,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             "path": results_dir
             / "1_infinite_square_well_Numerov_root_finding_even.png",
             "title": "Infinite square well - shooting roots - even states",
-            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(a)/\|\psi_E\|_2$",
+            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(a)$",
         },
         {
             "parity": "odd",
@@ -164,7 +183,7 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             "state_labels": ["State 1, odd", "State 3, odd"],
             "path": results_dir / "1_infinite_square_well_Numerov_root_finding_odd.png",
             "title": "Infinite square well - shooting roots - odd states",
-            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(a)/\|\psi_E\|_2$",
+            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(a)$",
         },
     ]
 
@@ -176,7 +195,6 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             e_min=spec["e_min"],
             e_max=spec["e_max"],
             n_scan=1600,
-            diagnostic_scale=True,
         )
         brackets = find_brackets_outward_shooting(
             x_half,
@@ -193,7 +211,6 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
                 spec["parity"],
                 bracket,
                 max_iter=30,
-                diagnostic_scale=True,
             )
             for bracket in brackets[: len(spec["state_labels"])]
         ]
@@ -207,6 +224,29 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
             history_labels=spec["state_labels"],
             mismatch_label=spec["mismatch_label"],
         )
+
+        for label, history in zip(spec["state_labels"], histories):
+            zoom_energies, zoom_mismatches = sample_boundary_mismatch_outward_shooting(
+                x_half,
+                V_half,
+                parity=spec["parity"],
+                e_min=history[0]["lo"],
+                e_max=history[0]["hi"],
+                n_scan=600,
+            )
+            plot_root_finding_zoom(
+                zoom_energies,
+                zoom_mismatches,
+                history,
+                results_dir
+                / (
+                    "1_infinite_square_well_Numerov_root_finding_"
+                    f"{_diagnostic_label_slug(label)}_zoom.png"
+                ),
+                f"Infinite square well - root zoom - {label.lower()}",
+                history_label=label,
+                mismatch_label=spec["mismatch_label"],
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -249,7 +289,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             "path": results_dir
             / "2a_harmonic_oscillator_Numerov_root_finding_even.png",
             "title": "Harmonic oscillator (Numerov) - shooting roots - even states",
-            "mismatch_label": r"Scaled mismatch: $M(E)=\psi'_E(0)/\|\psi_E\|_2$",
+            "mismatch_label": r"Raw mismatch: $M(E)=\psi'_E(0)$",
         },
         {
             "parity": "odd",
@@ -258,7 +298,7 @@ def plot_harmonic_oscillator_root_diagnostics(
             "state_labels": ["State 1, odd", "State 3, odd"],
             "path": results_dir / "2a_harmonic_oscillator_Numerov_root_finding_odd.png",
             "title": "Harmonic oscillator (Numerov) - shooting roots - odd states",
-            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(0)/\|\psi_E\|_2$",
+            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(0)$",
         },
     ]
 
@@ -272,7 +312,6 @@ def plot_harmonic_oscillator_root_diagnostics(
             e_min=spec["e_min"],
             e_max=spec["e_max"],
             n_scan=400,
-            diagnostic_scale=True,
         )
         brackets = find_brackets_inward_shooting(
             x_max=x_max,
@@ -293,7 +332,6 @@ def plot_harmonic_oscillator_root_diagnostics(
                 parity=spec["parity"],
                 bracket=bracket,
                 max_iter=30,
-                diagnostic_scale=True,
             )
             for bracket in brackets[: len(spec["state_labels"])]
         ]
@@ -307,6 +345,31 @@ def plot_harmonic_oscillator_root_diagnostics(
             history_labels=spec["state_labels"],
             mismatch_label=spec["mismatch_label"],
         )
+
+        for label, history in zip(spec["state_labels"], histories):
+            zoom_energies, zoom_mismatches = sample_mismatch_inward_shooting(
+                x_max=x_max,
+                n_grid=1600,
+                potential_fn=harmonic_oscillator,
+                potential_kwargs={"omega": omega},
+                parity=spec["parity"],
+                e_min=history[0]["lo"],
+                e_max=history[0]["hi"],
+                n_scan=600,
+            )
+            plot_root_finding_zoom(
+                zoom_energies,
+                zoom_mismatches,
+                history,
+                results_dir
+                / (
+                    "2a_harmonic_oscillator_Numerov_root_finding_"
+                    f"{_diagnostic_label_slug(label)}_zoom.png"
+                ),
+                f"Harmonic oscillator (Numerov) - root zoom - {label.lower()}",
+                history_label=label,
+                mismatch_label=spec["mismatch_label"],
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -348,7 +411,7 @@ def plot_double_well_root_diagnostics(
             "state_labels": ["State 0, even", "State 2, even"],
             "path": results_dir / "3_double_well_Numerov_root_finding_even.png",
             "title": "Quartic double well - shooting roots - even states",
-            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(x_{\max})/\|\psi_E\|_2$",
+            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(x_{\max})$",
         },
         {
             "parity": "odd",
@@ -357,7 +420,7 @@ def plot_double_well_root_diagnostics(
             "state_labels": ["State 1, odd", "State 3, odd"],
             "path": results_dir / "3_double_well_Numerov_root_finding_odd.png",
             "title": "Quartic double well - shooting roots - odd states",
-            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(x_{\max})/\|\psi_E\|_2$",
+            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(x_{\max})$",
         },
     ]
 
@@ -369,7 +432,6 @@ def plot_double_well_root_diagnostics(
             e_min=spec["e_min"],
             e_max=spec["e_max"],
             n_scan=1600,
-            diagnostic_scale=True,
         )
         brackets = find_brackets_outward_shooting(
             x_half,
@@ -386,7 +448,6 @@ def plot_double_well_root_diagnostics(
                 spec["parity"],
                 bracket,
                 max_iter=30,
-                diagnostic_scale=True,
             )
             for bracket in brackets[: len(spec["state_labels"])]
         ]
@@ -400,6 +461,29 @@ def plot_double_well_root_diagnostics(
             history_labels=spec["state_labels"],
             mismatch_label=spec["mismatch_label"],
         )
+
+        for label, history in zip(spec["state_labels"], histories):
+            zoom_energies, zoom_mismatches = sample_boundary_mismatch_outward_shooting(
+                x_half,
+                V_half,
+                parity=spec["parity"],
+                e_min=history[0]["lo"],
+                e_max=history[0]["hi"],
+                n_scan=600,
+            )
+            plot_root_finding_zoom(
+                zoom_energies,
+                zoom_mismatches,
+                history,
+                results_dir
+                / (
+                    "3_double_well_Numerov_root_finding_"
+                    f"{_diagnostic_label_slug(label)}_zoom.png"
+                ),
+                f"Quartic double well - root zoom - {label.lower()}",
+                history_label=label,
+                mismatch_label=spec["mismatch_label"],
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -706,7 +790,7 @@ def run_harmonic_oscillator_RK4_comparison(
             "path": rk4_results_dir
             / "2b_harmonic_oscillator_RK4_root_finding_even.png",
             "title": "Harmonic oscillator (RK4) - shooting roots - even states",
-            "mismatch_label": r"Scaled mismatch: $M(E)=\psi'_E(0)/\|\psi_E\|_2$",
+            "mismatch_label": r"Raw mismatch: $M(E)=\psi'_E(0)$",
         },
         {
             "parity": "odd",
@@ -715,7 +799,7 @@ def run_harmonic_oscillator_RK4_comparison(
             "state_labels": ["State 1, odd", "State 3, odd"],
             "path": rk4_results_dir / "2b_harmonic_oscillator_RK4_root_finding_odd.png",
             "title": "Harmonic oscillator (RK4) - shooting roots - odd states",
-            "mismatch_label": r"Scaled mismatch: $M(E)=\psi_E(0)/\|\psi_E\|_2$",
+            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(0)$",
         },
     ]
 
@@ -730,7 +814,6 @@ def run_harmonic_oscillator_RK4_comparison(
             e_max=spec["e_max"],
             omega=omega,
             n_scan=400,
-            diagnostic_scale=True,
         )
         brackets = RK4_find_brackets(
             parity=spec["parity"],
@@ -749,7 +832,6 @@ def run_harmonic_oscillator_RK4_comparison(
                 n_grid=1600,
                 omega=omega,
                 max_iter=30,
-                diagnostic_scale=True,
             )
             for bracket in brackets[: len(spec["state_labels"])]
         ]
@@ -763,6 +845,30 @@ def run_harmonic_oscillator_RK4_comparison(
             history_labels=spec["state_labels"],
             mismatch_label=spec["mismatch_label"],
         )
+
+        for label, history in zip(spec["state_labels"], histories):
+            zoom_energies, zoom_mismatches = RK4_sample_mismatch(
+                parity=spec["parity"],
+                x_max=x_max,
+                n_grid=1600,
+                e_min=history[0]["lo"],
+                e_max=history[0]["hi"],
+                omega=omega,
+                n_scan=600,
+            )
+            plot_root_finding_zoom(
+                zoom_energies,
+                zoom_mismatches,
+                history,
+                rk4_results_dir
+                / (
+                    "2b_harmonic_oscillator_RK4_root_finding_"
+                    f"{_diagnostic_label_slug(label)}_zoom.png"
+                ),
+                f"Harmonic oscillator (RK4) - root zoom - {label.lower()}",
+                history_label=label,
+                mismatch_label=spec["mismatch_label"],
+            )
 
     if target_h is not None:
         # =====================================================
@@ -1025,25 +1131,25 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         "Harmonic oscillator (Numerov) - energy convergence vs box size $x_{\\max}$",
     )
 
-    # =====================================================
-    # Run the RK4 comparison and box-size convergence studies
-    # =====================================================
+    # # =====================================================
+    # # Run the RK4 comparison and box-size convergence studies
+    # # =====================================================
 
-    print(
-        "Running harmonic oscillator RK4 comparison and box-size convergence studies..."
-    )
+    # print(
+    #     "Running harmonic oscillator RK4 comparison and box-size convergence studies..."
+    # )
 
-    # The RK4 comparison reuses the same grid spacings as the Numerov
-    # grid-convergence study, so both methods are compared on matched meshes at
-    # the same fixed domain size.
-    run_harmonic_oscillator_RK4_comparison(
-        rk4_results_dir=rk4_results_dir,
-        comparison_results_dir=comparison_results_dir,
-        numerov_convergence=conv_h,
-        omega=omega,
-        x_max=x_max,
-        target_h=target_h,
-    )
+    # # The RK4 comparison reuses the same grid spacings as the Numerov
+    # # grid-convergence study, so both methods are compared on matched meshes at
+    # # the same fixed domain size.
+    # run_harmonic_oscillator_RK4_comparison(
+    #     rk4_results_dir=rk4_results_dir,
+    #     comparison_results_dir=comparison_results_dir,
+    #     numerov_convergence=conv_h,
+    #     omega=omega,
+    #     x_max=x_max,
+    #     target_h=target_h,
+    # )
 
 
 # ---------------------------------------------------------------------------
