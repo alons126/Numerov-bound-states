@@ -152,14 +152,14 @@
                 
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png}
+                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png}
                     \captionof{figure}{Comparison between numerical and exact energy eigenvalues for the infinite square well. The agreement is excellent for the first four states.}
                     \label{fig:infwell_energies}
                 \end{minipage}
                 \hfill
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png}
+                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_densities.png}
                     \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four eigenstates of the infinite square well. The correct number of nodes and boundary behavior are clearly reproduced.}
                     \label{fig:infwell_densities}
                 \end{minipage}
@@ -188,7 +188,7 @@
 
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png}
+                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png}
                     \captionof{figure}{Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}
                     \label{fig:infwell_convergence}
                 \end{minipage}
@@ -217,7 +217,7 @@
 
                 Convergence with respect to grid spacing $h$ (Fig.~\ref{fig:ho_convergence_h}) is overall consistent with fourth-order behavior. The saved study gives fitted slopes $p\approx5.30$, $3.97$, $4.57$, and $4.00$ for the first four states. The two slopes above four are not evidence of true superconvergence: they occur only after the errors have already dropped to the $10^{-11}$--$10^{-12}$ range, where root-finding tolerance and floating-point effects distort a short log--log fit. The raw errors themselves still decrease in the expected high-order way, from about $3.2\times10^{-9}$--$2.6\times10^{-8}$ on the coarsest grid to $5.1\times10^{-13}$--$2.6\times10^{-11}$ on the finest grid. \\
 
-                The dependence on domain size (Fig.~\ref{fig:ho_convergence_xmax}) shows the expected truncation-to-discretization crossover. At $x_{\max}=4$ the tail is clipped too aggressively and the fourth-state error is still about $5.9\times10^{-5}$. By $x_{\max}=5$ the errors have already fallen dramatically, and by $x_{\max}\approx6$ the curves flatten near the discretization floor: roughly $10^{-12}$ for the ground state, a few $10^{-12}$ for the first odd state, and about $10^{-11}$--$10^{-10}$ for the higher states. This confirms that the dominant error for large boxes is no longer domain truncation. \\
+                The dependence on domain size in Fig.~\ref{fig:ho_convergence_xmax} shows the expected truncation-to-discretization crossover. At $x_{\max}=4$ the tail is clipped too aggressively and the fourth-state error is still about $5.9\times10^{-5}$. By $x_{\max}=5$ the errors have already fallen dramatically, and by $x_{\max}\approx6$ the curves flatten near the discretization floor: roughly $10^{-12}$ for the ground state, a few $10^{-12}$ for the first odd state, and about $10^{-11}$--$10^{-10}$ for the higher states. This confirms that the dominant error for large boxes is no longer domain truncation. \\
 
                 Finally, the combined state plot (Fig.~\ref{fig:ho_states}) shows the wavefunctions together with the confining potential. The increasing spatial extent and alternating parity agree with the analytic harmonic-oscillator picture. \\
 
@@ -226,14 +226,14 @@
 
                     \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png}
+                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_energy_comparison.png}
                         \captionof{figure}{Comparison between numerical and exact energy eigenvalues for the harmonic oscillator. The agreement is excellent for the first four states.}
                         \label{fig:ho_energies}
                     \end{minipage}
                     \hfill
                     \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png}
+                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_densities.png}
                         \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four harmonic oscillator eigenstates. The correct node structure is clearly reproduced.}
                         \label{fig:ho_densities}
                     \end{minipage}
@@ -264,14 +264,14 @@
 
                     \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png}
+                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png}
                         \captionof{figure}{Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}
                         \label{fig:ho_convergence_h}
                     \end{minipage}
                     \hfill
                     \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png}
+                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png}
                         \captionof{figure}{Dependence of the energy error on the domain size $x_{\max}$. Errors decrease rapidly before reaching a plateau set by discretization and floating-point limits.}
                         \label{fig:ho_convergence_xmax}
                     \end{minipage}
@@ -338,7 +338,7 @@
                 \hfill
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_densities.png}
+                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_state_densities.png}
                     \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four double-well states. The lowest even and odd states have nearly identical densities, as expected for a tunneling doublet.}
                     \label{fig:dw_densities}
                 \end{minipage}
@@ -369,14 +369,14 @@
 
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png}
+                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_h.png}
                     \captionof{figure}{Grid convergence for the quartic double well. The energy errors decrease with high-order behavior under successive grid refinement.}
                     \label{fig:dw_convergence_h}
                 \end{minipage}
                 \hfill
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png}
+                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_x_max.png}
                     \captionof{figure}{Dependence of the double-well energy errors on box size. The errors decrease rapidly as the domain is enlarged and then reach a numerical plateau.}
                     \label{fig:dw_convergence_xmax}
                 \end{minipage}
@@ -417,7 +417,7 @@
             \hfill
             \begin{minipage}[t]{0.48\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_densities.png}
+                \includegraphics[width=\textwidth]{../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_state_densities.png}
                 \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four finite square well states. The densities show both interior oscillation and exterior exponential leakage.}
                 \label{fig:finitewell_densities}
             \end{minipage}
