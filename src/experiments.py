@@ -43,7 +43,7 @@ from src.analysis import (
 from src.plotting import (
     plot_energy_comparison,
     plot_error_curve,
-    plot_numerov_vs_rk4_errors,
+    plot_numerov_vs_RK4_errors,
     plot_potential_and_states,
     plot_probability_densities,
     plot_root_finding_diagnostic,
@@ -532,9 +532,9 @@ def run_square_well(results_dir: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: run_harmonic_rk4_comparison
+# FUNCTION: run_harmonic_oscillator_RK4_comparison
 # ---------------------------------------------------------------------------
-def run_harmonic_rk4_comparison(
+def run_harmonic_oscillator_RK4_comparison(
     rk4_results_dir: Path,
     comparison_results_dir: Path,
     numerov_convergence: dict[str, np.ndarray],
@@ -584,6 +584,8 @@ def run_harmonic_rk4_comparison(
     # Run the RK4 calculations
     # =====================================================
 
+    print("Running harmonic oscillator RK4 comparison...")
+
     # First generate one representative RK4 spectrum table and figure.
     rk4_reference_rows = RK4_solve_harmonic_oscillator_energies(
         x_max=x_max,
@@ -592,7 +594,7 @@ def run_harmonic_rk4_comparison(
         omega=omega,
     )
     save_csv_rows(
-        rk4_results_dir / "2b_harmonic_rk4_energies.csv",
+        rk4_results_dir / "2b_harmonic_oscillator_RK4_energies.csv",
         [
             {
                 "state_index": row.state_index,
@@ -609,7 +611,7 @@ def run_harmonic_rk4_comparison(
     plot_energy_comparison(
         np.array([row.energy for row in rk4_reference_rows], dtype=float),
         np.array([row.exact_energy for row in rk4_reference_rows], dtype=float),
-        rk4_results_dir / "2b_harmonic_rk4_state_energy_comparison.png",
+        rk4_results_dir / "2b_harmonic_oscillator_RK4_state_energy_comparison.png",
         "Harmonic oscillator RK4 - state energies",
         exact_label=r"exact: $E_n=\omega\left(n+\frac{1}{2}\right)$",
         numerical_label="RK4",
@@ -628,18 +630,22 @@ def run_harmonic_rk4_comparison(
     # Analyze and save the results
     # =====================================================
 
+    print("Analyzing harmonic oscillator RK4 comparison results...")
+
     rk4_slopes = estimate_convergence_slopes(
         rk4_convergence["h"], rk4_convergence["energy_errors"]
     )
     save_csv_rows(
-        rk4_results_dir / "2b_harmonic_rk4_convergence_slopes.csv", rk4_slopes
+        rk4_results_dir
+        / "2b_harmonic_oscillator_RK4_energy_convergence_vs_h_slopes.csv",
+        rk4_slopes,
     )
 
     plot_error_curve(
         rk4_convergence["h"],
         rk4_convergence["energy_errors"],
         "Grid spacing $h$",
-        rk4_results_dir / "2b_harmonic_rk4_energy_convergence_vs_h.png",
+        rk4_results_dir / "2b_harmonic_oscillator_RK4_energy_convergence_vs_h.png",
         "Harmonic oscillator (RK4) - energy convergence vs grid spacing $h$",
         slopes=rk4_slopes,
     )
@@ -666,7 +672,7 @@ def run_harmonic_rk4_comparison(
         comparison_rows,
     )
 
-    plot_numerov_vs_rk4_errors(
+    plot_numerov_vs_RK4_errors(
         numerov_h,
         numerov_errors,
         rk4_convergence["h"],
@@ -681,7 +687,8 @@ def run_harmonic_rk4_comparison(
             "e_min": 0.1,
             "e_max": 3.2,
             "state_labels": ["State 0, even", "State 2, even"],
-            "path": rk4_results_dir / "2b_harmonic_rk4_root_finding_even.png",
+            "path": rk4_results_dir
+            / "2b_harmonic_oscillator_RK4_root_finding_even.png",
             "title": "Harmonic oscillator RK4 roots, even states",
             "mismatch_label": r"Raw mismatch: $M(E)=\psi'_E(0)$",
         },
@@ -690,7 +697,7 @@ def run_harmonic_rk4_comparison(
             "e_min": 0.7,
             "e_max": 4.3,
             "state_labels": ["State 1, odd", "State 3, odd"],
-            "path": rk4_results_dir / "2b_harmonic_rk4_root_finding_odd.png",
+            "path": rk4_results_dir / "2b_harmonic_oscillator_RK4_root_finding_odd.png",
             "title": "Harmonic oscillator RK4 roots, odd states",
             "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(0)$",
         },
@@ -744,6 +751,8 @@ def run_harmonic_rk4_comparison(
         # Run the fixed-spacing box-size study
         # =====================================================
 
+        print("Running harmonic oscillator RK4 box-size study...")
+
         rk4_box = RK4_harmonic_convergence_vs_box_size_fixed_spacing(
             x_max_values=[4.0, 5.0, 6.0, 7.0, 8.0, 10.0],
             target_h=target_h,
@@ -757,8 +766,11 @@ def run_harmonic_rk4_comparison(
         # Analyze and save the box-size results
         # =====================================================
 
+        print("Analyzing harmonic oscillator RK4 box-size results...")
+
         save_csv_rows(
-            rk4_results_dir / "2b_harmonic_rk4_convergence_vs_x_max_data.csv",
+            rk4_results_dir
+            / "2b_harmonic_oscillator_RK4_energy_convergence_vs_x_max.csv",
             [
                 {
                     "x_max": x_val,
@@ -781,8 +793,9 @@ def run_harmonic_rk4_comparison(
             rk4_box["x_max"],
             rk4_box["energy_errors"],
             "Box size $x_{\\max}$",
-            rk4_results_dir / "2b_harmonic_rk4_convergence_vs_x_max.png",
-            "Harmonic oscillator RK4 convergence vs box size $x_{\\max}$",
+            rk4_results_dir
+            / "2b_harmonic_oscillator_RK4_energy_convergence_vs_x_max.png",
+            "Harmonic oscillator (RK4) - energy convergence vs box size $x_{\\max}$",
         )
 
 
@@ -847,7 +860,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     # Analyze and save the results
     # =====================================================
 
-    print("Analyzing harmonic oscillator results...")
+    print("Analyzing harmonic oscillator results (Numerov)...")
 
     # Plot the root-finding diagnostics for all four states, with separate panels
     # for the even and odd sectors
@@ -929,7 +942,8 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     )
     conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
     save_csv_rows(
-        numerov_results_dir / "2a_harmonic_oscillator_Numerov_convergence_slopes.csv",
+        numerov_results_dir
+        / "2a_harmonic_oscillator_Numerov_energy_convergence_vs_h_slopes.csv",
         conv_h_slopes,
     )
 
@@ -965,7 +979,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     )
     save_csv_rows(
         numerov_results_dir
-        / "2a_harmonic_oscillator_Numerov_convergence_vs_x_max_data.csv",
+        / "2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.csv",
         [
             {
                 "x_max": x_val,
@@ -1004,7 +1018,7 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     # The RK4 comparison reuses the same grid spacings as the Numerov
     # grid-convergence study, so both methods are compared on matched meshes at
     # the same fixed domain size.
-    run_harmonic_rk4_comparison(
+    run_harmonic_oscillator_RK4_comparison(
         rk4_results_dir=rk4_results_dir,
         comparison_results_dir=comparison_results_dir,
         numerov_convergence=conv_h,

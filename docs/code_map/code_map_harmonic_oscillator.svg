@@ -166,15 +166,15 @@
 <path fill="none" stroke="#64748b" d="M1516.02,-511.91C1591.91,-501.35 1720.83,-483.43 1831.62,-468 1833.48,-467.74 1835.34,-467.48 1837.22,-467.22"/>
 <polygon fill="#64748b" stroke="#64748b" points="1837.43,-469.67 1844.03,-466.27 1836.76,-464.81 1837.43,-469.67"/>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison -->
 <g id="node10" class="node">
-<title>src_experiments_run_harmonic_rk4_comparison</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison</title>
 <path fill="#f8fafc" stroke="#334155" d="M860.88,-468C860.88,-468 720.38,-468 720.38,-468 714.38,-468 708.38,-462 708.38,-456 708.38,-456 708.38,-444 708.38,-444 708.38,-438 714.38,-432 720.38,-432 720.38,-432 860.88,-432 860.88,-432 866.88,-432 872.88,-438 872.88,-444 872.88,-444 872.88,-456 872.88,-456 872.88,-462 866.88,-468 860.88,-468"/>
-<text xml:space="preserve" text-anchor="middle" x="790.62" y="-445.55" font-family="Helvetica,sans-Serif" font-size="11.00">run_harmonic_rk4_comparison</text>
+<text xml:space="preserve" text-anchor="middle" x="790.62" y="-445.55" font-family="Helvetica,sans-Serif" font-size="11.00">run_harmonic_oscillator_RK4_comparison</text>
 </g>
-<!-- src_experiments_run_harmonic_oscillator&#45;&gt;src_experiments_run_harmonic_rk4_comparison -->
+<!-- src_experiments_run_harmonic_oscillator&#45;&gt;src_experiments_run_harmonic_oscillator_RK4_comparison -->
 <g id="edge14" class="edge">
-<title>src_experiments_run_harmonic_oscillator&#45;&gt;src_experiments_run_harmonic_rk4_comparison</title>
+<title>src_experiments_run_harmonic_oscillator&#45;&gt;src_experiments_run_harmonic_oscillator_RK4_comparison</title>
 <path fill="none" stroke="#64748b" d="M1385.23,-514.06C1266.82,-501.51 1016.67,-474.97 881.65,-460.65"/>
 <polygon fill="#64748b" stroke="#64748b" points="882.04,-458.23 874.82,-459.93 881.53,-463.1 882.04,-458.23"/>
 </g>
@@ -250,45 +250,45 @@
 <path fill="none" stroke="#64748b" d="M1516.11,-517.81C1646.09,-511.16 1945.78,-494.22 2196.62,-468 2197.01,-467.96 2197.4,-467.92 2197.79,-467.88"/>
 <polygon fill="#64748b" stroke="#64748b" points="2197.87,-470.33 2204.56,-467.14 2197.34,-465.46 2197.87,-470.33"/>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_analysis_estimate_convergence_slopes -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_analysis_estimate_convergence_slopes -->
 <g id="edge21" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_analysis_estimate_convergence_slopes</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_analysis_estimate_convergence_slopes</title>
 <path fill="none" stroke="#64748b" d="M708.19,-441.22C616.85,-432.17 465.32,-415.91 335.62,-396 335.54,-395.99 335.45,-395.97 335.36,-395.96"/>
 <polygon fill="#64748b" stroke="#64748b" points="335.9,-393.56 328.6,-394.88 335.13,-398.4 335.9,-393.56"/>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_analysis_save_csv_rows -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_analysis_save_csv_rows -->
 <g id="edge22" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_analysis_save_csv_rows</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_analysis_save_csv_rows</title>
 <path fill="none" stroke="#64748b" d="M707.97,-436.46C610.85,-421.68 461.22,-398.78 448.62,-396 446.62,-395.56 444.59,-395.09 442.53,-394.59"/>
 <polygon fill="#64748b" stroke="#64748b" points="443.43,-392.29 436.04,-392.96 442.23,-397.04 443.43,-392.29"/>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_plotting_plot_energy_comparison -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_plotting_plot_energy_comparison -->
 <g id="edge23" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_plotting_plot_energy_comparison</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_plotting_plot_energy_comparison</title>
 <path fill="none" stroke="#64748b" d="M873.2,-445.36C991.17,-439.36 1214.49,-425.05 1402.62,-396 1402.9,-395.96 1403.18,-395.91 1403.45,-395.87"/>
 <polygon fill="#64748b" stroke="#64748b" points="1403.59,-398.33 1410.09,-394.76 1402.78,-393.5 1403.59,-398.33"/>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_plotting_plot_error_curve -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_plotting_plot_error_curve -->
 <g id="edge24" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_plotting_plot_error_curve</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_plotting_plot_error_curve</title>
 <path fill="none" stroke="#64748b" d="M873.2,-445.04C971.18,-439.26 1139.36,-425.94 1290.71,-395.8"/>
 <polygon fill="#64748b" stroke="#64748b" points="1290.95,-398.25 1297.33,-394.46 1289.99,-393.44 1290.95,-398.25"/>
 </g>
-<!-- src_plotting_plot_numerov_vs_rk4_errors -->
+<!-- src_plotting_plot_numerov_vs_RK4_errors -->
 <g id="node18" class="node">
-<title>src_plotting_plot_numerov_vs_rk4_errors</title>
+<title>src_plotting_plot_numerov_vs_RK4_errors</title>
 <path fill="#f8fafc" stroke="#334155" d="M1269.25,-396C1269.25,-396 1140,-396 1140,-396 1134,-396 1128,-390 1128,-384 1128,-384 1128,-372 1128,-372 1128,-366 1134,-360 1140,-360 1140,-360 1269.25,-360 1269.25,-360 1275.25,-360 1281.25,-366 1281.25,-372 1281.25,-372 1281.25,-384 1281.25,-384 1281.25,-390 1275.25,-396 1269.25,-396"/>
-<text xml:space="preserve" text-anchor="middle" x="1204.62" y="-373.55" font-family="Helvetica,sans-Serif" font-size="11.00">plot_numerov_vs_rk4_errors</text>
+<text xml:space="preserve" text-anchor="middle" x="1204.62" y="-373.55" font-family="Helvetica,sans-Serif" font-size="11.00">plot_numerov_vs_RK4_errors</text>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_plotting_plot_numerov_vs_rk4_errors -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_plotting_plot_numerov_vs_RK4_errors -->
 <g id="edge25" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_plotting_plot_numerov_vs_rk4_errors</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_plotting_plot_numerov_vs_RK4_errors</title>
 <path fill="none" stroke="#64748b" d="M873.25,-436.57C937.86,-426.65 1030.14,-412.02 1119.39,-396.02"/>
 <polygon fill="#64748b" stroke="#64748b" points="1119.79,-398.43 1126.25,-394.78 1118.93,-393.61 1119.79,-398.43"/>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_plotting_plot_root_finding_diagnostic -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_plotting_plot_root_finding_diagnostic -->
 <g id="edge26" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_plotting_plot_root_finding_diagnostic</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_plotting_plot_root_finding_diagnostic</title>
 <path fill="none" stroke="#64748b" d="M873.23,-446.8C1013.76,-442.27 1308.07,-429.36 1554.62,-396 1554.81,-395.98 1554.99,-395.95 1555.18,-395.92"/>
 <polygon fill="#64748b" stroke="#64748b" points="1555.53,-398.35 1562.1,-394.91 1554.82,-393.5 1555.53,-398.35"/>
 </g>
@@ -298,9 +298,9 @@
 <path fill="#f8fafc" stroke="#334155" d="M580.25,-252C580.25,-252 481,-252 481,-252 475,-252 469,-246 469,-240 469,-240 469,-228 469,-228 469,-222 475,-216 481,-216 481,-216 580.25,-216 580.25,-216 586.25,-216 592.25,-222 592.25,-228 592.25,-228 592.25,-240 592.25,-240 592.25,-246 586.25,-252 580.25,-252"/>
 <text xml:space="preserve" text-anchor="middle" x="530.62" y="-229.55" font-family="Helvetica,sans-Serif" font-size="11.00">RK4_bisection_history</text>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_bisection_history -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_bisection_history -->
 <g id="edge27" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_bisection_history</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_bisection_history</title>
 <path fill="none" stroke="#64748b" d="M708.2,-436.38C640.4,-425.2 553.71,-408.71 542.62,-396 509.93,-358.52 516.8,-295.63 524.09,-260.58"/>
 <polygon fill="#64748b" stroke="#64748b" points="526.47,-261.14 525.6,-253.78 521.69,-260.08 526.47,-261.14"/>
 </g>
@@ -310,9 +310,9 @@
 <path fill="#f8fafc" stroke="#334155" d="M705.38,-252C705.38,-252 621.88,-252 621.88,-252 615.88,-252 609.88,-246 609.88,-240 609.88,-240 609.88,-228 609.88,-228 609.88,-222 615.88,-216 621.88,-216 621.88,-216 705.38,-216 705.38,-216 711.38,-216 717.38,-222 717.38,-228 717.38,-228 717.38,-240 717.38,-240 717.38,-246 711.38,-252 705.38,-252"/>
 <text xml:space="preserve" text-anchor="middle" x="663.62" y="-229.55" font-family="Helvetica,sans-Serif" font-size="11.00">RK4_find_brackets</text>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_find_brackets -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_find_brackets -->
 <g id="edge28" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_find_brackets</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_find_brackets</title>
 <path fill="none" stroke="#64748b" d="M707.91,-435.35C644.87,-424.1 567.28,-408.1 557.62,-396 520.27,-349.2 586.92,-289.17 630.43,-257.27"/>
 <polygon fill="#64748b" stroke="#64748b" points="631.72,-259.36 635.97,-253.28 628.86,-255.38 631.72,-259.36"/>
 </g>
@@ -322,9 +322,9 @@
 <path fill="#f8fafc" stroke="#334155" d="M1098.25,-396C1098.25,-396 831,-396 831,-396 825,-396 819,-390 819,-384 819,-384 819,-372 819,-372 819,-366 825,-360 831,-360 831,-360 1098.25,-360 1098.25,-360 1104.25,-360 1110.25,-366 1110.25,-372 1110.25,-372 1110.25,-384 1110.25,-384 1110.25,-390 1104.25,-396 1098.25,-396"/>
 <text xml:space="preserve" text-anchor="middle" x="964.62" y="-373.55" font-family="Helvetica,sans-Serif" font-size="11.00">RK4_harmonic_convergence_vs_box_size_fixed_spacing</text>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing -->
 <g id="edge29" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing</title>
 <path fill="none" stroke="#64748b" d="M834.08,-431.52C858.26,-421.79 888.47,-409.64 913.75,-399.47"/>
 <polygon fill="#64748b" stroke="#64748b" points="914.44,-401.83 920.01,-396.95 912.61,-397.29 914.44,-401.83"/>
 </g>
@@ -334,9 +334,9 @@
 <path fill="#f8fafc" stroke="#334155" d="M750.62,-396C750.62,-396 578.62,-396 578.62,-396 572.62,-396 566.62,-390 566.62,-384 566.62,-384 566.62,-372 566.62,-372 566.62,-366 572.62,-360 578.62,-360 578.62,-360 750.62,-360 750.62,-360 756.62,-360 762.62,-366 762.62,-372 762.62,-372 762.62,-384 762.62,-384 762.62,-390 756.62,-396 750.62,-396"/>
 <text xml:space="preserve" text-anchor="middle" x="664.62" y="-373.55" font-family="Helvetica,sans-Serif" font-size="11.00">RK4_harmonic_convergence_vs_grid</text>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_harmonic_convergence_vs_grid -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_harmonic_convergence_vs_grid -->
 <g id="edge30" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_harmonic_convergence_vs_grid</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_harmonic_convergence_vs_grid</title>
 <path fill="none" stroke="#64748b" d="M759.15,-431.52C742.04,-422.01 720.74,-410.17 702.69,-400.15"/>
 <polygon fill="#64748b" stroke="#64748b" points="704.33,-398.25 697.02,-397 701.95,-402.54 704.33,-398.25"/>
 </g>
@@ -346,9 +346,9 @@
 <path fill="#f8fafc" stroke="#334155" d="M438.62,-252C438.62,-252 332.62,-252 332.62,-252 326.62,-252 320.62,-246 320.62,-240 320.62,-240 320.62,-228 320.62,-228 320.62,-222 326.62,-216 332.62,-216 332.62,-216 438.62,-216 438.62,-216 444.62,-216 450.62,-222 450.62,-228 450.62,-228 450.62,-240 450.62,-240 450.62,-246 444.62,-252 438.62,-252"/>
 <text xml:space="preserve" text-anchor="middle" x="385.62" y="-229.55" font-family="Helvetica,sans-Serif" font-size="11.00">RK4_sample_mismatch</text>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_sample_mismatch -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_sample_mismatch -->
 <g id="edge31" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_sample_mismatch</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_sample_mismatch</title>
 <path fill="none" stroke="#64748b" d="M708,-435.71C634.39,-423.41 535.84,-405.61 519.62,-396 462.96,-362.42 419.4,-295.77 398.77,-259.65"/>
 <polygon fill="#64748b" stroke="#64748b" points="401.02,-258.65 395.46,-253.75 396.75,-261.05 401.02,-258.65"/>
 </g>
@@ -358,9 +358,9 @@
 <path fill="#f8fafc" stroke="#334155" d="M885.62,-324C885.62,-324 695.62,-324 695.62,-324 689.62,-324 683.62,-318 683.62,-312 683.62,-312 683.62,-300 683.62,-300 683.62,-294 689.62,-288 695.62,-288 695.62,-288 885.62,-288 885.62,-288 891.62,-288 897.62,-294 897.62,-300 897.62,-300 897.62,-312 897.62,-312 897.62,-318 891.62,-324 885.62,-324"/>
 <text xml:space="preserve" text-anchor="middle" x="790.62" y="-301.55" font-family="Helvetica,sans-Serif" font-size="11.00">RK4_solve_harmonic_oscillator_energies</text>
 </g>
-<!-- src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_solve_harmonic_oscillator_energies -->
+<!-- src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_solve_harmonic_oscillator_energies -->
 <g id="edge32" class="edge">
-<title>src_experiments_run_harmonic_rk4_comparison&#45;&gt;src_rk4_compare_RK4_solve_harmonic_oscillator_energies</title>
+<title>src_experiments_run_harmonic_oscillator_RK4_comparison&#45;&gt;src_rk4_compare_RK4_solve_harmonic_oscillator_energies</title>
 <path fill="none" stroke="#64748b" d="M790.62,-431.59C790.62,-406.76 790.62,-361.01 790.62,-332.4"/>
 <polygon fill="#64748b" stroke="#64748b" points="793.08,-332.62 790.63,-325.62 788.18,-332.62 793.08,-332.62"/>
 </g>
@@ -406,9 +406,9 @@
 <path fill="none" stroke="#64748b" d="M1394.47,-361.2C1427.14,-350.41 1470.49,-336.1 1504.44,-324.89"/>
 <polygon fill="#64748b" stroke="#64748b" points="1505.1,-327.25 1510.98,-322.73 1503.56,-322.6 1505.1,-327.25"/>
 </g>
-<!-- src_plotting_plot_numerov_vs_rk4_errors&#45;&gt;src_plotting__ensure_parent -->
+<!-- src_plotting_plot_numerov_vs_RK4_errors&#45;&gt;src_plotting__ensure_parent -->
 <g id="edge35" class="edge">
-<title>src_plotting_plot_numerov_vs_rk4_errors&#45;&gt;src_plotting__ensure_parent</title>
+<title>src_plotting_plot_numerov_vs_RK4_errors&#45;&gt;src_plotting__ensure_parent</title>
 <path fill="none" stroke="#64748b" d="M1281.44,-361.81C1348.64,-348.52 1444.56,-329.56 1504.14,-317.77"/>
 <polygon fill="#64748b" stroke="#64748b" points="1504.42,-320.22 1510.81,-316.46 1503.47,-315.41 1504.42,-320.22"/>
 </g>

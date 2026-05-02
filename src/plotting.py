@@ -533,9 +533,9 @@ def plot_scattering_potential_and_probability(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: plot_numerov_vs_rk4_errors
+# FUNCTION: plot_numerov_vs_RK4_errors
 # ---------------------------------------------------------------------------
-def plot_numerov_vs_rk4_errors(
+def plot_numerov_vs_RK4_errors(
     h_numerov: np.ndarray,
     numerov_errors: np.ndarray,
     h_rk4: np.ndarray,

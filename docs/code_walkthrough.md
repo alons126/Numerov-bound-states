@@ -133,7 +133,7 @@ High-level routines that connect solvers, potentials, CSV outputs, and plots. Ea
 | Lines | Block | Purpose |
 |---:|---|---|
 | 91-109 | `function _experiment_results_dir` | Create and return one experiment-specific output directory under the shared results root. |
-| 116-316 | `function run_harmonic_rk4_comparison` | Compare the specialized Numerov integrator with general RK4 shooting. |
+| 116-316 | `function run_harmonic_oscillator_RK4_comparison` | Compare the specialized Numerov integrator with general RK4 shooting. |
 | 323-387 | `function plot_infinite_well_root_diagnostics` | Plot shooting/root-finding diagnostics for all four infinite-well states. |
 | 394-479 | `function plot_harmonic_oscillator_root_diagnostics` | Plot inward-shooting root diagnostics for the first four harmonic-oscillator states. |
 | 486-552 | `function plot_double_well_root_diagnostics` | Plot parity-separated root diagnostics for the first four quartic-double-well states. |
@@ -156,7 +156,7 @@ Report-ready Matplotlib figures.
 | 325-389 | `function plot_root_finding_diagnostic` | Plot the shooting mismatch and bisection midpoints for selected states. |
 | 396-435 | `function plot_scattering_coefficients` | Plot transmission and reflection probabilities versus incident energy. |
 | 442-474 | `function plot_scattering_potential_and_probability` | Plot a scattering probability density together with the barrier potential. |
-| 481-509 | `function plot_numerov_vs_rk4_errors` | Compare Numerov and RK4 harmonic-oscillator energy errors. |
+| 481-509 | `function plot_numerov_vs_RK4_errors` | Compare Numerov and RK4 harmonic-oscillator energy errors. |
 
 ## Important numerical checks
 - The Numerov derivative stencil is fourth order when enough points are available. This matters because even inward-shooting states use the condition `psi'(0)=0`, so a low-order boundary derivative would spoil the accuracy of the full eigenvalue solve.
