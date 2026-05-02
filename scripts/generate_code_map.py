@@ -5,7 +5,10 @@ Generate a project-level code map from local Python source files.
 
 This script scans the Python modules in `src/`, `scripts/`, and `tests/`,
 extracts top-level function definitions with the `ast` module, and records
-direct project-internal function calls between them.
+direct project-internal function calls between them. The current project layout
+includes a dedicated `src/diagnostics.py` layer, so the generated maps now make
+the root-diagnostic orchestration visible instead of folding it implicitly into
+the experiment runners.
 
 The output is intentionally split into several artifacts under
 `docs/code_map/`:

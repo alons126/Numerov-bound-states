@@ -16,7 +16,7 @@ Numerical solution of the 1D time-independent Schrödinger equation with the Num
   - finite rectangular barrier (exploration of scattering behavior such as transmission/reflection validation)
   - double-barrier resonant tunneling (exploration of resonance peak structure)
 - Convergence studies versus grid spacing and domain size
-- Root-finding diagnostics (mismatch function plots and bisection traces)
+- Root-finding diagnostics (global raw-mismatch scans plus per-root zoomed bisection views)
 - Double-well tunneling splitting analysis
 - Separate grid-refinement and box-size studies for the quartic double well
 - Plots and CSV output for report-ready figures
@@ -27,6 +27,7 @@ Numerical solution of the 1D time-independent Schrödinger equation with the Num
 - `src/`: core implementation
   - `numerov.py`: Numerov stepping and safe normalization
   - `shooting.py`: parity-based shooting and eigenvalue search
+  - `diagnostics.py`: root-finding diagnostic figure builders for each bound-state experiment
   - `potentials.py`: potential definitions
   - `analysis.py`: convergence and parameter-sweep helpers
   - `plotting.py`: figure generation
@@ -79,19 +80,21 @@ Running the solver generates:
 - wavefunction and density plots
 - convergence plots versus `h` and `x_max`
 - RK4 versus Numerov comparison data for the harmonic oscillator
+- global root-diagnostic plots for the square well, harmonic oscillator, RK4 comparison, double well, and finite well
+- zoomed root-diagnostic plots for individual roots in each bound-state experiment
 - double-well splitting versus barrier parameter
-- double-well root-diagnostic plots
-- finite square well bound-state plots
+- finite square well bound-state plots and near-threshold diagnostics
 - transmission and reflection spectra for finite barriers
 - double-barrier resonance peak tables and resonant-state plots
 
 Representative filenames now follow the same convention as the directories. For
 example:
 
-- `results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png`
+- `results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png`
 - `results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energies.csv`
-- `results/2b_harmonic_oscillator_RK4/2b_harmonic_rk4_convergence_vs_h.png`
-- `results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.csv`
+- `results/2b_harmonic_oscillator_RK4/2b_harmonic_oscillator_RK4_energy_convergence_vs_h.png`
+- `results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.csv`
+- `results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_2_even_zoom.png`
 
 ## How it works
 
@@ -130,7 +133,9 @@ For symmetric potentials solved on the half-domain:
 
 Eigenvalues are obtained by solving $M(E) = 0$. The solver scans over energies to locate sign changes (bracketing), refines roots using bisection, and then applies a short safeguarded polishing step inside the final bracket for the outward-shooting bound-state solver.
 
-To make the algorithm transparent, the code can generate diagnostic plots of $M(E)$ versus $E$, where zero crossings correspond to physical eigenvalues.
+To make the algorithm transparent, the code generates two kinds of root-finding diagnostics:
+- global raw-mismatch scans $M(E)$ versus $E$, where the final root estimates are marked
+- zoomed plots around individual sign-changing brackets, where the full bisection history is overlaid
 
 ### 4. Wavefunction reconstruction and normalization
 The half-domain solution is reflected to the negative axis using parity. The resulting full wavefunction is then normalized using numerical integration.
@@ -167,7 +172,7 @@ This script:
 - runs all experiments
 - executes automated tests to verify correctness
 - saves figures and data to experiment-specific subdirectories under `results/`
-- generates root-finding diagnostic plots for selected states
+- generates global and zoomed root-finding diagnostic plots for the bound-state cases
 
 ## Notes
 

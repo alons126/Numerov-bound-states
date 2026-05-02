@@ -6,6 +6,7 @@ digraph G {
   edge [color="#64748B", arrowsize=0.8];
   scripts_run_solver [label="scripts.run_solver"];
   src_analysis [label="src.analysis"];
+  src_diagnostics [label="src.diagnostics"];
   src_experiments [label="src.experiments"];
   src_numerov [label="src.numerov"];
   src_plotting [label="src.plotting"];
@@ -17,7 +18,12 @@ digraph G {
   scripts_run_solver -> src_experiments;
   scripts_run_solver -> tests_test_solver;
   src_analysis -> src_shooting;
+  src_diagnostics -> src_plotting;
+  src_diagnostics -> src_potentials;
+  src_diagnostics -> src_rk4_compare;
+  src_diagnostics -> src_shooting;
   src_experiments -> src_analysis;
+  src_experiments -> src_diagnostics;
   src_experiments -> src_plotting;
   src_experiments -> src_potentials;
   src_experiments -> src_rk4_compare;

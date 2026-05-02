@@ -10,6 +10,7 @@ digraph G {
   src_numerov_q_from_energy [label="q_from_energy"];
   src_rk4_compare_RK4_bisect_energy [label="RK4_bisect_energy"];
   src_rk4_compare_RK4_bisection_history [label="RK4_bisection_history"];
+  src_rk4_compare_RK4_diagnostic_mismatch [label="RK4_diagnostic_mismatch"];
   src_rk4_compare_RK4_find_brackets [label="RK4_find_brackets"];
   src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing [label="RK4_harmonic_convergence_vs_box_size_fixed_spacing"];
   src_rk4_compare_RK4_harmonic_convergence_vs_grid [label="RK4_harmonic_convergence_vs_grid"];
@@ -32,6 +33,8 @@ digraph G {
   src_shooting_boundary_mismatch_inward_shooting [label="boundary_mismatch_inward_shooting"];
   src_shooting_boundary_mismatch_outward_shooting [label="boundary_mismatch_outward_shooting"];
   src_shooting_build_full_wavefunction [label="build_full_wavefunction"];
+  src_shooting_diagnostic_mismatch_inward_shooting [label="diagnostic_mismatch_inward_shooting"];
+  src_shooting_diagnostic_mismatch_outward_shooting [label="diagnostic_mismatch_outward_shooting"];
   src_shooting_find_brackets_inward_shooting [label="find_brackets_inward_shooting"];
   src_shooting_find_brackets_outward_shooting [label="find_brackets_outward_shooting"];
   src_shooting_half_domain_wavefunction_inward_shooting [label="half_domain_wavefunction_inward_shooting"];
@@ -45,11 +48,14 @@ digraph G {
   src_shooting_solve_symmetric_potential_inward_shooting [label="solve_symmetric_potential_inward_shooting"];
   src_shooting_solve_symmetric_potential_outward_shooting [label="solve_symmetric_potential_outward_shooting"];
   src_rk4_compare_RK4_bisect_energy -> src_rk4_compare_RK4_inward_mismatch;
+  src_rk4_compare_RK4_bisection_history -> src_rk4_compare_RK4_diagnostic_mismatch;
   src_rk4_compare_RK4_bisection_history -> src_rk4_compare_RK4_inward_mismatch;
+  src_rk4_compare_RK4_diagnostic_mismatch -> src_rk4_compare_RK4_step;
   src_rk4_compare_RK4_find_brackets -> src_rk4_compare_RK4_inward_mismatch;
   src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing -> src_rk4_compare_RK4_solve_harmonic_oscillator_energies;
   src_rk4_compare_RK4_harmonic_convergence_vs_grid -> src_rk4_compare_RK4_solve_harmonic_oscillator_energies;
   src_rk4_compare_RK4_inward_mismatch -> src_rk4_compare_RK4_step;
+  src_rk4_compare_RK4_sample_mismatch -> src_rk4_compare_RK4_diagnostic_mismatch;
   src_rk4_compare_RK4_sample_mismatch -> src_rk4_compare_RK4_inward_mismatch;
   src_rk4_compare_RK4_solve_harmonic_oscillator_energies -> src_rk4_compare_RK4_bisect_energy;
   src_rk4_compare_RK4_solve_harmonic_oscillator_energies -> src_rk4_compare_RK4_find_brackets;
@@ -64,11 +70,16 @@ digraph G {
   src_shooting_bisect_energy_inward_shooting -> src_shooting_boundary_mismatch_inward_shooting;
   src_shooting_bisect_energy_outward_shooting -> src_shooting_boundary_mismatch_outward_shooting;
   src_shooting_bisection_history_inward_shooting -> src_shooting_boundary_mismatch_inward_shooting;
+  src_shooting_bisection_history_inward_shooting -> src_shooting_diagnostic_mismatch_inward_shooting;
   src_shooting_bisection_history_outward_shooting -> src_shooting_boundary_mismatch_outward_shooting;
+  src_shooting_bisection_history_outward_shooting -> src_shooting_diagnostic_mismatch_outward_shooting;
   src_shooting_boundary_mismatch_inward_shooting -> src_numerov_derivative_at_right_edge;
   src_shooting_boundary_mismatch_inward_shooting -> src_shooting_half_domain_wavefunction_inward_shooting;
   src_shooting_boundary_mismatch_outward_shooting -> src_numerov_derivative_at_right_edge;
   src_shooting_boundary_mismatch_outward_shooting -> src_shooting_half_domain_wavefunction_outward_shooting;
+  src_shooting_diagnostic_mismatch_inward_shooting -> src_numerov_derivative_at_right_edge;
+  src_shooting_diagnostic_mismatch_inward_shooting -> src_shooting_half_domain_wavefunction_inward_shooting;
+  src_shooting_diagnostic_mismatch_outward_shooting -> src_shooting_half_domain_wavefunction_outward_shooting;
   src_shooting_find_brackets_inward_shooting -> src_shooting_sample_mismatch_inward_shooting;
   src_shooting_find_brackets_outward_shooting -> src_shooting_boundary_mismatch_outward_shooting;
   src_shooting_half_domain_wavefunction_inward_shooting -> src_numerov_numerov_outward;
@@ -78,7 +89,9 @@ digraph G {
   src_shooting_half_domain_wavefunction_outward_shooting -> src_numerov_q_from_energy;
   src_shooting_half_domain_wavefunction_outward_shooting -> src_shooting_initial_conditions_outward_shooting;
   src_shooting_sample_boundary_mismatch_outward_shooting -> src_shooting_boundary_mismatch_outward_shooting;
+  src_shooting_sample_boundary_mismatch_outward_shooting -> src_shooting_diagnostic_mismatch_outward_shooting;
   src_shooting_sample_mismatch_inward_shooting -> src_shooting_boundary_mismatch_inward_shooting;
+  src_shooting_sample_mismatch_inward_shooting -> src_shooting_diagnostic_mismatch_inward_shooting;
   src_shooting_solve_state_from_bracket_inward_shooting -> src_numerov_normalize_wavefunction;
   src_shooting_solve_state_from_bracket_inward_shooting -> src_shooting_bisect_energy_inward_shooting;
   src_shooting_solve_state_from_bracket_inward_shooting -> src_shooting_build_full_wavefunction;

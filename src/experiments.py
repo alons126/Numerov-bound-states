@@ -39,6 +39,15 @@ from src.analysis import (
     splitting_vs_parameter,
 )
 
+# Import root-finding diagnostic figure builders
+from src.diagnostics import (
+    plot_double_well_root_diagnostics,
+    plot_finite_square_well_root_diagnostics,
+    plot_harmonic_oscillator_RK4_root_diagnostics,
+    plot_harmonic_oscillator_root_diagnostics,
+    plot_infinite_well_root_diagnostics,
+)
+
 # Import plotting helpers used to generate the report figures
 from src.plotting import (
     plot_energy_comparison,
@@ -46,8 +55,6 @@ from src.plotting import (
     plot_numerov_vs_RK4_errors,
     plot_potential_and_states,
     plot_probability_densities,
-    plot_root_finding_diagnostic,
-    plot_root_finding_zoom,
     plot_scattering_coefficients,
     plot_scattering_potential_and_probability,
     plot_splitting_curve,
@@ -66,12 +73,6 @@ from src.potentials import (
 
 # Import bound-state shooting diagnostics and solvers
 from src.shooting import (
-    bisection_history_outward_shooting,
-    bisection_history_inward_shooting,
-    find_brackets_outward_shooting,
-    find_brackets_inward_shooting,
-    sample_boundary_mismatch_outward_shooting,
-    sample_mismatch_inward_shooting,
     solve_symmetric_potential_outward_shooting,
     solve_symmetric_potential_inward_shooting,
 )
@@ -86,20 +87,12 @@ from src.scattering import (
 
 # Import RK4-based harmonic-oscillator comparison routines and diagnostics
 from src.rk4_compare import (
-    RK4_bisection_history,
-    RK4_find_brackets,
     RK4_harmonic_convergence_vs_grid,
     RK4_harmonic_convergence_vs_box_size_fixed_spacing,
-    RK4_sample_mismatch,
     RK4_solve_harmonic_oscillator_energies,
 )
 
 
-# --------------------------------------------------------------------------
-# --------------------------------------------------------------------------
-# FUNCTION: _experiment_results_dir
-# --------------------------------------------------------------------------
-# --------------------------------------------------------------------------
 def _experiment_results_dir(results_root: Path, name: str) -> Path:
     """
     Return the output directory for one experiment and create it if needed.
@@ -121,370 +114,6 @@ def _experiment_results_dir(results_root: Path, name: str) -> Path:
     path.mkdir(parents=True, exist_ok=True)
 
     return path
-
-
-def _diagnostic_label_slug(label: str) -> str:
-    """
-    Convert a human-readable diagnostic label into a filename-safe suffix.
-
-    Parameters
-    ----------
-    label : str
-        Plot label such as ``"State 0, even"``.
-
-    Returns
-    -------
-    str
-        Lowercase, underscore-separated slug suitable for filenames.
-    """
-
-    return label.lower().replace(",", "").replace(" ", "_")
-
-
-# ---------------------------------------------------------------------------
-# FUNCTION: plot_infinite_well_root_diagnostics
-# ---------------------------------------------------------------------------
-def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> None:
-    """
-    Plot shooting/root-finding diagnostics for all four infinite-well states.
-
-    Even and odd states use different parity boundary conditions at x = 0, so
-    the cleanest visualization is two separate mismatch plots:
-    - Even sector: global states n=0 and n=2
-    - Odd sector: global states n=1 and n=3
-
-    Parameters
-    ----------
-    results_dir : Path
-        Directory where the diagnostic figures for this experiment are written.
-    a : float, optional
-        Half-width of the square well, so the numerical domain on the half-line
-        is ``[0, a]``.
-    """
-
-    x_half = np.linspace(0.0, a, 900)
-    V_half = infinite_square_well_numeric(x_half, a=a, wall_height=1e6)
-
-    diagnostic_specs = [
-        {
-            "parity": "even",
-            "e_min": 0.1,
-            "e_max": 15.0,
-            "state_labels": ["State 0, even", "State 2, even"],
-            "path": results_dir
-            / "1_infinite_square_well_Numerov_root_finding_even.png",
-            "title": "Infinite square well - shooting roots - even states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(a)$",
-        },
-        {
-            "parity": "odd",
-            "e_min": 2.0,
-            "e_max": 25.0,
-            "state_labels": ["State 1, odd", "State 3, odd"],
-            "path": results_dir / "1_infinite_square_well_Numerov_root_finding_odd.png",
-            "title": "Infinite square well - shooting roots - odd states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(a)$",
-        },
-    ]
-
-    for spec in diagnostic_specs:
-        energies_scan, mismatches_scan = sample_boundary_mismatch_outward_shooting(
-            x_half,
-            V_half,
-            parity=spec["parity"],
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            n_scan=1600,
-        )
-        brackets = find_brackets_outward_shooting(
-            x_half,
-            V_half,
-            parity=spec["parity"],
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            n_scan=1600,
-        )
-        histories = [
-            bisection_history_outward_shooting(
-                x_half,
-                V_half,
-                spec["parity"],
-                bracket,
-                max_iter=30,
-            )
-            for bracket in brackets[: len(spec["state_labels"])]
-        ]
-
-        plot_root_finding_diagnostic(
-            energies_scan,
-            mismatches_scan,
-            histories,
-            spec["path"],
-            spec["title"],
-            history_labels=spec["state_labels"],
-            mismatch_label=spec["mismatch_label"],
-        )
-
-        for label, history in zip(spec["state_labels"], histories):
-            zoom_energies, zoom_mismatches = sample_boundary_mismatch_outward_shooting(
-                x_half,
-                V_half,
-                parity=spec["parity"],
-                e_min=history[0]["lo"],
-                e_max=history[0]["hi"],
-                n_scan=600,
-            )
-            plot_root_finding_zoom(
-                zoom_energies,
-                zoom_mismatches,
-                history,
-                results_dir
-                / (
-                    "1_infinite_square_well_Numerov_root_finding_"
-                    f"{_diagnostic_label_slug(label)}_zoom.png"
-                ),
-                f"Infinite square well - root zoom - {label.lower()}",
-                history_label=label,
-                mismatch_label=spec["mismatch_label"],
-            )
-
-
-# ---------------------------------------------------------------------------
-# FUNCTION: plot_harmonic_oscillator_root_diagnostics
-# ---------------------------------------------------------------------------
-def plot_harmonic_oscillator_root_diagnostics(
-    results_dir: Path,
-    omega: float = 1.0,
-    x_max: float = 8.0,
-) -> None:
-    """
-    Plot shooting/root-finding diagnostics for the first four
-    harmonic-oscillator states.
-
-    Even and odd harmonic-oscillator states use different parity boundary conditions:
-    - Even sector: global states n=0 and n=2
-    - Odd sector: global states n=1 and n=3
-
-    The mismatch is now sampled with the stable inward-shooting formulation.
-    The roots enforce parity at the origin: M(E)=psi'_E(0) for even states and
-    M(E)=psi_E(0) for odd states.
-
-    Parameters
-    ----------
-    results_dir : Path
-        Directory where the harmonic-oscillator diagnostic figures are saved.
-    omega : float, optional
-        Harmonic-oscillator frequency in
-        ``V(x)=\\frac{1}{2}\\omega^2 x^2``.
-    x_max : float, optional
-        Half-width of the truncated numerical domain used by the inward solver.
-    """
-
-    diagnostic_specs = [
-        {
-            "parity": "even",
-            "e_min": 0.1,
-            "e_max": 3.2,
-            "state_labels": ["State 0, even", "State 2, even"],
-            "path": results_dir
-            / "2a_harmonic_oscillator_Numerov_root_finding_even.png",
-            "title": "Harmonic oscillator (Numerov) - shooting roots - even states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi'_E(0)$",
-        },
-        {
-            "parity": "odd",
-            "e_min": 0.7,
-            "e_max": 4.3,
-            "state_labels": ["State 1, odd", "State 3, odd"],
-            "path": results_dir / "2a_harmonic_oscillator_Numerov_root_finding_odd.png",
-            "title": "Harmonic oscillator (Numerov) - shooting roots - odd states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(0)$",
-        },
-    ]
-
-    for spec in diagnostic_specs:
-        energies_scan, mismatches_scan = sample_mismatch_inward_shooting(
-            x_max=x_max,
-            n_grid=500,
-            potential_fn=harmonic_oscillator,
-            potential_kwargs={"omega": omega},
-            parity=spec["parity"],
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            n_scan=400,
-        )
-        brackets = find_brackets_inward_shooting(
-            x_max=x_max,
-            n_grid=500,
-            potential_fn=harmonic_oscillator,
-            potential_kwargs={"omega": omega},
-            parity=spec["parity"],
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            n_scan=400,
-        )
-        histories = [
-            bisection_history_inward_shooting(
-                x_max=x_max,
-                n_grid=1600,
-                potential_fn=harmonic_oscillator,
-                potential_kwargs={"omega": omega},
-                parity=spec["parity"],
-                bracket=bracket,
-                max_iter=30,
-            )
-            for bracket in brackets[: len(spec["state_labels"])]
-        ]
-
-        plot_root_finding_diagnostic(
-            energies_scan,
-            mismatches_scan,
-            histories,
-            spec["path"],
-            spec["title"],
-            history_labels=spec["state_labels"],
-            mismatch_label=spec["mismatch_label"],
-        )
-
-        for label, history in zip(spec["state_labels"], histories):
-            zoom_energies, zoom_mismatches = sample_mismatch_inward_shooting(
-                x_max=x_max,
-                n_grid=1600,
-                potential_fn=harmonic_oscillator,
-                potential_kwargs={"omega": omega},
-                parity=spec["parity"],
-                e_min=history[0]["lo"],
-                e_max=history[0]["hi"],
-                n_scan=600,
-            )
-            plot_root_finding_zoom(
-                zoom_energies,
-                zoom_mismatches,
-                history,
-                results_dir
-                / (
-                    "2a_harmonic_oscillator_Numerov_root_finding_"
-                    f"{_diagnostic_label_slug(label)}_zoom.png"
-                ),
-                f"Harmonic oscillator (Numerov) - root zoom - {label.lower()}",
-                history_label=label,
-                mismatch_label=spec["mismatch_label"],
-            )
-
-
-# ---------------------------------------------------------------------------
-# FUNCTION: plot_double_well_root_diagnostics
-# ---------------------------------------------------------------------------
-def plot_double_well_root_diagnostics(
-    results_dir: Path,
-    potential_kwargs: dict[str, float | bool],
-    x_max: float = 3.0,
-) -> None:
-    """
-    Plot shooting/root-finding diagnostics for the first four quartic
-    double-well states.
-
-    As in the harmonic benchmark, the even and odd parity sectors are shown in
-    separate panels so the first two states of each sector can be tracked
-    cleanly through the mismatch and bisection curves.
-
-    Parameters
-    ----------
-    results_dir : Path
-        Directory where the quartic double-well diagnostic figures are saved.
-    potential_kwargs : dict[str, float | bool]
-        Keyword arguments forwarded to `quartic_double_well()` to define the
-        physical potential used in the diagnostic scans.
-    x_max : float, optional
-        Half-width of the half-line domain ``[0, x_max]`` used for outward
-        shooting in the diagnostic plots.
-    """
-
-    x_half = np.linspace(0.0, x_max, 1200)
-    V_half = quartic_double_well(x_half, **potential_kwargs)
-
-    diagnostic_specs = [
-        {
-            "parity": "even",
-            "e_min": 1.0,
-            "e_max": 8.5,
-            "state_labels": ["State 0, even", "State 2, even"],
-            "path": results_dir / "3_double_well_Numerov_root_finding_even.png",
-            "title": "Quartic double well - shooting roots - even states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(x_{\max})$",
-        },
-        {
-            "parity": "odd",
-            "e_min": 1.0,
-            "e_max": 8.5,
-            "state_labels": ["State 1, odd", "State 3, odd"],
-            "path": results_dir / "3_double_well_Numerov_root_finding_odd.png",
-            "title": "Quartic double well - shooting roots - odd states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(x_{\max})$",
-        },
-    ]
-
-    for spec in diagnostic_specs:
-        energies_scan, mismatches_scan = sample_boundary_mismatch_outward_shooting(
-            x_half,
-            V_half,
-            parity=spec["parity"],
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            n_scan=1600,
-        )
-        brackets = find_brackets_outward_shooting(
-            x_half,
-            V_half,
-            parity=spec["parity"],
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            n_scan=1600,
-        )
-        histories = [
-            bisection_history_outward_shooting(
-                x_half,
-                V_half,
-                spec["parity"],
-                bracket,
-                max_iter=30,
-            )
-            for bracket in brackets[: len(spec["state_labels"])]
-        ]
-
-        plot_root_finding_diagnostic(
-            energies_scan,
-            mismatches_scan,
-            histories,
-            spec["path"],
-            spec["title"],
-            history_labels=spec["state_labels"],
-            mismatch_label=spec["mismatch_label"],
-        )
-
-        for label, history in zip(spec["state_labels"], histories):
-            zoom_energies, zoom_mismatches = sample_boundary_mismatch_outward_shooting(
-                x_half,
-                V_half,
-                parity=spec["parity"],
-                e_min=history[0]["lo"],
-                e_max=history[0]["hi"],
-                n_scan=600,
-            )
-            plot_root_finding_zoom(
-                zoom_energies,
-                zoom_mismatches,
-                history,
-                results_dir
-                / (
-                    "3_double_well_Numerov_root_finding_"
-                    f"{_diagnostic_label_slug(label)}_zoom.png"
-                ),
-                f"Quartic double well - root zoom - {label.lower()}",
-                history_label=label,
-                mismatch_label=spec["mismatch_label"],
-            )
-
 
 # ---------------------------------------------------------------------------
 # FUNCTION: run_square_well
@@ -781,94 +410,11 @@ def run_harmonic_oscillator_RK4_comparison(
         "Harmonic oscillator - Numerov vs RK4 state error comparison",
     )
 
-    diagnostic_specs = [
-        {
-            "parity": "even",
-            "e_min": 0.1,
-            "e_max": 3.2,
-            "state_labels": ["State 0, even", "State 2, even"],
-            "path": rk4_results_dir
-            / "2b_harmonic_oscillator_RK4_root_finding_even.png",
-            "title": "Harmonic oscillator (RK4) - shooting roots - even states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi'_E(0)$",
-        },
-        {
-            "parity": "odd",
-            "e_min": 0.7,
-            "e_max": 4.3,
-            "state_labels": ["State 1, odd", "State 3, odd"],
-            "path": rk4_results_dir / "2b_harmonic_oscillator_RK4_root_finding_odd.png",
-            "title": "Harmonic oscillator (RK4) - shooting roots - odd states",
-            "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(0)$",
-        },
-    ]
-
-    for spec in diagnostic_specs:
-        # Build one mismatch scan per parity sector, then overlay the bisection
-        # histories for the first two roots in that sector.
-        energies_scan, mismatches_scan = RK4_sample_mismatch(
-            parity=spec["parity"],
-            x_max=x_max,
-            n_grid=500,
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            omega=omega,
-            n_scan=400,
-        )
-        brackets = RK4_find_brackets(
-            parity=spec["parity"],
-            x_max=x_max,
-            n_grid=500,
-            e_min=spec["e_min"],
-            e_max=spec["e_max"],
-            omega=omega,
-            n_scan=400,
-        )
-        histories = [
-            RK4_bisection_history(
-                parity=spec["parity"],
-                bracket=bracket,
-                x_max=x_max,
-                n_grid=1600,
-                omega=omega,
-                max_iter=30,
-            )
-            for bracket in brackets[: len(spec["state_labels"])]
-        ]
-
-        plot_root_finding_diagnostic(
-            energies_scan,
-            mismatches_scan,
-            histories,
-            spec["path"],
-            spec["title"],
-            history_labels=spec["state_labels"],
-            mismatch_label=spec["mismatch_label"],
-        )
-
-        for label, history in zip(spec["state_labels"], histories):
-            zoom_energies, zoom_mismatches = RK4_sample_mismatch(
-                parity=spec["parity"],
-                x_max=x_max,
-                n_grid=1600,
-                e_min=history[0]["lo"],
-                e_max=history[0]["hi"],
-                omega=omega,
-                n_scan=600,
-            )
-            plot_root_finding_zoom(
-                zoom_energies,
-                zoom_mismatches,
-                history,
-                rk4_results_dir
-                / (
-                    "2b_harmonic_oscillator_RK4_root_finding_"
-                    f"{_diagnostic_label_slug(label)}_zoom.png"
-                ),
-                f"Harmonic oscillator (RK4) - root zoom - {label.lower()}",
-                history_label=label,
-                mismatch_label=spec["mismatch_label"],
-            )
+    plot_harmonic_oscillator_RK4_root_diagnostics(
+        rk4_results_dir,
+        omega=omega,
+        x_max=x_max,
+    )
 
     if target_h is not None:
         # =====================================================
@@ -1131,25 +677,25 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         "Harmonic oscillator (Numerov) - energy convergence vs box size $x_{\\max}$",
     )
 
-    # # =====================================================
-    # # Run the RK4 comparison and box-size convergence studies
-    # # =====================================================
+    # =====================================================
+    # Run the RK4 comparison and box-size convergence studies
+    # =====================================================
 
-    # print(
-    #     "Running harmonic oscillator RK4 comparison and box-size convergence studies..."
-    # )
+    print(
+        "Running harmonic oscillator RK4 comparison and box-size convergence studies..."
+    )
 
-    # # The RK4 comparison reuses the same grid spacings as the Numerov
-    # # grid-convergence study, so both methods are compared on matched meshes at
-    # # the same fixed domain size.
-    # run_harmonic_oscillator_RK4_comparison(
-    #     rk4_results_dir=rk4_results_dir,
-    #     comparison_results_dir=comparison_results_dir,
-    #     numerov_convergence=conv_h,
-    #     omega=omega,
-    #     x_max=x_max,
-    #     target_h=target_h,
-    # )
+    # The RK4 comparison reuses the same grid spacings as the Numerov
+    # grid-convergence study, so both methods are compared on matched meshes at
+    # the same fixed domain size.
+    run_harmonic_oscillator_RK4_comparison(
+        rk4_results_dir=rk4_results_dir,
+        comparison_results_dir=comparison_results_dir,
+        numerov_convergence=conv_h,
+        omega=omega,
+        x_max=x_max,
+        target_h=target_h,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -1456,6 +1002,13 @@ def run_finite_square_well(results_dir: Path) -> None:
         states,
         experiment_dir / "4_finite_square_well_Numerov_state_densities.png",
         "Finite square well - state densities",
+    )
+
+    plot_finite_square_well_root_diagnostics(
+        experiment_dir,
+        x_max=x_max,
+        V0=float(kwargs["V0"]),
+        a=float(kwargs["a"]),
     )
 
 

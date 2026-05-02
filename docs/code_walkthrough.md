@@ -6,7 +6,7 @@ The code separates the project into layers: low-level numerical methods, physica
 ```text
 psi''(x) = 2 [V(x) - E] psi(x)
 ```
-The bound-state part uses Numerov integration plus shooting/root finding. That structure is not just an implementation preference: the project is solving a boundary-value eigenproblem, so only special energies satisfy the physical boundary conditions. The harmonic oscillator also uses inward shooting for stability. The scattering extension uses complex Numerov integration to compute transmission and reflection.
+The bound-state part uses Numerov integration plus shooting/root finding. That structure is not just an implementation preference: the project is solving a boundary-value eigenproblem, so only special energies satisfy the physical boundary conditions. The harmonic oscillator also uses inward shooting for stability. The scattering extension uses complex Numerov integration to compute transmission and reflection. A dedicated diagnostics layer now sits between the solvers and the report figures, so root-finding plots are assembled consistently across all bound-state experiments.
 
 ## Project workflow
 ### `scripts/run_solver.py`
@@ -88,6 +88,20 @@ Fourth-order Runge-Kutta implementation used only for the harmonic-oscillator me
 | 321-347 | `function RK4_harmonic_convergence_vs_grid` | Return RK4 harmonic-oscillator energies and errors for several grids. |
 | 354-398 | `function RK4_harmonic_convergence_vs_box_size_fixed_spacing` | Return RK4 harmonic-oscillator errors versus box size at fixed spacing. |
 
+## Diagnostics and presentation layer
+### `src/diagnostics.py`
+Bound-state root-finding diagnostic orchestration. This file keeps the per-potential mismatch scans, final-root markers, and zoomed bisection views out of `experiments.py`, so the experiment runners stay focused on numerical setup and output bookkeeping.
+| Lines | Block | Purpose |
+|---:|---|---|
+| 32-47 | `function _diagnostic_label_slug` | Convert a state label into a filename-safe suffix for zoom plots. |
+| 50-140 | `function _plot_outward_root_diagnostics` | Build global and zoomed raw-mismatch diagnostics for outward-shooting problems. |
+| 143-243 | `function _plot_inward_root_diagnostics` | Build global and zoomed raw-mismatch diagnostics for inward Numerov problems. |
+| 246-290 | `function plot_infinite_well_root_diagnostics` | Generate the infinite-square-well diagnostic plots. |
+| 293-342 | `function plot_harmonic_oscillator_root_diagnostics` | Generate the Numerov harmonic-oscillator diagnostic plots. |
+| 345-451 | `function plot_harmonic_oscillator_RK4_root_diagnostics` | Generate the RK4 harmonic-oscillator diagnostic plots. |
+| 454-503 | `function plot_double_well_root_diagnostics` | Generate the quartic-double-well diagnostic plots. |
+| 506-556 | `function plot_finite_square_well_root_diagnostics` | Generate the finite-square-well diagnostic plots, including near-threshold root zooms. |
+
 ### `src/scattering.py`
 Complex Numerov scattering solver for transmission, reflection, and double-barrier resonances.
 | Lines | Block | Purpose |
@@ -129,34 +143,33 @@ Exact benchmark spectra, convergence helpers, CSV export, and double-well sweeps
 | 520-580 | `function splitting_vs_parameter` | Measure double-well ground-state splitting while varying one parameter. |
 
 ### `src/experiments.py`
-High-level routines that connect solvers, potentials, CSV outputs, and plots. Each experiment writes into its own subdirectory under `results/`, and the harmonic-oscillator study is split into Numerov-only, RK4-only, and comparison outputs.
+High-level routines that connect solvers, potentials, CSV outputs, and plots. Each experiment writes into its own subdirectory under `results/`, and the harmonic-oscillator study is split into Numerov-only, RK4-only, and comparison outputs. After the diagnostics refactor, this file now delegates root-finding figures to `src/diagnostics.py` instead of building them inline.
 | Lines | Block | Purpose |
 |---:|---|---|
-| 91-109 | `function _experiment_results_dir` | Create and return one experiment-specific output directory under the shared results root. |
-| 116-316 | `function run_harmonic_oscillator_RK4_comparison` | Compare the specialized Numerov integrator with general RK4 shooting. |
-| 323-387 | `function plot_infinite_well_root_diagnostics` | Plot shooting/root-finding diagnostics for all four infinite-well states. |
-| 394-479 | `function plot_harmonic_oscillator_root_diagnostics` | Plot inward-shooting root diagnostics for the first four harmonic-oscillator states. |
-| 486-552 | `function plot_double_well_root_diagnostics` | Plot parity-separated root diagnostics for the first four quartic-double-well states. |
-| 559-662 | `function run_square_well` | Run the infinite square well benchmark case and its convergence studies. |
-| 669-837 | `function run_harmonic_oscillator` | Run the harmonic-oscillator benchmark, including inward-shooting diagnostics and the RK4 comparison. |
-| 844-1021 | `function run_double_well` | Run the quartic double-well study, including convergence and tunneling-splitting sweeps. |
-| 1028-1080 | `function run_finite_square_well` | Run the finite square well as an additional nontrivial bound-state example. |
-| 1088-1209 | `function run_scattering` | Run the scattering extension for single- and double-barrier tunneling, including resonant-peak extraction. |
+| 96-116 | `function _experiment_results_dir` | Create and return one experiment-specific output directory under the shared results root. |
+| 121-258 | `function run_square_well` | Run the infinite square well benchmark case and its convergence study. |
+| 264-469 | `function run_harmonic_oscillator_RK4_comparison` | Compare the specialized Numerov integrator with general RK4 shooting. |
+| 475-698 | `function run_harmonic_oscillator` | Run the harmonic-oscillator benchmark, including inward-shooting diagnostics and the RK4 comparison. |
+| 704-917 | `function run_double_well` | Run the quartic double-well study, including convergence and tunneling-splitting sweeps. |
+| 923-1012 | `function run_finite_square_well` | Run the finite square well, including the new outward-shooting root diagnostics. |
+| 1018-1209 | `function run_scattering` | Run the scattering extension for single- and double-barrier tunneling, including resonant-peak extraction. |
 
 ### `src/plotting.py`
 Report-ready Matplotlib figures.
 | Lines | Block | Purpose |
 |---:|---|---|
-| 37-50 | `function _ensure_parent` | Create the parent directory of an output path if it does not exist. |
-| 57-119 | `function plot_potential_and_states` | Plot the potential together with several shifted eigenstates. |
-| 126-166 | `function plot_probability_densities` | Plot |psi(x)|^2 for several states. |
-| 173-215 | `function plot_energy_comparison` | Compare numerical and exact energy levels on the same figure. |
-| 221-269 | `function plot_error_curve` | Plot absolute energy errors on log-log axes. |
-| 276-318 | `function plot_splitting_curve` | Plot the lowest two energies and their splitting versus a parameter. |
-| 325-389 | `function plot_root_finding_diagnostic` | Plot the shooting mismatch and bisection midpoints for selected states. |
-| 396-435 | `function plot_scattering_coefficients` | Plot transmission and reflection probabilities versus incident energy. |
-| 442-474 | `function plot_scattering_potential_and_probability` | Plot a scattering probability density together with the barrier potential. |
-| 481-509 | `function plot_numerov_vs_RK4_errors` | Compare Numerov and RK4 harmonic-oscillator energy errors. |
+| 17-30 | `function _ensure_parent` | Create the parent directory of an output path if it does not exist. |
+| 33-57 | `function _symlog_linthresh` | Choose a stable linear threshold for symlog diagnostic axes. |
+| 64-126 | `function plot_potential_and_states` | Plot the potential together with several shifted eigenstates. |
+| 133-173 | `function plot_probability_densities` | Plot |psi(x)|^2 for several states. |
+| 180-222 | `function plot_energy_comparison` | Compare numerical and exact energy levels on the same figure. |
+| 228-276 | `function plot_error_curve` | Plot absolute energy errors on log-log axes. |
+| 283-365 | `function plot_splitting_curve` | Plot the lowest two energies and their splitting versus a parameter. |
+| 372-438 | `function plot_root_finding_diagnostic` | Plot the global mismatch scan and mark only the final root estimate for each state. |
+| 444-512 | `function plot_root_finding_zoom` | Plot a zoomed local bracket with the full bisection history overlaid. |
+| 518-549 | `function plot_scattering_coefficients` | Plot transmission and reflection probabilities versus incident energy. |
+| 556-608 | `function plot_scattering_potential_and_probability` | Plot a scattering probability density together with the barrier potential. |
+| 615-643 | `function plot_numerov_vs_RK4_errors` | Compare Numerov and RK4 harmonic-oscillator energy errors. |
 
 ## Important numerical checks
 - The Numerov derivative stencil is fourth order when enough points are available. This matters because even inward-shooting states use the condition `psi'(0)=0`, so a low-order boundary derivative would spoil the accuracy of the full eigenvalue solve.
@@ -168,5 +181,6 @@ Report-ready Matplotlib figures.
 - The bound-state bisection routine finishes with a few safeguarded secant-style polishing steps inside the final bracket, which noticeably reduces the reported boundary mismatch for steep roots.
 - Normalization is not cosmetic. The code uses numerical quadrature because physically meaningful wavefunctions must satisfy `∫|psi|^2 dx = 1`.
 - Scattering outputs include a conservation check through `T + R`, which should remain close to one.
+- The diagnostics layer now separates global raw-mismatch scans from zoomed single-root views. That keeps the report figures readable while still plotting the actual solver mismatch instead of an alternative transformed quantity.
 - The experiments layer now writes outputs into experiment-specific subdirectories, so the results tree mirrors the project sections instead of mixing all CSV and PNG files in one folder.
 - The tests include analytic benchmarks, convergence-order checks, parity-specific double-well checks, normalization checks, derivative-stencil checks, and scattering sanity checks.

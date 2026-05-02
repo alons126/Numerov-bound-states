@@ -114,7 +114,7 @@
             \begin{align}
             \text{even states:}\quad M(E) = \psi'_E(0),\,\,\,\,\,\,\,\,\,\,\text{odd states:}\quad M(E) = \psi_E(0)
             \end{align}
-            Eigenvalues correspond to the roots of $M(E)=0$, which are located by bracketing sign changes and then refined numerically. To make the procedure transparent, we plot the raw mismatch versus $E$ and mark the bisection iterates. Zero crossings identify the allowed energies. \\
+            Eigenvalues correspond to the roots of $M(E)=0$, which are located by bracketing sign changes and then refined numerically. To make the procedure transparent, the report now uses two complementary diagnostics: a global raw-mismatch scan over the full energy interval, where only the final root estimates are marked, and per-root zoom plots that restrict the horizontal axis to one initial bracket and show the full bisection history. Zero crossings identify the allowed energies. \\
 
             In the implementation, the inward even-state mismatch uses a fourth-order backward finite-difference stencil to approximate $\psi'(0)$ from the last few points of the inward integration grid. This is important because a lower-order boundary derivative would spoil the fourth-order behavior otherwise expected from the Numerov recurrence in the harmonic-oscillator study.
 
@@ -152,14 +152,14 @@
                 
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_comparison.png}
+                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png}
                     \captionof{figure}{Comparison between numerical and exact energy eigenvalues for the infinite square well. The agreement is excellent for the first four states.}
                     \label{fig:infwell_energies}
                 \end{minipage}
                 \hfill
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_densities.png}
+                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_densities.png}
                     \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four eigenstates of the infinite square well. The correct number of nodes and boundary behavior are clearly reproduced.}
                     \label{fig:infwell_densities}
                 \end{minipage}
@@ -186,9 +186,29 @@
 
                 \vspace{1em}
 
+                \begin{minipage}[t]{\textwidth}
+                    \centering
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_0_even_zoom.png}
+                        \caption{}
+                    \end{subfigure}
+                    \hfill
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_1_odd_zoom.png}
+                        \caption{}
+                    \end{subfigure}
+
+                    \captionof{figure}{Zoomed root brackets for the lowest even (a) and odd (b) infinite-well states. These panels show the raw mismatch only inside one initial sign-changing bracket, together with the recorded bisection iterates.}
+                    \label{fig:infwell_shooting_zoom}
+                \end{minipage}
+
+                \vspace{1em}
+
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_convergence_vs_h.png}
+                    \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png}
                     \captionof{figure}{Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}
                     \label{fig:infwell_convergence}
                 \end{minipage}
@@ -213,7 +233,7 @@
 
                 The probability densities (Fig.~\ref{fig:ho_densities}) show the expected structure: the ground state is centered and Gaussian-like, while the excited states alternate in parity and gain one additional node at each step. The support also broadens with increasing energy, consistent with the classical turning points moving outward. This confirms both physical correctness and stability of the integration on the truncated domain. \\
 
-                The shooting mismatch functions (Fig.~\ref{fig:ho_shooting}) exhibit clear zero crossings at the expected energies. In the even sector the roots lie near $E\approx0.5$ and $E\approx2.5$, while in the odd sector they lie near $E\approx1.5$ and $E\approx3.5$. The raw mismatch spans many orders of magnitude because the inward integration starts in the decaying tail, but the sign changes remain sharp and the roots alternate even--odd as they should. \\
+                The shooting mismatch functions (Fig.~\ref{fig:ho_shooting}) exhibit clear zero crossings at the expected energies. In the even sector the roots lie near $E\approx0.5$ and $E\approx2.5$, while in the odd sector they lie near $E\approx1.5$ and $E\approx3.5$. The raw mismatch spans many orders of magnitude because the inward integration starts in the decaying tail, but the sign changes remain sharp and the roots alternate even--odd as they should. The corresponding zoomed brackets in Fig.~\ref{fig:ho_shooting_zoom} make that local sign change explicit and show the final bisection convergence in the neighborhood of a single root rather than over the full dynamic range of the scan. \\
 
                 Convergence with respect to grid spacing $h$ (Fig.~\ref{fig:ho_convergence_h}) is overall consistent with fourth-order behavior. The saved study gives fitted slopes $p\approx5.30$, $3.97$, $4.57$, and $4.00$ for the first four states. The two slopes above four are not evidence of true superconvergence: they occur only after the errors have already dropped to the $10^{-11}$--$10^{-12}$ range, where root-finding tolerance and floating-point effects distort a short log--log fit. The raw errors themselves still decrease in the expected high-order way, from about $3.2\times10^{-9}$--$2.6\times10^{-8}$ on the coarsest grid to $5.1\times10^{-13}$--$2.6\times10^{-11}$ on the finest grid. \\
 
@@ -226,14 +246,14 @@
 
                     \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_comparison.png}
+                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_energy_comparison.png}
                         \captionof{figure}{Comparison between numerical and exact energy eigenvalues for the harmonic oscillator. The agreement is excellent for the first four states.}
                         \label{fig:ho_energies}
                     \end{minipage}
                     \hfill
                     \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_densities.png}
+                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_densities.png}
                         \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four harmonic oscillator eigenstates. The correct node structure is clearly reproduced.}
                         \label{fig:ho_densities}
                     \end{minipage}
@@ -257,6 +277,26 @@
                         \captionof{figure}{Raw boundary mismatch functions for even (a) and odd (b) states. The zero crossings correspond to the physical eigenvalues.}
                         \label{fig:ho_shooting}
                     \end{minipage}
+
+                    \vspace{1em}
+
+                    \begin{minipage}[t]{\textwidth}
+                        \centering
+                        \begin{subfigure}[t]{0.485\textwidth}
+                            \centering
+                            \includegraphics[height=5cm]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_0_even_zoom.png}
+                            \caption{}
+                        \end{subfigure}
+                        \hfill
+                        \begin{subfigure}[t]{0.485\textwidth}
+                            \centering
+                            \includegraphics[height=5cm]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_1_odd_zoom.png}
+                            \caption{}
+                        \end{subfigure}
+
+                        \captionof{figure}{Zoomed root brackets for the lowest even (a) and odd (b) harmonic-oscillator states. These local views remove the global dynamic-range compression and show the raw mismatch together with the bisection iterates inside each initial bracket.}
+                        \label{fig:ho_shooting_zoom}
+                    \end{minipage}
                 \end{figure}
 
                 \begin{figure}[p]
@@ -264,14 +304,14 @@
 
                     \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_h.png}
+                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png}
                         \captionof{figure}{Convergence of the energy error as a function of grid spacing $h$. The slopes are close to fourth order, as expected for the Numerov method.}
                         \label{fig:ho_convergence_h}
                     \end{minipage}
                     \hfill
                     \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_convergence_vs_x_max.png}
+                        \includegraphics[width=\textwidth]{../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png}
                         \captionof{figure}{Dependence of the energy error on the domain size $x_{\max}$. Errors decrease rapidly before reaching a plateau set by discretization and floating-point limits.}
                         \label{fig:ho_convergence_xmax}
                     \end{minipage}
@@ -287,7 +327,7 @@
                     \hfill
                     \begin{minipage}[t]{0.48\textwidth}
                         \centering
-                        \includegraphics[width=\textwidth]{../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_numerov_vs_rk4.png}
+                        \includegraphics[width=\textwidth]{../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png}
                         \captionof{figure}{Comparison of Numerov and RK4 shooting for the harmonic oscillator. Both methods show fourth-order convergence, while Numerov gives a smaller maximum energy error at the same grid spacing.}
                         \label{fig:ho_numerov_vs_rk4}
                     \end{minipage}
@@ -316,7 +356,7 @@
 
             The probability densities in Fig.~\ref{fig:dw_densities} show the expected localization near the two wells. The lowest pair has nearly identical density, because the sign difference between even and odd wavefunctions disappears in $|\psi(x)|^2$. The higher states show additional node structure and broader support, as expected for excited double-well states. The figure also makes the tunneling interpretation concrete: the low-lying states are concentrated in the two minima near $x=\pm\sqrt{b/2}$, while the barrier region near the origin is sampled only through the small connecting tail. \\
 
-            The root-finding diagnostics (Fig.~\ref{fig:dw_shooting}) show well-defined zero crossings in the even and odd parity sectors. For the saved run, the first even-sector roots occur near $E\approx2.36$ and $E\approx6.55$, while the first odd-sector roots occur near $E\approx2.36$ and $E\approx6.68$. These plots verify that the computed energies are genuine roots of the shooting mismatch function and that the parity separation continues to work for a more complicated potential. \\
+            The root-finding diagnostics (Fig.~\ref{fig:dw_shooting}) show well-defined zero crossings in the even and odd parity sectors. For the saved run, the first even-sector roots occur near $E\approx2.36$ and $E\approx6.55$, while the first odd-sector roots occur near $E\approx2.36$ and $E\approx6.68$. The corresponding zoom views in Fig.~\ref{fig:dw_shooting_zoom} confirm that these are genuine local sign changes of the raw mismatch and not artifacts of the large boundary amplitudes seen in the full scan. \\
 
             Since there is no closed-form exact spectrum for this potential, grid convergence is measured using successive refinements at fixed domain size. The convergence with respect to grid spacing (Fig.~\ref{fig:dw_convergence_h}) still shows stable high-order behavior, with fitted slopes $p\approx4.18$, $3.95$, $4.55$, and $5.67$ for the first four states. The values above four should not be overinterpreted as true superconvergence. They appear only when the successive-difference errors have already fallen to about $10^{-12}$--$10^{-13}$ for the low states and $10^{-11}$ for the higher states, so short log--log fits are being distorted by the numerical floor. What matters physically is that every state improves systematically under refinement and the dominant trend remains high-order decay of the error. \\
 
@@ -338,7 +378,7 @@
                 \hfill
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_densities.png}
+                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_state_densities.png}
                     \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four double-well states. The lowest even and odd states have nearly identical densities, as expected for a tunneling doublet.}
                     \label{fig:dw_densities}
                 \end{minipage}
@@ -362,6 +402,26 @@
                     \captionof{figure}{Raw shooting mismatch functions for even (top) and odd (bottom) double-well states. The zero crossings define the numerical eigenvalues.}
                     \label{fig:dw_shooting}
                 \end{minipage}
+
+                \vspace{1em}
+
+                \begin{minipage}[t]{\textwidth}
+                    \centering
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_0_even_zoom.png}
+                        \caption{}
+                    \end{subfigure}
+                    \hfill
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_1_odd_zoom.png}
+                        \caption{}
+                    \end{subfigure}
+
+                    \captionof{figure}{Zoomed root brackets for the lowest even (a) and odd (b) double-well states. These local panels show the raw mismatch and the recorded bisection sequence inside the initial sign-changing brackets.}
+                    \label{fig:dw_shooting_zoom}
+                \end{minipage}
             \end{figure}
 
             \begin{figure}[p]
@@ -369,14 +429,14 @@
 
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_h.png}
+                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_h.png}
                     \captionof{figure}{Grid convergence for the quartic double well. The energy errors decrease with high-order behavior under successive grid refinement.}
                     \label{fig:dw_convergence_h}
                 \end{minipage}
                 \hfill
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_convergence_vs_x_max.png}
+                    \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_x_max.png}
                     \captionof{figure}{Dependence of the double-well energy errors on box size. The errors decrease rapidly as the domain is enlarged and then reach a numerical plateau.}
                     \label{fig:dw_convergence_xmax}
                 \end{minipage}
@@ -405,22 +465,67 @@
 
             The probability densities in Fig.~\ref{fig:finitewell_densities} show the same effect even more clearly. The low-lying states are concentrated inside the well and retain the expected even-odd node ordering, while the highest plotted state has substantial weight outside $|x|\le a$. That long exterior tail is physically correct: unlike the infinite well, a finite barrier does not force the wavefunction to vanish at the walls, it only makes the outside amplitude decay exponentially. \\
 
+            The finite-well root diagnostics in Fig.~\ref{fig:finitewell_shooting} add an important numerical interpretation. In the even-sector global scan, the raw mismatch becomes small again as $E$ approaches the barrier height $V_0=12$ from below. This does not indicate an additional bound state. As $E\to V_0^{-}$, the exterior decay constant $\kappa=\sqrt{2(V_0-E)}$ tends to zero, so on a fixed box the boundary value $\psi_E(x_{\max})$ can decrease in magnitude without actually crossing zero. The zoomed near-threshold brackets in Fig.~\ref{fig:finitewell_shooting_zoom} show the correct interpretation: the reported high-energy roots are genuine sign changes, but the later drift of the raw mismatch toward zero remains one-sided and therefore does not create more bound states. Since true bound states require $E<V_0$, extending the scan to $E>V_0$ would enter continuum behavior rather than reveal extra discrete levels. \\
+
             These results are sufficient for the finite square well part of the report because this case is used mainly to demonstrate that the same shooting framework works for a potential with finite barriers and evanescent tails. The more detailed convergence and validation analysis is already provided by the infinite well and harmonic oscillator, while the finite well serves as an additional qualitative and physical test. In particular, the finite-well figures confirm that the solver distinguishes strongly bound interior states from a near-threshold state with pronounced barrier penetration. \\
 
-            \noindent
-            \begin{minipage}[t]{0.48\textwidth}
+            \begin{figure}[p]
                 \centering
-                \includegraphics[width=\textwidth]{../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png}
-                \captionof{figure}{First four finite square well states plotted together with the finite barrier potential. States below the barrier are localized in the well, while the near-threshold state has a larger evanescent tail.}
-                \label{fig:finitewell_states}
-            \end{minipage}
-            \hfill
-            \begin{minipage}[t]{0.48\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_state_densities.png}
-                \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four finite square well states. The densities show both interior oscillation and exterior exponential leakage.}
-                \label{fig:finitewell_densities}
-            \end{minipage}
+
+                \begin{minipage}[t]{0.48\textwidth}
+                    \centering
+                    \includegraphics[width=\textwidth]{../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png}
+                    \captionof{figure}{First four finite square well states plotted together with the finite barrier potential. States below the barrier are localized in the well, while the near-threshold state has a larger evanescent tail.}
+                    \label{fig:finitewell_states}
+                \end{minipage}
+                \hfill
+                \begin{minipage}[t]{0.48\textwidth}
+                    \centering
+                    \includegraphics[width=\textwidth]{../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_state_densities.png}
+                    \captionof{figure}{Probability densities $|\psi(x)|^2$ for the first four finite square well states. The densities show both interior oscillation and exterior exponential leakage.}
+                    \label{fig:finitewell_densities}
+                \end{minipage}
+
+                \vspace{1em}
+
+                \begin{minipage}[t]{\textwidth}
+                    \centering
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_even.png}
+                        \caption{}
+                    \end{subfigure}
+                    \hfill
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_odd.png}
+                        \caption{}
+                    \end{subfigure}
+
+                    \captionof{figure}{Raw shooting mismatch functions for even (a) and odd (b) finite-well states. The global scans include the near-threshold regime just below the barrier top $V_0$.}
+                    \label{fig:finitewell_shooting}
+                \end{minipage}
+
+                \vspace{1em}
+
+                \begin{minipage}[t]{\textwidth}
+                    \centering
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_2_even_zoom.png}
+                        \caption{}
+                    \end{subfigure}
+                    \hfill
+                    \begin{subfigure}[t]{0.485\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_3_odd_zoom.png}
+                        \caption{}
+                    \end{subfigure}
+
+                    \captionof{figure}{Zoomed near-threshold brackets for the higher even (a) and odd (b) finite-well bound states. These views isolate the genuine sign-changing roots close to the barrier top and show the full recorded bisection history.}
+                    \label{fig:finitewell_shooting_zoom}
+                \end{minipage}
+            \end{figure}
 
         \subsection{Scattering and resonant tunneling}
             \subsubsection{Single barrier potential}

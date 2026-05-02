@@ -17,9 +17,6 @@ digraph G {
   src_analysis_save_csv_rows [label="save_csv_rows"];
   src_analysis_splitting_vs_parameter [label="splitting_vs_parameter"];
   src_experiments__experiment_results_dir [label="_experiment_results_dir"];
-  src_experiments_plot_double_well_root_diagnostics [label="plot_double_well_root_diagnostics"];
-  src_experiments_plot_harmonic_oscillator_root_diagnostics [label="plot_harmonic_oscillator_root_diagnostics"];
-  src_experiments_plot_infinite_well_root_diagnostics [label="plot_infinite_well_root_diagnostics"];
   src_experiments_run_double_well [label="run_double_well"];
   src_experiments_run_finite_square_well [label="run_finite_square_well"];
   src_experiments_run_harmonic_oscillator [label="run_harmonic_oscillator"];
@@ -27,12 +24,14 @@ digraph G {
   src_experiments_run_scattering [label="run_scattering"];
   src_experiments_run_square_well [label="run_square_well"];
   src_plotting__ensure_parent [label="_ensure_parent"];
+  src_plotting__symlog_linthresh [label="_symlog_linthresh"];
   src_plotting_plot_energy_comparison [label="plot_energy_comparison"];
   src_plotting_plot_error_curve [label="plot_error_curve"];
   src_plotting_plot_numerov_vs_RK4_errors [label="plot_numerov_vs_RK4_errors"];
   src_plotting_plot_potential_and_states [label="plot_potential_and_states"];
   src_plotting_plot_probability_densities [label="plot_probability_densities"];
   src_plotting_plot_root_finding_diagnostic [label="plot_root_finding_diagnostic"];
+  src_plotting_plot_root_finding_zoom [label="plot_root_finding_zoom"];
   src_plotting_plot_scattering_coefficients [label="plot_scattering_coefficients"];
   src_plotting_plot_scattering_potential_and_probability [label="plot_scattering_potential_and_probability"];
   src_plotting_plot_splitting_curve [label="plot_splitting_curve"];
@@ -64,16 +63,12 @@ digraph G {
   src_analysis_convergence_vs_box_size_fixed_spacing -> src_analysis_energies_from_states;
   src_analysis_convergence_vs_grid -> src_analysis_energies_from_states;
   src_analysis_convergence_vs_grid_successive -> src_analysis_energies_from_states;
-  src_experiments_plot_double_well_root_diagnostics -> src_plotting_plot_root_finding_diagnostic;
-  src_experiments_plot_harmonic_oscillator_root_diagnostics -> src_plotting_plot_root_finding_diagnostic;
-  src_experiments_plot_infinite_well_root_diagnostics -> src_plotting_plot_root_finding_diagnostic;
   src_experiments_run_double_well -> src_analysis_convergence_vs_box_size_fixed_spacing;
   src_experiments_run_double_well -> src_analysis_convergence_vs_grid_successive;
   src_experiments_run_double_well -> src_analysis_estimate_convergence_slopes;
   src_experiments_run_double_well -> src_analysis_save_csv_rows;
   src_experiments_run_double_well -> src_analysis_splitting_vs_parameter;
   src_experiments_run_double_well -> src_experiments__experiment_results_dir;
-  src_experiments_run_double_well -> src_experiments_plot_double_well_root_diagnostics;
   src_experiments_run_double_well -> src_plotting_plot_error_curve;
   src_experiments_run_double_well -> src_plotting_plot_potential_and_states;
   src_experiments_run_double_well -> src_plotting_plot_probability_densities;
@@ -88,7 +83,6 @@ digraph G {
   src_experiments_run_harmonic_oscillator -> src_analysis_exact_harmonic_oscillator_energies;
   src_experiments_run_harmonic_oscillator -> src_analysis_save_csv_rows;
   src_experiments_run_harmonic_oscillator -> src_experiments__experiment_results_dir;
-  src_experiments_run_harmonic_oscillator -> src_experiments_plot_harmonic_oscillator_root_diagnostics;
   src_experiments_run_harmonic_oscillator -> src_experiments_run_harmonic_oscillator_RK4_comparison;
   src_experiments_run_harmonic_oscillator -> src_plotting_plot_energy_comparison;
   src_experiments_run_harmonic_oscillator -> src_plotting_plot_error_curve;
@@ -99,7 +93,6 @@ digraph G {
   src_experiments_run_harmonic_oscillator_RK4_comparison -> src_plotting_plot_energy_comparison;
   src_experiments_run_harmonic_oscillator_RK4_comparison -> src_plotting_plot_error_curve;
   src_experiments_run_harmonic_oscillator_RK4_comparison -> src_plotting_plot_numerov_vs_RK4_errors;
-  src_experiments_run_harmonic_oscillator_RK4_comparison -> src_plotting_plot_root_finding_diagnostic;
   src_experiments_run_scattering -> src_analysis_save_csv_rows;
   src_experiments_run_scattering -> src_experiments__experiment_results_dir;
   src_experiments_run_scattering -> src_plotting_plot_scattering_coefficients;
@@ -109,7 +102,6 @@ digraph G {
   src_experiments_run_square_well -> src_analysis_exact_square_well_energies;
   src_experiments_run_square_well -> src_analysis_save_csv_rows;
   src_experiments_run_square_well -> src_experiments__experiment_results_dir;
-  src_experiments_run_square_well -> src_experiments_plot_infinite_well_root_diagnostics;
   src_experiments_run_square_well -> src_plotting_plot_energy_comparison;
   src_experiments_run_square_well -> src_plotting_plot_error_curve;
   src_experiments_run_square_well -> src_plotting_plot_potential_and_states;
@@ -120,6 +112,9 @@ digraph G {
   src_plotting_plot_potential_and_states -> src_plotting__ensure_parent;
   src_plotting_plot_probability_densities -> src_plotting__ensure_parent;
   src_plotting_plot_root_finding_diagnostic -> src_plotting__ensure_parent;
+  src_plotting_plot_root_finding_diagnostic -> src_plotting__symlog_linthresh;
+  src_plotting_plot_root_finding_zoom -> src_plotting__ensure_parent;
+  src_plotting_plot_root_finding_zoom -> src_plotting__symlog_linthresh;
   src_plotting_plot_scattering_coefficients -> src_plotting__ensure_parent;
   src_plotting_plot_scattering_potential_and_probability -> src_plotting__ensure_parent;
   src_plotting_plot_splitting_curve -> src_plotting__ensure_parent;
