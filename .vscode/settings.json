@@ -11,7 +11,7 @@
     },
     {
       "name": "report",
-      "tools": ["report-latexmk", "copy-report-pdf"]
+      "tools": ["report-latexmk", "copy-report-pdf", "copy-report-pdf-to-writeup"]
     },
     {
       "name": "proposal",
@@ -52,6 +52,11 @@
       "name": "copy-report-pdf",
       "command": "cp",
       "args": ["docs/Writeup/build/report.pdf", "report.pdf"]
+    },
+    {
+      "name": "copy-report-pdf-to-writeup",
+      "command": "cp",
+      "args": ["docs/Writeup/build/report.pdf", "docs/Writeup/report.pdf"]
     },
     {
       "name": "proposal-latexmk",
