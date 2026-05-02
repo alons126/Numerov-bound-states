@@ -88,7 +88,7 @@ def main() -> None:
         print("------------------------------------------------------------------\n")
         run_harmonic_oscillator(RESULTS)
 
-        print("\n3. Double Well (Numerov only)")
+        print("\n3. Quartic double Well (Numerov only)")
         print("------------------------------------------------------------------\n")
         run_double_well(RESULTS)
 

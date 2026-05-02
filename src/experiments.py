@@ -612,7 +612,7 @@ def run_harmonic_oscillator_RK4_comparison(
         np.array([row.energy for row in rk4_reference_rows], dtype=float),
         np.array([row.exact_energy for row in rk4_reference_rows], dtype=float),
         rk4_results_dir / "2b_harmonic_oscillator_RK4_state_energy_comparison.png",
-        "Harmonic oscillator RK4 - state energies",
+        "Harmonic oscillator (RK4) - state energy comparison",
         exact_label=r"exact: $E_n=\omega\left(n+\frac{1}{2}\right)$",
         numerical_label="RK4",
     )
@@ -668,7 +668,8 @@ def run_harmonic_oscillator_RK4_comparison(
             row["max_abs_error"] = float(np.max(errors[grid_index, :]))
             comparison_rows.append(row)
     save_csv_rows(
-        comparison_results_dir / "2c_harmonic_numerov_vs_rk4.csv",
+        comparison_results_dir
+        / "2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.csv",
         comparison_rows,
     )
 
@@ -677,8 +678,9 @@ def run_harmonic_oscillator_RK4_comparison(
         numerov_errors,
         rk4_convergence["h"],
         rk4_convergence["energy_errors"],
-        comparison_results_dir / "2c_harmonic_numerov_vs_rk4.png",
-        "Harmonic oscillator: Numerov vs RK4 - state errors",
+        comparison_results_dir
+        / "2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png",
+        "Harmonic oscillator - Numerov vs RK4 state error comparison",
     )
 
     diagnostic_specs = [
@@ -689,7 +691,7 @@ def run_harmonic_oscillator_RK4_comparison(
             "state_labels": ["State 0, even", "State 2, even"],
             "path": rk4_results_dir
             / "2b_harmonic_oscillator_RK4_root_finding_even.png",
-            "title": "Harmonic oscillator RK4 roots, even states",
+            "title": "Harmonic oscillator (RK4) - shooting roots - even states",
             "mismatch_label": r"Raw mismatch: $M(E)=\psi'_E(0)$",
         },
         {
@@ -698,7 +700,7 @@ def run_harmonic_oscillator_RK4_comparison(
             "e_max": 4.3,
             "state_labels": ["State 1, odd", "State 3, odd"],
             "path": rk4_results_dir / "2b_harmonic_oscillator_RK4_root_finding_odd.png",
-            "title": "Harmonic oscillator RK4 roots, odd states",
+            "title": "Harmonic oscillator (RK4) - shooting roots - odd states",
             "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(0)$",
         },
     ]
@@ -1148,7 +1150,7 @@ def run_double_well(results_dir: Path) -> None:
     )
     conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
     save_csv_rows(
-        experiment_dir / "3_double_well_Numerov_convergence_slopes.csv",
+        experiment_dir / "3_double_well_Numerov_energy_convergence_vs_h_slopes.csv",
         conv_h_slopes,
     )
 
@@ -1157,7 +1159,7 @@ def run_double_well(results_dir: Path) -> None:
         conv_h["energy_errors"],
         "Grid spacing $h$",
         experiment_dir / "3_double_well_Numerov_energy_convergence_vs_h.png",
-        "Quartic double well energy convergence vs grid spacing $h$",
+        "Quartic double well - energy convergence vs grid spacing $h$",
         slopes=conv_h_slopes,
     )
 
@@ -1190,7 +1192,7 @@ def run_double_well(results_dir: Path) -> None:
         reference_energies=reference_energies_box,
     )
     save_csv_rows(
-        experiment_dir / "3_double_well_Numerov_convergence_vs_x_max_data.csv",
+        experiment_dir / "3_double_well_Numerov_energy_convergence_vs_x_max.csv",
         [
             {
                 "x_max": x_val,
@@ -1228,7 +1230,8 @@ def run_double_well(results_dir: Path) -> None:
         e_max=25.0,
     )
     save_csv_rows(
-        experiment_dir / "3_double_well_Numerov_splitting_vs_b.csv", sweep_rows
+        experiment_dir / "3_double_well_Numerov_energy_splitting_vs_b.csv",
+        sweep_rows,
     )
 
     b_vals = np.array([r["b"] for r in sweep_rows], dtype=float)
@@ -1240,9 +1243,9 @@ def run_double_well(results_dir: Path) -> None:
         e0,
         e1,
         splitting,
-        "double-well parameter b",
-        experiment_dir / "3_double_well_Numerov_splitting_vs_b.png",
-        "Quartic double well splitting vs b",
+        "Parameter $b$",
+        experiment_dir / "3_double_well_Numerov_energy_splitting_vs_b.png",
+        "Quartic double well - energy splitting vs parameter $b$",
     )
 
 
@@ -1404,7 +1407,8 @@ def run_scattering(results_dir: Path) -> None:
         for result in single_results
     ]
     save_csv_rows(
-        single_results_dir / "5_scattering_single_barrier_Numerov.csv",
+        single_results_dir
+        / "5_scattering_single_barrier_Numerov_transmission_reflection.csv",
         single_rows,
     )
 
@@ -1418,8 +1422,9 @@ def run_scattering(results_dir: Path) -> None:
         energies_single,
         T_single,
         R_single,
-        single_results_dir / "5_scattering_single_barrier_Numerov_TR.png",
-        "Finite barrier scattering",
+        single_results_dir
+        / "5_scattering_single_barrier_Numerov_transmission_reflection.png",
+        "Single barrier scattering - transmission and reflection",
     )
 
     # =====================================================
@@ -1459,7 +1464,8 @@ def run_scattering(results_dir: Path) -> None:
         for result in double_results
     ]
     save_csv_rows(
-        double_results_dir / "6_scattering_double_barrier_Numerov.csv",
+        double_results_dir
+        / "6_scattering_double_barrier_Numerov_transmission_reflection.csv",
         double_rows,
     )
 
@@ -1467,8 +1473,9 @@ def run_scattering(results_dir: Path) -> None:
         energies_double,
         T_double,
         R_double,
-        double_results_dir / "6_scattering_double_barrier_Numerov_resonances.png",
-        "Double-barrier resonant tunneling",
+        double_results_dir
+        / "6_scattering_double_barrier_Numerov_transmission_reflection.png",
+        "Double-barrier scattering - transmission and reflection",
     )
 
     if peaks:
@@ -1483,7 +1490,8 @@ def run_scattering(results_dir: Path) -> None:
             }
         ]
     save_csv_rows(
-        double_results_dir / "6_scattering_double_barrier_Numerov_resonance_peaks.csv",
+        double_results_dir
+        / "6_scattering_double_barrier_Numerov_transmission_peaks.csv",
         resonance_rows,
     )
 
@@ -1493,6 +1501,7 @@ def run_scattering(results_dir: Path) -> None:
         V_double,
         psi_res,
         resonance_result.energy,
-        double_results_dir / "6_scattering_double_barrier_Numerov_resonant_state.png",
-        "Double-barrier resonant scattering state",
+        double_results_dir
+        / "6_scattering_double_barrier_Numerov_state_probability_density.png",
+        "Double-barrier scattering - resonant state probability density",
     )
