@@ -184,9 +184,15 @@ def half_domain_wavefunction_outward_shooting(
         Unnormalized half-domain wavefunction.
     """
 
+    # Convert this trial energy into the Numerov coefficient q(x), then choose
+    # the first two wavefunction values psi0 = psi(x_0) and psi1 = psi(x_1).
+    # These parity-consistent startup values encode the origin condition and
+    # let the outward Numerov recurrence start on the half-domain grid.
     q = q_from_energy(V_half, energy)
     psi0, psi1 = initial_conditions_outward_shooting(x_half, q, parity)
 
+    # March the trial solution from x = 0 to x_max using the half-domain grid,
+    # the Numerov coefficient q(x), and the two startup values fixed above.
     return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
 
 
@@ -559,6 +565,9 @@ def bisect_energy_outward_shooting(
     if np.signbit(flo) == np.signbit(fhi):
         raise ValueError("Bisection requires a sign-changing bracket.")
 
+    # Repeatedly bisect the current sign-changing bracket. Each step tests the
+    # midpoint energy, then keeps only the half-interval that still contains
+    # the root of the raw mismatch M(E).
     for _ in range(max_iter):
         mid = 0.5 * (lo + hi)
         fmid = boundary_mismatch_outward_shooting(
@@ -568,9 +577,14 @@ def bisect_energy_outward_shooting(
         if not np.isfinite(fmid):
             raise ValueError("Non-finite mismatch during bisection.")
 
+        # Stop immediately if the midpoint already satisfies the mismatch
+        # tolerance, because this energy is accurate enough for the solver.
         if abs(fmid) < tol:
             return mid, fmid
 
+        # If the bracket itself is already smaller than tol, update it one last
+        # time so the remaining interval still brackets the root, then hand the
+        # tiny interval to the safeguarded secant cleanup below.
         if abs(hi - lo) < tol:
             if np.signbit(flo) != np.signbit(fmid):
                 hi, fhi = mid, fmid
@@ -579,21 +593,27 @@ def bisect_energy_outward_shooting(
 
             break
 
+        # Keep whichever half-interval still shows a sign change, because that
+        # is the half that must still contain the eigenvalue.
         if np.signbit(flo) != np.signbit(fmid):
             hi, fhi = mid, fmid
         else:
             lo, flo = mid, fmid
 
-    # Finish with a few safeguarded secant steps inside the last sign-changing
-    # bracket to report a much better boundary residual without sacrificing robustness
+    # The outward-shooting solver uses this post-processing stage: once
+    # bisection has safely trapped the eigenvalue inside a tiny sign-changing
+    # bracket, try a few secant-style updates within that same interval to
+    # reduce the final raw mismatch more aggressively without giving up the
+    # robustness of the bracketing solve.
     for _ in range(8):
         denom = fhi - flo
         if denom == 0.0 or not np.isfinite(denom):
             break
 
-        # Secant interpolation proposes the root of the line through the two
-        # remaining bracket endpoints, but the step is accepted only if it
-        # stays inside the sign-changing interval.
+        # Use the line through the current bracket endpoints to propose a
+        # better root estimate. Reject the proposal immediately if it leaves
+        # the last sign-changing interval, because at that point we would lose
+        # the safety guarantee inherited from bisection.
         trial = lo - flo * (hi - lo) / denom
         if not (min(lo, hi) <= trial <= max(lo, hi)):
             break
@@ -604,9 +624,13 @@ def bisect_energy_outward_shooting(
         if not np.isfinite(ftrial):
             break
 
+        # Stop early if the secant step already drives the boundary mismatch
+        # below the requested tolerance.
         if abs(ftrial) < tol:
             return trial, ftrial
 
+        # Otherwise keep the half-interval that still brackets the root and
+        # continue polishing inside that smaller sign-changing interval.
         if np.signbit(flo) != np.signbit(ftrial):
             hi, fhi = trial, ftrial
         else:
@@ -691,13 +715,22 @@ def solve_state_from_bracket_outward_shooting(
         Structured solution object containing energy and wavefunction data.
     """
 
-    # First determine the eigenvalue, then recompute the corresponding
-    # wavefunction once at that energy for the final normalized output.
+    # Refine the sign-changing energy bracket to a single eigenvalue by
+    # bisection, while also returning the final raw mismatch for diagnostics.
     energy, _raw_mismatch = bisect_energy_outward_shooting(
         x_half, V_half, parity, bracket, tol=tol
     )
+
+    # Recompute the half-domain wavefunction at the converged eigenvalue so the
+    # returned state uses the final solved energy rather than a trial iterate.
     psi_half = half_domain_wavefunction_outward_shooting(x_half, V_half, energy, parity)
+
+    # Reflect the solved half-domain state across x = 0 with the requested
+    # parity sign so the final state lives on the full interval [-x_max, x_max].
     x_full, psi_full = build_full_wavefunction(x_half, psi_half, parity)
+
+    # Scale the reconstructed full-domain state to unit norm so different
+    # eigenstates are returned with the standard probability normalization.
     psi_full = normalize_wavefunction(x_full, psi_full)
 
     # Report the wall leakage after normalization so the diagnostic is tied to

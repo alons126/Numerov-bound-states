@@ -173,8 +173,10 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
 
     psi_scaled = psi / scale
 
-    # Integrate |psi|^2 on the discrete grid with the trapezoid rule, then
-    # undo the temporary scaling in a numerically safe way.
+    # Approximate the normalization integral ∫|psi|^2 dx from the sampled grid
+    # values with the trapezoid rule. This is a simple, stable quadrature on
+    # the same mesh used by the solver, and it is accurate enough here because
+    # normalization is only a post-processing rescaling step.
     norm = scale * np.sqrt(np.trapezoid(np.abs(psi_scaled) ** 2, x))
 
     if norm == 0.0 or not np.isfinite(norm):
