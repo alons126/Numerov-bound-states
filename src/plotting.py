@@ -37,7 +37,9 @@ def _ensure_parent(path: str | Path) -> None:
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: _symlog_linthresh
+# ===========================================================================
 # ===========================================================================
 def _symlog_linthresh(values: np.ndarray) -> float:
     """
@@ -331,8 +333,11 @@ def plot_error_curve(
         # grid spacings or box sizes. Log axes cannot display zero or negative
         # values, so drop those entries. This matters in larger-box reference
         # studies, where the reference point itself has exactly zero error.
-        valid = np.isfinite(xvals) & np.isfinite(errors[:, i]) & (xvals > 0.0) & (
-            errors[:, i] > 0.0
+        valid = (
+            np.isfinite(xvals)
+            & np.isfinite(errors[:, i])
+            & (xvals > 0.0)
+            & (errors[:, i] > 0.0)
         )
         plt.loglog(xvals[valid], errors[valid, i], marker="o", label=label)
 
@@ -555,7 +560,9 @@ def plot_root_finding_zoom(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: plot_scattering_coefficients
+# ===========================================================================
 # ===========================================================================
 def plot_scattering_coefficients(
     energies: np.ndarray,
@@ -605,7 +612,9 @@ def plot_scattering_coefficients(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: plot_scattering_potential_and_probability
+# ===========================================================================
 # ===========================================================================
 def plot_scattering_potential_and_probability(
     x: np.ndarray,

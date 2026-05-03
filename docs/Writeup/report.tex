@@ -531,7 +531,7 @@
 
         \subsection{Scattering and resonant tunneling}
             \subsubsection{Single barrier potential}
-                As a secondary extension beyond bound states, the Numerov framework is also applied to one-dimensional scattering from a finite rectangular barrier. For each incident energy $E$, the complex wavefunction is propagated through the barrier region and decomposed into incident, reflected, and transmitted waves. This gives the transmission and reflection probabilities $T(E)$ and $R(E)$. \\
+                As a secondary extension beyond bound states, the Numerov framework is also applied to one-dimensional scattering from a finite rectangular barrier. For each incident energy $E$, the complex wavefunction is propagated through the barrier region and decomposed into incident, reflected, and transmitted waves. This gives the transmission and reflection probabilities $T(E)$ and $R(E)$. The integration is started from the right free region, not the left, because the right boundary condition is the simplest one to impose directly: for a left-incident scattering state, the far-right asymptotic solution contains only the transmitted outgoing wave $e^{ikx}$. The left asymptotic region is more complicated because it contains a superposition of incident and reflected waves, so those amplitudes are recovered afterward by decomposing the numerically propagated left solution. \\
 
                 The shared scattering grid for both barrier problems is $x\in[-8,8]$ with $n_{\text{grid}}=4000$ points. For the single-barrier run, the barrier parameters are $V_0=5$, width $1.2$, and center $0$, while the incident energy is sampled on $240$ points from $E=0.2$ to $E=10$. \\
 

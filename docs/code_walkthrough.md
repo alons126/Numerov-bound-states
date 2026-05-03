@@ -107,7 +107,7 @@ Complex Numerov scattering solver for transmission, reflection, and double-barri
 | Lines | Block | Purpose |
 |---:|---|---|
 | 82-119 | `function numerov_outward_complex` | Integrate y'' = q(x)y using the Numerov recurrence for complex y. |
-| 126-148 | `function integrate_from_right` | Impose a unit transmitted wave on the right and integrate backward. |
+| 126-148 | `function integrate_from_right` | Impose a unit transmitted wave on the right and integrate backward, choosing the right boundary because it contains only the transmitted outgoing component while the left boundary must later be decomposed into incident and reflected parts. |
 | 155-176 | `function decompose_left_asymptotic` | Decompose the left asymptotic wave into incoming and reflected parts. |
 | 183-212 | `function solve_scattering` | Compute reflection and transmission for one incident energy. |
 | 219-230 | `function scattering_wavefunction` | Return the physical scattering wavefunction for unit incident amplitude. |

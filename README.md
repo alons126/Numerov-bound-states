@@ -181,6 +181,7 @@ Additional analysis includes:
 - comparison between Numerov and RK4 integration methods for the harmonic oscillator to assess accuracy, efficiency, and method suitability
 - conservation check $T + R \approx 1$ for scattering states
 - identification of resonance peaks in double-barrier transmission
+- in the scattering extension, the complex Numerov march is started from the right so the simple outgoing transmitted wave can be imposed directly; the left incident and reflected amplitudes are recovered afterward from the propagated left asymptotic solution
 
 ### 6. Workflow
 The full workflow is executed by:

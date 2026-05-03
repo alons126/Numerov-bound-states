@@ -361,12 +361,12 @@ def convergence_vs_grid_successive(
             e_min=e_min,
             e_max=e_max,
         )
-        
+
         energies_by_grid.append(energies_from_states(states, n_states=n_states))
         hs.append(x_max / (n_grid - 1))
 
     energies_arr = np.array(energies_by_grid, dtype=float)
-    
+
     # Successive differences act as a stand-in error estimate when no exact
     # spectrum is available, as in the quartic double well. The returned h
     # values are the coarse-grid spacings h_i attached to each difference
@@ -451,7 +451,7 @@ def convergence_vs_box_size_fixed_spacing(
             e_min=e_min,
             e_max=e_max,
         )
-        
+
         energies = energies_from_states(states, n_states=n_states)
         xs.append(x_max)
         hs.append(actual_h)
@@ -514,7 +514,7 @@ def splitting_vs_parameter(
         # being swept so each solve differs in a controlled way.
         kwargs = dict(base_kwargs)
         kwargs[varied_param] = value
-        
+
         states = solve_symmetric_potential_outward_shooting(
             x_max=x_max,
             n_grid=n_grid,
@@ -528,7 +528,7 @@ def splitting_vs_parameter(
 
         e0 = states[0].energy
         e1 = states[1].energy
-        
+
         # In a symmetric double well, the lowest two states are the even/odd
         # tunneling pair, so their splitting is the key physical observable.
         rows.append(

@@ -355,9 +355,11 @@ def RK4_sample_mismatch(
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
         [
-            RK4_diagnostic_mismatch(e, parity, x_max, n_grid, omega)
-            if diagnostic_scale
-            else RK4_inward_mismatch(e, parity, x_max, n_grid, omega)
+            (
+                RK4_diagnostic_mismatch(e, parity, x_max, n_grid, omega)
+                if diagnostic_scale
+                else RK4_inward_mismatch(e, parity, x_max, n_grid, omega)
+            )
             for e in energies
         ],
         dtype=float,

@@ -160,6 +160,16 @@ def integrate_from_right(
     The right asymptotic solution is chosen as exp(ikx). The returned solution is
     given on the original increasing grid.
 
+    The integration starts from the right because that boundary condition is the
+    simplest one to impose directly in a left-incident scattering problem. On
+    the right free region, the physical solution contains only the transmitted
+    outgoing wave, so the asymptotic form is just exp(ikx). On the left free
+    region, by contrast, the physical solution is a superposition of incident
+    and reflected waves. It is therefore numerically cleaner to fix the
+    single-component right boundary condition first, integrate backward through
+    the barrier, and then decompose the recovered left asymptotic solution into
+    its incident and reflected amplitudes afterward.
+
     Parameters
     ----------
     x : ndarray
@@ -188,7 +198,9 @@ def integrate_from_right(
     q_desc = q_from_energy(V_desc, energy)
 
     # Normalize the right asymptotic region to a purely transmitted outgoing
-    # wave. The left incident amplitude will be recovered afterward.
+    # wave. This is why the march starts from the right: the left free-region
+    # superposition of incident and reflected waves is recovered afterward by
+    # asymptotic decomposition, rather than imposed directly at startup.
     psi0 = np.exp(1j * k * x_desc[0])
     psi1 = np.exp(1j * k * x_desc[1])
     psi_desc = numerov_outward_complex(x_desc, q_desc, psi0=psi0, psi1=psi1)
@@ -197,7 +209,9 @@ def integrate_from_right(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: decompose_left_asymptotic
+# ===========================================================================
 # ===========================================================================
 def decompose_left_asymptotic(
     x: np.ndarray,
@@ -229,8 +243,10 @@ def decompose_left_asymptotic(
 
     k = np.sqrt(2.0 * energy)
 
-    # Two grid samples give a 2x2 linear system for the unknown incoming and
-    # reflected amplitudes in the free left region.
+    # In the left free region, the numerical wavefunction should equal
+    # A_in exp(ikx) + A_ref exp(-ikx). Evaluating that ansatz at the first two
+    # left-grid points gives a 2x2 complex linear system whose unknowns are the
+    # incoming amplitude A_in and reflected amplitude A_ref.
     matrix = np.array(
         [
             [np.exp(1j * k * x[0]), np.exp(-1j * k * x[0])],
@@ -303,7 +319,9 @@ def solve_scattering(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: scattering_wavefunction
+# ===========================================================================
 # ===========================================================================
 def scattering_wavefunction(
     x: np.ndarray,
