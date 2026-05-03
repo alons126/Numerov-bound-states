@@ -378,6 +378,9 @@ def plot_harmonic_oscillator_root_diagnostics(
         Half-width of the truncated numerical domain used by the inward solver.
     """
 
+    # Reuse the shared inward-diagnostics pipeline with the harmonic-oscillator
+    # potential and the same parity-separated energy windows used by the main
+    # solver, so the diagnostic figures probe the first two even and odd roots.
     _plot_inward_root_diagnostics(
         results_dir=results_dir,
         prefix="2a_harmonic_oscillator_Numerov",
@@ -432,6 +435,9 @@ def plot_harmonic_oscillator_RK4_root_diagnostics(
         Half-width of the truncated numerical domain used by the inward solver.
     """
 
+    # Mirror the Numerov harmonic-oscillator diagnostics with RK4-specific
+    # scan, bracketing, and history helpers so both integrators are visualized
+    # on the same parity split and comparable energy windows.
     diagnostic_specs = [
         {
             "parity": "even",
@@ -460,6 +466,9 @@ def plot_harmonic_oscillator_RK4_root_diagnostics(
         e_max = float(spec["e_max"])
         mismatch_label = str(spec["mismatch_label"])
 
+        # Sample the raw RK4 mismatch over the requested energy window so the
+        # overview plot can show the sign changes that seed the later RK4
+        # bracketing and bisection steps for this parity sector.
         energies_scan, mismatches_scan = RK4_sample_mismatch(
             parity=parity,
             x_max=x_max,
@@ -469,6 +478,9 @@ def plot_harmonic_oscillator_RK4_root_diagnostics(
             omega=omega,
             n_scan=400,
         )
+
+        # Reuse the same energy window to extract the sign-changing intervals
+        # that bracket candidate roots of the RK4 mismatch curve.
         brackets = RK4_find_brackets(
             parity=parity,
             x_max=x_max,
@@ -478,6 +490,10 @@ def plot_harmonic_oscillator_RK4_root_diagnostics(
             omega=omega,
             n_scan=400,
         )
+
+        # Record the sequence of midpoint/refined-bracket updates for the
+        # first requested RK4 roots so the diagnostic plots can show how
+        # bisection converges inside each sign-changing interval.
         histories = [
             RK4_bisection_history(
                 parity=parity,
@@ -490,6 +506,9 @@ def plot_harmonic_oscillator_RK4_root_diagnostics(
             for bracket in brackets[: len(state_labels)]
         ]
 
+        # Save the parity-level overview figure: the full sampled raw mismatch
+        # curve together with the final root marker from each recorded
+        # bisection history.
         plot_root_finding_diagnostic(
             energies_scan,
             mismatches_scan,
@@ -500,6 +519,9 @@ def plot_harmonic_oscillator_RK4_root_diagnostics(
             mismatch_label=mismatch_label,
         )
 
+        # For each labeled state, zoom back into its original sign-changing
+        # bracket, resample the raw RK4 mismatch locally, and save a dedicated
+        # figure that overlays the full bisection history inside that window.
         for label, history in zip(state_labels, histories):
             zoom_energies, zoom_mismatches = RK4_sample_mismatch(
                 parity=parity,
@@ -545,9 +567,15 @@ def plot_double_well_root_diagnostics(
         shooting in the diagnostic plots.
     """
 
+    # Rebuild a dedicated half-domain grid for the outward-shooting scan and
+    # sample the quartic double-well profile on that grid so the diagnostic
+    # mismatch curves use the same boxed geometry as the reported solve.
     x_half = np.linspace(0.0, x_max, 1200)
     V_half = quartic_double_well(x_half, **potential_kwargs)
 
+    # Hand the quartic-well grid and parity-specific scan windows to the
+    # shared outward-diagnostics pipeline for the first two even and odd
+    # double-well states.
     _plot_outward_root_diagnostics(
         results_dir=results_dir,
         prefix="3_double_well_Numerov",
@@ -601,9 +629,15 @@ def plot_finite_square_well_root_diagnostics(
         Half-width of the well.
     """
 
+    # Rebuild a dedicated half-domain grid [0, x_max] for the outward scan and
+    # sample the finite square well on that grid so the diagnostic mismatch
+    # curves are evaluated on the same finite box used by the solver.
     x_half = np.linspace(0.0, x_max, 1200)
     V_half = finite_square_well(x_half, V0=V0, a=a)
 
+    # Hand the finite-well grid and the bound-state energy window E < V0 to
+    # the shared outward-diagnostics pipeline for the first two even and odd
+    # bound states.
     _plot_outward_root_diagnostics(
         results_dir=results_dir,
         prefix="4_finite_square_well_Numerov",
