@@ -173,6 +173,7 @@ Additional analysis includes:
 - for the quartic double well, the grid-spacing plot uses the successive-refinement surrogate `|E(h_i)-E(h_{i+1})|` rather than an exact-error curve, because no closed-form reference spectrum is available
 - for the quartic double well, `h`-convergence uses successive refinements on a fixed domain, comparing each grid to the next finer one instead of to a single fixed reference
 - for the quartic double well, `x_max`-convergence compares against a larger-box reference while keeping spacing approximately fixed
+- for the finite square well, a grid-refinement study compares the first four bound-state energies on several coarser meshes against the finest saved grid as a practical reference
 - parameter sweeps (e.g., double-well barrier height)
 - generation of plots and CSV tables for reporting
 - estimation of convergence rates $\Delta E \propto h^p$ from log--log fits

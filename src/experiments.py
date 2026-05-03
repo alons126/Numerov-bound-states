@@ -722,7 +722,9 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: run_quartic_double_well
+# ===========================================================================
 # ===========================================================================
 def run_quartic_double_well(results_dir: Path) -> None:
     """
@@ -1052,6 +1054,40 @@ def run_finite_square_well(results_dir: Path) -> None:
         states,
         experiment_dir / "4_finite_square_well_Numerov_state_densities.png",
         "Finite square well - state densities",
+    )
+
+    # Measure grid convergence for the first four finite-well bound states by
+    # re-solving the problem on several coarser meshes and comparing each
+    # spectrum to the current finest-grid result. With no analytic reference
+    # available for this boxed finite well, the finest saved run acts as the
+    # practical stand-in reference in |E_N - E_ref|.
+    reference_energies = np.array([s.energy for s in states[:4]], dtype=float)
+    conv_h = convergence_vs_grid(
+        potential_fn=finite_square_well,
+        potential_kwargs=kwargs,
+        x_max=x_max,
+        grid_sizes=[400, 700, 1000, 1500, 2200],
+        n_even=2,
+        n_odd=2,
+        e_min=0.0,
+        e_max=11.9,
+        reference_energies=reference_energies,
+    )
+    conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
+    save_csv_rows(
+        experiment_dir
+        / "4_finite_square_well_Numerov_energy_convergence_vs_h_slopes.csv",
+        conv_h_slopes,
+    )
+
+    plot_error_curve(
+        conv_h["h"],
+        conv_h["energy_errors"],
+        "Grid spacing $h$",
+        experiment_dir / "4_finite_square_well_Numerov_energy_convergence_vs_h.png",
+        "Finite square well - energy convergence vs grid spacing $h$",
+        slopes=conv_h_slopes,
+        ylabel="Energy error relative to finest-grid reference",
     )
 
     plot_finite_square_well_root_diagnostics(
