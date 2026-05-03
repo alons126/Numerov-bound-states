@@ -863,6 +863,9 @@ def run_double_well(results_dir: Path) -> None:
 
     # For box-size convergence, compare against a larger box while keeping h
     # approximately fixed so the curve mostly reflects boundary truncation.
+    # The final x_max = 5.0 row is the larger-box reference itself, so its
+    # plotted error is exactly zero and is omitted automatically on the log
+    # axis by plot_error_curve().
     reference_states_box = solve_symmetric_potential_outward_shooting(
         x_max=5.0,
         n_grid=5000,
@@ -878,10 +881,16 @@ def run_double_well(results_dir: Path) -> None:
     )
 
     target_h = x_max / (n_grid - 1)
+
+    # Re-solve the same four low-lying states on a sequence of larger boxes,
+    # adjusting n_grid each time so the spacing stays near target_h. The
+    # returned errors are absolute differences from the larger-box reference
+    # spectrum, so this study isolates boundary truncation more cleanly than a
+    # fixed-n_grid sweep would.
     conv_box = convergence_vs_box_size_fixed_spacing(
         potential_fn=quartic_double_well,
         potential_kwargs=base_kwargs,
-        x_max_values=[2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
+        x_max_values=[2.5, 3.0, 3.5, 4.0, 4.5],
         target_h=target_h,
         n_even=2,
         n_odd=2,
@@ -918,6 +927,10 @@ def run_double_well(results_dir: Path) -> None:
         ylabel="Energy error relative to larger-box reference",
     )
 
+    # Sweep the double-well parameter b while keeping a fixed, and solve the
+    # lowest even/odd pair at each value. This isolates how strengthening the
+    # barrier changes E0, E1, and the tunneling splitting E1 - E0 across the
+    # family of quartic double wells.
     sweep_rows = splitting_vs_parameter(
         potential_fn=quartic_double_well,
         base_kwargs={"a": 1.0, "shift_min_to_zero": True},

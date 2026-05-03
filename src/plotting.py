@@ -291,7 +291,8 @@ def plot_error_curve(
     errors : ndarray
         Array with one column per state. Each column may contain true absolute
         errors or another per-state convergence surrogate, depending on the
-        experiment that calls this helper.
+        experiment that calls this helper. Nonpositive entries are omitted from
+        the plotted curves because log axes cannot display them.
     xlabel : str
         Label for the horizontal axis.
     path : str or Path
@@ -327,8 +328,13 @@ def plot_error_curve(
                 label = f"State ${i}$, $p = {slope:.2f}$"
 
         # Each column of `errors` corresponds to one state across all sampled
-        # grid spacings or box sizes.
-        plt.loglog(xvals, errors[:, i], marker="o", label=label)
+        # grid spacings or box sizes. Log axes cannot display zero or negative
+        # values, so drop those entries. This matters in larger-box reference
+        # studies, where the reference point itself has exactly zero error.
+        valid = np.isfinite(xvals) & np.isfinite(errors[:, i]) & (xvals > 0.0) & (
+            errors[:, i] > 0.0
+        )
+        plt.loglog(xvals[valid], errors[valid, i], marker="o", label=label)
 
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
