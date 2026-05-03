@@ -105,7 +105,20 @@ This project solves the one-dimensional time-independent Schrödinger equation
 using a combination of the Numerov method and a shooting procedure.
 
 ### 1. Discretization
-A uniform spatial grid is created on a symmetric domain $[-x_{\max}, x_{\max}]$. For symmetric potentials, only the half-domain $[0, x_{\max}]$ is integrated, and the full wavefunction is reconstructed using parity.
+A uniform spatial grid is created on a symmetric domain $[-x_{\max}, x_{\max}]$. For the bound-state problems in this project, the main potentials satisfy
+
+```text
+V(-x) = V(x)
+```
+
+so the eigenstates can be chosen to have definite parity:
+- even: $\psi(-x)=\psi(x)$
+- odd: $\psi(-x)=-\psi(x)$
+
+That symmetry means the full solution is already determined by its values on
+$[0, x_{\max}]$. The code therefore integrates only the half-domain and then
+reconstructs the left half by reflection. This is an exact symmetry reduction,
+not a numerical approximation.
 
 ### 2. Numerov integration
 The differential equation is rewritten in the form
@@ -138,7 +151,12 @@ To make the algorithm transparent, the code generates two kinds of root-finding 
 - zoomed plots around individual sign-changing brackets, where the full bisection history is overlaid
 
 ### 4. Wavefunction reconstruction and normalization
-The half-domain solution is reflected to the negative axis using parity. The resulting full wavefunction is then normalized using numerical integration.
+The half-domain solution is reflected to the negative axis using parity:
+- even states are mirrored with the same sign
+- odd states are mirrored with a sign flip
+
+This produces the full solution on $[-x_{\max}, x_{\max}]$, which is then
+normalized using numerical integration.
 
 ### 5. Analysis and experiments
 The solver is applied to several systems (with bound states as the primary focus and additional extensions for more complex behavior):

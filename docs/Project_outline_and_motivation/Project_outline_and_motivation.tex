@@ -363,7 +363,11 @@
         V(-x)=V(x).
     \end{equation}
 
-    For symmetric potentials, quantum states are either even or odd.
+    For symmetric potentials, quantum states are either even or odd. This is a
+    direct consequence of the reflection symmetry of the Hamiltonian: if
+    $V(-x)=V(x)$, then reflecting $x\mapsto -x$ leaves the differential
+    equation unchanged, so eigenstates can be chosen to be simultaneous
+    eigenfunctions of the reflection operation.
 
     Even states satisfy
     \begin{equation}
@@ -374,7 +378,12 @@
         \psi(-x)=-\psi(x).
     \end{equation}
 
-    Therefore, instead of integrating from $-x_{\max}$ to $x_{\max}$, the code integrates only from $0$ to $x_{\max}$.
+    Therefore, instead of integrating from $-x_{\max}$ to $x_{\max}$, the code
+    integrates only from $0$ to $x_{\max}$. The missing half is not discarded;
+    it is reconstructed exactly from parity. Even states are mirrored with the
+    same sign, and odd states are mirrored with a sign flip. This cuts the
+    bound-state solve in half and replaces one side of the boundary-value
+    problem with exact origin conditions.
 
     In code, \texttt{initial\_conditions\_outward\_shooting()} uses:
     \begin{itemize}

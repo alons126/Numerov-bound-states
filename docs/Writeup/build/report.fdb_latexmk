@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber build/report"] 1777795815.47636 "build/report.bcf" "build/report.bbl" "build/report" 1777795828.19097 0
+["biber build/report"] 1777797253.98577 "build/report.bcf" "build/report.bbl" "build/report" 1777797262.82136 0
   "../references.bib" 1777369189.93512 655 8f93fc878757d4fd3cda6064465a846c ""
-  "build/report.bcf" 1777795828.1045 108095 81ced07a25b3987c2a4f956d419b3957 "pdflatex"
+  "build/report.bcf" 1777797262.74179 108095 81ced07a25b3987c2a4f956d419b3957 "pdflatex"
   (generated)
   "build/report.bbl"
   "build/report.blg"
   (rewritten before read)
-["pdflatex"] 1777795824.47428 "report.tex" "build/report.pdf" "report" 1777795828.19123 0
+["pdflatex"] 1777797259.07248 "report.tex" "build/report.pdf" "report" 1777797262.82159 0
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png" 1777736535.15998 91320 413c2f90117309a0dff95b04e933d3ba ""
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png" 1777736530.4674 67832 bd19790332caffd6dbe16aa3d9d26039 ""
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png" 1777736533.17535 64329 3c6bd5505f80867e56e4daa808db692c ""
@@ -186,12 +186,12 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774538740 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774538681 3636776 dfeaead9e2e9c793969724e130e444cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "build/report.aux" 1777795828.10177 17461 958ff45d23408ff8eea23e13db919829 "pdflatex"
-  "build/report.bbl" 1777795817.04203 1666 1d08ed8c5ef7e023b792ac2be9f0f476 "biber build/report"
-  "build/report.out" 1777795828.10367 3296 cdfd21eff3a294f5f3d8d309c8c3c867 "pdflatex"
-  "build/report.run.xml" 1777795828.10505 2322 310b7e3f33dc4167857d0075ae31356d "pdflatex"
-  "build/report.toc" 1777795828.10512 1546 90915e91e214538b342f47e06caa19ab "pdflatex"
-  "report.tex" 1777795811.65269 60751 be036e53df1fc93ae75517420f897ffe ""
+  "build/report.aux" 1777797262.7389 17442 907c316370ed34195d5bdf50aecbcf67 "pdflatex"
+  "build/report.bbl" 1777797255.25713 1666 1d08ed8c5ef7e023b792ac2be9f0f476 "biber build/report"
+  "build/report.out" 1777797262.74102 3296 cdfd21eff3a294f5f3d8d309c8c3c867 "pdflatex"
+  "build/report.run.xml" 1777797262.74231 2322 9c2c451ad16a7e9e7d58df2e941dd00c "pdflatex"
+  "build/report.toc" 1777797262.74237 1547 7ec426f6c7585733540cbd21e98289d6 "pdflatex"
+  "report.tex" 1777797229.65204 61301 631eb9bfb3b4c8a39219f1f60d479d23 ""
   (generated)
   "build/report.aux"
   "build/report.bcf"

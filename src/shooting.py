@@ -3,12 +3,16 @@ from __future__ import annotations
 """
 Parity-based shooting solver for symmetric 1D potentials.
 
-For a symmetric potential, low-lying eigenstates can be separated into:
-- even states, with psi'(0) = 0,
-- odd states, with psi(0) = 0.
+For a symmetric potential satisfying V(-x)=V(x), low-lying eigenstates can be
+chosen to have definite parity:
+- even states, with psi(-x)=psi(x) and therefore psi'(0)=0,
+- odd states, with psi(-x)=-psi(x) and therefore psi(0)=0.
 
-This module exploits that symmetry to solve the bound-state problem on the
-half-domain x in [0, x_max], then reconstructs the full wavefunction.
+This module exploits that symmetry to solve the bound-state problem only on the
+half-domain x in [0, x_max], then reconstruct the left half by reflection. The
+half-domain reduction is exact for symmetric potentials; it is not an
+approximation. It reduces the amount of integration work and replaces one side
+of the boundary-value problem with exact parity conditions at x=0.
 
 This file is the bound-state eigenvalue solver. Conceptually, it turns the
 Schrödinger boundary-value eigenproblem into a practical shooting procedure:
