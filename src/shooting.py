@@ -402,6 +402,10 @@ def sample_boundary_mismatch_outward_shooting(
     """
 
     energies = np.linspace(e_min, e_max, n_scan)
+    
+    # Sample either the diagnostics-only scaled mismatch or the raw outward
+    # solver mismatch at the same trial energies, depending on what the caller
+    # wants to visualize.
     if diagnostic_scale:
         mismatches = np.array(
             [
@@ -482,17 +486,20 @@ def bisection_history_outward_shooting(
         raise ValueError("Bisection history requires a sign-changing bracket.")
 
     history: list[dict] = []
+
     for iteration in range(max_iter):
         mid = 0.5 * (lo + hi)
         fmid = boundary_mismatch_outward_shooting(
             x_half, V_half, mid, parity, mode="value"
         )
+
         if diagnostic_scale:
             mismatch_mid_plot = diagnostic_mismatch_outward_shooting(
                 x_half, V_half, mid, parity
             )
         else:
             mismatch_mid_plot = fmid
+
         history.append(
             {
                 "iteration": iteration,

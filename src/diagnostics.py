@@ -11,14 +11,30 @@ from pathlib import Path
 
 import numpy as np
 
+# Reuse the plotting-layer helpers that render the parity-level overview
+# figures and the per-root zoom views assembled by this diagnostics module.
 from src.plotting import plot_root_finding_diagnostic, plot_root_finding_zoom
+
+# Import the symmetric potentials whose sampled half-domain profiles are needed
+# to rebuild the raw mismatch curves on the dedicated diagnostic grids.
 from src.potentials import (
     finite_square_well,
     harmonic_oscillator,
     infinite_square_well_numeric,
     quartic_double_well,
 )
-from src.rk4_compare import RK4_bisection_history, RK4_find_brackets, RK4_sample_mismatch
+
+# Import the RK4 mismatch sampling, bracketing, and history helpers so the RK4
+# harmonic-oscillator diagnostics follow the same plotting flow as Numerov.
+from src.rk4_compare import (
+    RK4_bisection_history,
+    RK4_find_brackets,
+    RK4_sample_mismatch,
+)
+
+# Import the Numerov shooting helpers that sample raw mismatches, locate
+# sign-changing brackets, and record bisection histories for the diagnostic
+# figures built in this module.
 from src.shooting import (
     bisection_history_inward_shooting,
     bisection_history_outward_shooting,
@@ -29,6 +45,9 @@ from src.shooting import (
 )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: _diagnostic_label_slug
+# ---------------------------------------------------------------------------
 def _diagnostic_label_slug(label: str) -> str:
     """
     Convert a human-readable diagnostic label into a filename-safe suffix.
@@ -47,6 +66,9 @@ def _diagnostic_label_slug(label: str) -> str:
     return label.lower().replace(",", "").replace(" ", "_")
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: _plot_outward_root_diagnostics
+# ---------------------------------------------------------------------------
 def _plot_outward_root_diagnostics(
     results_dir: Path,
     prefix: str,
@@ -82,6 +104,9 @@ def _plot_outward_root_diagnostics(
         e_max = float(spec["e_max"])
         mismatch_label = str(spec["mismatch_label"])
 
+        # Sample the raw outward-shooting mismatch over the requested energy
+        # window so the overview plot can show the sign changes that seed the
+        # later bracketing and bisection steps for this parity sector.
         energies_scan, mismatches_scan = sample_boundary_mismatch_outward_shooting(
             x_half,
             V_half,
@@ -90,6 +115,9 @@ def _plot_outward_root_diagnostics(
             e_max=e_max,
             n_scan=1600,
         )
+
+        # Reuse the same energy window to extract the sign-changing intervals
+        # that bracket candidate roots of the outward mismatch curve.
         brackets = find_brackets_outward_shooting(
             x_half,
             V_half,
@@ -98,6 +126,10 @@ def _plot_outward_root_diagnostics(
             e_max=e_max,
             n_scan=1600,
         )
+
+        # Record the sequence of midpoint/refined-bracket updates for the
+        # first requested roots so the diagnostic plots can show how bisection
+        # converges inside each sign-changing interval.
         histories = [
             bisection_history_outward_shooting(
                 x_half,
@@ -109,6 +141,9 @@ def _plot_outward_root_diagnostics(
             for bracket in brackets[: len(state_labels)]
         ]
 
+        # Save the parity-level overview figure: the full sampled raw mismatch
+        # curve together with the final root marker from each recorded
+        # bisection history.
         plot_root_finding_diagnostic(
             energies_scan,
             mismatches_scan,
@@ -119,6 +154,9 @@ def _plot_outward_root_diagnostics(
             mismatch_label=mismatch_label,
         )
 
+        # For each labeled state, zoom back into its original sign-changing
+        # bracket, resample the raw mismatch locally, and save a dedicated
+        # figure that overlays the full bisection history inside that window.
         for label, history in zip(state_labels, histories):
             zoom_energies, zoom_mismatches = sample_boundary_mismatch_outward_shooting(
                 x_half,
@@ -128,6 +166,7 @@ def _plot_outward_root_diagnostics(
                 e_max=history[0]["hi"],
                 n_scan=600,
             )
+
             plot_root_finding_zoom(
                 zoom_energies,
                 zoom_mismatches,
@@ -140,6 +179,9 @@ def _plot_outward_root_diagnostics(
             )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: _plot_inward_root_diagnostics
+# ---------------------------------------------------------------------------
 def _plot_inward_root_diagnostics(
     results_dir: Path,
     prefix: str,
@@ -177,6 +219,9 @@ def _plot_inward_root_diagnostics(
         e_max = float(spec["e_max"])
         mismatch_label = str(spec["mismatch_label"])
 
+        # Sample the raw inward-shooting mismatch over the requested energy
+        # window so the overview plot can show the sign changes that seed the
+        # later bracketing and bisection steps for this parity sector.
         energies_scan, mismatches_scan = sample_mismatch_inward_shooting(
             x_max=x_max,
             n_grid=500,
@@ -187,6 +232,9 @@ def _plot_inward_root_diagnostics(
             e_max=e_max,
             n_scan=400,
         )
+
+        # Reuse the same energy window to extract the sign-changing intervals
+        # that bracket candidate roots of the inward mismatch curve.
         brackets = find_brackets_inward_shooting(
             x_max=x_max,
             n_grid=500,
@@ -197,6 +245,10 @@ def _plot_inward_root_diagnostics(
             e_max=e_max,
             n_scan=400,
         )
+
+        # Record the sequence of midpoint/refined-bracket updates for the
+        # first requested roots so the diagnostic plots can show how bisection
+        # converges inside each sign-changing interval.
         histories = [
             bisection_history_inward_shooting(
                 x_max=x_max,
@@ -210,6 +262,9 @@ def _plot_inward_root_diagnostics(
             for bracket in brackets[: len(state_labels)]
         ]
 
+        # Save the parity-level overview figure: the full sampled raw mismatch
+        # curve together with the final root marker from each recorded
+        # bisection history.
         plot_root_finding_diagnostic(
             energies_scan,
             mismatches_scan,
@@ -220,6 +275,9 @@ def _plot_inward_root_diagnostics(
             mismatch_label=mismatch_label,
         )
 
+        # For each labeled state, zoom back into its original sign-changing
+        # bracket, resample the raw mismatch locally, and save a dedicated
+        # figure that overlays the full bisection history inside that window.
         for label, history in zip(state_labels, histories):
             zoom_energies, zoom_mismatches = sample_mismatch_inward_shooting(
                 x_max=x_max,
@@ -231,6 +289,7 @@ def _plot_inward_root_diagnostics(
                 e_max=history[0]["hi"],
                 n_scan=600,
             )
+            
             plot_root_finding_zoom(
                 zoom_energies,
                 zoom_mismatches,
@@ -243,6 +302,9 @@ def _plot_inward_root_diagnostics(
             )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_infinite_well_root_diagnostics
+# ---------------------------------------------------------------------------
 def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> None:
     """
     Plot shooting/root-finding diagnostics for the first four infinite-well states.
@@ -256,6 +318,9 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
         is ``[0, a]``.
     """
 
+    # Rebuild a dedicated half-domain grid [0, a] for the diagnostic scan and
+    # sample the boxed infinite-well approximation on that same grid so the
+    # root-search plots use a consistent mismatch curve.
     x_half = np.linspace(0.0, a, 900)
     V_half = infinite_square_well_numeric(x_half, a=a, wall_height=1e6)
 
@@ -290,6 +355,9 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_harmonic_oscillator_root_diagnostics
+# ---------------------------------------------------------------------------
 def plot_harmonic_oscillator_root_diagnostics(
     results_dir: Path,
     omega: float = 1.0,
@@ -342,6 +410,9 @@ def plot_harmonic_oscillator_root_diagnostics(
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_harmonic_oscillator_RK4_root_diagnostics
+# ---------------------------------------------------------------------------
 def plot_harmonic_oscillator_RK4_root_diagnostics(
     results_dir: Path,
     omega: float = 1.0,
@@ -451,6 +522,9 @@ def plot_harmonic_oscillator_RK4_root_diagnostics(
             )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_double_well_root_diagnostics
+# ---------------------------------------------------------------------------
 def plot_double_well_root_diagnostics(
     results_dir: Path,
     potential_kwargs: dict[str, float | bool],
@@ -503,6 +577,9 @@ def plot_double_well_root_diagnostics(
     )
 
 
+# ---------------------------------------------------------------------------
+# FUNCTION: plot_finite_square_well_root_diagnostics
+# ---------------------------------------------------------------------------
 def plot_finite_square_well_root_diagnostics(
     results_dir: Path,
     x_max: float = 4.0,
@@ -539,7 +616,8 @@ def plot_finite_square_well_root_diagnostics(
                 "e_min": 0.0,
                 "e_max": 11.9,
                 "state_labels": ["State 0, even", "State 2, even"],
-                "path": results_dir / "4_finite_square_well_Numerov_root_finding_even.png",
+                "path": results_dir
+                / "4_finite_square_well_Numerov_root_finding_even.png",
                 "title": "Finite square well - shooting roots - even states",
                 "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(x_{\max})$",
             },
@@ -548,7 +626,8 @@ def plot_finite_square_well_root_diagnostics(
                 "e_min": 0.0,
                 "e_max": 11.9,
                 "state_labels": ["State 1, odd", "State 3, odd"],
-                "path": results_dir / "4_finite_square_well_Numerov_root_finding_odd.png",
+                "path": results_dir
+                / "4_finite_square_well_Numerov_root_finding_odd.png",
                 "title": "Finite square well - shooting roots - odd states",
                 "mismatch_label": r"Raw mismatch: $M(E)=\psi_E(x_{\max})$",
             },

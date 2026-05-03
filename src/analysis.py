@@ -140,6 +140,7 @@ def estimate_convergence_slopes(
     errors = np.asarray(errors, dtype=float)
 
     rows: list[dict] = []
+
     for i in range(errors.shape[1]):
         # Ignore non-positive or non-finite entries before taking logarithms.
         valid = (
@@ -153,10 +154,16 @@ def estimate_convergence_slopes(
             slope = np.nan
             intercept = np.nan
         else:
+            # Fit a straight line to log(error) versus log(x). If the error
+            # behaves like C * x^p, then log(error) = p * log(x) + log(C), so
+            # the fitted slope estimates the convergence exponent p and the
+            # intercept stores the logarithm of the prefactor C.
             slope, intercept = np.polyfit(
                 np.log(xvals[valid]), np.log(errors[valid, i]), 1
             )
 
+        # Save one fitted convergence law per state so downstream tables and
+        # plots can report the observed order separately for each energy level.
         rows.append(
             {
                 "state_index": i + state_offset,
