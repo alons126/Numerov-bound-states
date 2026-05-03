@@ -132,15 +132,13 @@ Exact benchmark spectra, convergence helpers, CSV export, and double-well sweeps
 |---:|---|---|
 | 43-60 | `function exact_square_well_energies` | Exact energies for an infinite square well on [-a, a]. |
 | 67-87 | `function exact_harmonic_oscillator_energies` | Exact harmonic-oscillator spectrum E_n = omega (n + 1/2). |
-| 94-112 | `function relative_error` | Compute componentwise relative error. |
-| 119-173 | `function estimate_convergence_slopes` | Estimate convergence exponents from a log-log error curve. |
-| 180-204 | `function save_csv_rows` | Save a list of dictionaries as a CSV table. |
-| 211-232 | `function energies_from_states` | Extract the first n state energies from a list of StateSolution objects. |
-| 239-295 | `function convergence_vs_grid` | Study eigenvalue convergence as the grid is refined. |
-| 302-365 | `function convergence_vs_grid_successive` | Study grid convergence by comparing each grid to the next finer grid when no exact reference spectrum is available. |
-| 372-428 | `function convergence_vs_box_size` | Study eigenvalue convergence as the computational box size changes. |
-| 435-513 | `function convergence_vs_box_size_fixed_spacing` | Study box-size convergence while keeping grid spacing approximately fixed. |
-| 520-580 | `function splitting_vs_parameter` | Measure double-well ground-state splitting while varying one parameter. |
+| 94-148 | `function estimate_convergence_slopes` | Estimate convergence exponents from a log-log error curve. |
+| 155-179 | `function save_csv_rows` | Save a list of dictionaries as a CSV table. |
+| 186-207 | `function energies_from_states` | Extract the first n state energies from a list of StateSolution objects. |
+| 214-270 | `function convergence_vs_grid` | Study eigenvalue convergence as the grid is refined. |
+| 277-340 | `function convergence_vs_grid_successive` | Study grid convergence by comparing each grid to the next finer grid when no exact reference spectrum is available. |
+| 347-425 | `function convergence_vs_box_size_fixed_spacing` | Study box-size convergence while keeping grid spacing approximately fixed. |
+| 432-492 | `function splitting_vs_parameter` | Measure double-well ground-state splitting while varying one parameter. |
 
 ### `src/experiments.py`
 High-level routines that connect solvers, potentials, CSV outputs, and plots. Each experiment writes into its own subdirectory under `results/`, and the harmonic-oscillator study is split into Numerov-only, RK4-only, and comparison outputs. After the diagnostics refactor, this file now delegates root-finding figures to `src/diagnostics.py` instead of building them inline.

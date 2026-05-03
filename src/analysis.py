@@ -81,32 +81,6 @@ def exact_harmonic_oscillator_energies(
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: relative_error
-# ---------------------------------------------------------------------------
-def relative_error(numerical: np.ndarray, exact: np.ndarray) -> np.ndarray:
-    """
-    Compute componentwise relative error.
-
-    Parameters
-    ----------
-    numerical : ndarray
-        Computed values.
-    exact : ndarray
-        Reference values.
-
-    Returns
-    -------
-    ndarray
-        Relative errors |numerical - exact| / |exact|.
-    """
-
-    numerical = np.asarray(numerical, dtype=float)
-    exact = np.asarray(exact, dtype=float)
-
-    return np.abs((numerical - exact) / exact)
-
-
-# ---------------------------------------------------------------------------
 # FUNCTION: estimate_convergence_slopes
 # ---------------------------------------------------------------------------
 def estimate_convergence_slopes(
@@ -379,72 +353,6 @@ def convergence_vs_grid_successive(
     successive_errors = np.abs(energies_arr[:-1] - energies_arr[1:])
 
     return {"h": np.array(hs[:-1]), "energy_errors": successive_errors}
-
-
-# ---------------------------------------------------------------------------
-# FUNCTION: convergence_vs_box_size
-# ---------------------------------------------------------------------------
-def convergence_vs_box_size(
-    potential_fn,
-    potential_kwargs: dict,
-    x_max_values: list[float],
-    n_grid: int,
-    n_even: int,
-    n_odd: int,
-    e_min: float,
-    e_max: float,
-    reference_energies: np.ndarray,
-    solver_fn=solve_symmetric_potential_outward_shooting,
-) -> dict[str, np.ndarray]:
-    """
-    Study eigenvalue convergence as the computational box size changes.
-
-    Parameters
-    ----------
-    potential_fn : callable
-        Potential function.
-    potential_kwargs : dict
-        Keyword arguments for the potential.
-    x_max_values : list[float]
-        Domain sizes to test.
-    n_grid : int
-        Fixed grid size used for the box-size study.
-    n_even, n_odd : int
-        Number of even and odd states requested.
-    e_min, e_max : float
-        Energy search interval.
-    reference_energies : ndarray
-        Exact or high-quality reference energies.
-
-    Returns
-    -------
-    dict[str, ndarray]
-        Dictionary with x_max values and energy error arrays.
-    """
-
-    xs = []
-    errors = []
-    n_states = len(reference_energies)
-
-    for x_max in x_max_values:
-        # Here n_grid stays fixed, so changing x_max changes both the physical
-        # box size and the spacing h. This helper is mainly for simpler box
-        # sensitivity checks, not clean fixed-h studies.
-        states = solver_fn(
-            x_max=x_max,
-            n_grid=n_grid,
-            potential_fn=potential_fn,
-            potential_kwargs=potential_kwargs,
-            n_even=n_even,
-            n_odd=n_odd,
-            e_min=e_min,
-            e_max=e_max,
-        )
-        energies = energies_from_states(states, n_states=n_states)
-        xs.append(x_max)
-        errors.append(np.abs(energies - reference_energies))
-
-    return {"x_max": np.array(xs), "energy_errors": np.array(errors)}
 
 
 # ---------------------------------------------------------------------------

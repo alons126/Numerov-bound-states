@@ -2,8 +2,8 @@
 
 Generated from AST analysis of the local Python files in `src/`, `scripts/`, and `tests/`.
 
-- Functions mapped: `106`
-- Direct project-call edges: `206`
+- Functions mapped: `104`
+- Direct project-call edges: `205`
 - Scope: direct calls only; indirect calls through function arguments such as `potential_fn(...)` are not inferred.
 - Regenerate with: `python3 scripts/generate_code_map.py`
 - Rendered diagrams:
@@ -189,8 +189,6 @@ flowchart TD
     scripts_run_solver_main --> src_experiments_run_scattering[run_scattering]
     scripts_run_solver_main --> src_experiments_run_square_well[run_square_well]
     scripts_run_solver_main --> tests_test_solver_run_all_tests[run_all_tests]
-    src_analysis_convergence_vs_box_size[convergence_vs_box_size]
-    src_analysis_convergence_vs_box_size --> src_analysis_energies_from_states[energies_from_states]
     src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
     src_analysis_convergence_vs_box_size_fixed_spacing --> src_analysis_energies_from_states[energies_from_states]
     src_analysis_convergence_vs_grid[convergence_vs_grid]
@@ -201,7 +199,6 @@ flowchart TD
     src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
     src_analysis_exact_harmonic_oscillator_energies[exact_harmonic_oscillator_energies]
     src_analysis_exact_square_well_energies[exact_square_well_energies]
-    src_analysis_relative_error[relative_error]
     src_analysis_save_csv_rows[save_csv_rows]
     src_analysis_splitting_vs_parameter[splitting_vs_parameter]
     src_experiments__experiment_results_dir[_experiment_results_dir]
@@ -781,7 +778,6 @@ flowchart TD
 
 ### src.analysis
 
-- `convergence_vs_box_size` -> energies_from_states
 - `convergence_vs_box_size_fixed_spacing` -> energies_from_states
 - `convergence_vs_grid` -> energies_from_states
 - `convergence_vs_grid_successive` -> energies_from_states
@@ -789,7 +785,6 @@ flowchart TD
 - `estimate_convergence_slopes` -> (no direct project-function calls)
 - `exact_harmonic_oscillator_energies` -> (no direct project-function calls)
 - `exact_square_well_energies` -> (no direct project-function calls)
-- `relative_error` -> (no direct project-function calls)
 - `save_csv_rows` -> (no direct project-function calls)
 - `splitting_vs_parameter` -> solve_symmetric_potential_outward_shooting
 

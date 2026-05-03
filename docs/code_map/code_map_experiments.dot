@@ -5,7 +5,6 @@ digraph G {
   node [shape=box, style="rounded,filled", fillcolor="#F8FAFC", color="#334155", fontname="Helvetica", fontsize=11];
   edge [color="#64748B", arrowsize=0.7];
   scripts_run_solver_main [label="main"];
-  src_analysis_convergence_vs_box_size [label="convergence_vs_box_size"];
   src_analysis_convergence_vs_box_size_fixed_spacing [label="convergence_vs_box_size_fixed_spacing"];
   src_analysis_convergence_vs_grid [label="convergence_vs_grid"];
   src_analysis_convergence_vs_grid_successive [label="convergence_vs_grid_successive"];
@@ -13,7 +12,6 @@ digraph G {
   src_analysis_estimate_convergence_slopes [label="estimate_convergence_slopes"];
   src_analysis_exact_harmonic_oscillator_energies [label="exact_harmonic_oscillator_energies"];
   src_analysis_exact_square_well_energies [label="exact_square_well_energies"];
-  src_analysis_relative_error [label="relative_error"];
   src_analysis_save_csv_rows [label="save_csv_rows"];
   src_analysis_splitting_vs_parameter [label="splitting_vs_parameter"];
   src_experiments__experiment_results_dir [label="_experiment_results_dir"];
@@ -59,7 +57,6 @@ digraph G {
   scripts_run_solver_main -> src_experiments_run_scattering;
   scripts_run_solver_main -> src_experiments_run_square_well;
   scripts_run_solver_main -> tests_test_solver_run_all_tests;
-  src_analysis_convergence_vs_box_size -> src_analysis_energies_from_states;
   src_analysis_convergence_vs_box_size_fixed_spacing -> src_analysis_energies_from_states;
   src_analysis_convergence_vs_grid -> src_analysis_energies_from_states;
   src_analysis_convergence_vs_grid_successive -> src_analysis_energies_from_states;
