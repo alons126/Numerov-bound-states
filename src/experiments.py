@@ -722,9 +722,9 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
 
 
 # ===========================================================================
-# FUNCTION: run_double_well
+# FUNCTION: run_quartic_double_well
 # ===========================================================================
-def run_double_well(results_dir: Path) -> None:
+def run_quartic_double_well(results_dir: Path) -> None:
     """
     Run the quartic double-well study.
 

@@ -148,7 +148,7 @@ High-level routines that connect solvers, potentials, CSV outputs, and plots. Ea
 | 121-258 | `function run_square_well` | Run the infinite square well benchmark case and its convergence study. |
 | 264-469 | `function run_harmonic_oscillator_RK4_comparison` | Compare the specialized Numerov integrator with general RK4 shooting. |
 | 475-698 | `function run_harmonic_oscillator` | Run the harmonic-oscillator benchmark, including inward-shooting diagnostics and the RK4 comparison. |
-| 704-917 | `function run_double_well` | Run the quartic double-well study, including convergence and tunneling-splitting sweeps. |
+| 704-917 | `function run_quartic_double_well` | Run the quartic double-well study, including convergence and tunneling-splitting sweeps. |
 | 923-1012 | `function run_finite_square_well` | Run the finite square well, including the new outward-shooting root diagnostics. |
 | 1018-1209 | `function run_scattering` | Run the scattering extension for single- and double-barrier tunneling, including resonant-peak extraction. |
 

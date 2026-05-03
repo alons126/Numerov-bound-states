@@ -467,7 +467,9 @@ def convergence_vs_box_size_fixed_spacing(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: splitting_vs_parameter
+# ===========================================================================
 # ===========================================================================
 def splitting_vs_parameter(
     potential_fn,
@@ -512,6 +514,7 @@ def splitting_vs_parameter(
         # being swept so each solve differs in a controlled way.
         kwargs = dict(base_kwargs)
         kwargs[varied_param] = value
+        
         states = solve_symmetric_potential_outward_shooting(
             x_max=x_max,
             n_grid=n_grid,
@@ -525,6 +528,7 @@ def splitting_vs_parameter(
 
         e0 = states[0].energy
         e1 = states[1].energy
+        
         # In a symmetric double well, the lowest two states are the even/odd
         # tunneling pair, so their splitting is the key physical observable.
         rows.append(

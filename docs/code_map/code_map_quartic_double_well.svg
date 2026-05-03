@@ -178,52 +178,52 @@
 <path fill="#f8fafc" stroke="#334155" d="M1398,-468C1398,-468 1291.25,-468 1291.25,-468 1285.25,-468 1279.25,-462 1279.25,-456 1279.25,-456 1279.25,-444 1279.25,-444 1279.25,-438 1285.25,-432 1291.25,-432 1291.25,-432 1398,-432 1398,-432 1404,-432 1410,-438 1410,-444 1410,-444 1410,-456 1410,-456 1410,-462 1404,-468 1398,-468"/>
 <text xml:space="preserve" text-anchor="middle" x="1344.62" y="-445.55" font-family="Helvetica,sans-Serif" font-size="11.00">_experiment_results_dir</text>
 </g>
-<!-- src_experiments_run_double_well -->
+<!-- src_experiments_run_quartic_double_well -->
 <g id="node11" class="node">
-<title>src_experiments_run_double_well</title>
-<path fill="#f8fafc" stroke="#334155" d="M1017,-540C1017,-540 946.25,-540 946.25,-540 940.25,-540 934.25,-534 934.25,-528 934.25,-528 934.25,-516 934.25,-516 934.25,-510 940.25,-504 946.25,-504 946.25,-504 1017,-504 1017,-504 1023,-504 1029,-510 1029,-516 1029,-516 1029,-528 1029,-528 1029,-534 1023,-540 1017,-540"/>
-<text xml:space="preserve" text-anchor="middle" x="981.62" y="-517.55" font-family="Helvetica,sans-Serif" font-size="11.00">run_double_well</text>
+<title>src_experiments_run_quartic_double_well</title>
+<path fill="#f8fafc" stroke="#334155" d="M1036.12,-540C1036.12,-540 927.12,-540 927.12,-540 921.12,-540 915.12,-534 915.12,-528 915.12,-528 915.12,-516 915.12,-516 915.12,-510 921.12,-504 927.12,-504 927.12,-504 1036.12,-504 1036.12,-504 1042.12,-504 1048.12,-510 1048.12,-516 1048.12,-516 1048.12,-528 1048.12,-528 1048.12,-534 1042.12,-540 1036.12,-540"/>
+<text xml:space="preserve" text-anchor="middle" x="981.62" y="-517.55" font-family="Helvetica,sans-Serif" font-size="11.00">run_quartic_double_well</text>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_analysis_convergence_vs_box_size_fixed_spacing -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_analysis_convergence_vs_box_size_fixed_spacing -->
 <g id="edge12" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_analysis_convergence_vs_box_size_fixed_spacing</title>
-<path fill="none" stroke="#64748b" d="M934,-518.93C814.23,-513.45 490.86,-496.98 222.62,-468 222.44,-467.98 222.26,-467.96 222.07,-467.94"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_analysis_convergence_vs_box_size_fixed_spacing</title>
+<path fill="none" stroke="#64748b" d="M914.72,-518.04C782.3,-511.79 477.56,-495.54 222.62,-468 222.44,-467.98 222.26,-467.96 222.07,-467.94"/>
 <polygon fill="#64748b" stroke="#64748b" points="222.45,-465.52 215.22,-467.17 221.9,-470.39 222.45,-465.52"/>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_analysis_convergence_vs_grid_successive -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_analysis_convergence_vs_grid_successive -->
 <g id="edge13" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_analysis_convergence_vs_grid_successive</title>
-<path fill="none" stroke="#64748b" d="M933.86,-517.81C836.36,-511.03 607.52,-493.64 416.62,-468 416.44,-467.98 416.26,-467.95 416.08,-467.93"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_analysis_convergence_vs_grid_successive</title>
+<path fill="none" stroke="#64748b" d="M914.89,-516.48C808.99,-508.91 596.05,-492.1 416.62,-468 416.44,-467.98 416.26,-467.95 416.08,-467.93"/>
 <polygon fill="#64748b" stroke="#64748b" points="416.64,-465.53 409.37,-466.98 415.96,-470.38 416.64,-465.53"/>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_analysis_estimate_convergence_slopes -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_analysis_estimate_convergence_slopes -->
 <g id="edge14" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_analysis_estimate_convergence_slopes</title>
-<path fill="none" stroke="#64748b" d="M933.84,-515.28C860.64,-506.33 716.42,-487.96 594.62,-468 594.54,-467.99 594.45,-467.97 594.36,-467.96"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_analysis_estimate_convergence_slopes</title>
+<path fill="none" stroke="#64748b" d="M914.69,-512.92C837.41,-503.34 706.55,-486.34 594.62,-468 594.54,-467.99 594.45,-467.97 594.36,-467.96"/>
 <polygon fill="#64748b" stroke="#64748b" points="594.92,-465.57 587.61,-466.82 594.11,-470.4 594.92,-465.57"/>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_analysis_save_csv_rows -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_analysis_save_csv_rows -->
 <g id="edge15" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_analysis_save_csv_rows</title>
-<path fill="none" stroke="#64748b" d="M933.86,-513.68C878.01,-504.71 782.95,-488.2 702.62,-468 702.35,-467.93 702.07,-467.86 701.79,-467.79"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_analysis_save_csv_rows</title>
+<path fill="none" stroke="#64748b" d="M914.63,-510.54C857.81,-501.13 774.35,-486.04 702.62,-468 702.35,-467.93 702.07,-467.86 701.79,-467.79"/>
 <polygon fill="#64748b" stroke="#64748b" points="702.45,-465.43 695.06,-465.98 701.18,-470.16 702.45,-465.43"/>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_analysis_splitting_vs_parameter -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_analysis_splitting_vs_parameter -->
 <g id="edge16" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_analysis_splitting_vs_parameter</title>
-<path fill="none" stroke="#64748b" d="M933.91,-504.94C904.05,-494.89 865.34,-481.87 833.45,-471.13"/>
-<polygon fill="#64748b" stroke="#64748b" points="834.34,-468.85 826.93,-468.94 832.78,-473.49 834.34,-468.85"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_analysis_splitting_vs_parameter</title>
+<path fill="none" stroke="#64748b" d="M929.67,-503.52C900.4,-493.67 863.72,-481.32 833.28,-471.07"/>
+<polygon fill="#64748b" stroke="#64748b" points="834.12,-468.78 826.71,-468.86 832.56,-473.42 834.12,-468.78"/>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_diagnostics_plot_double_well_root_diagnostics -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_diagnostics_plot_double_well_root_diagnostics -->
 <g id="edge17" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_diagnostics_plot_double_well_root_diagnostics</title>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_diagnostics_plot_double_well_root_diagnostics</title>
 <path fill="none" stroke="#64748b" d="M981.62,-503.7C981.62,-495.47 981.62,-485.48 981.62,-476.42"/>
 <polygon fill="#64748b" stroke="#64748b" points="984.08,-476.62 981.63,-469.62 979.18,-476.62 984.08,-476.62"/>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_experiments__experiment_results_dir -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_experiments__experiment_results_dir -->
 <g id="edge18" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_experiments__experiment_results_dir</title>
-<path fill="none" stroke="#64748b" d="M1029.44,-512.49C1085.95,-502.34 1182.77,-484.64 1265.62,-468 1267.41,-467.64 1269.22,-467.27 1271.05,-466.9"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_experiments__experiment_results_dir</title>
+<path fill="none" stroke="#64748b" d="M1048.58,-509.04C1106.19,-498.62 1191.49,-482.89 1265.62,-468 1267.41,-467.64 1269.22,-467.27 1271.05,-466.9"/>
 <polygon fill="#64748b" stroke="#64748b" points="1271.28,-469.36 1277.65,-465.54 1270.3,-464.56 1271.28,-469.36"/>
 </g>
 <!-- src_plotting_plot_error_curve -->
@@ -232,10 +232,10 @@
 <path fill="#f8fafc" stroke="#334155" d="M1374,-396C1374,-396 1303.25,-396 1303.25,-396 1297.25,-396 1291.25,-390 1291.25,-384 1291.25,-384 1291.25,-372 1291.25,-372 1291.25,-366 1297.25,-360 1303.25,-360 1303.25,-360 1374,-360 1374,-360 1380,-360 1386,-366 1386,-372 1386,-372 1386,-384 1386,-384 1386,-390 1380,-396 1374,-396"/>
 <text xml:space="preserve" text-anchor="middle" x="1338.62" y="-373.55" font-family="Helvetica,sans-Serif" font-size="11.00">plot_error_curve</text>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_plotting_plot_error_curve -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_plotting_plot_error_curve -->
 <g id="edge19" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_plotting_plot_error_curve</title>
-<path fill="none" stroke="#64748b" d="M1029.38,-512.91C1071.05,-504.8 1132.51,-490.3 1182.62,-468 1209.32,-456.12 1212.44,-446.8 1237.62,-432 1256.61,-420.84 1278.17,-409.37 1296.48,-399.97"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_plotting_plot_error_curve</title>
+<path fill="none" stroke="#64748b" d="M1048.62,-508.98C1088.6,-500.44 1139.76,-487.07 1182.62,-468 1209.32,-456.12 1212.44,-446.8 1237.62,-432 1256.61,-420.84 1278.17,-409.37 1296.48,-399.97"/>
 <polygon fill="#64748b" stroke="#64748b" points="1297.11,-402.39 1302.23,-397.03 1294.89,-398.03 1297.11,-402.39"/>
 </g>
 <!-- src_plotting_plot_potential_and_states -->
@@ -244,10 +244,10 @@
 <path fill="#f8fafc" stroke="#334155" d="M1530.75,-396C1530.75,-396 1416.5,-396 1416.5,-396 1410.5,-396 1404.5,-390 1404.5,-384 1404.5,-384 1404.5,-372 1404.5,-372 1404.5,-366 1410.5,-360 1416.5,-360 1416.5,-360 1530.75,-360 1530.75,-360 1536.75,-360 1542.75,-366 1542.75,-372 1542.75,-372 1542.75,-384 1542.75,-384 1542.75,-390 1536.75,-396 1530.75,-396"/>
 <text xml:space="preserve" text-anchor="middle" x="1473.62" y="-373.55" font-family="Helvetica,sans-Serif" font-size="11.00">plot_potential_and_states</text>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_plotting_plot_potential_and_states -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_plotting_plot_potential_and_states -->
 <g id="edge20" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_plotting_plot_potential_and_states</title>
-<path fill="none" stroke="#64748b" d="M1029.31,-516.95C1079.83,-511.24 1160.93,-497.94 1224.62,-468 1248.12,-456.96 1247.36,-443.52 1270.62,-432 1292.77,-421.04 1348.44,-406.81 1395.9,-395.86"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_plotting_plot_potential_and_states</title>
+<path fill="none" stroke="#64748b" d="M1048.41,-514.6C1098.74,-507.87 1168.45,-494.4 1224.62,-468 1248.12,-456.96 1247.36,-443.52 1270.62,-432 1292.77,-421.04 1348.44,-406.81 1395.9,-395.86"/>
 <polygon fill="#64748b" stroke="#64748b" points="1396.29,-398.28 1402.57,-394.33 1395.19,-393.51 1396.29,-398.28"/>
 </g>
 <!-- src_plotting_plot_probability_densities -->
@@ -256,10 +256,10 @@
 <path fill="#f8fafc" stroke="#334155" d="M1357.62,-324C1357.62,-324 1245.62,-324 1245.62,-324 1239.62,-324 1233.62,-318 1233.62,-312 1233.62,-312 1233.62,-300 1233.62,-300 1233.62,-294 1239.62,-288 1245.62,-288 1245.62,-288 1357.62,-288 1357.62,-288 1363.62,-288 1369.62,-294 1369.62,-300 1369.62,-300 1369.62,-312 1369.62,-312 1369.62,-318 1363.62,-324 1357.62,-324"/>
 <text xml:space="preserve" text-anchor="middle" x="1301.62" y="-301.55" font-family="Helvetica,sans-Serif" font-size="11.00">plot_probability_densities</text>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_plotting_plot_probability_densities -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_plotting_plot_probability_densities -->
 <g id="edge21" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_plotting_plot_probability_densities</title>
-<path fill="none" stroke="#64748b" d="M1029.45,-507.03C1052.14,-498.56 1078.42,-485.88 1097.62,-468 1137.66,-430.73 1115.17,-395.68 1156.62,-360 1168.85,-349.48 1201.6,-337.15 1232.9,-327.02"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_plotting_plot_probability_densities</title>
+<path fill="none" stroke="#64748b" d="M1038.22,-503.61C1058.68,-495.27 1080.85,-483.62 1097.62,-468 1137.66,-430.73 1115.17,-395.68 1156.62,-360 1168.85,-349.48 1201.6,-337.15 1232.9,-327.02"/>
 <polygon fill="#64748b" stroke="#64748b" points="1233.44,-329.42 1239.36,-324.96 1231.95,-324.75 1233.44,-329.42"/>
 </g>
 <!-- src_plotting_plot_splitting_curve -->
@@ -268,21 +268,21 @@
 <path fill="#f8fafc" stroke="#334155" d="M1261.38,-396C1261.38,-396 1177.88,-396 1177.88,-396 1171.88,-396 1165.88,-390 1165.88,-384 1165.88,-384 1165.88,-372 1165.88,-372 1165.88,-366 1171.88,-360 1177.88,-360 1177.88,-360 1261.38,-360 1261.38,-360 1267.38,-360 1273.38,-366 1273.38,-372 1273.38,-372 1273.38,-384 1273.38,-384 1273.38,-390 1267.38,-396 1261.38,-396"/>
 <text xml:space="preserve" text-anchor="middle" x="1219.62" y="-373.55" font-family="Helvetica,sans-Serif" font-size="11.00">plot_splitting_curve</text>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_plotting_plot_splitting_curve -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_plotting_plot_splitting_curve -->
 <g id="edge22" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_plotting_plot_splitting_curve</title>
-<path fill="none" stroke="#64748b" d="M1029.45,-514.17C1065.57,-507.19 1115.02,-493.6 1151.62,-468 1175.5,-451.3 1194.73,-423.65 1206.56,-403.6"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_plotting_plot_splitting_curve</title>
+<path fill="none" stroke="#64748b" d="M1048.43,-510.12C1081.64,-502.34 1121.1,-489.35 1151.62,-468 1175.5,-451.3 1194.73,-423.65 1206.56,-403.6"/>
 <polygon fill="#64748b" stroke="#64748b" points="1208.63,-404.93 1209.98,-397.64 1204.37,-402.49 1208.63,-404.93"/>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_potentials_quartic_double_well -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_potentials_quartic_double_well -->
 <g id="edge23" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_potentials_quartic_double_well</title>
-<path fill="none" stroke="#64748b" d="M1029.45,-507.45C1048.87,-499.33 1069.36,-486.82 1080.62,-468 1088.85,-454.27 1086.46,-446.9 1080.62,-432 1076.21,-420.72 1068.14,-410.4 1059.8,-401.92"/>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_potentials_quartic_double_well</title>
+<path fill="none" stroke="#64748b" d="M1038.03,-503.59C1054.68,-495.52 1071.01,-484.06 1080.62,-468 1088.85,-454.27 1086.46,-446.9 1080.62,-432 1076.21,-420.72 1068.14,-410.4 1059.8,-401.92"/>
 <polygon fill="#64748b" stroke="#64748b" points="1061.86,-400.5 1055.12,-397.41 1058.46,-404.03 1061.86,-400.5"/>
 </g>
-<!-- src_experiments_run_double_well&#45;&gt;src_shooting_solve_symmetric_potential_outward_shooting -->
+<!-- src_experiments_run_quartic_double_well&#45;&gt;src_shooting_solve_symmetric_potential_outward_shooting -->
 <g id="edge24" class="edge">
-<title>src_experiments_run_double_well&#45;&gt;src_shooting_solve_symmetric_potential_outward_shooting</title>
+<title>src_experiments_run_quartic_double_well&#45;&gt;src_shooting_solve_symmetric_potential_outward_shooting</title>
 <path fill="none" stroke="#64748b" d="M943.55,-503.61C924.54,-494.19 901.6,-481.69 882.62,-468 863.76,-454.39 865.12,-443.01 844.62,-432 812.79,-414.9 775.58,-403.29 740.52,-395.42"/>
 <polygon fill="#64748b" stroke="#64748b" points="741.44,-393.11 734.08,-394.01 740.4,-397.9 741.44,-393.11"/>
 </g>

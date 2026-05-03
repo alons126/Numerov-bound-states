@@ -3,7 +3,7 @@
 Generated from AST analysis of the local Python files in `src/`, `scripts/`, and `tests/`.
 
 - Functions mapped: `104`
-- Direct project-call edges: `205`
+- Direct project-call edges: `201`
 - Scope: direct calls only; indirect calls through function arguments such as `potential_fn(...)` are not inferred.
 - Regenerate with: `python3 scripts/generate_code_map.py`
 - Rendered diagrams:
@@ -183,11 +183,7 @@ flowchart TD
 ```mermaid
 flowchart TD
     scripts_run_solver_main[main]
-    scripts_run_solver_main --> src_experiments_run_double_well[run_double_well]
-    scripts_run_solver_main --> src_experiments_run_finite_square_well[run_finite_square_well]
-    scripts_run_solver_main --> src_experiments_run_harmonic_oscillator[run_harmonic_oscillator]
-    scripts_run_solver_main --> src_experiments_run_scattering[run_scattering]
-    scripts_run_solver_main --> src_experiments_run_square_well[run_square_well]
+    scripts_run_solver_main --> src_experiments_run_quartic_double_well[run_quartic_double_well]
     scripts_run_solver_main --> tests_test_solver_run_all_tests[run_all_tests]
     src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
     src_analysis_convergence_vs_box_size_fixed_spacing --> src_analysis_energies_from_states[energies_from_states]
@@ -202,17 +198,6 @@ flowchart TD
     src_analysis_save_csv_rows[save_csv_rows]
     src_analysis_splitting_vs_parameter[splitting_vs_parameter]
     src_experiments__experiment_results_dir[_experiment_results_dir]
-    src_experiments_run_double_well[run_double_well]
-    src_experiments_run_double_well --> src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
-    src_experiments_run_double_well --> src_analysis_convergence_vs_grid_successive[convergence_vs_grid_successive]
-    src_experiments_run_double_well --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
-    src_experiments_run_double_well --> src_analysis_save_csv_rows[save_csv_rows]
-    src_experiments_run_double_well --> src_analysis_splitting_vs_parameter[splitting_vs_parameter]
-    src_experiments_run_double_well --> src_experiments__experiment_results_dir[_experiment_results_dir]
-    src_experiments_run_double_well --> src_plotting_plot_error_curve[plot_error_curve]
-    src_experiments_run_double_well --> src_plotting_plot_potential_and_states[plot_potential_and_states]
-    src_experiments_run_double_well --> src_plotting_plot_probability_densities[plot_probability_densities]
-    src_experiments_run_double_well --> src_plotting_plot_splitting_curve[plot_splitting_curve]
     src_experiments_run_finite_square_well[run_finite_square_well]
     src_experiments_run_finite_square_well --> src_analysis_save_csv_rows[save_csv_rows]
     src_experiments_run_finite_square_well --> src_experiments__experiment_results_dir[_experiment_results_dir]
@@ -236,6 +221,17 @@ flowchart TD
     src_experiments_run_harmonic_oscillator_RK4_comparison --> src_plotting_plot_energy_comparison[plot_energy_comparison]
     src_experiments_run_harmonic_oscillator_RK4_comparison --> src_plotting_plot_error_curve[plot_error_curve]
     src_experiments_run_harmonic_oscillator_RK4_comparison --> src_plotting_plot_numerov_vs_RK4_errors[plot_numerov_vs_RK4_errors]
+    src_experiments_run_quartic_double_well[run_quartic_double_well]
+    src_experiments_run_quartic_double_well --> src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
+    src_experiments_run_quartic_double_well --> src_analysis_convergence_vs_grid_successive[convergence_vs_grid_successive]
+    src_experiments_run_quartic_double_well --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
+    src_experiments_run_quartic_double_well --> src_analysis_save_csv_rows[save_csv_rows]
+    src_experiments_run_quartic_double_well --> src_analysis_splitting_vs_parameter[splitting_vs_parameter]
+    src_experiments_run_quartic_double_well --> src_experiments__experiment_results_dir[_experiment_results_dir]
+    src_experiments_run_quartic_double_well --> src_plotting_plot_error_curve[plot_error_curve]
+    src_experiments_run_quartic_double_well --> src_plotting_plot_potential_and_states[plot_potential_and_states]
+    src_experiments_run_quartic_double_well --> src_plotting_plot_probability_densities[plot_probability_densities]
+    src_experiments_run_quartic_double_well --> src_plotting_plot_splitting_curve[plot_splitting_curve]
     src_experiments_run_scattering[run_scattering]
     src_experiments_run_scattering --> src_analysis_save_csv_rows[save_csv_rows]
     src_experiments_run_scattering --> src_experiments__experiment_results_dir[_experiment_results_dir]
@@ -564,20 +560,20 @@ flowchart TD
     src_diagnostics_plot_double_well_root_diagnostics --> src_diagnostics__plot_outward_root_diagnostics[_plot_outward_root_diagnostics]
     src_diagnostics_plot_double_well_root_diagnostics --> src_potentials_quartic_double_well[quartic_double_well]
     src_experiments__experiment_results_dir[_experiment_results_dir]
-    src_experiments_run_double_well[run_double_well]
-    src_experiments_run_double_well --> src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
-    src_experiments_run_double_well --> src_analysis_convergence_vs_grid_successive[convergence_vs_grid_successive]
-    src_experiments_run_double_well --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
-    src_experiments_run_double_well --> src_analysis_save_csv_rows[save_csv_rows]
-    src_experiments_run_double_well --> src_analysis_splitting_vs_parameter[splitting_vs_parameter]
-    src_experiments_run_double_well --> src_diagnostics_plot_double_well_root_diagnostics[plot_double_well_root_diagnostics]
-    src_experiments_run_double_well --> src_experiments__experiment_results_dir[_experiment_results_dir]
-    src_experiments_run_double_well --> src_plotting_plot_error_curve[plot_error_curve]
-    src_experiments_run_double_well --> src_plotting_plot_potential_and_states[plot_potential_and_states]
-    src_experiments_run_double_well --> src_plotting_plot_probability_densities[plot_probability_densities]
-    src_experiments_run_double_well --> src_plotting_plot_splitting_curve[plot_splitting_curve]
-    src_experiments_run_double_well --> src_potentials_quartic_double_well[quartic_double_well]
-    src_experiments_run_double_well --> src_shooting_solve_symmetric_potential_outward_shooting[solve_symmetric_potential_outward_shooting]
+    src_experiments_run_quartic_double_well[run_quartic_double_well]
+    src_experiments_run_quartic_double_well --> src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
+    src_experiments_run_quartic_double_well --> src_analysis_convergence_vs_grid_successive[convergence_vs_grid_successive]
+    src_experiments_run_quartic_double_well --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
+    src_experiments_run_quartic_double_well --> src_analysis_save_csv_rows[save_csv_rows]
+    src_experiments_run_quartic_double_well --> src_analysis_splitting_vs_parameter[splitting_vs_parameter]
+    src_experiments_run_quartic_double_well --> src_diagnostics_plot_double_well_root_diagnostics[plot_double_well_root_diagnostics]
+    src_experiments_run_quartic_double_well --> src_experiments__experiment_results_dir[_experiment_results_dir]
+    src_experiments_run_quartic_double_well --> src_plotting_plot_error_curve[plot_error_curve]
+    src_experiments_run_quartic_double_well --> src_plotting_plot_potential_and_states[plot_potential_and_states]
+    src_experiments_run_quartic_double_well --> src_plotting_plot_probability_densities[plot_probability_densities]
+    src_experiments_run_quartic_double_well --> src_plotting_plot_splitting_curve[plot_splitting_curve]
+    src_experiments_run_quartic_double_well --> src_potentials_quartic_double_well[quartic_double_well]
+    src_experiments_run_quartic_double_well --> src_shooting_solve_symmetric_potential_outward_shooting[solve_symmetric_potential_outward_shooting]
     src_numerov_derivative_at_right_edge[derivative_at_right_edge]
     src_numerov_normalize_wavefunction[normalize_wavefunction]
     src_numerov_numerov_march[numerov_march]
@@ -774,7 +770,7 @@ flowchart TD
 
 ### scripts.run_solver
 
-- `main` -> run_double_well, run_finite_square_well, run_harmonic_oscillator, run_scattering, run_square_well, run_all_tests
+- `main` -> run_quartic_double_well, run_all_tests
 
 ### src.analysis
 
@@ -802,10 +798,10 @@ flowchart TD
 ### src.experiments
 
 - `_experiment_results_dir` -> (no direct project-function calls)
-- `run_double_well` -> convergence_vs_box_size_fixed_spacing, convergence_vs_grid_successive, estimate_convergence_slopes, save_csv_rows, splitting_vs_parameter, plot_double_well_root_diagnostics, _experiment_results_dir, plot_error_curve, plot_potential_and_states, plot_probability_densities, plot_splitting_curve, quartic_double_well, solve_symmetric_potential_outward_shooting
 - `run_finite_square_well` -> save_csv_rows, plot_finite_square_well_root_diagnostics, _experiment_results_dir, plot_potential_and_states, plot_probability_densities, finite_square_well, solve_symmetric_potential_outward_shooting
 - `run_harmonic_oscillator` -> convergence_vs_box_size_fixed_spacing, convergence_vs_grid, estimate_convergence_slopes, exact_harmonic_oscillator_energies, save_csv_rows, plot_harmonic_oscillator_root_diagnostics, _experiment_results_dir, run_harmonic_oscillator_RK4_comparison, plot_energy_comparison, plot_error_curve, plot_potential_and_states, plot_probability_densities, harmonic_oscillator, solve_symmetric_potential_inward_shooting
 - `run_harmonic_oscillator_RK4_comparison` -> estimate_convergence_slopes, save_csv_rows, plot_harmonic_oscillator_RK4_root_diagnostics, plot_energy_comparison, plot_error_curve, plot_numerov_vs_RK4_errors, RK4_harmonic_convergence_vs_box_size_fixed_spacing, RK4_harmonic_convergence_vs_grid, RK4_solve_harmonic_oscillator_energies
+- `run_quartic_double_well` -> convergence_vs_box_size_fixed_spacing, convergence_vs_grid_successive, estimate_convergence_slopes, save_csv_rows, splitting_vs_parameter, plot_double_well_root_diagnostics, _experiment_results_dir, plot_error_curve, plot_potential_and_states, plot_probability_densities, plot_splitting_curve, quartic_double_well, solve_symmetric_potential_outward_shooting
 - `run_scattering` -> save_csv_rows, _experiment_results_dir, plot_scattering_coefficients, plot_scattering_potential_and_probability, double_square_barrier, square_barrier, find_transmission_peaks, scattering_wavefunction, sweep_scattering
 - `run_square_well` -> convergence_vs_grid, estimate_convergence_slopes, exact_square_well_energies, save_csv_rows, plot_infinite_well_root_diagnostics, _experiment_results_dir, plot_energy_comparison, plot_error_curve, plot_potential_and_states, plot_probability_densities, infinite_square_well_numeric, solve_symmetric_potential_outward_shooting
 

@@ -91,7 +91,7 @@ POTENTIAL_MAP_SPECS = (
     PotentialMapSpec(
         slug="quartic_double_well",
         title="Quartic Double-Well Experiment",
-        root_functions=("src.experiments.run_double_well",),
+        root_functions=("src.experiments.run_quartic_double_well",),
     ),
     PotentialMapSpec(
         slug="finite_square_well",
