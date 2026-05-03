@@ -35,7 +35,9 @@ import numpy as np
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: q_from_energy
+# ===========================================================================
 # ===========================================================================
 def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     """
@@ -60,7 +62,9 @@ def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: numerov_march
+# ===========================================================================
 # ===========================================================================
 def numerov_march(
     x: np.ndarray,
@@ -153,7 +157,9 @@ def numerov_march(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: normalize_wavefunction
+# ===========================================================================
 # ===========================================================================
 def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     """
@@ -198,11 +204,13 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: derivative_at_right_edge
+# ===========================================================================
 # ===========================================================================
 def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
     """
-    Estimate the derivative at the last grid point with a backward stencil.
+    Estimate the derivative at the last grid point with a one-sided stencil.
 
     Parameters
     ----------
@@ -214,7 +222,9 @@ def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
     Returns
     -------
     float
-        Derivative estimate at the right edge. Uses a fourth-order backward
+        Derivative estimate at ``x[-1]``. For ascending grids this is the
+        right edge; for descending grids it is the physically leftmost point
+        such as ``x=0`` in inward shooting. Uses a fourth-order one-sided
         stencil when at least five grid points are available, otherwise falls
         back to the standard second-order formula.
     """
@@ -222,9 +232,11 @@ def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
     if len(x) < 3:
         raise ValueError("Need at least 3 points for derivative.")
 
-    # The derivative is requested at the last grid point. For inward shooting
-    # on a decreasing grid, that last point is still x = 0, so the same helper
-    # works without any sign changes or index remapping.
+    # Different callers may pass either an ascending or a descending grid, but
+    # in both cases the quantity we need is the derivative at the last sample
+    # x[-1]. For inward shooting on a descending grid, that last point is x=0,
+    # so the same index-based helper works without any sign changes or
+    # remapping of the stencil coefficients.
     h = x[1] - x[0]
 
     # The fourth-order stencil is important for even-state inward shooting:
