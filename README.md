@@ -174,6 +174,7 @@ Additional analysis includes:
 - for the quartic double well, `h`-convergence uses successive refinements on a fixed domain, comparing each grid to the next finer one instead of to a single fixed reference
 - for the quartic double well, `x_max`-convergence compares against a larger-box reference while keeping spacing approximately fixed
 - for the finite square well, a grid-refinement study compares the first four bound-state energies on several coarser meshes against the finest saved grid as a practical reference
+- for the finite square well, the observed convergence order is reduced relative to the smooth benchmark cases because the potential is only piecewise smooth and jumps at the well edge
 - parameter sweeps (e.g., double-well barrier height)
 - generation of plots and CSV tables for reporting
 - estimation of convergence rates $\Delta E \propto h^p$ from log--log fits

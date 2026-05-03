@@ -76,30 +76,30 @@ def main() -> None:
         experiments_import_error = exc
         print(f"Skipping experiments: {exc}")
     else:
-        # # If the import succeeded, run the full experiment suite.
-        # print("Running experiments...")
+        # If the import succeeded, run the full experiment suite.
+        print("Running experiments...")
 
-        # # Keep the execution order aligned with the report structure so the
-        # # generated results tree is easy to compare against the writeup.
-        # print("\n1. Infinite Square Well (Numerov only)")
-        # print("------------------------------------------------------------------\n")
-        # run_square_well(RESULTS)
+        # Keep the execution order aligned with the report structure so the
+        # generated results tree is easy to compare against the writeup.
+        print("\n1. Infinite Square Well (Numerov only)")
+        print("------------------------------------------------------------------\n")
+        run_square_well(RESULTS)
 
-        # print("\n2. Harmonic Oscillator (Numerov & RK4)")
-        # print("------------------------------------------------------------------\n")
-        # run_harmonic_oscillator(RESULTS)
+        print("\n2. Harmonic Oscillator (Numerov & RK4)")
+        print("------------------------------------------------------------------\n")
+        run_harmonic_oscillator(RESULTS)
 
-        # print("\n3. Quartic double Well (Numerov only)")
-        # print("------------------------------------------------------------------\n")
-        # run_quartic_double_well(RESULTS)
+        print("\n3. Quartic double Well (Numerov only)")
+        print("------------------------------------------------------------------\n")
+        run_quartic_double_well(RESULTS)
 
         print("\n4. Finite Square Well (Numerov only)")
         print("------------------------------------------------------------------\n")
         run_finite_square_well(RESULTS)
 
-        # print("\n5. Scattering and Resonant Tunneling (Numerov only)")
-        # print("------------------------------------------------------------------\n")
-        # run_scattering(RESULTS)
+        print("\n5. Scattering and Resonant Tunneling (Numerov only)")
+        print("------------------------------------------------------------------\n")
+        run_scattering(RESULTS)
 
     # Run tests after the experiments so the workflow reproduces the figures
     # first and then performs a quick regression pass on the codebase.

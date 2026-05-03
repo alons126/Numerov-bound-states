@@ -149,7 +149,7 @@ High-level routines that connect solvers, potentials, CSV outputs, and plots. Ea
 | 264-469 | `function run_harmonic_oscillator_RK4_comparison` | Compare the specialized Numerov integrator with general RK4 shooting. |
 | 475-698 | `function run_harmonic_oscillator` | Run the harmonic-oscillator benchmark, including inward-shooting diagnostics and the RK4 comparison. |
 | 704-917 | `function run_quartic_double_well` | Run the quartic double-well study, including convergence and tunneling-splitting sweeps. |
-| 923-1012 | `function run_finite_square_well` | Run the finite square well, including outward-shooting root diagnostics and a finest-grid-reference convergence study for the first four bound states. |
+| 923-1012 | `function run_finite_square_well` | Run the finite square well, including outward-shooting root diagnostics and a finest-grid-reference convergence study for the first four bound states; because the potential jumps at the well edge, this case shows reduced observed order compared with the smooth benchmark potentials. |
 | 1018-1209 | `function run_scattering` | Run the scattering extension for single- and double-barrier tunneling, including resonant-peak extraction. |
 
 ### `src/plotting.py`

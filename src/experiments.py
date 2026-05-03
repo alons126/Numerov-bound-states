@@ -1152,6 +1152,9 @@ def run_scattering(results_dir: Path) -> None:
     V_single = square_barrier(x, **single_kwargs)
     energies_single = np.linspace(0.2, 10.0, 240)
 
+    # Sweep over the list of incident energies, solving the same single-barrier
+    # scattering problem once per energy and collecting the resulting
+    # transmission/reflection data into one results list.
     single_results = sweep_scattering(x, V_single, energies_single)
 
     # -----------------------------------------------------

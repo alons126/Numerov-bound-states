@@ -9,3 +9,6 @@
 
 # Cache directories
 .cache/
+
+# Old results and diagnostics (keep the latest ones for reference)
+old_results/
