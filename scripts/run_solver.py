@@ -41,9 +41,9 @@ from test_solver import run_all_tests
 RESULTS = PROJECT_ROOT / "results"
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: main
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def main() -> None:
     """
     Run the full project pipeline and regenerate the results directory.
@@ -58,6 +58,7 @@ def main() -> None:
     RESULTS.mkdir(exist_ok=True)
 
     experiments_import_error: Exception | None = None
+
     try:
         # Delay the import so the lightweight test-import check can confirm
         # that this entry script itself does not require plotting dependencies.

@@ -93,6 +93,9 @@ from src.rk4_compare import (
 )
 
 
+# ===========================================================================
+# FUNCTION: _experiment_results_dir
+# ===========================================================================
 def _experiment_results_dir(results_root: Path, name: str) -> Path:
     """
     Return the output directory for one experiment and create it if needed.
@@ -116,9 +119,14 @@ def _experiment_results_dir(results_root: Path, name: str) -> Path:
     return path
 
 
-# ---------------------------------------------------------------------------
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# Infinite square well
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+# ===========================================================================
 # FUNCTION: run_square_well
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def run_square_well(results_dir: Path) -> None:
     """
     Run the infinite square well benchmark case.
@@ -135,9 +143,9 @@ def run_square_well(results_dir: Path) -> None:
         output subdirectory.
     """
 
-    # =====================================================
+    # -----------------------------------------------------
     # Set up the experiment
-    # =====================================================
+    # -----------------------------------------------------
 
     # Create an output folder under results_dir for this experiment
     experiment_dir = _experiment_results_dir(
@@ -149,9 +157,9 @@ def run_square_well(results_dir: Path) -> None:
     x_max = a  # The solver's spatial domain will be [-x_max, x_max]
     n_grid = 2500  # Number of grid points for the Numerov solver, including boundaries
 
-    # =====================================================
+    # -----------------------------------------------------
     # Run the experiment
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Running infinite square well experiment...")
 
@@ -167,9 +175,9 @@ def run_square_well(results_dir: Path) -> None:
         e_max=80.0,
     )
 
-    # =====================================================
+    # -----------------------------------------------------
     # Analyze and save the results
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Analyzing infinite square well results...")
 
@@ -259,9 +267,14 @@ def run_square_well(results_dir: Path) -> None:
     )
 
 
-# ---------------------------------------------------------------------------
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# Harmonic oscillator
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+# ===========================================================================
 # FUNCTION: run_harmonic_oscillator_RK4_comparison
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def run_harmonic_oscillator_RK4_comparison(
     rk4_results_dir: Path,
     comparison_results_dir: Path,
@@ -296,9 +309,9 @@ def run_harmonic_oscillator_RK4_comparison(
         that box-size comparison is skipped.
     """
 
-    # =====================================================
+    # -----------------------------------------------------
     # Set up the comparison
-    # =====================================================
+    # -----------------------------------------------------
 
     n_states = 4
     numerov_h = np.asarray(numerov_convergence["h"], dtype=float)
@@ -308,9 +321,9 @@ def run_harmonic_oscillator_RK4_comparison(
     # RK4 comparison uses matching meshes.
     grid_sizes = [int(round(x_max / h)) + 1 for h in numerov_h]
 
-    # =====================================================
+    # -----------------------------------------------------
     # Run the RK4 calculations
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Running harmonic oscillator RK4 comparison...")
 
@@ -354,9 +367,9 @@ def run_harmonic_oscillator_RK4_comparison(
         omega=omega,
     )
 
-    # =====================================================
+    # -----------------------------------------------------
     # Analyze and save the results
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Analyzing harmonic oscillator RK4 comparison results...")
 
@@ -418,9 +431,9 @@ def run_harmonic_oscillator_RK4_comparison(
     )
 
     if target_h is not None:
-        # =====================================================
+        # -----------------------------------------------------
         # Run the fixed-spacing box-size study
-        # =====================================================
+        # -----------------------------------------------------
 
         print("Running harmonic oscillator RK4 box-size study...")
 
@@ -433,9 +446,9 @@ def run_harmonic_oscillator_RK4_comparison(
             e_max=6.0,
         )
 
-        # =====================================================
+        # -----------------------------------------------------
         # Analyze and save the box-size results
-        # =====================================================
+        # -----------------------------------------------------
 
         print("Analyzing harmonic oscillator RK4 box-size results...")
 
@@ -470,9 +483,9 @@ def run_harmonic_oscillator_RK4_comparison(
         )
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: run_harmonic_oscillator
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def run_harmonic_oscillator(results_dir: Path) -> None:
     """
     Run the harmonic-oscillator benchmark case.
@@ -487,9 +500,9 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         subdirectories are created.
     """
 
-    # =====================================================
+    # -----------------------------------------------------
     # Set up the experiment
-    # =====================================================
+    # -----------------------------------------------------
 
     # Create output folders for the Numerov and RK4 calculations, plus a third
     # folder for direct comparison data and plots.
@@ -506,9 +519,9 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     x_max = 8.0  # The solver's spatial domain will be [-x_max, x_max]
     n_grid = 2500  # Number of grid points for the Numerov solver, including boundaries
 
-    # =====================================================
+    # -----------------------------------------------------
     # Run the experiment
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Running harmonic oscillator experiment (Numerov)...")
 
@@ -527,9 +540,9 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         e_max=6.5,
     )
 
-    # =====================================================
+    # -----------------------------------------------------
     # Analyze and save the results
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Analyzing harmonic oscillator results (Numerov)...")
 
@@ -678,9 +691,9 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
         "Harmonic oscillator (Numerov) - energy convergence vs box size $x_{\\max}$",
     )
 
-    # =====================================================
+    # -----------------------------------------------------
     # Run the RK4 comparison and box-size convergence studies
-    # =====================================================
+    # -----------------------------------------------------
 
     print(
         "Running harmonic oscillator RK4 comparison and box-size convergence studies..."
@@ -699,9 +712,14 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     )
 
 
-# ---------------------------------------------------------------------------
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# Quartic double well
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+# ===========================================================================
 # FUNCTION: run_double_well
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def run_double_well(results_dir: Path) -> None:
     """
     Run the quartic double-well study.
@@ -716,9 +734,9 @@ def run_double_well(results_dir: Path) -> None:
         subdirectory.
     """
 
-    # =====================================================
+    # -----------------------------------------------------
     # Set up the experiment
-    # =====================================================
+    # -----------------------------------------------------
 
     experiment_dir = _experiment_results_dir(results_dir, "3_double_well_Numerov")
 
@@ -729,9 +747,9 @@ def run_double_well(results_dir: Path) -> None:
     x_max = 4.0
     n_grid = 4000
 
-    # =====================================================
+    # -----------------------------------------------------
     # Run the experiment
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Running quartic double well experiment...")
 
@@ -750,9 +768,9 @@ def run_double_well(results_dir: Path) -> None:
         e_max=20.0,
     )
 
-    # =====================================================
+    # -----------------------------------------------------
     # Analyze and save the results
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Analyzing quartic double well results...")
 
@@ -918,9 +936,14 @@ def run_double_well(results_dir: Path) -> None:
     )
 
 
-# ---------------------------------------------------------------------------
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# Finite square well
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+# ===========================================================================
 # FUNCTION: run_finite_square_well
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def run_finite_square_well(results_dir: Path) -> None:
     """
     Run the finite square well as an additional nontrivial potential.
@@ -935,9 +958,9 @@ def run_finite_square_well(results_dir: Path) -> None:
         subdirectory.
     """
 
-    # =====================================================
+    # -----------------------------------------------------
     # Set up the experiment
-    # =====================================================
+    # -----------------------------------------------------
 
     experiment_dir = _experiment_results_dir(
         results_dir, "4_finite_square_well_Numerov"
@@ -948,9 +971,9 @@ def run_finite_square_well(results_dir: Path) -> None:
     n_grid = 3000
     kwargs = {"V0": 12.0, "a": 1.0}
 
-    # =====================================================
+    # -----------------------------------------------------
     # Run the experiment
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Running finite square well experiment (Numerov)...")
 
@@ -968,9 +991,9 @@ def run_finite_square_well(results_dir: Path) -> None:
         e_max=11.9,
     )
 
-    # =====================================================
+    # -----------------------------------------------------
     # Analyze and save the results
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Analyzing finite square well results...")
 
@@ -1013,9 +1036,14 @@ def run_finite_square_well(results_dir: Path) -> None:
     )
 
 
-# ---------------------------------------------------------------------------
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# Scattering experiments
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+# ===========================================================================
 # FUNCTION: run_scattering
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def run_scattering(results_dir: Path) -> None:
     """
     Run the scattering extension.
@@ -1032,9 +1060,9 @@ def run_scattering(results_dir: Path) -> None:
         scattering output subdirectories are created.
     """
 
-    # =====================================================
+    # -----------------------------------------------------
     # Set up the experiment
-    # =====================================================
+    # -----------------------------------------------------
 
     # Create output folders for the single- and double-barrier scattering experiments
     single_results_dir = _experiment_results_dir(
@@ -1050,9 +1078,9 @@ def run_scattering(results_dir: Path) -> None:
     n_grid = 4000
     x = np.linspace(x_min, x_max, n_grid)
 
-    # =====================================================
+    # -----------------------------------------------------
     # Run the experiment - single barrier (basic tunneling/over-barrier validation)
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Running single barrier scattering experiment (Numerov)...")
 
@@ -1064,9 +1092,9 @@ def run_scattering(results_dir: Path) -> None:
 
     single_results = sweep_scattering(x, V_single, energies_single)
 
-    # =====================================================
+    # -----------------------------------------------------
     # Analyze and save the results
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Analyzing single-barrier scattering results...")
 
@@ -1103,9 +1131,9 @@ def run_scattering(results_dir: Path) -> None:
         "Single barrier scattering - transmission and reflection",
     )
 
-    # =====================================================
+    # -----------------------------------------------------
     # Run the experiment - double barrier (resonant tunneling)
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Running double-barrier scattering experiment...")
 
@@ -1122,9 +1150,9 @@ def run_scattering(results_dir: Path) -> None:
     R_double = np.array([result.reflection for result in double_results], dtype=float)
     peaks = find_transmission_peaks(energies_double, T_double, threshold=0.65)
 
-    # =====================================================
+    # -----------------------------------------------------
     # Analyze and save the results
-    # =====================================================
+    # -----------------------------------------------------
 
     print("Analyzing double-barrier scattering results...")
 

@@ -71,9 +71,9 @@ from src.shooting import (
 )
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_normalization
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_normalization() -> None:
     """
     Check that the wavefunction normalization helper produces unit norm.
@@ -88,9 +88,9 @@ def test_normalization() -> None:
     assert abs(val - 1.0) < 1e-10
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_derivative_at_right_edge_polynomial
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_derivative_at_right_edge_polynomial() -> None:
     """
     Check the high-order right-edge derivative stencil on a smooth polynomial.
@@ -102,9 +102,9 @@ def test_derivative_at_right_edge_polynomial() -> None:
     assert abs(derivative_at_right_edge(x, psi) - exact) < 1e-12
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_find_rk4_brackets_accepts_exact_zero_hit
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
     """
     Check that RK4 bracketing keeps roots that land exactly on a scan point.
@@ -136,9 +136,9 @@ def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
     assert any(lo < 0.5 < hi for lo, hi in brackets)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_square_well_ground_state
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_square_well_ground_state() -> None:
     """
     Verify that the square-well ground-state energy matches the exact result.
@@ -161,9 +161,9 @@ def test_square_well_ground_state() -> None:
     assert abs(e0 - exact) / exact < 5e-3
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_square_well_convergence_order
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_square_well_convergence_order() -> None:
     """
     Check that square-well energies show near-fourth-order grid convergence.
@@ -189,9 +189,9 @@ def test_square_well_convergence_order() -> None:
         assert row["convergence_exponent_p"] > 3.8
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_square_well_convergence_includes_four_requested_states
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_square_well_convergence_includes_four_requested_states() -> None:
     """
     Check that the infinite-well convergence study tracks all four solved states.
@@ -214,9 +214,9 @@ def test_square_well_convergence_includes_four_requested_states() -> None:
     assert conv["energy_errors"].shape == (4, 4)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_harmonic_oscillator_first_levels
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_harmonic_oscillator_first_levels() -> None:
     """
     Verify that the first few harmonic-oscillator energies are accurate.
@@ -239,9 +239,9 @@ def test_harmonic_oscillator_first_levels() -> None:
     assert np.all(np.abs((numerical - exact) / exact) < 3e-3)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_harmonic_oscillator_inward_shooting_first_levels
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_harmonic_oscillator_inward_shooting_first_levels() -> None:
     """
     Verify that the inward-shooting harmonic solver resolves the first levels accurately.
@@ -264,9 +264,9 @@ def test_harmonic_oscillator_inward_shooting_first_levels() -> None:
     assert np.all(np.abs(numerical - exact) < 1e-8)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_double_well_splitting_positive
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_double_well_splitting_positive() -> None:
     """
     Check that the first odd state lies above the first even state in the double well.
@@ -286,9 +286,9 @@ def test_double_well_splitting_positive() -> None:
     assert states[1].energy > states[0].energy
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_quartic_double_well_exact_shifted_minimum
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_quartic_double_well_exact_shifted_minimum() -> None:
     """
     Check that the shifted quartic double well uses the analytic minimum.
@@ -304,9 +304,9 @@ def test_quartic_double_well_exact_shifted_minimum() -> None:
     assert abs(values[0] - 9.0) < 1e-12
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_double_well_larger_box_improves_low_lying_energies
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_double_well_larger_box_improves_low_lying_energies() -> None:
     """
     Check that enlarging the double-well box reduces truncation error.
@@ -355,9 +355,9 @@ def test_double_well_larger_box_improves_low_lying_energies() -> None:
     assert err_large < 0.1 * err_small
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_double_well_same_box_grid_errors_decrease
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_double_well_same_box_grid_errors_decrease() -> None:
     """
     Check that double-well successive refinement errors decrease on a fixed box.
@@ -380,9 +380,9 @@ def test_double_well_same_box_grid_errors_decrease() -> None:
         assert np.all(np.diff(errors) < 0.0)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_double_well_successive_convergence_order
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_double_well_successive_convergence_order() -> None:
     """
     Check that the low double-well states recover near-fourth-order convergence.
@@ -406,9 +406,9 @@ def test_double_well_successive_convergence_order() -> None:
     assert slopes[2]["convergence_exponent_p"] > 3.5
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_double_well_low_state_mismatches_are_polished
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_double_well_low_state_mismatches_are_polished() -> None:
     """
     Check that the low double-well roots are polished beyond the bisection width floor.
@@ -430,9 +430,9 @@ def test_double_well_low_state_mismatches_are_polished() -> None:
     assert abs(states[1].mismatch) < 1e-5
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_double_well_even_odd_mismatch_scans_differ
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_double_well_even_odd_mismatch_scans_differ() -> None:
     """
     Check that even and odd double-well mismatch scans are parity-specific.
@@ -451,9 +451,9 @@ def test_double_well_even_odd_mismatch_scans_differ() -> None:
     assert not np.allclose(mismatches_even, mismatches_odd)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_scattering_probability_conservation
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_scattering_probability_conservation() -> None:
     """
     Check that scattering approximately conserves probability current.
@@ -468,9 +468,9 @@ def test_scattering_probability_conservation() -> None:
         assert abs((result.transmission + result.reflection) - 1.0) < 5e-2
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: test_run_solver_import_without_experiment_dependencies
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def test_run_solver_import_without_experiment_dependencies() -> None:
     """
     Check that the entry script can be imported without importing plotting code.
@@ -487,9 +487,9 @@ def test_run_solver_import_without_experiment_dependencies() -> None:
     assert callable(module.main)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: run_all_tests
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def run_all_tests() -> None:
     """
     Execute all project validation tests and print a short summary.

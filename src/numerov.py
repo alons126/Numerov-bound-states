@@ -34,9 +34,9 @@ look worse than the Numerov recurrence itself really is.
 import numpy as np
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: q_from_energy
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     """
     Build the Numerov coefficient q(x) for a trial energy.
@@ -59,9 +59,9 @@ def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
     return 2.0 * (V - energy)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: numerov_march
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def numerov_march(
     x: np.ndarray,
     q: np.ndarray,
@@ -152,9 +152,9 @@ def numerov_march(
     return psi
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: normalize_wavefunction
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     """
     Normalize a wavefunction safely on a discrete grid.
@@ -197,9 +197,9 @@ def normalize_wavefunction(x: np.ndarray, psi: np.ndarray) -> np.ndarray:
     return psi / norm
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: derivative_at_right_edge
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def derivative_at_right_edge(x: np.ndarray, psi: np.ndarray) -> float:
     """
     Estimate the derivative at the last grid point with a backward stencil.

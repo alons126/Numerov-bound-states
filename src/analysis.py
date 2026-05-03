@@ -27,9 +27,9 @@ import numpy as np
 from src.shooting import StateSolution, solve_symmetric_potential_outward_shooting
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: exact_square_well_energies
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarray:
     """
     Exact energies for an infinite square well on [-a, a].
@@ -52,9 +52,9 @@ def exact_square_well_energies(n_values: np.ndarray, a: float = 1.0) -> np.ndarr
     return (n_values * np.pi / (2.0 * a)) ** 2 / 2.0
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: exact_harmonic_oscillator_energies
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def exact_harmonic_oscillator_energies(
     n_values: np.ndarray,
     omega: float = 1.0,
@@ -80,9 +80,9 @@ def exact_harmonic_oscillator_energies(
     return omega * (n_values + 0.5)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: estimate_convergence_slopes
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def estimate_convergence_slopes(
     xvals: np.ndarray,
     errors: np.ndarray,
@@ -149,9 +149,9 @@ def estimate_convergence_slopes(
     return rows
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: save_csv_rows
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
     """
     Save a list of dictionaries as a CSV table.
@@ -180,9 +180,9 @@ def save_csv_rows(path: str | Path, rows: list[dict]) -> None:
         writer.writerows(rows)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: energies_from_states
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def energies_from_states(
     states: list[StateSolution],
     n_states: int | None = None,
@@ -217,9 +217,9 @@ def energies_from_states(
     return np.array([s.energy for s in states[:n_states]], dtype=float)
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: convergence_vs_grid
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def convergence_vs_grid(
     potential_fn,
     potential_kwargs: dict,
@@ -282,9 +282,9 @@ def convergence_vs_grid(
     return {"h": np.array(hs), "energy_errors": np.array(errors)}
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: convergence_vs_grid_successive
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def convergence_vs_grid_successive(
     potential_fn,
     potential_kwargs: dict,
@@ -355,9 +355,9 @@ def convergence_vs_grid_successive(
     return {"h": np.array(hs[:-1]), "energy_errors": successive_errors}
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: convergence_vs_box_size_fixed_spacing
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def convergence_vs_box_size_fixed_spacing(
     potential_fn,
     potential_kwargs: dict,
@@ -442,9 +442,9 @@ def convergence_vs_box_size_fixed_spacing(
     }
 
 
-# ---------------------------------------------------------------------------
+# ===========================================================================
 # FUNCTION: splitting_vs_parameter
-# ---------------------------------------------------------------------------
+# ===========================================================================
 def splitting_vs_parameter(
     potential_fn,
     base_kwargs: dict,

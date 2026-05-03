@@ -524,14 +524,14 @@
 
     The most important functions are:
     \begin{itemize}
-        \item \texttt{initial\_conditions()},
-        \item \texttt{find\_brackets()},
-        \item \texttt{bisect\_energy()},
-        \item \texttt{solve\_symmetric\_potential()},
-        \item \texttt{solve\_symmetric\_potential\_inward\_decay()}.
+        \item \texttt{initial\_conditions\_outward\_shooting()} and \texttt{initial\_conditions\_inward\_shooting()},
+        \item \texttt{find\_brackets\_outward\_shooting()} and \texttt{find\_brackets\_inward\_shooting()},
+        \item \texttt{bisect\_energy\_outward\_shooting()} and \texttt{bisect\_energy\_inward\_shooting()},
+        \item \texttt{solve\_symmetric\_potential\_outward\_shooting()},
+        \item \texttt{solve\_symmetric\_potential\_inward\_shooting()}.
     \end{itemize}
 
-    Important latest details: \texttt{initial\_conditions()} now includes higher Taylor terms so the first Numerov step does not reduce the convergence order. For the quartic double well, the startup was also extended with the $q''(0)$ contribution. This fixed the square-well convergence slope problem and restored the expected high-order convergence for the problematic double-well state. The bisection routine was also strengthened with a safeguarded secant polishing step. In addition, \texttt{StateSolution.mismatch} now stores the final solver residual in a formulation-aware way: normalized boundary leakage for outward shooting, and the final origin-parity mismatch for inward shooting.
+    Important latest details: \texttt{initial\_conditions\_outward\_shooting()} now includes higher Taylor terms so the first Numerov step does not reduce the convergence order. For the quartic double well, the outward startup was also extended with the $q''(0)$ contribution. This fixed the square-well convergence slope problem and restored the expected high-order convergence for the problematic double-well state. The outward bisection routine was also strengthened with a safeguarded secant polishing step. In addition, \texttt{StateSolution.mismatch} now stores the final solver residual in a formulation-aware way: normalized boundary leakage for outward shooting, and the final origin-parity mismatch for inward shooting.
 
     \subsection{\texttt{src/analysis.py}}
 
@@ -539,11 +539,9 @@
     \begin{itemize}
         \item \texttt{exact\_square\_well\_energies()},
         \item \texttt{exact\_harmonic\_oscillator\_energies()},
-        \item \texttt{relative\_error()},
         \item \texttt{estimate\_convergence\_slopes()},
         \item \texttt{convergence\_vs\_grid()},
         \item \texttt{convergence\_vs\_grid\_successive()},
-        \item \texttt{convergence\_vs\_box\_size()},
         \item \texttt{convergence\_vs\_box\_size\_fixed\_spacing()},
         \item \texttt{splitting\_vs\_parameter()}.
     \end{itemize}

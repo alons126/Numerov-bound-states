@@ -1,0 +1,5 @@
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'build/Project_outline_and_motivation.blg'
+[29] biber-darwin:342> INFO - === Sun May  3, 2026, 14:11:13
+[36] Utils.pm:479> ERROR - build/Project_outline_and_motivation.bcf is malformed, last biblatex run probably failed. Deleted build/Project_outline_and_motivation.bbl
+[36] Biber.pm:137> INFO - ERRORS: 1
