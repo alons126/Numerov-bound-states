@@ -20,7 +20,7 @@ into a numerical shooting calculation:
 - Estimate boundary derivatives needed by parity-based shooting
 
 Several comments in the report are implemented directly here:
-- `numerov_outward()` rescales large trial solutions during scans so a wrong
+- `numerov_march()` rescales large trial solutions during scans so a wrong
   trial energy does not overflow before the mismatch is evaluated
 - `normalize_wavefunction()` uses numerical quadrature because physical bound
   states must satisfy the normalization condition integral |psi|^2 dx = 1
@@ -60,31 +60,40 @@ def q_from_energy(V: np.ndarray, energy: float) -> np.ndarray:
 
 
 # ---------------------------------------------------------------------------
-# FUNCTION: numerov_outward
+# FUNCTION: numerov_march
 # ---------------------------------------------------------------------------
-def numerov_outward(
+def numerov_march(
     x: np.ndarray,
     q: np.ndarray,
     psi0: float,
     psi1: float,
 ) -> np.ndarray:
     """
-    Integrate a second-order ODE outward with the Numerov recurrence.
+    Integrate a second-order ODE by marching along the supplied grid order.
 
     The method assumes a uniform grid and an equation of the form
 
         y''(x) = q(x) y(x).
 
+    The word "march" is intentional: this helper advances from ``x[0]`` and
+    ``x[1]`` to later grid points in index order, regardless of whether the
+    coordinates themselves are increasing or decreasing. On an ascending grid
+    it is used for physical outward shooting from ``0`` toward ``x_max``; on
+    a descending grid it is used for physical inward shooting from ``x_max``
+    toward ``0``. The routine itself therefore has no built-in notion of
+    "inward" or "outward" physics; the caller chooses that physical direction
+    by how it orders the grid points.
+
     Parameters
     ----------
     x : ndarray
-        Uniform spatial grid.
+        Uniform spatial grid, either ascending or descending.
     q : ndarray
         Coefficient array in y'' = q y.
     psi0 : float
-        Initial value at the first grid point.
+        Initial value at the first grid point ``x[0]``.
     psi1 : float
-        Initial value at the second grid point.
+        Initial value at the second grid point ``x[1]``.
 
     Returns
     -------
@@ -104,7 +113,8 @@ def numerov_outward(
         raise ValueError("Need at least 3 grid points.")
 
     # Numerov assumes a constant spacing h. The recurrence coefficients below
-    # are valid only on a uniform grid.
+    # are valid only on a uniform grid, but h may be positive (ascending x)
+    # or negative (descending x) because the method follows index order.
     h = x[1] - x[0]
 
     if not np.allclose(np.diff(x), h, rtol=1e-12, atol=1e-14):
@@ -112,7 +122,7 @@ def numerov_outward(
 
     # Allocate the output and seed the first two values. Numerov is a
     # two-step method, so these two values replace the usual first-order
-    # initial condition pair.
+    # initial condition pair and define where the index-order march starts.
     psi = np.zeros_like(x, dtype=float)
     psi[0] = psi0
     psi[1] = psi1
@@ -126,7 +136,9 @@ def numerov_outward(
         # (1 - h^2 * q_{n+1}/12) * psi_{n+1} =
         #   = 2 * (1 + 5 * h^2 * q_n/12) * psi_n -
         #     - (1 - h^2 * q_{n-1}/12) * psi_{n-1}
-        # so each new point uses the previous two solution values.
+        # so each new point uses the previous two solution values. If x is
+        # ascending this marches physically outward; if x is descending it
+        # marches physically inward toward smaller coordinates.
         a = 1.0 - c * q[n + 1]
         b = 2.0 * (1.0 + 5.0 * c * q[n]) * psi[n]
         d = (1.0 - c * q[n - 1]) * psi[n - 1]

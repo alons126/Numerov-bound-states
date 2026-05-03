@@ -274,11 +274,11 @@
 <path fill="#f8fafc" stroke="#334155" d="M1900.5,-252C1900.5,-252 1793,-252 1793,-252 1787,-252 1781,-246 1781,-240 1781,-240 1781,-228 1781,-228 1781,-222 1787,-216 1793,-216 1793,-216 1900.5,-216 1900.5,-216 1906.5,-216 1912.5,-222 1912.5,-228 1912.5,-228 1912.5,-240 1912.5,-240 1912.5,-246 1906.5,-252 1900.5,-252"/>
 <text xml:space="preserve" text-anchor="middle" x="1846.75" y="-229.55" font-family="Helvetica,sans-Serif" font-size="11.00">normalize_wavefunction</text>
 </g>
-<!-- src_numerov_numerov_outward -->
+<!-- src_numerov_numerov_march -->
 <g id="node13" class="node">
-<title>src_numerov_numerov_outward</title>
-<path fill="#f8fafc" stroke="#334155" d="M1308.25,-36C1308.25,-36 1229.25,-36 1229.25,-36 1223.25,-36 1217.25,-30 1217.25,-24 1217.25,-24 1217.25,-12 1217.25,-12 1217.25,-6 1223.25,0 1229.25,0 1229.25,0 1308.25,0 1308.25,0 1314.25,0 1320.25,-6 1320.25,-12 1320.25,-12 1320.25,-24 1320.25,-24 1320.25,-30 1314.25,-36 1308.25,-36"/>
-<text xml:space="preserve" text-anchor="middle" x="1268.75" y="-13.55" font-family="Helvetica,sans-Serif" font-size="11.00">numerov_outward</text>
+<title>src_numerov_numerov_march</title>
+<path fill="#f8fafc" stroke="#334155" d="M1308.75,-36C1308.75,-36 1238.75,-36 1238.75,-36 1232.75,-36 1226.75,-30 1226.75,-24 1226.75,-24 1226.75,-12 1226.75,-12 1226.75,-6 1232.75,0 1238.75,0 1238.75,0 1308.75,0 1308.75,0 1314.75,0 1320.75,-6 1320.75,-12 1320.75,-12 1320.75,-24 1320.75,-24 1320.75,-30 1314.75,-36 1308.75,-36"/>
+<text xml:space="preserve" text-anchor="middle" x="1273.75" y="-13.55" font-family="Helvetica,sans-Serif" font-size="11.00">numerov_march</text>
 </g>
 <!-- src_numerov_q_from_energy -->
 <g id="node14" class="node">
@@ -418,11 +418,11 @@
 <path fill="none" stroke="#64748b" d="M1484.5,-215.7C1484.39,-207.47 1484.24,-197.48 1484.11,-188.42"/>
 <polygon fill="#64748b" stroke="#64748b" points="1486.57,-188.58 1484.02,-181.62 1481.67,-188.65 1486.57,-188.58"/>
 </g>
-<!-- src_shooting_half_domain_wavefunction_outward_shooting&#45;&gt;src_numerov_numerov_outward -->
+<!-- src_shooting_half_domain_wavefunction_outward_shooting&#45;&gt;src_numerov_numerov_march -->
 <g id="edge37" class="edge">
-<title>src_shooting_half_domain_wavefunction_outward_shooting&#45;&gt;src_numerov_numerov_outward</title>
-<path fill="none" stroke="#64748b" d="M1354.28,-71.52C1339.06,-62.18 1320.2,-50.59 1304.06,-40.68"/>
-<polygon fill="#64748b" stroke="#64748b" points="1305.4,-38.63 1298.15,-37.05 1302.83,-42.8 1305.4,-38.63"/>
+<title>src_shooting_half_domain_wavefunction_outward_shooting&#45;&gt;src_numerov_numerov_march</title>
+<path fill="none" stroke="#64748b" d="M1355.53,-71.52C1340.98,-62.18 1322.94,-50.59 1307.51,-40.68"/>
+<polygon fill="#64748b" stroke="#64748b" points="1309.11,-38.8 1301.9,-37.08 1306.47,-42.92 1309.11,-38.8"/>
 </g>
 <!-- src_shooting_half_domain_wavefunction_outward_shooting&#45;&gt;src_numerov_q_from_energy -->
 <g id="edge38" class="edge">

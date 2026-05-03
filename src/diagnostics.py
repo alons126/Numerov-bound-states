@@ -289,7 +289,7 @@ def _plot_inward_root_diagnostics(
                 e_max=history[0]["hi"],
                 n_scan=600,
             )
-            
+
             plot_root_finding_zoom(
                 zoom_energies,
                 zoom_mismatches,

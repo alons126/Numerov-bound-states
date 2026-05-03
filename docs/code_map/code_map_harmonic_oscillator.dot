@@ -19,7 +19,7 @@ digraph G {
   src_experiments_run_harmonic_oscillator_RK4_comparison [label="run_harmonic_oscillator_RK4_comparison"];
   src_numerov_derivative_at_right_edge [label="derivative_at_right_edge"];
   src_numerov_normalize_wavefunction [label="normalize_wavefunction"];
-  src_numerov_numerov_outward [label="numerov_outward"];
+  src_numerov_numerov_march [label="numerov_march"];
   src_numerov_q_from_energy [label="q_from_energy"];
   src_plotting__ensure_parent [label="_ensure_parent"];
   src_plotting__symlog_linthresh [label="_symlog_linthresh"];
@@ -123,7 +123,7 @@ digraph G {
   src_shooting_diagnostic_mismatch_inward_shooting -> src_numerov_derivative_at_right_edge;
   src_shooting_diagnostic_mismatch_inward_shooting -> src_shooting_half_domain_wavefunction_inward_shooting;
   src_shooting_find_brackets_inward_shooting -> src_shooting_sample_mismatch_inward_shooting;
-  src_shooting_half_domain_wavefunction_inward_shooting -> src_numerov_numerov_outward;
+  src_shooting_half_domain_wavefunction_inward_shooting -> src_numerov_numerov_march;
   src_shooting_half_domain_wavefunction_inward_shooting -> src_numerov_q_from_energy;
   src_shooting_half_domain_wavefunction_inward_shooting -> src_shooting_initial_conditions_inward_shooting;
   src_shooting_sample_mismatch_inward_shooting -> src_shooting_boundary_mismatch_inward_shooting;

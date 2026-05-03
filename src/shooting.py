@@ -58,7 +58,7 @@ import numpy as np
 from src.numerov import (
     derivative_at_right_edge,
     normalize_wavefunction,
-    numerov_outward,
+    numerov_march,
     q_from_energy,
 )
 
@@ -193,7 +193,7 @@ def half_domain_wavefunction_outward_shooting(
 
     # March the trial solution from x = 0 to x_max using the half-domain grid,
     # the Numerov coefficient q(x), and the two startup values fixed above.
-    return numerov_outward(x_half, q, psi0=psi0, psi1=psi1)
+    return numerov_march(x_half, q, psi0=psi0, psi1=psi1)
 
 
 # ---------------------------------------------------------------------------
@@ -402,7 +402,7 @@ def sample_boundary_mismatch_outward_shooting(
     """
 
     energies = np.linspace(e_min, e_max, n_scan)
-    
+
     # Sample either the diagnostics-only scaled mismatch or the raw outward
     # solver mismatch at the same trial energies, depending on what the caller
     # wants to visualize.
@@ -861,7 +861,7 @@ def half_domain_wavefunction_inward_shooting(
     # March the trial solution from x = x_max down to x = 0 using the
     # descending grid, the Numerov coefficient q(x), and the two startup
     # values fixed above.
-    psi_desc = numerov_outward(x_desc, q_desc, psi0=psi0, psi1=psi1)
+    psi_desc = numerov_march(x_desc, q_desc, psi0=psi0, psi1=psi1)
 
     return x_desc, psi_desc
 

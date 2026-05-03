@@ -78,7 +78,7 @@ flowchart LR
 flowchart TD
     src_numerov_derivative_at_right_edge[derivative_at_right_edge]
     src_numerov_normalize_wavefunction[normalize_wavefunction]
-    src_numerov_numerov_outward[numerov_outward]
+    src_numerov_numerov_march[numerov_march]
     src_numerov_q_from_energy[q_from_energy]
     src_rk4_compare_RK4_bisect_energy[RK4_bisect_energy]
     src_rk4_compare_RK4_bisect_energy --> src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
@@ -145,11 +145,11 @@ flowchart TD
     src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
     src_shooting_find_brackets_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
     src_shooting_half_domain_wavefunction_inward_shooting[half_domain_wavefunction_inward_shooting]
-    src_shooting_half_domain_wavefunction_inward_shooting --> src_numerov_numerov_outward[numerov_outward]
+    src_shooting_half_domain_wavefunction_inward_shooting --> src_numerov_numerov_march[numerov_march]
     src_shooting_half_domain_wavefunction_inward_shooting --> src_numerov_q_from_energy[q_from_energy]
     src_shooting_half_domain_wavefunction_inward_shooting --> src_shooting_initial_conditions_inward_shooting[initial_conditions_inward_shooting]
     src_shooting_half_domain_wavefunction_outward_shooting[half_domain_wavefunction_outward_shooting]
-    src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_outward[numerov_outward]
+    src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_march[numerov_march]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_q_from_energy[q_from_energy]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
     src_shooting_initial_conditions_inward_shooting[initial_conditions_inward_shooting]
@@ -356,7 +356,7 @@ flowchart TD
     src_experiments_run_square_well --> src_shooting_solve_symmetric_potential_outward_shooting[solve_symmetric_potential_outward_shooting]
     src_numerov_derivative_at_right_edge[derivative_at_right_edge]
     src_numerov_normalize_wavefunction[normalize_wavefunction]
-    src_numerov_numerov_outward[numerov_outward]
+    src_numerov_numerov_march[numerov_march]
     src_numerov_q_from_energy[q_from_energy]
     src_plotting__ensure_parent[_ensure_parent]
     src_plotting__symlog_linthresh[_symlog_linthresh]
@@ -389,7 +389,7 @@ flowchart TD
     src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
     src_shooting_find_brackets_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
     src_shooting_half_domain_wavefunction_outward_shooting[half_domain_wavefunction_outward_shooting]
-    src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_outward[numerov_outward]
+    src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_march[numerov_march]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_q_from_energy[q_from_energy]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
     src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
@@ -463,7 +463,7 @@ flowchart TD
     src_experiments_run_harmonic_oscillator_RK4_comparison --> src_rk4_compare_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
     src_numerov_derivative_at_right_edge[derivative_at_right_edge]
     src_numerov_normalize_wavefunction[normalize_wavefunction]
-    src_numerov_numerov_outward[numerov_outward]
+    src_numerov_numerov_march[numerov_march]
     src_numerov_q_from_energy[q_from_energy]
     src_plotting__ensure_parent[_ensure_parent]
     src_plotting__symlog_linthresh[_symlog_linthresh]
@@ -525,7 +525,7 @@ flowchart TD
     src_shooting_find_brackets_inward_shooting[find_brackets_inward_shooting]
     src_shooting_find_brackets_inward_shooting --> src_shooting_sample_mismatch_inward_shooting[sample_mismatch_inward_shooting]
     src_shooting_half_domain_wavefunction_inward_shooting[half_domain_wavefunction_inward_shooting]
-    src_shooting_half_domain_wavefunction_inward_shooting --> src_numerov_numerov_outward[numerov_outward]
+    src_shooting_half_domain_wavefunction_inward_shooting --> src_numerov_numerov_march[numerov_march]
     src_shooting_half_domain_wavefunction_inward_shooting --> src_numerov_q_from_energy[q_from_energy]
     src_shooting_half_domain_wavefunction_inward_shooting --> src_shooting_initial_conditions_inward_shooting[initial_conditions_inward_shooting]
     src_shooting_initial_conditions_inward_shooting[initial_conditions_inward_shooting]
@@ -583,7 +583,7 @@ flowchart TD
     src_experiments_run_double_well --> src_shooting_solve_symmetric_potential_outward_shooting[solve_symmetric_potential_outward_shooting]
     src_numerov_derivative_at_right_edge[derivative_at_right_edge]
     src_numerov_normalize_wavefunction[normalize_wavefunction]
-    src_numerov_numerov_outward[numerov_outward]
+    src_numerov_numerov_march[numerov_march]
     src_numerov_q_from_energy[q_from_energy]
     src_plotting__ensure_parent[_ensure_parent]
     src_plotting__symlog_linthresh[_symlog_linthresh]
@@ -616,7 +616,7 @@ flowchart TD
     src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
     src_shooting_find_brackets_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
     src_shooting_half_domain_wavefunction_outward_shooting[half_domain_wavefunction_outward_shooting]
-    src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_outward[numerov_outward]
+    src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_march[numerov_march]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_q_from_energy[q_from_energy]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
     src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
@@ -660,7 +660,7 @@ flowchart TD
     src_experiments_run_finite_square_well --> src_shooting_solve_symmetric_potential_outward_shooting[solve_symmetric_potential_outward_shooting]
     src_numerov_derivative_at_right_edge[derivative_at_right_edge]
     src_numerov_normalize_wavefunction[normalize_wavefunction]
-    src_numerov_numerov_outward[numerov_outward]
+    src_numerov_numerov_march[numerov_march]
     src_numerov_q_from_energy[q_from_energy]
     src_plotting__ensure_parent[_ensure_parent]
     src_plotting__symlog_linthresh[_symlog_linthresh]
@@ -689,7 +689,7 @@ flowchart TD
     src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
     src_shooting_find_brackets_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
     src_shooting_half_domain_wavefunction_outward_shooting[half_domain_wavefunction_outward_shooting]
-    src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_outward[numerov_outward]
+    src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_march[numerov_march]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_q_from_energy[q_from_energy]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
     src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
@@ -818,7 +818,7 @@ flowchart TD
 
 - `derivative_at_right_edge` -> (no direct project-function calls)
 - `normalize_wavefunction` -> (no direct project-function calls)
-- `numerov_outward` -> (no direct project-function calls)
+- `numerov_march` -> (no direct project-function calls)
 - `q_from_energy` -> (no direct project-function calls)
 
 ### src.plotting
@@ -882,8 +882,8 @@ flowchart TD
 - `diagnostic_mismatch_outward_shooting` -> half_domain_wavefunction_outward_shooting
 - `find_brackets_inward_shooting` -> sample_mismatch_inward_shooting
 - `find_brackets_outward_shooting` -> boundary_mismatch_outward_shooting
-- `half_domain_wavefunction_inward_shooting` -> numerov_outward, q_from_energy, initial_conditions_inward_shooting
-- `half_domain_wavefunction_outward_shooting` -> numerov_outward, q_from_energy, initial_conditions_outward_shooting
+- `half_domain_wavefunction_inward_shooting` -> numerov_march, q_from_energy, initial_conditions_inward_shooting
+- `half_domain_wavefunction_outward_shooting` -> numerov_march, q_from_energy, initial_conditions_outward_shooting
 - `initial_conditions_inward_shooting` -> (no direct project-function calls)
 - `initial_conditions_outward_shooting` -> (no direct project-function calls)
 - `sample_boundary_mismatch_outward_shooting` -> boundary_mismatch_outward_shooting, diagnostic_mismatch_outward_shooting

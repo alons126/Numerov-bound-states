@@ -43,7 +43,7 @@ Low-level Numerov recurrence, wavefunction normalization, and boundary derivativ
 | Lines | Block | Purpose |
 |---:|---|---|
 | 41-59 | `function q_from_energy` | Build the Numerov coefficient q(x) for a trial energy. |
-| 66-131 | `function numerov_outward` | Integrate a second-order ODE outward with the Numerov recurrence. |
+| 66-137 | `function numerov_march` | Integrate a second-order ODE by marching along the supplied grid order, so the same helper supports both ascending-grid outward shooting and descending-grid inward shooting. |
 | 138-166 | `function normalize_wavefunction` | Normalize a wavefunction safely on a discrete grid. |
 | 173-208 | `function derivative_at_right_edge` | Estimate the derivative at the last grid point with a backward stencil. |
 
