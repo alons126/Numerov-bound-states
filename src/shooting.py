@@ -228,6 +228,9 @@ def boundary_mismatch_outward_shooting(
         Scalar mismatch value used in bracketing or diagnostics.
     """
 
+    # First build the trial half-domain wavefunction for this energy and
+    # parity; the outward boundary mismatch is then read off from its behavior
+    # at x_max.
     psi = half_domain_wavefunction_outward_shooting(x_half, V_half, energy, parity)
 
     if mode == "value":
@@ -307,6 +310,9 @@ def find_brackets_outward_shooting(
         Brackets suitable for bisection.
     """
 
+    # Build a uniform trial-energy scan on [e_min, e_max], then evaluate the
+    # outward-shooting mismatch M(E) at each sample so neighboring sign changes
+    # can be turned into root brackets.
     energies = np.linspace(e_min, e_max, n_scan)
     vals = np.array(
         [
@@ -317,6 +323,8 @@ def find_brackets_outward_shooting(
 
     brackets: list[tuple[float, float]] = []
 
+    # Walk through neighboring scan points and turn either an exact zero hit or
+    # a sign change in M(E) into a bracket for the later root-refinement step.
     for i in range(len(energies) - 1):
         a, b = vals[i], vals[i + 1]
 
@@ -998,22 +1006,24 @@ def sample_mismatch_inward_shooting(
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
         [
-            boundary_mismatch_inward_shooting(
-                x_max,
-                n_grid,
-                potential_fn,
-                potential_kwargs,
-                energy,
-                parity,
-            )
-            if not diagnostic_scale
-            else diagnostic_mismatch_inward_shooting(
-                x_max,
-                n_grid,
-                potential_fn,
-                potential_kwargs,
-                energy,
-                parity,
+            (
+                boundary_mismatch_inward_shooting(
+                    x_max,
+                    n_grid,
+                    potential_fn,
+                    potential_kwargs,
+                    energy,
+                    parity,
+                )
+                if not diagnostic_scale
+                else diagnostic_mismatch_inward_shooting(
+                    x_max,
+                    n_grid,
+                    potential_fn,
+                    potential_kwargs,
+                    energy,
+                    parity,
+                )
             )
             for energy in energies
         ],
@@ -1552,6 +1562,9 @@ def solve_symmetric_potential_outward_shooting(
     if potential_kwargs is None:
         potential_kwargs = {}
 
+    # Solve on the symmetry-reduced half-domain [0, x_max], then evaluate the
+    # chosen potential once on that grid so all later shooting scans reuse the
+    # same sampled geometry.
     x_half = np.linspace(0.0, x_max, n_grid)
     V_half = potential_fn(x_half, **potential_kwargs)
 
@@ -1567,8 +1580,15 @@ def solve_symmetric_potential_outward_shooting(
 
     solutions: list[StateSolution] = []
 
+    # Work one parity sector at a time. First scan the mismatch M(E) over
+    # the requested energy window and collect sign-changing brackets for
+    # that parity, then refine the first n_needed brackets into actual
+    # bound states. The even/odd solutions are accumulated separately here
+    # and sorted together by energy after the loop.
     for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
-        # Solve even and odd sectors separately, then merge by energy.
+        # Sample the outward-shooting mismatch over [e_min, e_max] for this
+        # parity sector and keep only the energy intervals where the mismatch
+        # changes sign; those intervals are the initial root brackets.
         brackets = find_brackets_outward_shooting(
             x_half,
             V_half,
@@ -1584,6 +1604,9 @@ def solve_symmetric_potential_outward_shooting(
                 "Increase x_max, e_max, or scan_points."
             )
 
+        # Turn the first n_needed brackets for this parity sector into actual
+        # eigenstates: each bracket is refined to one eigenvalue, then the
+        # corresponding wavefunction is reconstructed and stored.
         for bracket in brackets[:n_needed]:
             solutions.append(
                 solve_state_from_bracket_outward_shooting(

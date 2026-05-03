@@ -222,10 +222,10 @@ INPUT build/report.out
 INPUT build/report.out
 INPUT build/report.out
 INPUT build/report.out
-OUTPUT build/report.pdf
 INPUT build/report.out
 INPUT build/report.out
 OUTPUT build/report.out
+OUTPUT build/report.pdf
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/lbx/english.lbx
