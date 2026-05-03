@@ -291,7 +291,9 @@ def convergence_vs_grid(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: convergence_vs_grid_successive
+# ===========================================================================
 # ===========================================================================
 def convergence_vs_grid_successive(
     potential_fn,
@@ -309,7 +311,11 @@ def convergence_vs_grid_successive(
 
     Instead of comparing every grid to one finite reference calculation, this
     compares each grid to the next finer grid. That avoids contamination from a
-    finite-reference floor when no exact spectrum is available.
+    finite-reference floor when no exact spectrum is available. Concretely, if
+    the solved energies on successive grids are ``E(h_0), E(h_1), ...`` with
+    ``h_0 > h_1 > ...``, then the reported error surrogate is
+    ``|E(h_i) - E(h_{i+1})|``. The finer grid is treated only as a temporary
+    stand-in for the exact answer, not as a permanently fixed reference run.
 
     Parameters
     ----------
@@ -342,6 +348,9 @@ def convergence_vs_grid_successive(
     n_states = n_even + n_odd
 
     for n_grid in grid_sizes:
+        # Solve the same physical problem on each requested grid and keep only
+        # the first n_states energies, so neighboring grids can be compared
+        # state by state afterward.
         states = solver_fn(
             x_max=x_max,
             n_grid=n_grid,
@@ -357,7 +366,9 @@ def convergence_vs_grid_successive(
 
     energies_arr = np.array(energies_by_grid, dtype=float)
     # Successive differences act as a stand-in error estimate when no exact
-    # spectrum is available, as in the quartic double well.
+    # spectrum is available, as in the quartic double well. The returned h
+    # values are the coarse-grid spacings h_i attached to each difference
+    # |E(h_i) - E(h_{i+1})|.
     successive_errors = np.abs(energies_arr[:-1] - energies_arr[1:])
 
     return {"h": np.array(hs[:-1]), "energy_errors": successive_errors}

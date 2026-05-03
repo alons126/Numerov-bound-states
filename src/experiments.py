@@ -814,7 +814,7 @@ def run_double_well(results_dir: Path) -> None:
         experiment_dir / "3_double_well_Numerov_states.png",
         "Quartic double well - states",
         potential_label=(
-            r"$V(x)=a x^4 - b x^2 - V_{\min}$"
+            r"$V(x)=a x^4 - b x^2 + \frac{b^2}{4a}$"
             if base_kwargs["shift_min_to_zero"]
             else r"$V(x)=a x^4 - b x^2$"
         ),
@@ -827,8 +827,11 @@ def run_double_well(results_dir: Path) -> None:
     )
 
     # Use successive refinements instead of one finite reference. For this
-    # non-analytic spectrum, that avoids fitting against a reference-floor
-    # artifact once the grids become very fine.
+    # non-analytic spectrum, the quantity plotted versus h is
+    # |E(h_i) - E(h_{i+1})| rather than |E(h_i) - E_ref|. That avoids fitting
+    # against a single finite-reference floor once the grids become very fine
+    # and makes the convergence study a self-consistency check instead of a
+    # comparison to one arbitrarily chosen "best" grid.
     conv_h = convergence_vs_grid_successive(
         potential_fn=quartic_double_well,
         potential_kwargs=base_kwargs,
@@ -845,6 +848,9 @@ def run_double_well(results_dir: Path) -> None:
         conv_h_slopes,
     )
 
+    # With no closed-form spectrum available, the plotted y-values are not
+    # |E_numerical - E_exact|. They are the successive-refinement surrogate
+    # |E(h_i) - E(h_{i+1})| returned by convergence_vs_grid_successive().
     plot_error_curve(
         conv_h["h"],
         conv_h["energy_errors"],
@@ -852,6 +858,7 @@ def run_double_well(results_dir: Path) -> None:
         experiment_dir / "3_double_well_Numerov_energy_convergence_vs_h.png",
         "Quartic double well - energy convergence vs grid spacing $h$",
         slopes=conv_h_slopes,
+        ylabel="Successive energy difference $|E(h_i) - E(h_{i+1})|$",
     )
 
     # For box-size convergence, compare against a larger box while keeping h
@@ -908,6 +915,7 @@ def run_double_well(results_dir: Path) -> None:
         "Box size $x_{\\max}$",
         experiment_dir / "3_double_well_Numerov_energy_convergence_vs_x_max.png",
         "Quartic double well - energy convergence vs box size $x_{\\max}$",
+        ylabel="Energy error relative to larger-box reference",
     )
 
     sweep_rows = splitting_vs_parameter(
@@ -937,6 +945,7 @@ def run_double_well(results_dir: Path) -> None:
         "Parameter $b$",
         experiment_dir / "3_double_well_Numerov_energy_splitting_vs_b.png",
         "Quartic double well - energy splitting vs parameter $b$",
+        ylabel="Energy / splitting",
     )
 
 

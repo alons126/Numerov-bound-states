@@ -271,16 +271,27 @@ def plot_error_curve(
     path: str | Path,
     title: str,
     slopes: list[dict] | None = None,
+    ylabel: str = "Energy error = |numerical - exact|",
 ) -> None:
     """
-    Plot absolute energy errors on log-log axes.
+    Plot one error-like quantity per state on log-log axes.
+
+    In the benchmarked cases, ``errors`` usually stores absolute energy
+    errors against an exact or trusted reference spectrum. In the quartic
+    double-well study, however, the same plotting helper is reused for the
+    successive-refinement surrogate
+    ``|E(h_i) - E(h_{i+1})|`` because no closed-form exact spectrum is
+    available. The ``ylabel`` argument therefore controls the exact meaning
+    shown on the figure.
 
     Parameters
     ----------
     xvals : ndarray
         Horizontal coordinate, typically h or x_max.
     errors : ndarray
-        Error array with one column per state.
+        Array with one column per state. Each column may contain true absolute
+        errors or another per-state convergence surrogate, depending on the
+        experiment that calls this helper.
     xlabel : str
         Label for the horizontal axis.
     path : str or Path
@@ -290,6 +301,10 @@ def plot_error_curve(
     slopes : list[dict], optional
         Optional convergence fit rows. If provided, each legend entry includes
         the fitted exponent p from error approximately proportional to h^p.
+    ylabel : str, optional
+        Vertical-axis label. The default matches exact-reference error plots,
+        but callers can override it for quantities such as successive
+        refinement differences.
 
     Returns
     -------
@@ -316,7 +331,7 @@ def plot_error_curve(
         plt.loglog(xvals, errors[:, i], marker="o", label=label)
 
     plt.xlabel(xlabel)
-    plt.ylabel("Energy error = |numerical - exact|")
+    plt.ylabel(ylabel)
     plt.title(title)
     plt.legend()
     plt.tight_layout()
@@ -335,6 +350,7 @@ def plot_splitting_curve(
     xlabel: str,
     path: str | Path,
     title: str,
+    ylabel: str = "Energy / splitting",
 ) -> None:
     """
     Plot the lowest two energies and their splitting versus a parameter.
@@ -353,6 +369,9 @@ def plot_splitting_curve(
         Output image path.
     title : str
         Figure title.
+    ylabel : str, optional
+        Vertical-axis label. The default reflects that the same panel shows
+        both the two energies and their difference.
 
     Returns
     -------
@@ -369,7 +388,7 @@ def plot_splitting_curve(
     plt.plot(xvals, e1, marker="s", label="E1")
     plt.plot(xvals, splitting, marker="^", label="E1 - E0")
     plt.xlabel(xlabel)
-    plt.ylabel("Energy")
+    plt.ylabel(ylabel)
     plt.title(title)
     plt.legend()
     plt.tight_layout()

@@ -161,7 +161,7 @@ Report-ready Matplotlib figures.
 | 64-126 | `function plot_potential_and_states` | Plot the potential together with several shifted eigenstates. |
 | 133-173 | `function plot_probability_densities` | Plot |psi(x)|^2 for several states. |
 | 180-222 | `function plot_energy_comparison` | Compare numerical and exact energy levels on the same figure. |
-| 228-276 | `function plot_error_curve` | Plot absolute energy errors on log-log axes. |
+| 228-276 | `function plot_error_curve` | Plot per-state convergence curves on log-log axes, usually exact-reference energy errors but also successive-refinement surrogates such as `|E(h_i)-E(h_{i+1})|` for the double well. |
 | 283-365 | `function plot_splitting_curve` | Plot the lowest two energies and their splitting versus a parameter. |
 | 372-438 | `function plot_root_finding_diagnostic` | Plot the global mismatch scan and mark only the final root estimate for each state. |
 | 444-512 | `function plot_root_finding_zoom` | Plot a zoomed local bracket with the full bisection history overlaid. |

@@ -169,9 +169,10 @@ The solver is applied to several systems (with bound states as the primary focus
 
 Additional analysis includes:
 - convergence studies versus grid spacing and domain size to verify numerical accuracy
-- for the quartic double well, separate treatment of grid refinement and box truncation:
-  - `h`-convergence uses successive refinements on a fixed domain
-  - `x_max`-convergence compares against a larger-box reference while keeping spacing approximately fixed
+- for the quartic double well, grid refinement and box truncation are treated separately
+- for the quartic double well, the grid-spacing plot uses the successive-refinement surrogate `|E(h_i)-E(h_{i+1})|` rather than an exact-error curve, because no closed-form reference spectrum is available
+- for the quartic double well, `h`-convergence uses successive refinements on a fixed domain, comparing each grid to the next finer one instead of to a single fixed reference
+- for the quartic double well, `x_max`-convergence compares against a larger-box reference while keeping spacing approximately fixed
 - parameter sweeps (e.g., double-well barrier height)
 - generation of plots and CSV tables for reporting
 - estimation of convergence rates $\Delta E \propto h^p$ from log--log fits
@@ -207,4 +208,4 @@ The code is written for clarity and analysis rather than maximum performance.
 
 A subtle but important numerical point is that the accuracy of eigenvalue shooting depends on both the integrator and the boundary mismatch evaluation. In this project, a higher-order derivative approximation was required to ensure that the Numerov method achieves its expected accuracy when compared with RK4. This serves as a practical example of how implementation details can influence the apparent performance of numerical algorithms.
 
-Another subtle point appears in the quartic double well: shifting the potential by the sampled grid minimum makes the potential itself vary slightly with grid spacing. The current implementation instead uses the analytic minimum, which keeps convergence studies physically meaningful.
+Another subtle point appears in the quartic double well: shifting the potential by the sampled grid minimum, meaning the discrete value `min(V(x_i))` taken only over the current mesh points, makes the potential itself vary slightly with grid spacing. The current implementation instead uses the analytic minimum `-b^2/(4a)`, which keeps convergence studies physically meaningful and places the well bottoms at zero, a cleaner energy reference that does not change the well shape or tunneling splittings.

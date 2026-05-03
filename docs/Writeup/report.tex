@@ -352,7 +352,7 @@
             \begin{equation}
             V(x)=ax^4-bx^2-V_{\min}, \qquad V_{\min}=-\frac{b^2}{4a}
             \end{equation}
-            the two minima are shifted to zero. Unlike the infinite square well and harmonic oscillator, this system does not have a simple analytic spectrum, so the validation relies on internal consistency checks, convergence studies, parity structure, and physically expected tunneling behavior. The production run uses $a=1$, $b=6$, the analytic minimum shift $V_{\min}=b^2/(4a)$, a box size $x_{\max}=4$, and $n_{\text{grid}}=4000$. The successive-refinement study uses $n_{\text{grid}}\in\{600,1000,1600,2200,3000,4000\}$, the box-size study uses $x_{\max}\in\{2.5,3.0,3.5,4.0,4.5,5.0\}$ at approximately fixed spacing, and the splitting sweep varies $b\in\{3,4,5,6,7,8\}$ with $a=1$. \\
+            the two minima are shifted to zero. This shift is applied with the analytic minimum rather than the sampled grid minimum $\min_i V(x_i)$ taken over the current mesh points, because the sampled minimum drifts slightly as the grid changes and would otherwise contaminate convergence studies. The analytic shift also gives a cleaner energy reference: the well bottoms sit at zero, so the reported low-lying energies can be read directly relative to the bottoms of the wells, while the potential shape and tunneling splittings remain unchanged. Unlike the infinite square well and harmonic oscillator, this system does not have a simple analytic spectrum, so the validation relies on internal consistency checks, convergence studies, parity structure, and physically expected tunneling behavior. The production run uses $a=1$, $b=6$, the analytic minimum shift $V_{\min}=b^2/(4a)$, a box size $x_{\max}=4$, and $n_{\text{grid}}=4000$. The successive-refinement study uses $n_{\text{grid}}\in\{600,1000,1600,2200,3000,4000\}$, the box-size study uses $x_{\max}\in\{2.5,3.0,3.5,4.0,4.5,5.0\}$ at approximately fixed spacing, and the splitting sweep varies $b\in\{3,4,5,6,7,8\}$ with $a=1$. \\
 
             Figure~\ref{fig:dw_states} shows the first four computed states together with the double-well potential. The two lowest states form a nearly degenerate even-odd pair, with energies $E_0\approx2.357273$ and $E_1\approx2.359372$, so the splitting is only about $2.10\times10^{-3}$. This is the expected tunneling doublet: the even and odd states are symmetric and antisymmetric combinations of states localized in the two wells. The next pair is much higher in energy, with $E_2\approx6.548814$ and $E_3\approx6.684430$, and its splitting is much larger because those states overlap more strongly through the central barrier. \\
 
@@ -360,7 +360,7 @@
 
             The root-finding diagnostics (Fig.~\ref{fig:dw_shooting}) show well-defined zero crossings in the even and odd parity sectors. For the saved run, the first even-sector roots occur near $E\approx2.36$ and $E\approx6.55$, while the first odd-sector roots occur near $E\approx2.36$ and $E\approx6.68$. The corresponding zoom views in Fig.~\ref{fig:dw_shooting_zoom} confirm that these are genuine local sign changes of the raw mismatch and not artifacts of the large boundary amplitudes seen in the full scan. \\
 
-            Since there is no closed-form exact spectrum for this potential, grid convergence is measured using successive refinements at fixed domain size. The convergence with respect to grid spacing (Fig.~\ref{fig:dw_convergence_h}) still shows stable high-order behavior, with fitted slopes $p\approx4.18$, $3.95$, $4.55$, and $5.67$ for the first four states. The values above four should not be overinterpreted as true superconvergence. They appear only when the successive-difference errors have already fallen to about $10^{-12}$--$10^{-13}$ for the low states and $10^{-11}$ for the higher states, so short log--log fits are being distorted by the numerical floor. What matters physically is that every state improves systematically under refinement and the dominant trend remains high-order decay of the error. \\
+            Since there is no closed-form exact spectrum for this potential, grid convergence is measured using successive refinements at fixed domain size: the plotted surrogate error is the difference $|E(h_i)-E(h_{i+1})|$ between each grid and the next finer one, rather than the difference to one fixed finite reference run. The convergence with respect to grid spacing (Fig.~\ref{fig:dw_convergence_h}) still shows stable high-order behavior, with fitted slopes $p\approx4.18$, $3.95$, $4.55$, and $5.67$ for the first four states. The values above four should not be overinterpreted as true superconvergence. They appear only when the successive-difference errors have already fallen to about $10^{-12}$--$10^{-13}$ for the low states and $10^{-11}$ for the higher states, so short log--log fits are being distorted by the numerical floor. What matters physically is that every state improves systematically under refinement and the dominant trend remains high-order decay of the error. \\
 
             The box-size study (Fig.~\ref{fig:dw_convergence_xmax}) shows an especially important numerical effect for this problem. At $x_{\max}=2.5$ the box is clearly too small: the errors are still of order $10^{-1}$. At $x_{\max}=3.0$ they have dropped to the $10^{-4}$--$10^{-3}$ range, and by $x_{\max}=3.5$ they are already down near $10^{-8}$. Once the box reaches $x_{\max}\approx4.0$, the remaining error is only about $10^{-12}$ relative to the larger-box reference, so the final reported states are no longer dominated by artificial boundary truncation. This is exactly why the production calculation uses a larger box than the earlier, visibly contaminated small-box runs. \\
 
@@ -432,14 +432,14 @@
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
                     \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_h.png}
-                    \captionof{figure}{Grid convergence for the quartic double well. The energy errors decrease with high-order behavior under successive grid refinement.}
+                    \captionof{figure}{Grid convergence for the quartic double well. Since no exact spectrum is available, the vertical axis shows the successive-refinement surrogate $|E(h_i)-E(h_{i+1})|$ rather than $|E_{\text{numerical}}-E_{\text{exact}}|$. The curves still decrease with clear high-order behavior under grid refinement.}
                     \label{fig:dw_convergence_h}
                 \end{minipage}
                 \hfill
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
                     \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_x_max.png}
-                    \captionof{figure}{Dependence of the double-well energy errors on box size. The errors decrease rapidly as the domain is enlarged and then reach a numerical plateau.}
+                    \captionof{figure}{Dependence of the double-well energy errors on box size, measured relative to a larger-box reference calculation at approximately fixed grid spacing. The errors decrease rapidly as the domain is enlarged and then reach a numerical plateau.}
                     \label{fig:dw_convergence_xmax}
                 \end{minipage}
 
@@ -448,7 +448,7 @@
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
                     \includegraphics[width=\textwidth]{../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting_vs_b.png}
-                    \captionof{figure}{Energy splitting between the two lowest double-well states as the parameter $b$ is varied. The splitting decreases as the barrier becomes stronger, consistent with tunneling suppression.}
+                    \captionof{figure}{Lowest two double-well energies together with their splitting as the parameter $b$ is varied. The splitting decreases as the barrier becomes stronger, consistent with tunneling suppression.}
                     \label{fig:dw_splitting}
                 \end{minipage}
             \end{figure}

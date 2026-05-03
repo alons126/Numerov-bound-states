@@ -482,7 +482,7 @@
     \begin{equation}
         V_{\min}=-\frac{b^2}{4a}
     \end{equation}
-    instead of the sampled grid minimum. This is important because using the sampled minimum makes the potential itself depend slightly on the grid spacing $h$, which contaminates a grid-convergence study.
+    instead of the sampled grid minimum. Here the sampled grid minimum means the discrete value $\min_i V(x_i)$ computed only from the mesh points actually present on the current grid. This is important because using that sampled minimum makes the potential itself depend slightly on the grid spacing $h$, which contaminates a grid-convergence study. Using the analytic shift also moves both well bottoms to zero energy, which is a cleaner reference level for interpreting the low-lying states while leaving the well shape and tunneling splittings unchanged.
 
     For the quartic double-well potential,
     \begin{equation}

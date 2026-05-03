@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber build/report"] 1777797253.98577 "build/report.bcf" "build/report.bbl" "build/report" 1777797262.82136 0
+["biber build/report"] 1777797253.98577 "build/report.bcf" "build/report.bbl" "build/report" 1777810985.76609 0
   "../references.bib" 1777369189.93512 655 8f93fc878757d4fd3cda6064465a846c ""
-  "build/report.bcf" 1777797262.74179 108095 81ced07a25b3987c2a4f956d419b3957 "pdflatex"
+  "build/report.bcf" 1777810985.64435 108095 81ced07a25b3987c2a4f956d419b3957 "pdflatex"
   (generated)
   "build/report.bbl"
   "build/report.blg"
   (rewritten before read)
-["pdflatex"] 1777797259.07248 "report.tex" "build/report.pdf" "report" 1777797262.82159 0
+["pdflatex"] 1777810982.12581 "report.tex" "build/report.pdf" "report" 1777810985.76634 0
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png" 1777736535.15998 91320 413c2f90117309a0dff95b04e933d3ba ""
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png" 1777736530.4674 67832 bd19790332caffd6dbe16aa3d9d26039 ""
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png" 1777736533.17535 64329 3c6bd5505f80867e56e4daa808db692c ""
@@ -74,6 +74,7 @@
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb" 1248133631 32298 c6d25bb16d1eac01ebdc6d7084126a1e ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1248133631 30251 6afa5cb1d0204815a708a080681d4674 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
+  "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1248133631 36281 c355509802a035cadc5f15869451dcee ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1248133631 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
@@ -186,12 +187,12 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774538740 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774538681 3636776 dfeaead9e2e9c793969724e130e444cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "build/report.aux" 1777797262.7389 17442 907c316370ed34195d5bdf50aecbcf67 "pdflatex"
+  "build/report.aux" 1777810985.64151 17978 129b9f78b8e9886a4dfa5ad3b5f283d8 "pdflatex"
   "build/report.bbl" 1777797255.25713 1666 1d08ed8c5ef7e023b792ac2be9f0f476 "biber build/report"
-  "build/report.out" 1777797262.74102 3296 cdfd21eff3a294f5f3d8d309c8c3c867 "pdflatex"
-  "build/report.run.xml" 1777797262.74231 2322 9c2c451ad16a7e9e7d58df2e941dd00c "pdflatex"
-  "build/report.toc" 1777797262.74237 1547 7ec426f6c7585733540cbd21e98289d6 "pdflatex"
-  "report.tex" 1777797229.65204 61301 631eb9bfb3b4c8a39219f1f60d479d23 ""
+  "build/report.out" 1777810985.64355 3296 cdfd21eff3a294f5f3d8d309c8c3c867 "pdflatex"
+  "build/report.run.xml" 1777810985.64489 2322 9c2c451ad16a7e9e7d58df2e941dd00c "pdflatex"
+  "build/report.toc" 1777810985.64496 1547 28325aa87a3a3d772f1b11e48304259d "pdflatex"
+  "report.tex" 1777810891.5422 62243 348762cc12c14213c3c7407d10057121 ""
   (generated)
   "build/report.aux"
   "build/report.bcf"

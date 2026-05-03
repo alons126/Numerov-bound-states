@@ -124,7 +124,9 @@ def finite_square_well(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: quartic_double_well
+# ===========================================================================
 # ===========================================================================
 def quartic_double_well(
     x: np.ndarray,
@@ -135,6 +137,13 @@ def quartic_double_well(
     """
     Quartic double-well potential V(x) = a x^4 - b * x^2.
 
+    For ``a > 0`` and ``b > 0``, the negative quadratic term creates a central
+    barrier while the quartic term restores confinement at large ``|x|``, so
+    the potential has two symmetric minima at:
+        ``x = ±sqrt(b / (2a))``
+    Their common value is:
+        ``V_min = -b^2 / (4a)``
+
     Parameters
     ----------
     x : ndarray
@@ -144,7 +153,11 @@ def quartic_double_well(
     b : float, optional
         Quadratic coefficient controlling the barrier / well separation.
     shift_min_to_zero : bool, optional
-        If True, subtract the minimum value so the well bottoms sit at zero.
+        If True, subtract the analytic minimum value so the well bottoms sit at
+        zero without making the potential depend on the grid resolution. This
+        changes only the overall energy reference, not the shape of the wells
+        or the tunneling physics, and makes energies easier to interpret
+        relative to the well bottoms.
 
     Returns
     -------
@@ -157,9 +170,14 @@ def quartic_double_well(
     v = a * x**4 - b * x**2
 
     if shift_min_to_zero:
-        # Use the analytic minimum rather than the sampled grid minimum. The
-        # latter drifts with h and contaminates convergence studies by changing
-        # the potential itself as the grid is refined.
+        # Use the analytic minimum rather than the sampled grid minimum. Here
+        # "sampled grid minimum" would mean min(V(x_i)) taken only over the
+        # discrete mesh points x_i supplied in `x`. That discrete minimum
+        # drifts slightly as the grid spacing h changes, so subtracting it
+        # would make the potential itself change during a convergence study.
+        # Shifting by the analytic minimum instead places both well bottoms at
+        # zero energy, which is a cleaner reference level while leaving the
+        # well shape and energy splittings unchanged.
         if a <= 0.0:
             raise ValueError("quartic_double_well requires a > 0.")
 
