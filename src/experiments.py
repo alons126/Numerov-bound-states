@@ -277,32 +277,220 @@ def run_square_well(results_dir: Path) -> None:
 
 
 # ===========================================================================
-# FUNCTION: run_harmonic_oscillator_RK4_comparison
+# FUNCTION: run_harmonic_oscillator_Numerov
 # ===========================================================================
-def run_harmonic_oscillator_RK4_comparison(
+def run_harmonic_oscillator_Numerov(
+    numerov_results_dir: Path,
+    omega: float = 1.0,
+    x_max: float = 8.0,
+    n_grid: int = 2500,
+) -> dict[str, object]:
+    """
+    Run the Numerov harmonic-oscillator benchmark and save its outputs.
+
+    Parameters
+    ----------
+    numerov_results_dir : Path
+        Output directory for Numerov-only tables and figures.
+    omega : float, optional
+        Harmonic-oscillator frequency in the potential
+        ``V(x)=\\frac{1}{2}\\omega^2 x^2``.
+    x_max : float, optional
+        Half-width of the truncated spatial domain.
+    n_grid : int, optional
+        Number of grid points for the inward-shooting Numerov solve.
+
+    Returns
+    -------
+    dict[str, object]
+        Summary containing the solved states, exact energies, grid-convergence
+        data, and target spacing reused by the wrapper and comparison step.
+    """
+
+    print("Running harmonic oscillator experiment (Numerov)...")
+
+    # Run the inward-decay Numerov solver for the first four states. For the
+    # truncated harmonic oscillator, this avoids contamination by the growing
+    # forbidden-region tail that can appear in outward shooting.
+    states = solve_symmetric_potential_inward_shooting(
+        x_max=x_max,
+        n_grid=n_grid,
+        potential_fn=harmonic_oscillator,
+        potential_kwargs={"omega": omega},
+        n_even=2,
+        n_odd=2,
+        e_min=0.1,
+        e_max=6.5,
+    )
+
+    print("Analyzing harmonic oscillator results (Numerov)...")
+
+    # Plot the root-finding diagnostics for all four states, with separate
+    # panels for the even and odd sectors.
+    plot_harmonic_oscillator_root_diagnostics(
+        numerov_results_dir,
+        omega=omega,
+        x_max=x_max,
+    )
+
+    # Tabulate the numerical energies and compare them to the exact ladder
+    # E_n = omega * (n + 0.5).
+    numerical = np.array([s.energy for s in states[:4]])
+    exact = exact_harmonic_oscillator_energies(np.arange(4), omega=omega)
+
+    # Save a CSV comparing the numerical and exact energies, together with the
+    # relative error for each of the first four states.
+    rows = []
+    for i, (en, ex) in enumerate(zip(numerical, exact)):
+        rows.append(
+            {
+                "state_index": i,
+                "parity": states[i].parity,
+                "numerical_energy": en,
+                "exact_energy": ex,
+                "relative_error": abs((en - ex) / ex),
+            }
+        )
+    save_csv_rows(
+        numerov_results_dir / "2a_harmonic_oscillator_Numerov_energies.csv",
+        rows,
+    )
+
+    # Plot the states, probability densities, and energy comparison for the
+    # same four benchmark states.
+    x = states[0].x_full
+    V = harmonic_oscillator(x, omega=omega)
+
+    plot_potential_and_states(
+        x,
+        V,
+        states,
+        numerov_results_dir / "2a_harmonic_oscillator_Numerov_states.png",
+        "Harmonic oscillator - states",
+        potential_label=r"$V(x)=\frac{1}{2}\omega^2x^2$",
+    )
+
+    plot_probability_densities(
+        states,
+        numerov_results_dir / "2a_harmonic_oscillator_Numerov_state_densities.png",
+        "Harmonic oscillator - state densities",
+    )
+
+    plot_energy_comparison(
+        numerical,
+        exact,
+        numerov_results_dir
+        / "2a_harmonic_oscillator_Numerov_state_energy_comparison.png",
+        "Harmonic oscillator - state energy comparison",
+        exact_label=r"Exact: $E_n=\omega\left(n+\frac{1}{2}\right)$",
+        numerical_label="Numerical",
+    )
+
+    # Grid convergence varies h at fixed x_max, so the resulting curve isolates
+    # discretization error rather than domain-truncation error.
+    conv_h = convergence_vs_grid(
+        potential_fn=harmonic_oscillator,
+        potential_kwargs={"omega": omega},
+        x_max=x_max,
+        grid_sizes=[500, 800, 1200, 1800, 2500],
+        n_even=2,
+        n_odd=2,
+        e_min=0.1,
+        e_max=6.0,
+        reference_energies=exact[:4],
+        solver_fn=solve_symmetric_potential_inward_shooting,
+    )
+    conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
+    save_csv_rows(
+        numerov_results_dir
+        / "2a_harmonic_oscillator_Numerov_energy_convergence_vs_h_slopes.csv",
+        conv_h_slopes,
+    )
+
+    plot_error_curve(
+        conv_h["h"],
+        conv_h["energy_errors"],
+        "Grid spacing $h$",
+        numerov_results_dir
+        / "2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png",
+        "Harmonic oscillator (Numerov) - energy convergence vs grid spacing $h$",
+        slopes=conv_h_slopes,
+    )
+
+    target_h = x_max / (n_grid - 1)
+
+    # Box-size convergence keeps h approximately fixed while x_max varies, so
+    # the resulting curve mainly reflects finite-domain truncation.
+    conv_box = convergence_vs_box_size_fixed_spacing(
+        potential_fn=harmonic_oscillator,
+        potential_kwargs={"omega": omega},
+        x_max_values=[4.0, 5.0, 6.0, 7.0, 8.0, 10.0],
+        target_h=target_h,
+        n_even=2,
+        n_odd=2,
+        e_min=0.1,
+        e_max=6.0,
+        reference_energies=exact[:4],
+        solver_fn=solve_symmetric_potential_inward_shooting,
+    )
+    save_csv_rows(
+        numerov_results_dir
+        / "2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.csv",
+        [
+            {
+                "x_max": x_val,
+                "n_grid": int(n_val),
+                "h": h_val,
+                **{
+                    f"state_{state_index}_abs_error": conv_box["energy_errors"][
+                        row_index, state_index
+                    ]
+                    for state_index in range(conv_box["energy_errors"].shape[1])
+                },
+            }
+            for row_index, (x_val, n_val, h_val) in enumerate(
+                zip(conv_box["x_max"], conv_box["n_grid"], conv_box["h"])
+            )
+        ],
+    )
+
+    plot_error_curve(
+        conv_box["x_max"],
+        conv_box["energy_errors"],
+        "Box size $x_{\\max}$",
+        numerov_results_dir
+        / "2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png",
+        "Harmonic oscillator (Numerov) - energy convergence vs box size $x_{\\max}$",
+    )
+
+    return {
+        "states": states,
+        "exact_energies": exact,
+        "convergence": conv_h,
+        "target_h": target_h,
+    }
+
+
+# ===========================================================================
+# FUNCTION: run_harmonic_oscillator_RK4
+# ===========================================================================
+def run_harmonic_oscillator_RK4(
     rk4_results_dir: Path,
-    comparison_results_dir: Path,
     numerov_convergence: dict[str, np.ndarray],
     omega: float = 1.0,
     x_max: float = 8.0,
     target_h: float | None = None,
-) -> None:
+) -> dict[str, np.ndarray]:
     """
-    Compare the specialized Numerov integrator with general RK4 shooting.
-
-    The harmonic oscillator is used because it has an exact spectrum and a
-    smooth potential. Both methods use inward shooting, so the comparison mainly
-    isolates the difference between the Numerov and RK4 integration formulas.
+    Run the RK4 harmonic-oscillator study on the same grids as Numerov.
 
     Parameters
     ----------
     rk4_results_dir : Path
         Output directory for RK4-only tables and figures.
-    comparison_results_dir : Path
-        Output directory for direct Numerov-versus-RK4 comparison data and plots.
     numerov_convergence : dict[str, np.ndarray]
-        Precomputed Numerov grid-convergence data, expected to include matching
-        ``"h"`` and ``"energy_errors"`` arrays for the first four states.
+        Precomputed Numerov grid-convergence data whose spacings are reused to
+        build a matched RK4 grid family.
     omega : float, optional
         Harmonic-oscillator frequency in the potential
         ``V(x)=\\frac{1}{2}\\omega^2 x^2``.
@@ -311,27 +499,24 @@ def run_harmonic_oscillator_RK4_comparison(
     target_h : float | None, optional
         Nominal grid spacing for the optional RK4 box-size study. If ``None``,
         that box-size comparison is skipped.
+
+    Returns
+    -------
+    dict[str, np.ndarray]
+        RK4 grid-convergence data on the matched harmonic-oscillator meshes.
     """
 
-    # -----------------------------------------------------
-    # Set up the comparison
-    # -----------------------------------------------------
+    print("Running harmonic oscillator RK4 study...")
 
     n_states = 4
     numerov_h = np.asarray(numerov_convergence["h"], dtype=float)
-    numerov_errors = np.asarray(numerov_convergence["energy_errors"], dtype=float)
 
     # Convert the Numerov spacing samples back into integer grid sizes so the
-    # RK4 comparison uses matching meshes.
+    # RK4 study uses the same family of meshes.
     grid_sizes = [int(round(x_max / h)) + 1 for h in numerov_h]
 
-    # -----------------------------------------------------
-    # Run the RK4 calculations
-    # -----------------------------------------------------
-
-    print("Running harmonic oscillator RK4 comparison...")
-
-    # First generate one representative RK4 spectrum table and figure.
+    # First generate one representative RK4 spectrum table and figure before
+    # building the matched-grid convergence study.
     rk4_reference_rows = RK4_solve_harmonic_oscillator_energies(
         x_max=x_max,
         n_grid=1200,
@@ -362,8 +547,6 @@ def run_harmonic_oscillator_RK4_comparison(
         numerical_label="RK4",
     )
 
-    # Then compute the RK4 convergence curve on the same family of spacings
-    # used by the Numerov study.
     rk4_convergence = RK4_harmonic_convergence_vs_grid(
         x_max=x_max,
         grid_sizes=grid_sizes,
@@ -371,12 +554,10 @@ def run_harmonic_oscillator_RK4_comparison(
         omega=omega,
     )
 
-    # -----------------------------------------------------
-    # Analyze and save the results
-    # -----------------------------------------------------
+    print("Analyzing harmonic oscillator RK4 results...")
 
-    print("Analyzing harmonic oscillator RK4 comparison results...")
-
+    # Save the observed RK4 convergence slopes and the corresponding error
+    # curves on the same h values used by the Numerov study.
     rk4_slopes = estimate_convergence_slopes(
         rk4_convergence["h"], rk4_convergence["energy_errors"]
     )
@@ -395,39 +576,6 @@ def run_harmonic_oscillator_RK4_comparison(
         slopes=rk4_slopes,
     )
 
-    if not np.allclose(numerov_h, rk4_convergence["h"]):
-        raise ValueError("Numerov and RK4 comparisons must use identical h values.")
-
-    comparison_rows = []
-
-    for method, h_values, errors in [
-        ("Numerov", numerov_h, numerov_errors),
-        ("RK4", rk4_convergence["h"], rk4_convergence["energy_errors"]),
-    ]:
-        # Flatten both error tables into one CSV so the report can compare the
-        # methods row by row without special-case parsing.
-        for grid_index, h_value in enumerate(h_values):
-            row = {"method": method, "h": h_value}
-            for state_index in range(errors.shape[1]):
-                row[f"state_{state_index}_abs_error"] = errors[grid_index, state_index]
-            row["max_abs_error"] = float(np.max(errors[grid_index, :]))
-            comparison_rows.append(row)
-    save_csv_rows(
-        comparison_results_dir
-        / "2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.csv",
-        comparison_rows,
-    )
-
-    plot_numerov_vs_RK4_errors(
-        numerov_h,
-        numerov_errors,
-        rk4_convergence["h"],
-        rk4_convergence["energy_errors"],
-        comparison_results_dir
-        / "2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png",
-        "Harmonic oscillator - Numerov vs RK4 state error comparison",
-    )
-
     plot_harmonic_oscillator_RK4_root_diagnostics(
         rk4_results_dir,
         omega=omega,
@@ -435,10 +583,8 @@ def run_harmonic_oscillator_RK4_comparison(
     )
 
     if target_h is not None:
-        # -----------------------------------------------------
-        # Run the fixed-spacing box-size study
-        # -----------------------------------------------------
-
+        # Keep the same nominal spacing as the Numerov box-size study so the
+        # domain-truncation comparison stays formulation-to-formulation fair.
         print("Running harmonic oscillator RK4 box-size study...")
 
         rk4_box = RK4_harmonic_convergence_vs_box_size_fixed_spacing(
@@ -449,10 +595,6 @@ def run_harmonic_oscillator_RK4_comparison(
             e_min=0.1,
             e_max=6.0,
         )
-
-        # -----------------------------------------------------
-        # Analyze and save the box-size results
-        # -----------------------------------------------------
 
         print("Analyzing harmonic oscillator RK4 box-size results...")
 
@@ -485,6 +627,72 @@ def run_harmonic_oscillator_RK4_comparison(
             / "2b_harmonic_oscillator_RK4_energy_convergence_vs_x_max.png",
             "Harmonic oscillator (RK4) - energy convergence vs box size $x_{\\max}$",
         )
+
+    return rk4_convergence
+
+
+# ===========================================================================
+# FUNCTION: run_harmonic_oscillator_Numerov_VS_RK4
+# ===========================================================================
+def run_harmonic_oscillator_Numerov_VS_RK4(
+    comparison_results_dir: Path,
+    numerov_convergence: dict[str, np.ndarray],
+    rk4_convergence: dict[str, np.ndarray],
+) -> None:
+    """
+    Compare harmonic-oscillator Numerov and RK4 convergence results.
+
+    Parameters
+    ----------
+    comparison_results_dir : Path
+        Output directory for direct Numerov-versus-RK4 comparison data and plots.
+    numerov_convergence : dict[str, np.ndarray]
+        Numerov grid-convergence data for the first four states.
+    rk4_convergence : dict[str, np.ndarray]
+        RK4 grid-convergence data on the matching grid family.
+    """
+
+    print("Analyzing harmonic oscillator Numerov vs RK4 comparison...")
+
+    numerov_h = np.asarray(numerov_convergence["h"], dtype=float)
+    numerov_errors = np.asarray(numerov_convergence["energy_errors"], dtype=float)
+    rk4_h = np.asarray(rk4_convergence["h"], dtype=float)
+    rk4_errors = np.asarray(rk4_convergence["energy_errors"], dtype=float)
+
+    if not np.allclose(numerov_h, rk4_h):
+        raise ValueError("Numerov and RK4 comparisons must use identical h values.")
+
+    # Flatten both per-state error tables into one CSV so the report can
+    # compare the two methods row by row on the same grid spacings.
+    comparison_rows = []
+
+    for method, h_values, errors in [
+        ("Numerov", numerov_h, numerov_errors),
+        ("RK4", rk4_h, rk4_errors),
+    ]:
+        # Flatten both error tables into one CSV so the report can compare the
+        # methods row by row without special-case parsing.
+        for grid_index, h_value in enumerate(h_values):
+            row = {"method": method, "h": h_value}
+            for state_index in range(errors.shape[1]):
+                row[f"state_{state_index}_abs_error"] = errors[grid_index, state_index]
+            row["max_abs_error"] = float(np.max(errors[grid_index, :]))
+            comparison_rows.append(row)
+    save_csv_rows(
+        comparison_results_dir
+        / "2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.csv",
+        comparison_rows,
+    )
+
+    plot_numerov_vs_RK4_errors(
+        numerov_h,
+        numerov_errors,
+        rk4_h,
+        rk4_errors,
+        comparison_results_dir
+        / "2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png",
+        "Harmonic oscillator - Numerov vs RK4 state error comparison",
+    )
 
 
 # ===========================================================================
@@ -529,192 +737,31 @@ def run_harmonic_oscillator(results_dir: Path) -> None:
     # Run the experiment
     # -----------------------------------------------------
 
-    print("Running harmonic oscillator experiment (Numerov)...")
-
-    # Run the solver to find the first four bound states. Use inward shooting for
-    # the harmonic oscillator. On a truncated infinite domain, outward shooting
-    # can pick up the exponentially growing forbidden-region solution instead of
-    # the physical decaying tail
-    states = solve_symmetric_potential_inward_shooting(
+    # Run the Numerov benchmark first, because its matched-grid convergence
+    # data determine the mesh family reused by the RK4 study.
+    numerov_summary = run_harmonic_oscillator_Numerov(
+        numerov_results_dir=numerov_results_dir,
+        omega=omega,
         x_max=x_max,
         n_grid=n_grid,
-        potential_fn=harmonic_oscillator,
-        potential_kwargs={"omega": omega},
-        n_even=2,
-        n_odd=2,
-        e_min=0.1,
-        e_max=6.5,
     )
 
-    # -----------------------------------------------------
-    # Analyze and save the results
-    # -----------------------------------------------------
-
-    print("Analyzing harmonic oscillator results (Numerov)...")
-
-    # Plot the root-finding diagnostics for all four states, with separate panels
-    # for the even and odd sectors
-    plot_harmonic_oscillator_root_diagnostics(
-        numerov_results_dir,
-        omega=omega,
-        x_max=x_max,
-    )
-
-    # Tabulate the numerical energies and compare them to the exact formula
-    # E_n = omega * (n + 0.5)
-    numerical = np.array([s.energy for s in states[:4]])
-    exact = exact_harmonic_oscillator_energies(np.arange(4), omega=omega)
-
-    # Save a CSV comparing the numerical and exact energies, along with the relative
-    # error
-    rows = []
-    for i, (en, ex) in enumerate(zip(numerical, exact)):
-        rows.append(
-            {
-                "state_index": i,
-                "parity": states[i].parity,
-                "numerical_energy": en,
-                "exact_energy": ex,
-                "relative_error": abs((en - ex) / ex),
-            }
-        )
-    save_csv_rows(
-        numerov_results_dir / "2a_harmonic_oscillator_Numerov_energies.csv",
-        rows,
-    )
-
-    # Plot the states, probability densities, and energy comparison for the first four
-    # states
-    x = states[0].x_full
-    V = harmonic_oscillator(x, omega=omega)
-
-    plot_potential_and_states(
-        x,
-        V,
-        states,
-        numerov_results_dir / "2a_harmonic_oscillator_Numerov_states.png",
-        "Harmonic oscillator - states",
-        potential_label=r"$V(x)=\frac{1}{2}\omega^2x^2$",
-    )
-
-    plot_probability_densities(
-        states,
-        numerov_results_dir / "2a_harmonic_oscillator_Numerov_state_densities.png",
-        "Harmonic oscillator - state densities",
-    )
-
-    plot_energy_comparison(
-        numerical,
-        exact,
-        numerov_results_dir
-        / "2a_harmonic_oscillator_Numerov_state_energy_comparison.png",
-        "Harmonic oscillator - state energy comparison",
-        exact_label=r"Exact: $E_n=\omega\left(n+\frac{1}{2}\right)$",
-        numerical_label="Numerical",
-    )
-
-    # Grid-refinement convergence for all four displayed states. Use the
-    # inward-decay solver here as well, so the convergence study matches the
-    # stable harmonic-oscillator calculation used for the final figures.
-    # Grid convergence changes h at fixed domain size, isolating the
-    # discretization error from the finite-domain truncation error.
-    conv_h = convergence_vs_grid(
-        potential_fn=harmonic_oscillator,
-        potential_kwargs={"omega": omega},
-        x_max=x_max,
-        grid_sizes=[500, 800, 1200, 1800, 2500],
-        n_even=2,
-        n_odd=2,
-        e_min=0.1,
-        e_max=6.0,
-        reference_energies=exact[:4],
-        solver_fn=solve_symmetric_potential_inward_shooting,
-    )
-    conv_h_slopes = estimate_convergence_slopes(conv_h["h"], conv_h["energy_errors"])
-    save_csv_rows(
-        numerov_results_dir
-        / "2a_harmonic_oscillator_Numerov_energy_convergence_vs_h_slopes.csv",
-        conv_h_slopes,
-    )
-
-    plot_error_curve(
-        conv_h["h"],
-        conv_h["energy_errors"],
-        "Grid spacing $h$",
-        numerov_results_dir
-        / "2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png",
-        "Harmonic oscillator (Numerov) - energy convergence vs grid spacing $h$",
-        slopes=conv_h_slopes,
-    )
-
-    # Keep the same nominal spacing for the RK4 and Numerov box-size studies.
-    target_h = x_max / (n_grid - 1)
-
-    # Box-size convergence should isolate the finite-domain truncation error.
-    # Therefore h is kept approximately fixed while x_max changes. Holding
-    # n_grid fixed would also change h and mix two different error sources.
-    # Convergence claims are only meaningful if discretization and
-    # domain-truncation errors are not folded together.
-    conv_box = convergence_vs_box_size_fixed_spacing(
-        potential_fn=harmonic_oscillator,
-        potential_kwargs={"omega": omega},
-        x_max_values=[4.0, 5.0, 6.0, 7.0, 8.0, 10.0],
-        target_h=target_h,
-        n_even=2,
-        n_odd=2,
-        e_min=0.1,
-        e_max=6.0,
-        reference_energies=exact[:4],
-        solver_fn=solve_symmetric_potential_inward_shooting,
-    )
-    save_csv_rows(
-        numerov_results_dir
-        / "2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.csv",
-        [
-            {
-                "x_max": x_val,
-                "n_grid": int(n_val),
-                "h": h_val,
-                **{
-                    f"state_{state_index}_abs_error": conv_box["energy_errors"][
-                        row_index, state_index
-                    ]
-                    for state_index in range(conv_box["energy_errors"].shape[1])
-                },
-            }
-            for row_index, (x_val, n_val, h_val) in enumerate(
-                zip(conv_box["x_max"], conv_box["n_grid"], conv_box["h"])
-            )
-        ],
-    )
-
-    plot_error_curve(
-        conv_box["x_max"],
-        conv_box["energy_errors"],
-        "Box size $x_{\\max}$",
-        numerov_results_dir
-        / "2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png",
-        "Harmonic oscillator (Numerov) - energy convergence vs box size $x_{\\max}$",
-    )
-
-    # -----------------------------------------------------
-    # Run the RK4 comparison and box-size convergence studies
-    # -----------------------------------------------------
-
-    print(
-        "Running harmonic oscillator RK4 comparison and box-size convergence studies..."
-    )
-
-    # The RK4 comparison reuses the same grid spacings as the Numerov
-    # grid-convergence study, so both methods are compared on matched meshes at
-    # the same fixed domain size.
-    run_harmonic_oscillator_RK4_comparison(
+    # Reuse the Numerov spacings for the RK4 study so both methods are judged
+    # on identical truncated domains and comparable meshes.
+    rk4_convergence = run_harmonic_oscillator_RK4(
         rk4_results_dir=rk4_results_dir,
-        comparison_results_dir=comparison_results_dir,
-        numerov_convergence=conv_h,
+        numerov_convergence=numerov_summary["convergence"],
         omega=omega,
         x_max=x_max,
-        target_h=target_h,
+        target_h=float(numerov_summary["target_h"]),
+    )
+
+    # Finally build the direct error-comparison CSV and overlay plot that use
+    # the two matched convergence studies produced above.
+    run_harmonic_oscillator_Numerov_VS_RK4(
+        comparison_results_dir=comparison_results_dir,
+        numerov_convergence=numerov_summary["convergence"],
+        rk4_convergence=rk4_convergence,
     )
 
 

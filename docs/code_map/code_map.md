@@ -2,8 +2,8 @@
 
 Generated from AST analysis of the local Python files in `src/`, `scripts/`, and `tests/`.
 
-- Functions mapped: `104`
-- Direct project-call edges: `208`
+- Functions mapped: `106`
+- Direct project-call edges: `211`
 - Scope: direct calls only; indirect calls through function arguments such as `potential_fn(...)` are not inferred.
 - Regenerate with: `python3 scripts/generate_code_map.py`
 - Rendered diagrams:
@@ -211,23 +211,28 @@ flowchart TD
     src_experiments_run_finite_square_well --> src_plotting_plot_potential_and_states[plot_potential_and_states]
     src_experiments_run_finite_square_well --> src_plotting_plot_probability_densities[plot_probability_densities]
     src_experiments_run_harmonic_oscillator[run_harmonic_oscillator]
-    src_experiments_run_harmonic_oscillator --> src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
-    src_experiments_run_harmonic_oscillator --> src_analysis_convergence_vs_grid[convergence_vs_grid]
-    src_experiments_run_harmonic_oscillator --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
-    src_experiments_run_harmonic_oscillator --> src_analysis_exact_harmonic_oscillator_energies[exact_harmonic_oscillator_energies]
-    src_experiments_run_harmonic_oscillator --> src_analysis_save_csv_rows[save_csv_rows]
     src_experiments_run_harmonic_oscillator --> src_experiments__experiment_results_dir[_experiment_results_dir]
-    src_experiments_run_harmonic_oscillator --> src_experiments_run_harmonic_oscillator_RK4_comparison[run_harmonic_oscillator_RK4_comparison]
-    src_experiments_run_harmonic_oscillator --> src_plotting_plot_energy_comparison[plot_energy_comparison]
-    src_experiments_run_harmonic_oscillator --> src_plotting_plot_error_curve[plot_error_curve]
-    src_experiments_run_harmonic_oscillator --> src_plotting_plot_potential_and_states[plot_potential_and_states]
-    src_experiments_run_harmonic_oscillator --> src_plotting_plot_probability_densities[plot_probability_densities]
-    src_experiments_run_harmonic_oscillator_RK4_comparison[run_harmonic_oscillator_RK4_comparison]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_analysis_save_csv_rows[save_csv_rows]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_plotting_plot_energy_comparison[plot_energy_comparison]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_plotting_plot_error_curve[plot_error_curve]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_plotting_plot_numerov_vs_RK4_errors[plot_numerov_vs_RK4_errors]
+    src_experiments_run_harmonic_oscillator --> src_experiments_run_harmonic_oscillator_Numerov[run_harmonic_oscillator_Numerov]
+    src_experiments_run_harmonic_oscillator --> src_experiments_run_harmonic_oscillator_Numerov_VS_RK4[run_harmonic_oscillator_Numerov_VS_RK4]
+    src_experiments_run_harmonic_oscillator --> src_experiments_run_harmonic_oscillator_RK4[run_harmonic_oscillator_RK4]
+    src_experiments_run_harmonic_oscillator_Numerov[run_harmonic_oscillator_Numerov]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_analysis_convergence_vs_grid[convergence_vs_grid]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_analysis_exact_harmonic_oscillator_energies[exact_harmonic_oscillator_energies]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_analysis_save_csv_rows[save_csv_rows]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_plotting_plot_energy_comparison[plot_energy_comparison]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_plotting_plot_error_curve[plot_error_curve]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_plotting_plot_potential_and_states[plot_potential_and_states]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_plotting_plot_probability_densities[plot_probability_densities]
+    src_experiments_run_harmonic_oscillator_Numerov_VS_RK4[run_harmonic_oscillator_Numerov_VS_RK4]
+    src_experiments_run_harmonic_oscillator_Numerov_VS_RK4 --> src_analysis_save_csv_rows[save_csv_rows]
+    src_experiments_run_harmonic_oscillator_Numerov_VS_RK4 --> src_plotting_plot_numerov_vs_RK4_errors[plot_numerov_vs_RK4_errors]
+    src_experiments_run_harmonic_oscillator_RK4[run_harmonic_oscillator_RK4]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_analysis_save_csv_rows[save_csv_rows]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_plotting_plot_energy_comparison[plot_energy_comparison]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_plotting_plot_error_curve[plot_error_curve]
     src_experiments_run_quartic_double_well[run_quartic_double_well]
     src_experiments_run_quartic_double_well --> src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
     src_experiments_run_quartic_double_well --> src_analysis_convergence_vs_grid_successive[convergence_vs_grid_successive]
@@ -437,30 +442,35 @@ flowchart TD
     src_diagnostics_plot_harmonic_oscillator_root_diagnostics --> src_diagnostics__plot_inward_root_diagnostics[_plot_inward_root_diagnostics]
     src_experiments__experiment_results_dir[_experiment_results_dir]
     src_experiments_run_harmonic_oscillator[run_harmonic_oscillator]
-    src_experiments_run_harmonic_oscillator --> src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
-    src_experiments_run_harmonic_oscillator --> src_analysis_convergence_vs_grid[convergence_vs_grid]
-    src_experiments_run_harmonic_oscillator --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
-    src_experiments_run_harmonic_oscillator --> src_analysis_exact_harmonic_oscillator_energies[exact_harmonic_oscillator_energies]
-    src_experiments_run_harmonic_oscillator --> src_analysis_save_csv_rows[save_csv_rows]
-    src_experiments_run_harmonic_oscillator --> src_diagnostics_plot_harmonic_oscillator_root_diagnostics[plot_harmonic_oscillator_root_diagnostics]
     src_experiments_run_harmonic_oscillator --> src_experiments__experiment_results_dir[_experiment_results_dir]
-    src_experiments_run_harmonic_oscillator --> src_experiments_run_harmonic_oscillator_RK4_comparison[run_harmonic_oscillator_RK4_comparison]
-    src_experiments_run_harmonic_oscillator --> src_plotting_plot_energy_comparison[plot_energy_comparison]
-    src_experiments_run_harmonic_oscillator --> src_plotting_plot_error_curve[plot_error_curve]
-    src_experiments_run_harmonic_oscillator --> src_plotting_plot_potential_and_states[plot_potential_and_states]
-    src_experiments_run_harmonic_oscillator --> src_plotting_plot_probability_densities[plot_probability_densities]
-    src_experiments_run_harmonic_oscillator --> src_potentials_harmonic_oscillator[harmonic_oscillator]
-    src_experiments_run_harmonic_oscillator --> src_shooting_solve_symmetric_potential_inward_shooting[solve_symmetric_potential_inward_shooting]
-    src_experiments_run_harmonic_oscillator_RK4_comparison[run_harmonic_oscillator_RK4_comparison]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_analysis_save_csv_rows[save_csv_rows]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics[plot_harmonic_oscillator_RK4_root_diagnostics]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_plotting_plot_energy_comparison[plot_energy_comparison]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_plotting_plot_error_curve[plot_error_curve]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_plotting_plot_numerov_vs_RK4_errors[plot_numerov_vs_RK4_errors]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing[RK4_harmonic_convergence_vs_box_size_fixed_spacing]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_rk4_compare_RK4_harmonic_convergence_vs_grid[RK4_harmonic_convergence_vs_grid]
-    src_experiments_run_harmonic_oscillator_RK4_comparison --> src_rk4_compare_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
+    src_experiments_run_harmonic_oscillator --> src_experiments_run_harmonic_oscillator_Numerov[run_harmonic_oscillator_Numerov]
+    src_experiments_run_harmonic_oscillator --> src_experiments_run_harmonic_oscillator_Numerov_VS_RK4[run_harmonic_oscillator_Numerov_VS_RK4]
+    src_experiments_run_harmonic_oscillator --> src_experiments_run_harmonic_oscillator_RK4[run_harmonic_oscillator_RK4]
+    src_experiments_run_harmonic_oscillator_Numerov[run_harmonic_oscillator_Numerov]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_analysis_convergence_vs_grid[convergence_vs_grid]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_analysis_exact_harmonic_oscillator_energies[exact_harmonic_oscillator_energies]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_analysis_save_csv_rows[save_csv_rows]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_diagnostics_plot_harmonic_oscillator_root_diagnostics[plot_harmonic_oscillator_root_diagnostics]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_plotting_plot_energy_comparison[plot_energy_comparison]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_plotting_plot_error_curve[plot_error_curve]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_plotting_plot_potential_and_states[plot_potential_and_states]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_plotting_plot_probability_densities[plot_probability_densities]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_potentials_harmonic_oscillator[harmonic_oscillator]
+    src_experiments_run_harmonic_oscillator_Numerov --> src_shooting_solve_symmetric_potential_inward_shooting[solve_symmetric_potential_inward_shooting]
+    src_experiments_run_harmonic_oscillator_Numerov_VS_RK4[run_harmonic_oscillator_Numerov_VS_RK4]
+    src_experiments_run_harmonic_oscillator_Numerov_VS_RK4 --> src_analysis_save_csv_rows[save_csv_rows]
+    src_experiments_run_harmonic_oscillator_Numerov_VS_RK4 --> src_plotting_plot_numerov_vs_RK4_errors[plot_numerov_vs_RK4_errors]
+    src_experiments_run_harmonic_oscillator_RK4[run_harmonic_oscillator_RK4]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_analysis_save_csv_rows[save_csv_rows]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics[plot_harmonic_oscillator_RK4_root_diagnostics]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_plotting_plot_energy_comparison[plot_energy_comparison]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_plotting_plot_error_curve[plot_error_curve]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing[RK4_harmonic_convergence_vs_box_size_fixed_spacing]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_rk4_compare_RK4_harmonic_convergence_vs_grid[RK4_harmonic_convergence_vs_grid]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_rk4_compare_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
     src_numerov_derivative_at_right_edge[derivative_at_right_edge]
     src_numerov_normalize_wavefunction[normalize_wavefunction]
     src_numerov_numerov_march[numerov_march]
@@ -815,8 +825,10 @@ flowchart TD
 
 - `_experiment_results_dir` -> (no direct project-function calls)
 - `run_finite_square_well` -> convergence_vs_grid, estimate_convergence_slopes, save_csv_rows, plot_finite_square_well_root_diagnostics, _experiment_results_dir, plot_error_curve, plot_potential_and_states, plot_probability_densities, finite_square_well, solve_symmetric_potential_outward_shooting
-- `run_harmonic_oscillator` -> convergence_vs_box_size_fixed_spacing, convergence_vs_grid, estimate_convergence_slopes, exact_harmonic_oscillator_energies, save_csv_rows, plot_harmonic_oscillator_root_diagnostics, _experiment_results_dir, run_harmonic_oscillator_RK4_comparison, plot_energy_comparison, plot_error_curve, plot_potential_and_states, plot_probability_densities, harmonic_oscillator, solve_symmetric_potential_inward_shooting
-- `run_harmonic_oscillator_RK4_comparison` -> estimate_convergence_slopes, save_csv_rows, plot_harmonic_oscillator_RK4_root_diagnostics, plot_energy_comparison, plot_error_curve, plot_numerov_vs_RK4_errors, RK4_harmonic_convergence_vs_box_size_fixed_spacing, RK4_harmonic_convergence_vs_grid, RK4_solve_harmonic_oscillator_energies
+- `run_harmonic_oscillator` -> _experiment_results_dir, run_harmonic_oscillator_Numerov, run_harmonic_oscillator_Numerov_VS_RK4, run_harmonic_oscillator_RK4
+- `run_harmonic_oscillator_Numerov` -> convergence_vs_box_size_fixed_spacing, convergence_vs_grid, estimate_convergence_slopes, exact_harmonic_oscillator_energies, save_csv_rows, plot_harmonic_oscillator_root_diagnostics, plot_energy_comparison, plot_error_curve, plot_potential_and_states, plot_probability_densities, harmonic_oscillator, solve_symmetric_potential_inward_shooting
+- `run_harmonic_oscillator_Numerov_VS_RK4` -> save_csv_rows, plot_numerov_vs_RK4_errors
+- `run_harmonic_oscillator_RK4` -> estimate_convergence_slopes, save_csv_rows, plot_harmonic_oscillator_RK4_root_diagnostics, plot_energy_comparison, plot_error_curve, RK4_harmonic_convergence_vs_box_size_fixed_spacing, RK4_harmonic_convergence_vs_grid, RK4_solve_harmonic_oscillator_energies
 - `run_quartic_double_well` -> convergence_vs_box_size_fixed_spacing, convergence_vs_grid_successive, estimate_convergence_slopes, save_csv_rows, splitting_vs_parameter, plot_double_well_root_diagnostics, _experiment_results_dir, plot_error_curve, plot_potential_and_states, plot_probability_densities, plot_splitting_curve, quartic_double_well, solve_symmetric_potential_outward_shooting
 - `run_scattering` -> save_csv_rows, _experiment_results_dir, plot_scattering_coefficients, plot_scattering_potential_and_probability, double_square_barrier, square_barrier, find_transmission_peaks, scattering_wavefunction, sweep_scattering
 - `run_square_well` -> convergence_vs_grid, estimate_convergence_slopes, exact_square_well_energies, save_csv_rows, plot_infinite_well_root_diagnostics, _experiment_results_dir, plot_energy_comparison, plot_error_curve, plot_potential_and_states, plot_probability_densities, infinite_square_well_numeric, solve_symmetric_potential_outward_shooting

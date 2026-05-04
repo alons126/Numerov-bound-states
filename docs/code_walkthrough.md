@@ -146,11 +146,13 @@ High-level routines that connect solvers, potentials, CSV outputs, and plots. Ea
 |---:|---|---|
 | 96-116 | `function _experiment_results_dir` | Create and return one experiment-specific output directory under the shared results root. |
 | 121-258 | `function run_square_well` | Run the infinite square well benchmark case and its convergence study. |
-| 264-469 | `function run_harmonic_oscillator_RK4_comparison` | Compare the specialized Numerov integrator with general RK4 shooting. |
-| 475-698 | `function run_harmonic_oscillator` | Run the harmonic-oscillator benchmark, including inward-shooting diagnostics and the RK4 comparison. |
-| 704-917 | `function run_quartic_double_well` | Run the quartic double-well study, including convergence and tunneling-splitting sweeps. |
-| 923-1012 | `function run_finite_square_well` | Run the finite square well, including outward-shooting root diagnostics and a finest-grid-reference convergence study for the first four bound states; because the potential jumps at the well edge, this case shows reduced observed order compared with the smooth benchmark potentials. |
-| 1018-1209 | `function run_scattering` | Run the scattering extension for single- and double-barrier tunneling, including resonant-peak extraction. |
+| 282-463 | `function run_harmonic_oscillator_Numerov` | Run the Numerov harmonic-oscillator benchmark, including inward-shooting diagnostics and Numerov-only convergence studies. |
+| 469-617 | `function run_harmonic_oscillator_RK4` | Run the RK4 harmonic-oscillator study on the same grids used by the Numerov benchmark. |
+| 623-677 | `function run_harmonic_oscillator_Numerov_VS_RK4` | Build the direct Numerov-versus-RK4 error comparison outputs. |
+| 685-743 | `function run_harmonic_oscillator` | Wrap the Numerov, RK4, and comparison sub-studies for the harmonic oscillator. |
+| 756-969 | `function run_quartic_double_well` | Run the quartic double-well study, including convergence and tunneling-splitting sweeps. |
+| 975-1064 | `function run_finite_square_well` | Run the finite square well, including outward-shooting root diagnostics and a finest-grid-reference convergence study for the first four bound states; because the potential jumps at the well edge, this case shows reduced observed order compared with the smooth benchmark potentials. |
+| 1070-1261 | `function run_scattering` | Run the scattering extension for single- and double-barrier tunneling, including resonant-peak extraction. |
 
 ### `src/plotting.py`
 Report-ready Matplotlib figures.
