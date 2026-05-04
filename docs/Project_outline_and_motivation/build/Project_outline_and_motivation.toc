@@ -14,7 +14,7 @@
 \contentsline {subsection}{\numberline {3.2}Why Numerov?}{9}{subsection.3.2}%
 \contentsline {subsection}{\numberline {3.3}How the code uses the Numerov algorithm}{10}{subsection.3.3}%
 \contentsline {section}{\numberline {4}Why shooting?}{10}{section.4}%
-\contentsline {section}{\numberline {5}Why parity?}{11}{section.5}%
+\contentsline {section}{\numberline {5}Why parity?}{12}{section.5}%
 \contentsline {section}{\numberline {6}Why root finding and bisection?}{12}{section.6}%
 \contentsline {section}{\numberline {7}What each code file does}{13}{section.7}%
 \contentsline {subsection}{\numberline {7.1}\texttt {src/potentials.py}}{13}{subsection.7.1}%
@@ -23,17 +23,17 @@
 \contentsline {subsection}{\numberline {7.4}\texttt {src/analysis.py}}{15}{subsection.7.4}%
 \contentsline {subsection}{\numberline {7.5}\texttt {src/rk4\_compare.py}}{16}{subsection.7.5}%
 \contentsline {subsection}{\numberline {7.6}\texttt {src/scattering.py}}{16}{subsection.7.6}%
-\contentsline {subsection}{\numberline {7.7}\texttt {src/plotting.py}}{16}{subsection.7.7}%
+\contentsline {subsection}{\numberline {7.7}\texttt {src/plotting.py}}{17}{subsection.7.7}%
 \contentsline {subsection}{\numberline {7.8}\texttt {src/experiments.py}}{17}{subsection.7.8}%
 \contentsline {subsection}{\numberline {7.9}\texttt {scripts/run\_solver.py}}{18}{subsection.7.9}%
 \contentsline {subsection}{\numberline {7.10}\texttt {tests/test\_solver.py}}{18}{subsection.7.10}%
-\contentsline {section}{\numberline {8}What the project demonstrates}{18}{section.8}%
+\contentsline {section}{\numberline {8}What the project demonstrates}{19}{section.8}%
 \contentsline {subsection}{\numberline {8.1}Level 1: Exact benchmarks}{19}{subsection.8.1}%
 \contentsline {subsection}{\numberline {8.2}Level 2: Convergence}{19}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Level 3: New physics}{19}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.3}Level 3: New physics}{20}{subsection.8.3}%
 \contentsline {section}{\numberline {9}What is apparent from the lectures and what is beyond them?}{20}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Clearly from the lectures}{20}{subsection.9.1}%
 \contentsline {subsection}{\numberline {9.2}Partly from the lectures, but specialized to quantum mechanics}{20}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Beyond the slides}{20}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.3}Beyond the slides}{21}{subsection.9.3}%
 \contentsline {subsection}{\numberline {9.4}Not used from the lectures}{21}{subsection.9.4}%
 \contentsline {section}{\numberline {10}The clean explanation for a reviewer}{21}{section.10}%

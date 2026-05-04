@@ -35,7 +35,9 @@ from src.analysis import exact_harmonic_oscillator_energies
 
 
 # ===========================================================================
+# ===========================================================================
 # DATA CLASS: RK4EnergyResult
+# ===========================================================================
 # ===========================================================================
 @dataclass
 class RK4EnergyResult:
@@ -125,7 +127,9 @@ def RK4_step(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: RK4_inward_mismatch
+# ===========================================================================
 # ===========================================================================
 def RK4_inward_mismatch(
     energy: float,
@@ -242,7 +246,9 @@ def RK4_diagnostic_mismatch(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: RK4_find_brackets
+# ===========================================================================
 # ===========================================================================
 def RK4_find_brackets(
     parity: str,
@@ -283,6 +289,9 @@ def RK4_find_brackets(
         bisection.
     """
 
+    # Build a uniform trial-energy scan on [e_min, e_max], then evaluate the
+    # RK4 inward-shooting mismatch M(E) at each sample so neighboring sign
+    # changes can be turned into root brackets.
     energies = np.linspace(e_min, e_max, n_scan)
     mismatches = np.array(
         [RK4_inward_mismatch(e, parity, x_max, n_grid, omega) for e in energies],
@@ -290,6 +299,10 @@ def RK4_find_brackets(
     )
 
     brackets: list[tuple[float, float]] = []
+
+    # Walk through neighboring sampled mismatch values and convert either an
+    # exact zero hit or a sign change into a bracket for the later bisection
+    # refinement step.
     for i in range(len(energies) - 1):
         a = mismatches[i]
         b = mismatches[i + 1]
@@ -303,6 +316,9 @@ def RK4_find_brackets(
             eps = 1e-10 * max(1.0, abs(energies[i]))
             brackets.append((float(energies[i] - eps), float(energies[i] + eps)))
         elif np.signbit(a) != np.signbit(b):
+            # A sign change indicates that the inward RK4 mismatch crossed zero
+            # between these two trial energies, so this interval can be passed
+            # directly to the root-refinement stage.
             brackets.append((float(energies[i]), float(energies[i + 1])))
 
     return brackets
@@ -369,7 +385,9 @@ def RK4_sample_mismatch(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: RK4_bisect_energy
+# ===========================================================================
 # ===========================================================================
 def RK4_bisect_energy(
     parity: str,
@@ -412,14 +430,21 @@ def RK4_bisect_energy(
     lo, hi = bracket
     flo = RK4_inward_mismatch(lo, parity, x_max, n_grid, omega)
 
+    # Repeatedly bisect the current sign-changing bracket. Each step tests the
+    # midpoint energy, then keeps only the half-interval that still contains
+    # the root of the RK4 inward mismatch M(E).
     for _ in range(max_iter):
         mid = 0.5 * (lo + hi)
 
         fmid = RK4_inward_mismatch(mid, parity, x_max, n_grid, omega)
 
+        # Stop as soon as either the bracket itself is tiny or the midpoint
+        # already satisfies the mismatch tolerance.
         if abs(hi - lo) < tol or abs(fmid) < tol:
             return float(mid)
 
+        # Keep whichever half-interval still shows a sign change, because that
+        # is the half that must still contain the eigenvalue.
         if np.signbit(flo) != np.signbit(fmid):
             hi = mid
         else:
@@ -548,8 +573,9 @@ def RK4_solve_harmonic_oscillator_energies(
     results: list[RK4EnergyResult] = []
 
     for parity, state_offset in [("even", 0), ("odd", 1)]:
-        # Even and odd harmonic-oscillator states interleave in energy, so each
-        # parity branch maps to every other global state index.
+        # Work one parity sector at a time. Even and odd harmonic-oscillator
+        # states interleave in energy, so each parity branch maps to every
+        # other global state index in the final combined spectrum.
         brackets = RK4_find_brackets(
             parity=parity,
             x_max=x_max,
@@ -565,6 +591,9 @@ def RK4_solve_harmonic_oscillator_energies(
             if state_index >= n_states:
                 break
 
+            # Refine this RK4 sign-changing bracket to one eigenvalue, compare
+            # it with the matching exact harmonic-oscillator energy, then save
+            # both absolute and relative errors for the method comparison.
             energy = RK4_bisect_energy(
                 parity=parity,
                 bracket=bracket,
@@ -574,6 +603,7 @@ def RK4_solve_harmonic_oscillator_energies(
             )
             exact_energy = float(exact[state_index])
             absolute_error = abs(energy - exact_energy)
+            
             results.append(
                 RK4EnergyResult(
                     state_index=state_index,
@@ -585,6 +615,7 @@ def RK4_solve_harmonic_oscillator_energies(
                 )
             )
 
+    # Merge the even and odd branches back into the usual global state order.
     results.sort(key=lambda row: row.state_index)
 
     if len(results) < n_states:

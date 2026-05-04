@@ -227,10 +227,10 @@ INPUT build/Project_outline_and_motivation.out
 INPUT build/Project_outline_and_motivation.out
 INPUT build/Project_outline_and_motivation.out
 INPUT build/Project_outline_and_motivation.out
+OUTPUT build/Project_outline_and_motivation.pdf
 INPUT build/Project_outline_and_motivation.out
 INPUT build/Project_outline_and_motivation.out
 OUTPUT build/Project_outline_and_motivation.out
-OUTPUT build/Project_outline_and_motivation.pdf
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/lbx/english.lbx
