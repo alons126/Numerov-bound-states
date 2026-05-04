@@ -37,7 +37,7 @@ Numerical solution of the 1D time-independent Schrödinger equation with the Num
 - `tests/`
   - `test_solver.py`: lightweight numerical sanity checks
 - `docs/`
-  - `Writeup.tex`: main project report
+  - `Writeup/Writeup.tex`: main project report
   - `code_walkthrough.md`: reviewer-oriented code map
   - `Project_outline_and_motivation.tex`: project overview and implementation notes
 
