@@ -52,7 +52,9 @@ class RK4EnergyResult:
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: _harmonic_rhs
+# ===========================================================================
 # ===========================================================================
 def _harmonic_rhs(x: float, y: np.ndarray, energy: float, omega: float) -> np.ndarray:
     """
@@ -88,7 +90,9 @@ def _harmonic_rhs(x: float, y: np.ndarray, energy: float, omega: float) -> np.nd
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: RK4_step
+# ===========================================================================
 # ===========================================================================
 def RK4_step(
     x: float, y: np.ndarray, h: float, energy: float, omega: float
@@ -534,7 +538,9 @@ def RK4_bisection_history(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: RK4_solve_harmonic_oscillator_energies
+# ===========================================================================
 # ===========================================================================
 def RK4_solve_harmonic_oscillator_energies(
     x_max: float,
@@ -603,7 +609,7 @@ def RK4_solve_harmonic_oscillator_energies(
             )
             exact_energy = float(exact[state_index])
             absolute_error = abs(energy - exact_energy)
-            
+
             results.append(
                 RK4EnergyResult(
                     state_index=state_index,

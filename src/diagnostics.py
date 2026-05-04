@@ -360,7 +360,9 @@ def plot_infinite_well_root_diagnostics(results_dir: Path, a: float = 1.0) -> No
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: plot_harmonic_oscillator_root_diagnostics
+# ===========================================================================
 # ===========================================================================
 def plot_harmonic_oscillator_root_diagnostics(
     results_dir: Path,
