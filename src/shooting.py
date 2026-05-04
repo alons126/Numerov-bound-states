@@ -415,8 +415,8 @@ def sample_mismatch_outward_shooting(
     """
 
     # Build a uniform trial-energy scan on [e_min, e_max], then evaluate the
-    # inward-shooting mismatch M(E) at each sample so neighboring sign changes
-    # can be turned into root brackets.
+    # outward-shooting mismatch M(E) at each sample so neighboring sign changes
+    # can be turned into root brackets or diagnostic curves.
     energies = np.linspace(e_min, e_max, n_scan)
 
     # Sample either the diagnostics-only scaled mismatch or the raw outward
@@ -747,7 +747,8 @@ def solve_state_from_bracket_outward_shooting(
     """
 
     # Refine the sign-changing energy bracket to a single eigenvalue by
-    # bisection, while also returning the final raw mismatch for diagnostics.
+    # bisection. The low-level solver also returns the final raw wall mismatch,
+    # but this routine ultimately stores the normalized wall leakage instead.
     energy, _raw_mismatch = bisect_energy_outward_shooting(
         x_half, V_half, parity, bracket, tol=tol
     )
@@ -779,7 +780,9 @@ def solve_state_from_bracket_outward_shooting(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: initial_conditions_inward_shooting
+# ===========================================================================
 # ===========================================================================
 def initial_conditions_inward_shooting(
     x_desc: np.ndarray,
@@ -789,9 +792,15 @@ def initial_conditions_inward_shooting(
     """
     Construct stable starting values at x_max for inward shooting.
 
-    For confining potentials such as the harmonic oscillator, the physical
-    bound-state solution decays in the forbidden region. Starting the integration
-    at large x and integrating inward suppresses the unphysical growing tail.
+    For smooth confining potentials such as the harmonic oscillator, the
+    physical bound-state solution decays in the forbidden region. Starting the
+    integration at large x and integrating inward suppresses the unphysical
+    growing tail.
+
+    Unlike the outward startup at x = 0, this is not a universal parity-based
+    initialization for arbitrary symmetric potentials. It assumes the chosen
+    outer truncation point already lies in a forbidden tail where V(x_max) > E
+    and the physical solution is locally exponential.
 
     The asymptotic estimate uses psi'/psi ~= -sqrt(2(V-E)) at x_max.
 
@@ -817,11 +826,14 @@ def initial_conditions_inward_shooting(
     dx = abs(x_desc[1] - x_desc[0])
 
     # In the forbidden region, a physical bound-state tail satisfies roughly
-    # psi'/psi = -kappa(x), where kappa(x) = sqrt(2[V(x)-E]).
-    # Since we integrate inward from x_max to x_max-dx, the physical decaying
-    # solution grows by exp(integral kappa dx) over the first step.
-    # This is more accurate than a low-order Taylor start and makes the
-    # Numerov/RK4 comparison fairer.
+    # psi'/psi = -kappa(x), where kappa(x) = sqrt(2[V(x)-E]) is the local
+    # positive decay rate of the exponential tail. Here kappa0 and kappa1 are
+    # that decay rate evaluated at the first two descending-grid points near
+    # x_max. Since we integrate inward from x_max to x_max-dx, the physical
+    # decaying solution grows by about exp(integral kappa dx) over the first
+    # inward step. This makes the startup well suited to the harmonic
+    # oscillator-style decaying tails used in this project, but it is not meant
+    # to replace the more general outward parity startup for every potential.
     kappa0 = np.sqrt(max(2.0 * (V_desc[0] - energy), 1.0e-14))
     kappa1 = np.sqrt(max(2.0 * (V_desc[1] - energy), 1.0e-14))
     exponent = 0.5 * (kappa0 + kappa1) * dx
@@ -833,7 +845,9 @@ def initial_conditions_inward_shooting(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: half_domain_wavefunction_inward_shooting
+# ===========================================================================
 # ===========================================================================
 def half_domain_wavefunction_inward_shooting(
     x_max: float,
@@ -870,28 +884,33 @@ def half_domain_wavefunction_inward_shooting(
         inward-integrated wavefunction.
     """
 
-    # The grid is descending because Numerov still marches "forward" in index,
-    # while physically we want to start at the asymptotic tail and move inward.
+    # Build the half-domain in descending order, from the outer truncation
+    # point x_max back to the origin. Numerov still marches forward in array
+    # index, so reversing the coordinate order is what makes that forward march
+    # correspond physically to inward shooting from the tail toward x = 0.
     x_desc = np.linspace(x_max, 0.0, n_grid)
     V_desc = potential_fn(x_desc, **potential_kwargs)
 
-    # Convert this trial energy into the Numerov coefficient q(x), then choose
+    # Convert the trial energy into the Numerov coefficient q(x), then build
     # the first two wavefunction values psi0 = psi(x_0) and psi1 = psi(x_1).
-    # These startup values approximate the decaying tail at x_max and let the
-    # inward Numerov recurrence start on the descending half-domain grid.
+    # Those startup values enforce the expected decaying asymptotic tail near
+    # x_max, so the inward recurrence begins from the physically correct side
+    # of the confining potential.
     q_desc = q_from_energy(V_desc, energy)
     psi0, psi1 = initial_conditions_inward_shooting(x_desc, V_desc, energy)
 
-    # March the trial solution from x = x_max down to x = 0 using the
-    # descending grid, the Numerov coefficient q(x), and the two startup
-    # values fixed above.
+    # March the trial solution across the descending grid from x_max to 0,
+    # using the sampled coefficient q(x) and the two tail-based startup values
+    # fixed above.
     psi_desc = numerov_march(x_desc, q_desc, psi0=psi0, psi1=psi1)
 
     return x_desc, psi_desc
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: boundary_mismatch_inward_shooting
+# ===========================================================================
 # ===========================================================================
 def boundary_mismatch_inward_shooting(
     x_max: float,
@@ -943,8 +962,10 @@ def boundary_mismatch_inward_shooting(
         states or ``psi_E(0)`` for odd states.
     """
 
-    # First build the inward-shot trial wavefunction for this energy; the
-    # origin mismatch is then read off from its value or derivative at x = 0.
+    # First build the inward-shot trial wavefunction for this energy on the
+    # descending grid from x_max to 0; the origin mismatch is then read off
+    # from the final grid point, either through psi(0) itself or through the
+    # derivative estimate psi'(0), depending on parity.
     x_desc, psi_desc = half_domain_wavefunction_inward_shooting(
         x_max=x_max,
         n_grid=n_grid,
@@ -1506,7 +1527,9 @@ def solve_state_from_bracket_inward_shooting(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: solve_symmetric_potential_inward_shooting
+# ===========================================================================
 # ===========================================================================
 def solve_symmetric_potential_inward_shooting(
     x_max: float,
@@ -1528,6 +1551,13 @@ def solve_symmetric_potential_inward_shooting(
     region. Inward shooting starts from the decaying asymptotic side and imposes
     parity at the origin, which produces much cleaner wavefunctions and matches
     the physical requirement that bound states decay as |x| becomes large.
+
+    Unlike the outward half-domain solver, whose startup comes from exact parity
+    conditions at x = 0 for any symmetric potential, this inward formulation is
+    specialized. It assumes x_max lies in a simple forbidden tail where the
+    asymptotic decay model is accurate, which is why this project uses it for
+    the harmonic oscillator and the matching RK4 comparison rather than as the
+    default solver for every symmetric potential.
 
     Parameters
     ----------
@@ -1557,9 +1587,10 @@ def solve_symmetric_potential_inward_shooting(
 
     Notes
     -----
-    This is the standard inward half-domain solver used for confining
-    infinite-domain problems, where starting from the decaying tail at x_max
-    is more stable than shooting outward through a forbidden region.
+    This is the standard inward half-domain solver used here for confining
+    infinite-domain problems whose outer boundary lies in a decaying forbidden
+    tail. For the broader class of symmetric potentials in the project, the
+    outward solver remains the more general parity-based formulation.
     """
 
     # If there are no user-specified potential kwargs, use an empty dict to avoid

@@ -356,6 +356,8 @@
 
     Inward shooting is used for confining potentials such as the harmonic oscillator. The physical solution decays at large $x$. If we integrate outward from the origin, the numerical solution can pick up the unphysical growing mode. Inward shooting starts in the forbidden region and integrates toward the origin, giving cleaner harmonic oscillator wavefunctions and more reliable parity enforcement.
 
+    This inward startup is not as universal as the outward parity startup at $x=0$. The outward formulation uses exact symmetry conditions and therefore applies to any symmetric potential once the half-domain reduction is valid. The inward formulation instead assumes the chosen $x_{\max}$ lies in a simple decaying tail, so in this project it is treated as a specialized tool for smooth confining infinite-domain problems rather than the default solver for every potential.
+
     \section{Why parity?}
 
     The main bound-state potentials are symmetric:

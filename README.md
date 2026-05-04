@@ -144,6 +144,14 @@ For symmetric potentials solved on the half-domain:
 - outward shooting uses the boundary mismatch at $x = x_{\max}$
 - inward shooting (used for unbounded problems like the harmonic oscillator) enforces decay at large $|x|$ and evaluates the mismatch at $x = 0$
 
+The outward startup is the more general one in this project: it comes directly
+from the exact parity conditions at $x=0$, so it applies to any symmetric
+potential once the half-domain reduction is valid. The inward startup is more
+specialized. It assumes the chosen $x_{\max}$ already lies in a forbidden tail
+where the physical solution decays exponentially, which is why it is used here
+for the harmonic oscillator and the RK4 comparison rather than as the default
+for every symmetric potential.
+
 Eigenvalues are obtained by solving $M(E) = 0$. The solver scans over energies to locate sign changes (bracketing), refines roots using bisection, and then applies a short safeguarded polishing step inside the final bracket for the outward-shooting bound-state solver.
 
 To make the algorithm transparent, the code generates two kinds of root-finding diagnostics:
