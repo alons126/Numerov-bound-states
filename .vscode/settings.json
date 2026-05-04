@@ -10,8 +10,8 @@
       "tools": ["active-latexmk"]
     },
     {
-      "name": "report",
-      "tools": ["report-latexmk", "copy-report-pdf", "copy-report-pdf-to-writeup"]
+      "name": "Writeup",
+      "tools": ["writeup-latexmk", "copy-writeup-pdf", "copy-writeup-pdf-to-writeup"]
     },
     {
       "name": "proposal",
@@ -28,7 +28,7 @@
       "command": "sh",
       "args": [
         "-c",
-        "latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"$1\" && if [ \"$2\" = \"report\" ]; then cp \"$3/build/report.pdf\" \"$3/../../report.pdf\"; fi",
+        "latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"$1\" && if [ \"$2\" = \"Writeup.tex\" ]; then cp \"$3/build/Writeup.pdf\" \"$3/../Writeup.pdf\"; fi",
         "latexmk-active",
         "%DOC%",
         "%DOCFILE%",
@@ -36,7 +36,7 @@
       ]
     },
     {
-      "name": "report-latexmk",
+      "name": "writeup-latexmk",
       "command": "latexmk",
       "args": [
         "-cd",
@@ -45,18 +45,18 @@
         "-interaction=nonstopmode",
         "-synctex=1",
         "-f",
-        "docs/Writeup/report.tex"
+        "docs/Writeup/Writeup.tex"
       ]
     },
     {
-      "name": "copy-report-pdf",
+      "name": "copy-writeup-pdf",
       "command": "cp",
-      "args": ["docs/Writeup/build/report.pdf", "report.pdf"]
+      "args": ["docs/Writeup/build/Writeup.pdf", "docs/Writeup.pdf"]
     },
     {
-      "name": "copy-report-pdf-to-writeup",
+      "name": "copy-writeup-pdf-to-writeup",
       "command": "cp",
-      "args": ["docs/Writeup/build/report.pdf", "docs/Writeup/report.pdf"]
+      "args": ["docs/Writeup/build/Writeup.pdf", "docs/Writeup/Writeup.pdf"]
     },
     {
       "name": "proposal-latexmk",
@@ -90,7 +90,7 @@
       {
         "match": ".*",
         "isAsync": true,
-        "cmd": "cd \"${workspaceFolder}\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Writeup/report.tex\" && cp \"docs/Writeup/build/report.pdf\" \"${workspaceFolder}/report.pdf\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Proposal/proposal.tex\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Project_outline_and_motivation/Project_outline_and_motivation.tex\""
+        "cmd": "cd \"${workspaceFolder}\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Writeup/Writeup.tex\" && cp \"docs/Writeup/build/Writeup.pdf\" \"${workspaceFolder}/docs/Writeup.pdf\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Proposal/proposal.tex\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Project_outline_and_motivation/Project_outline_and_motivation.tex\""
       }
     ]
   }
