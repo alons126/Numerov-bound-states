@@ -3,7 +3,7 @@
 Generated from AST analysis of the local Python files in `src/`, `scripts/`, and `tests/`.
 
 - Functions mapped: `104`
-- Direct project-call edges: `201`
+- Direct project-call edges: `208`
 - Scope: direct calls only; indirect calls through function arguments such as `potential_fn(...)` are not inferred.
 - Regenerate with: `python3 scripts/generate_code_map.py`
 - Rendered diagrams:
@@ -143,7 +143,7 @@ flowchart TD
     src_shooting_find_brackets_inward_shooting[find_brackets_inward_shooting]
     src_shooting_find_brackets_inward_shooting --> src_shooting_sample_mismatch_inward_shooting[sample_mismatch_inward_shooting]
     src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
-    src_shooting_find_brackets_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
+    src_shooting_find_brackets_outward_shooting --> src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
     src_shooting_half_domain_wavefunction_inward_shooting[half_domain_wavefunction_inward_shooting]
     src_shooting_half_domain_wavefunction_inward_shooting --> src_numerov_numerov_march[numerov_march]
     src_shooting_half_domain_wavefunction_inward_shooting --> src_numerov_q_from_energy[q_from_energy]
@@ -154,12 +154,12 @@ flowchart TD
     src_shooting_half_domain_wavefunction_outward_shooting --> src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
     src_shooting_initial_conditions_inward_shooting[initial_conditions_inward_shooting]
     src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting[sample_boundary_mismatch_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting --> src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
     src_shooting_sample_mismatch_inward_shooting[sample_mismatch_inward_shooting]
     src_shooting_sample_mismatch_inward_shooting --> src_shooting_boundary_mismatch_inward_shooting[boundary_mismatch_inward_shooting]
     src_shooting_sample_mismatch_inward_shooting --> src_shooting_diagnostic_mismatch_inward_shooting[diagnostic_mismatch_inward_shooting]
+    src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting --> src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
     src_shooting_solve_state_from_bracket_inward_shooting[solve_state_from_bracket_inward_shooting]
     src_shooting_solve_state_from_bracket_inward_shooting --> src_numerov_normalize_wavefunction[normalize_wavefunction]
     src_shooting_solve_state_from_bracket_inward_shooting --> src_shooting_bisect_energy_inward_shooting[bisect_energy_inward_shooting]
@@ -183,7 +183,11 @@ flowchart TD
 ```mermaid
 flowchart TD
     scripts_run_solver_main[main]
+    scripts_run_solver_main --> src_experiments_run_finite_square_well[run_finite_square_well]
+    scripts_run_solver_main --> src_experiments_run_harmonic_oscillator[run_harmonic_oscillator]
     scripts_run_solver_main --> src_experiments_run_quartic_double_well[run_quartic_double_well]
+    scripts_run_solver_main --> src_experiments_run_scattering[run_scattering]
+    scripts_run_solver_main --> src_experiments_run_square_well[run_square_well]
     scripts_run_solver_main --> tests_test_solver_run_all_tests[run_all_tests]
     src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
     src_analysis_convergence_vs_box_size_fixed_spacing --> src_analysis_energies_from_states[energies_from_states]
@@ -199,8 +203,11 @@ flowchart TD
     src_analysis_splitting_vs_parameter[splitting_vs_parameter]
     src_experiments__experiment_results_dir[_experiment_results_dir]
     src_experiments_run_finite_square_well[run_finite_square_well]
+    src_experiments_run_finite_square_well --> src_analysis_convergence_vs_grid[convergence_vs_grid]
+    src_experiments_run_finite_square_well --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
     src_experiments_run_finite_square_well --> src_analysis_save_csv_rows[save_csv_rows]
     src_experiments_run_finite_square_well --> src_experiments__experiment_results_dir[_experiment_results_dir]
+    src_experiments_run_finite_square_well --> src_plotting_plot_error_curve[plot_error_curve]
     src_experiments_run_finite_square_well --> src_plotting_plot_potential_and_states[plot_potential_and_states]
     src_experiments_run_finite_square_well --> src_plotting_plot_probability_densities[plot_probability_densities]
     src_experiments_run_harmonic_oscillator[run_harmonic_oscillator]
@@ -329,7 +336,7 @@ flowchart TD
     src_diagnostics__plot_outward_root_diagnostics --> src_plotting_plot_root_finding_zoom[plot_root_finding_zoom]
     src_diagnostics__plot_outward_root_diagnostics --> src_shooting_bisection_history_outward_shooting[bisection_history_outward_shooting]
     src_diagnostics__plot_outward_root_diagnostics --> src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
-    src_diagnostics__plot_outward_root_diagnostics --> src_shooting_sample_boundary_mismatch_outward_shooting[sample_boundary_mismatch_outward_shooting]
+    src_diagnostics__plot_outward_root_diagnostics --> src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
     src_diagnostics_plot_infinite_well_root_diagnostics[plot_infinite_well_root_diagnostics]
     src_diagnostics_plot_infinite_well_root_diagnostics --> src_diagnostics__plot_outward_root_diagnostics[_plot_outward_root_diagnostics]
     src_diagnostics_plot_infinite_well_root_diagnostics --> src_potentials_infinite_square_well_numeric[infinite_square_well_numeric]
@@ -380,15 +387,15 @@ flowchart TD
     src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
     src_shooting_diagnostic_mismatch_outward_shooting --> src_shooting_half_domain_wavefunction_outward_shooting[half_domain_wavefunction_outward_shooting]
     src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
-    src_shooting_find_brackets_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
+    src_shooting_find_brackets_outward_shooting --> src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
     src_shooting_half_domain_wavefunction_outward_shooting[half_domain_wavefunction_outward_shooting]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_march[numerov_march]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_q_from_energy[q_from_energy]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
     src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting[sample_boundary_mismatch_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting --> src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting --> src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
     src_shooting_solve_state_from_bracket_outward_shooting[solve_state_from_bracket_outward_shooting]
     src_shooting_solve_state_from_bracket_outward_shooting --> src_numerov_normalize_wavefunction[normalize_wavefunction]
     src_shooting_solve_state_from_bracket_outward_shooting --> src_shooting_bisect_energy_outward_shooting[bisect_energy_outward_shooting]
@@ -555,7 +562,7 @@ flowchart TD
     src_diagnostics__plot_outward_root_diagnostics --> src_plotting_plot_root_finding_zoom[plot_root_finding_zoom]
     src_diagnostics__plot_outward_root_diagnostics --> src_shooting_bisection_history_outward_shooting[bisection_history_outward_shooting]
     src_diagnostics__plot_outward_root_diagnostics --> src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
-    src_diagnostics__plot_outward_root_diagnostics --> src_shooting_sample_boundary_mismatch_outward_shooting[sample_boundary_mismatch_outward_shooting]
+    src_diagnostics__plot_outward_root_diagnostics --> src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
     src_diagnostics_plot_double_well_root_diagnostics[plot_double_well_root_diagnostics]
     src_diagnostics_plot_double_well_root_diagnostics --> src_diagnostics__plot_outward_root_diagnostics[_plot_outward_root_diagnostics]
     src_diagnostics_plot_double_well_root_diagnostics --> src_potentials_quartic_double_well[quartic_double_well]
@@ -607,15 +614,15 @@ flowchart TD
     src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
     src_shooting_diagnostic_mismatch_outward_shooting --> src_shooting_half_domain_wavefunction_outward_shooting[half_domain_wavefunction_outward_shooting]
     src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
-    src_shooting_find_brackets_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
+    src_shooting_find_brackets_outward_shooting --> src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
     src_shooting_half_domain_wavefunction_outward_shooting[half_domain_wavefunction_outward_shooting]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_march[numerov_march]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_q_from_energy[q_from_energy]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
     src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting[sample_boundary_mismatch_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting --> src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting --> src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
     src_shooting_solve_state_from_bracket_outward_shooting[solve_state_from_bracket_outward_shooting]
     src_shooting_solve_state_from_bracket_outward_shooting --> src_numerov_normalize_wavefunction[normalize_wavefunction]
     src_shooting_solve_state_from_bracket_outward_shooting --> src_shooting_bisect_energy_outward_shooting[bisect_energy_outward_shooting]
@@ -630,6 +637,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+    src_analysis_convergence_vs_grid[convergence_vs_grid]
+    src_analysis_convergence_vs_grid --> src_analysis_energies_from_states[energies_from_states]
+    src_analysis_energies_from_states[energies_from_states]
+    src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
     src_analysis_save_csv_rows[save_csv_rows]
     src_diagnostics__diagnostic_label_slug[_diagnostic_label_slug]
     src_diagnostics__plot_outward_root_diagnostics[_plot_outward_root_diagnostics]
@@ -638,15 +649,18 @@ flowchart TD
     src_diagnostics__plot_outward_root_diagnostics --> src_plotting_plot_root_finding_zoom[plot_root_finding_zoom]
     src_diagnostics__plot_outward_root_diagnostics --> src_shooting_bisection_history_outward_shooting[bisection_history_outward_shooting]
     src_diagnostics__plot_outward_root_diagnostics --> src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
-    src_diagnostics__plot_outward_root_diagnostics --> src_shooting_sample_boundary_mismatch_outward_shooting[sample_boundary_mismatch_outward_shooting]
+    src_diagnostics__plot_outward_root_diagnostics --> src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
     src_diagnostics_plot_finite_square_well_root_diagnostics[plot_finite_square_well_root_diagnostics]
     src_diagnostics_plot_finite_square_well_root_diagnostics --> src_diagnostics__plot_outward_root_diagnostics[_plot_outward_root_diagnostics]
     src_diagnostics_plot_finite_square_well_root_diagnostics --> src_potentials_finite_square_well[finite_square_well]
     src_experiments__experiment_results_dir[_experiment_results_dir]
     src_experiments_run_finite_square_well[run_finite_square_well]
+    src_experiments_run_finite_square_well --> src_analysis_convergence_vs_grid[convergence_vs_grid]
+    src_experiments_run_finite_square_well --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
     src_experiments_run_finite_square_well --> src_analysis_save_csv_rows[save_csv_rows]
     src_experiments_run_finite_square_well --> src_diagnostics_plot_finite_square_well_root_diagnostics[plot_finite_square_well_root_diagnostics]
     src_experiments_run_finite_square_well --> src_experiments__experiment_results_dir[_experiment_results_dir]
+    src_experiments_run_finite_square_well --> src_plotting_plot_error_curve[plot_error_curve]
     src_experiments_run_finite_square_well --> src_plotting_plot_potential_and_states[plot_potential_and_states]
     src_experiments_run_finite_square_well --> src_plotting_plot_probability_densities[plot_probability_densities]
     src_experiments_run_finite_square_well --> src_potentials_finite_square_well[finite_square_well]
@@ -657,6 +671,8 @@ flowchart TD
     src_numerov_q_from_energy[q_from_energy]
     src_plotting__ensure_parent[_ensure_parent]
     src_plotting__symlog_linthresh[_symlog_linthresh]
+    src_plotting_plot_error_curve[plot_error_curve]
+    src_plotting_plot_error_curve --> src_plotting__ensure_parent[_ensure_parent]
     src_plotting_plot_potential_and_states[plot_potential_and_states]
     src_plotting_plot_potential_and_states --> src_plotting__ensure_parent[_ensure_parent]
     src_plotting_plot_probability_densities[plot_probability_densities]
@@ -680,15 +696,15 @@ flowchart TD
     src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
     src_shooting_diagnostic_mismatch_outward_shooting --> src_shooting_half_domain_wavefunction_outward_shooting[half_domain_wavefunction_outward_shooting]
     src_shooting_find_brackets_outward_shooting[find_brackets_outward_shooting]
-    src_shooting_find_brackets_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
+    src_shooting_find_brackets_outward_shooting --> src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
     src_shooting_half_domain_wavefunction_outward_shooting[half_domain_wavefunction_outward_shooting]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_numerov_march[numerov_march]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_numerov_q_from_energy[q_from_energy]
     src_shooting_half_domain_wavefunction_outward_shooting --> src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
     src_shooting_initial_conditions_outward_shooting[initial_conditions_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting[sample_boundary_mismatch_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
-    src_shooting_sample_boundary_mismatch_outward_shooting --> src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting[sample_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting --> src_shooting_boundary_mismatch_outward_shooting[boundary_mismatch_outward_shooting]
+    src_shooting_sample_mismatch_outward_shooting --> src_shooting_diagnostic_mismatch_outward_shooting[diagnostic_mismatch_outward_shooting]
     src_shooting_solve_state_from_bracket_outward_shooting[solve_state_from_bracket_outward_shooting]
     src_shooting_solve_state_from_bracket_outward_shooting --> src_numerov_normalize_wavefunction[normalize_wavefunction]
     src_shooting_solve_state_from_bracket_outward_shooting --> src_shooting_bisect_energy_outward_shooting[bisect_energy_outward_shooting]
@@ -770,7 +786,7 @@ flowchart TD
 
 ### scripts.run_solver
 
-- `main` -> run_quartic_double_well, run_all_tests
+- `main` -> run_finite_square_well, run_harmonic_oscillator, run_quartic_double_well, run_scattering, run_square_well, run_all_tests
 
 ### src.analysis
 
@@ -788,7 +804,7 @@ flowchart TD
 
 - `_diagnostic_label_slug` -> (no direct project-function calls)
 - `_plot_inward_root_diagnostics` -> _diagnostic_label_slug, plot_root_finding_diagnostic, plot_root_finding_zoom, bisection_history_inward_shooting, find_brackets_inward_shooting, sample_mismatch_inward_shooting
-- `_plot_outward_root_diagnostics` -> _diagnostic_label_slug, plot_root_finding_diagnostic, plot_root_finding_zoom, bisection_history_outward_shooting, find_brackets_outward_shooting, sample_boundary_mismatch_outward_shooting
+- `_plot_outward_root_diagnostics` -> _diagnostic_label_slug, plot_root_finding_diagnostic, plot_root_finding_zoom, bisection_history_outward_shooting, find_brackets_outward_shooting, sample_mismatch_outward_shooting
 - `plot_double_well_root_diagnostics` -> _plot_outward_root_diagnostics, quartic_double_well
 - `plot_finite_square_well_root_diagnostics` -> _plot_outward_root_diagnostics, finite_square_well
 - `plot_harmonic_oscillator_RK4_root_diagnostics` -> _diagnostic_label_slug, plot_root_finding_diagnostic, plot_root_finding_zoom, RK4_bisection_history, RK4_find_brackets, RK4_sample_mismatch
@@ -798,7 +814,7 @@ flowchart TD
 ### src.experiments
 
 - `_experiment_results_dir` -> (no direct project-function calls)
-- `run_finite_square_well` -> save_csv_rows, plot_finite_square_well_root_diagnostics, _experiment_results_dir, plot_potential_and_states, plot_probability_densities, finite_square_well, solve_symmetric_potential_outward_shooting
+- `run_finite_square_well` -> convergence_vs_grid, estimate_convergence_slopes, save_csv_rows, plot_finite_square_well_root_diagnostics, _experiment_results_dir, plot_error_curve, plot_potential_and_states, plot_probability_densities, finite_square_well, solve_symmetric_potential_outward_shooting
 - `run_harmonic_oscillator` -> convergence_vs_box_size_fixed_spacing, convergence_vs_grid, estimate_convergence_slopes, exact_harmonic_oscillator_energies, save_csv_rows, plot_harmonic_oscillator_root_diagnostics, _experiment_results_dir, run_harmonic_oscillator_RK4_comparison, plot_energy_comparison, plot_error_curve, plot_potential_and_states, plot_probability_densities, harmonic_oscillator, solve_symmetric_potential_inward_shooting
 - `run_harmonic_oscillator_RK4_comparison` -> estimate_convergence_slopes, save_csv_rows, plot_harmonic_oscillator_RK4_root_diagnostics, plot_energy_comparison, plot_error_curve, plot_numerov_vs_RK4_errors, RK4_harmonic_convergence_vs_box_size_fixed_spacing, RK4_harmonic_convergence_vs_grid, RK4_solve_harmonic_oscillator_energies
 - `run_quartic_double_well` -> convergence_vs_box_size_fixed_spacing, convergence_vs_grid_successive, estimate_convergence_slopes, save_csv_rows, splitting_vs_parameter, plot_double_well_root_diagnostics, _experiment_results_dir, plot_error_curve, plot_potential_and_states, plot_probability_densities, plot_splitting_curve, quartic_double_well, solve_symmetric_potential_outward_shooting
@@ -872,13 +888,13 @@ flowchart TD
 - `diagnostic_mismatch_inward_shooting` -> derivative_at_right_edge, half_domain_wavefunction_inward_shooting
 - `diagnostic_mismatch_outward_shooting` -> half_domain_wavefunction_outward_shooting
 - `find_brackets_inward_shooting` -> sample_mismatch_inward_shooting
-- `find_brackets_outward_shooting` -> boundary_mismatch_outward_shooting
+- `find_brackets_outward_shooting` -> sample_mismatch_outward_shooting
 - `half_domain_wavefunction_inward_shooting` -> numerov_march, q_from_energy, initial_conditions_inward_shooting
 - `half_domain_wavefunction_outward_shooting` -> numerov_march, q_from_energy, initial_conditions_outward_shooting
 - `initial_conditions_inward_shooting` -> (no direct project-function calls)
 - `initial_conditions_outward_shooting` -> (no direct project-function calls)
-- `sample_boundary_mismatch_outward_shooting` -> boundary_mismatch_outward_shooting, diagnostic_mismatch_outward_shooting
 - `sample_mismatch_inward_shooting` -> boundary_mismatch_inward_shooting, diagnostic_mismatch_inward_shooting
+- `sample_mismatch_outward_shooting` -> boundary_mismatch_outward_shooting, diagnostic_mismatch_outward_shooting
 - `solve_state_from_bracket_inward_shooting` -> normalize_wavefunction, bisect_energy_inward_shooting, build_full_wavefunction, half_domain_wavefunction_inward_shooting
 - `solve_state_from_bracket_outward_shooting` -> normalize_wavefunction, bisect_energy_outward_shooting, build_full_wavefunction, half_domain_wavefunction_outward_shooting
 - `solve_symmetric_potential_inward_shooting` -> find_brackets_inward_shooting, solve_state_from_bracket_inward_shooting
@@ -888,7 +904,7 @@ flowchart TD
 
 - `run_all_tests` -> test_derivative_at_right_edge_polynomial, test_double_well_splitting_positive, test_find_rk4_brackets_accepts_exact_zero_hit, test_harmonic_oscillator_first_levels, test_harmonic_oscillator_inward_shooting_first_levels, test_normalization, test_run_solver_import_without_experiment_dependencies, test_scattering_probability_conservation, test_square_well_convergence_order, test_square_well_ground_state
 - `test_derivative_at_right_edge_polynomial` -> derivative_at_right_edge
-- `test_double_well_even_odd_mismatch_scans_differ` -> quartic_double_well, sample_boundary_mismatch_outward_shooting
+- `test_double_well_even_odd_mismatch_scans_differ` -> quartic_double_well, sample_mismatch_outward_shooting
 - `test_double_well_larger_box_improves_low_lying_energies` -> solve_symmetric_potential_outward_shooting
 - `test_double_well_low_state_mismatches_are_polished` -> solve_symmetric_potential_outward_shooting
 - `test_double_well_same_box_grid_errors_decrease` -> convergence_vs_grid_successive

@@ -56,7 +56,7 @@ Bound-state shooting solvers, including parity-based outward shooting and stable
 | 133-160 | `function half_domain_wavefunction_outward_shooting` | Compute the half-domain trial wavefunction for a given energy. |
 | 167-206 | `function boundary_mismatch_outward_shooting` | Evaluate the mismatch used for eigenvalue shooting. |
 | 213-260 | `function find_brackets_outward_shooting` | Scan an energy interval and locate sign-changing brackets. |
-| 267-286 | `function sample_boundary_mismatch_outward_shooting` | Sample the shooting mismatch over an energy interval. |
+| 267-286 | `function sample_mismatch_outward_shooting` | Sample the outward-shooting mismatch over an energy interval. |
 | 293-338 | `function bisection_history_outward_shooting` | Record the bisection process for one eigenvalue bracket. |
 | 345-432 | `function bisect_energy_outward_shooting` | Refine a sign-changing eigenvalue bracket with bisection. |
 | 439-472 | `function build_full_wavefunction` | Reconstruct the full wavefunction from its half-domain representation. |

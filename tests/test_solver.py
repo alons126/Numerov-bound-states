@@ -65,7 +65,7 @@ from src.scattering import sweep_scattering
 
 # Shooting-based mismatch samplers and eigenvalue solvers under test.
 from src.shooting import (
-    sample_boundary_mismatch_outward_shooting,
+    sample_mismatch_outward_shooting,
     solve_symmetric_potential_outward_shooting,
     solve_symmetric_potential_inward_shooting,
 )
@@ -440,10 +440,10 @@ def test_double_well_even_odd_mismatch_scans_differ() -> None:
 
     x_half = np.linspace(0.0, 4.0, 800)
     V_half = quartic_double_well(x_half, a=1.0, b=6.0, shift_min_to_zero=True)
-    energies_even, mismatches_even = sample_boundary_mismatch_outward_shooting(
+    energies_even, mismatches_even = sample_mismatch_outward_shooting(
         x_half, V_half, parity="even", e_min=1.0, e_max=8.5, n_scan=400
     )
-    energies_odd, mismatches_odd = sample_boundary_mismatch_outward_shooting(
+    energies_odd, mismatches_odd = sample_mismatch_outward_shooting(
         x_half, V_half, parity="odd", e_min=1.0, e_max=8.5, n_scan=400
     )
 

@@ -40,7 +40,7 @@ from src.shooting import (
     bisection_history_outward_shooting,
     find_brackets_inward_shooting,
     find_brackets_outward_shooting,
-    sample_boundary_mismatch_outward_shooting,
+    sample_mismatch_outward_shooting,
     sample_mismatch_inward_shooting,
 )
 
@@ -111,7 +111,7 @@ def _plot_outward_root_diagnostics(
         # Sample the raw outward-shooting mismatch over the requested energy
         # window so the overview plot can show the sign changes that seed the
         # later bracketing and bisection steps for this parity sector.
-        energies_scan, mismatches_scan = sample_boundary_mismatch_outward_shooting(
+        energies_scan, mismatches_scan = sample_mismatch_outward_shooting(
             x_half,
             V_half,
             parity=parity,
@@ -162,7 +162,7 @@ def _plot_outward_root_diagnostics(
         # bracket, resample the raw mismatch locally, and save a dedicated
         # figure that overlays the full bisection history inside that window.
         for label, history in zip(state_labels, histories):
-            zoom_energies, zoom_mismatches = sample_boundary_mismatch_outward_shooting(
+            zoom_energies, zoom_mismatches = sample_mismatch_outward_shooting(
                 x_half,
                 V_half,
                 parity=parity,

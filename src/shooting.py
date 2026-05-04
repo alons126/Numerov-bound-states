@@ -330,15 +330,13 @@ def find_brackets_outward_shooting(
         Brackets suitable for bisection.
     """
 
-    # Build a uniform trial-energy scan on [e_min, e_max], then evaluate the
-    # outward-shooting mismatch M(E) at each sample so neighboring sign changes
-    # can be turned into root brackets.
-    energies = np.linspace(e_min, e_max, n_scan)
-    vals = np.array(
-        [
-            boundary_mismatch_outward_shooting(x_half, V_half, e, parity, mode="value")
-            for e in energies
-        ]
+    energies, vals = sample_mismatch_outward_shooting(
+        x_half,
+        V_half,
+        parity,
+        e_min,
+        e_max,
+        n_scan=n_scan,
     )
 
     brackets: list[tuple[float, float]] = []
@@ -366,10 +364,10 @@ def find_brackets_outward_shooting(
 
 # ===========================================================================
 # ===========================================================================
-# FUNCTION: sample_boundary_mismatch_outward_shooting
+# FUNCTION: sample_mismatch_outward_shooting
 # ===========================================================================
 # ===========================================================================
-def sample_boundary_mismatch_outward_shooting(
+def sample_mismatch_outward_shooting(
     x_half: np.ndarray,
     V_half: np.ndarray,
     parity: str,
@@ -381,9 +379,10 @@ def sample_boundary_mismatch_outward_shooting(
     """
     Sample the shooting mismatch over an energy interval.
 
-    This is used only for diagnostics and visualization. The eigenvalues are
-    located where the mismatch curve crosses zero, so plotting it makes the
-    root-finding logic visible instead of leaving it as a black box.
+    This helper is reused both by diagnostics and by outward-shooting bracket
+    searches. The eigenvalues are located where the mismatch curve crosses
+    zero, so the same sampled values can either be plotted directly or scanned
+    for sign changes that define root brackets.
 
     Parameters
     ----------
@@ -405,6 +404,8 @@ def sample_boundary_mismatch_outward_shooting(
         If ``True``, divide the boundary mismatch by the half-domain ``L2``
         norm of the trial solution for plotting. This preserves the zeros
         while removing the arbitrary amplitude scale of the trial solution.
+        Bracketing code leaves this as ``False`` so the raw solver mismatch is
+        sampled unchanged.
 
     Returns
     -------
@@ -413,6 +414,9 @@ def sample_boundary_mismatch_outward_shooting(
         and the corresponding boundary mismatch values.
     """
 
+    # Build a uniform trial-energy scan on [e_min, e_max], then evaluate the
+    # inward-shooting mismatch M(E) at each sample so neighboring sign changes
+    # can be turned into root brackets.
     energies = np.linspace(e_min, e_max, n_scan)
 
     # Sample either the diagnostics-only scaled mismatch or the raw outward
@@ -1029,7 +1033,9 @@ def diagnostic_mismatch_inward_shooting(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: sample_mismatch_inward_shooting
+# ===========================================================================
 # ===========================================================================
 def sample_mismatch_inward_shooting(
     x_max: float,
@@ -1116,7 +1122,9 @@ def sample_mismatch_inward_shooting(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: find_brackets_inward_shooting
+# ===========================================================================
 # ===========================================================================
 def find_brackets_inward_shooting(
     x_max: float,
@@ -1183,9 +1191,13 @@ def find_brackets_inward_shooting(
             continue
 
         if a == 0.0:
+            # Keep exact zero hits by inflating them into a tiny bracket so the
+            # downstream bisection code can treat all roots uniformly.
             eps = 1e-10 * max(1.0, abs(energies[i]))
             brackets.append((energies[i] - eps, energies[i] + eps))
         elif np.signbit(a) != np.signbit(b):
+            # A sign change guarantees at least one root if the mismatch stays
+            # continuous across the interval.
             brackets.append((energies[i], energies[i + 1]))
 
     return brackets
@@ -1522,35 +1534,32 @@ def solve_symmetric_potential_inward_shooting(
     x_max : float
         Outer truncation point of the symmetric half-domain.
     n_grid : int
-        Number of grid points on the half-domain mesh used for inward shooting.
+        Number of half-domain grid points.
     potential_fn : callable
-        Symmetric confining potential function to evaluate on the spatial grid.
-    potential_kwargs : dict | None, default=None
-        Optional keyword arguments forwarded to ``potential_fn``. If omitted,
-        an empty dictionary is used.
-    n_even : int, default=3
-        Number of even-parity bound states to compute.
-    n_odd : int, default=3
-        Number of odd-parity bound states to compute.
-    e_min : float | None, default=None
-        Lower end of the trial-energy scan. If omitted, the solver uses the
-        minimum sampled potential value on ``[0, x_max]``.
-    e_max : float | None, default=None
-        Upper end of the trial-energy scan. If omitted, the solver uses the
-        maximum sampled potential value on ``[0, x_max]`` and enlarges it if
-        needed to ensure a reasonably wide search window.
-    scan_points : int, default=1200
-        Number of trial energies used when scanning each parity sector for
-        sign-changing mismatch brackets.
-    tol : float, default=1e-12
-        Root-finding tolerance passed to the inward-shooting bisection solver
-        for each bracketed state.
+        Potential function V(x, **kwargs).
+    potential_kwargs : dict, optional
+        Optional dictionary of named parameters forwarded to `potential_fn`
+        as `potential_fn(x, **potential_kwargs)`, for example well depth,
+        width, or oscillator frequency.
+    n_even, n_odd : int, optional
+        Number of even and odd states requested.
+    e_min, e_max : float, optional
+        Energy search interval. If omitted, values are inferred from the potential.
+    scan_points : int, optional
+        Number of scan points used to find sign-changing brackets.
+    tol : float, optional
+        Root-finding tolerance for the bisection step.
 
     Returns
     -------
     list[StateSolution]
-        Solved even and odd bound states, merged and sorted by increasing
-        energy.
+        Bound states sorted by energy.
+
+    Notes
+    -----
+    This is the standard inward half-domain solver used for confining
+    infinite-domain problems, where starting from the decaying tail at x_max
+    is more stable than shooting outward through a forbidden region.
     """
 
     # If there are no user-specified potential kwargs, use an empty dict to avoid
@@ -1558,26 +1567,32 @@ def solve_symmetric_potential_inward_shooting(
     if potential_kwargs is None:
         potential_kwargs = {}
 
-    # Probe the potential once on [0, x_max] so default energy bounds can be
+    # Sample the potential once on [0, x_max] so the default energy window is
     # inferred from the actual confining profile used by the inward solver.
     x_probe = np.linspace(0.0, x_max, n_grid)
     V_probe = potential_fn(x_probe, **potential_kwargs)
 
     if e_min is None:
+        # Bound states typically start near the minimum of the potential.
         e_min = float(np.min(V_probe))
 
     if e_max is None:
+        # The scan ceiling is chosen generously so several low-lying states fit
+        # inside the search window without extra user tuning.
         e_max = float(np.max(V_probe))
         e_max = max(e_max, e_min + 30.0)
 
     solutions: list[StateSolution] = []
 
-    # Solve each parity sector separately, then merge and sort the states by
-    # energy. This is cleaner than solving on the full domain for every state.
+    # Work one parity sector at a time. First scan the mismatch M(E) over
+    # the requested energy window and collect sign-changing brackets for
+    # that parity, then refine the first n_needed brackets into actual
+    # bound states. The even/odd solutions are accumulated separately here
+    # and sorted together by energy after the loop.
     for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
-        # Symmetry lets each parity sector be searched independently. Scan the
-        # inward mismatch M(E) over the chosen energy window and keep only the
-        # sign-changing brackets that isolate candidate roots for this sector.
+        # Sample the inward-shooting mismatch over [e_min, e_max] for this
+        # parity sector and keep only the energy intervals where the mismatch
+        # changes sign; those intervals are the initial root brackets.
         brackets = find_brackets_inward_shooting(
             x_max,
             n_grid,
@@ -1595,11 +1610,10 @@ def solve_symmetric_potential_inward_shooting(
                 f"needed {n_needed}. Increase x_max, e_max, or scan_points."
             )
 
-        # Refine the first n_needed brackets into actual bound states for this
-        # parity sector, then merge both parity families by energy afterward.
+        # Turn the first n_needed brackets for this parity sector into actual
+        # eigenstates: each bracket is refined to one eigenvalue, then the
+        # corresponding wavefunction is reconstructed and stored.
         for bracket in brackets[:n_needed]:
-            # Each bracket is assumed to isolate one state in this parity
-            # sector, so it can be solved independently and appended.
             solutions.append(
                 solve_state_from_bracket_inward_shooting(
                     x_max,
