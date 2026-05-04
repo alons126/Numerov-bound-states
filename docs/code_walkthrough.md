@@ -48,7 +48,7 @@ Low-level Numerov recurrence, wavefunction normalization, and boundary derivativ
 | 173-208 | `function derivative_at_right_edge` | Estimate the derivative at the last grid point with a backward stencil. |
 
 ### `src/shooting.py`
-Bound-state shooting solvers, including parity-based outward shooting and stable inward shooting for confining potentials. The outward startup is the more general one because it comes from the exact parity conditions at x = 0 for any symmetric potential. The inward startup is more specialized: it assumes x_max already lies in a decaying forbidden tail, so in this project it is used mainly for the harmonic oscillator and the matching RK4 comparison. This is the code realization of the course-level shooting idea: guess an energy, integrate, evaluate the mismatch, then refine the guess with root finding.
+Bound-state shooting solvers, including parity-based outward shooting and stable inward shooting for confining potentials. The outward startup is the more general one because it comes from the exact parity conditions at x = 0 for any symmetric potential. The inward startup is more specialized: it assumes x_max already lies in a decaying forbidden tail, so in this project it is used mainly for the harmonic oscillator and the matching RK4 comparison. The refinement stage also differs slightly: outward shooting adds a short safeguarded secant cleanup after bisection, while inward shooting stays with plain bisection on the origin-parity mismatch. This is the code realization of the course-level shooting idea: guess an energy, integrate, evaluate the mismatch, then refine the guess with root finding.
 | Lines | Block | Purpose |
 |---:|---|---|
 | 57-81 | `class StateSolution` | Container for a single bound-state solution. |

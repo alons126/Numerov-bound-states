@@ -9,11 +9,11 @@
 \contentsline {subsection}{\numberline {3.2}Harmonic oscillator}{4}{subsection.3.2}%
 \contentsline {subsubsection}{\numberline {3.2.1}Numerov method on unbounded domains}{4}{subsubsection.3.2.1}%
 \contentsline {subsubsection}{\numberline {3.2.2}Numerov versus Runge--Kutta}{6}{subsubsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.3}Double-well potential}{6}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.3}Double-well potential}{9}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Finite square well}{10}{subsection.3.4}%
 \contentsline {subsection}{\numberline {3.5}Scattering and resonant tunneling}{13}{subsection.3.5}%
 \contentsline {subsubsection}{\numberline {3.5.1}Single barrier potential}{13}{subsubsection.3.5.1}%
-\contentsline {subsubsection}{\numberline {3.5.2}Double barrier potential}{13}{subsubsection.3.5.2}%
+\contentsline {subsubsection}{\numberline {3.5.2}Double barrier potential}{15}{subsubsection.3.5.2}%
 \contentsline {section}{\numberline {4}Discussion}{16}{section.4}%
 \contentsline {section}{\numberline {5}Conclusion}{17}{section.5}%
-\contentsline {section}{References}{17}{section*.10}%
+\contentsline {section}{References}{18}{section*.10}%

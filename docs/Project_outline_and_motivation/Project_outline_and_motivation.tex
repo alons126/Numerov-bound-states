@@ -358,6 +358,8 @@
 
     This inward startup is not as universal as the outward parity startup at $x=0$. The outward formulation uses exact symmetry conditions and therefore applies to any symmetric potential once the half-domain reduction is valid. The inward formulation instead assumes the chosen $x_{\max}$ lies in a simple decaying tail, so in this project it is treated as a specialized tool for smooth confining infinite-domain problems rather than the default solver for every potential.
 
+    The project also treats the final bracket refinement slightly differently in the two formulations. Outward shooting bisects the sign-changing wall mismatch and then applies a few safeguarded secant-style polishing steps inside the last bracket, because that improves the raw boundary residual without sacrificing robustness. Inward shooting keeps the refinement as straight bisection on the origin-parity mismatch, which is simpler and remains fully bracketed.
+
     \section{Why parity?}
 
     The main bound-state potentials are symmetric:

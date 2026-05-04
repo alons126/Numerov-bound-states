@@ -152,6 +152,13 @@ where the physical solution decays exponentially, which is why it is used here
 for the harmonic oscillator and the RK4 comparison rather than as the default
 for every symmetric potential.
 
+The corresponding root-refinement routines also differ slightly. The outward
+solver bisects the sign-changing wall-mismatch bracket and then applies a few
+safeguarded secant-style polishing steps inside the final bracket to reduce the
+raw boundary residual more aggressively. The inward solver instead uses plain
+bisection on the origin-parity mismatch, keeping that specialized formulation
+fully bracketed and simpler to interpret.
+
 Eigenvalues are obtained by solving $M(E) = 0$. The solver scans over energies to locate sign changes (bracketing), refines roots using bisection, and then applies a short safeguarded polishing step inside the final bracket for the outward-shooting bound-state solver.
 
 To make the algorithm transparent, the code generates two kinds of root-finding diagnostics:

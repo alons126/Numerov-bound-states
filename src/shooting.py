@@ -1225,7 +1225,9 @@ def find_brackets_inward_shooting(
 
 
 # ===========================================================================
+# ===========================================================================
 # FUNCTION: bisect_energy_inward_shooting
+# ===========================================================================
 # ===========================================================================
 def bisect_energy_inward_shooting(
     x_max: float,
@@ -1296,7 +1298,6 @@ def bisect_energy_inward_shooting(
     # the root of the raw mismatch M(E).
     for _ in range(max_iter):
         mid = 0.5 * (lo + hi)
-
         fmid = boundary_mismatch_inward_shooting(
             x_max,
             n_grid,
@@ -1593,37 +1594,42 @@ def solve_symmetric_potential_inward_shooting(
     outward solver remains the more general parity-based formulation.
     """
 
-    # If there are no user-specified potential kwargs, use an empty dict to avoid
-    # passing None to the potential function.
+    # Normalize the optional parameter dictionary once here so every later
+    # helper can call potential_fn(...) without special-casing None.
     if potential_kwargs is None:
         potential_kwargs = {}
 
-    # Sample the potential once on [0, x_max] so the default energy window is
-    # inferred from the actual confining profile used by the inward solver.
+    # Sample the confining profile once on [0, x_max]. The inward solver uses
+    # this probe only to choose a reasonable default search window; the actual
+    # mismatch evaluations later rebuild the descending tail-to-origin solve
+    # for each trial energy.
     x_probe = np.linspace(0.0, x_max, n_grid)
     V_probe = potential_fn(x_probe, **potential_kwargs)
 
     if e_min is None:
-        # Bound states typically start near the minimum of the potential.
+        # Start the energy scan near the bottom of the confining well, since
+        # low-lying bound states should lie above that minimum.
         e_min = float(np.min(V_probe))
 
     if e_max is None:
-        # The scan ceiling is chosen generously so several low-lying states fit
-        # inside the search window without extra user tuning.
+        # Choose a generous ceiling so several low-lying states fit inside the
+        # search window without extra user tuning. For inward shooting this
+        # window should still keep x_max in the decaying tail of the states of
+        # interest, otherwise the asymptotic startup model becomes unreliable.
         e_max = float(np.max(V_probe))
         e_max = max(e_max, e_min + 30.0)
 
     solutions: list[StateSolution] = []
 
-    # Work one parity sector at a time. First scan the mismatch M(E) over
-    # the requested energy window and collect sign-changing brackets for
-    # that parity, then refine the first n_needed brackets into actual
+    # Work one parity sector at a time. First scan the inward origin mismatch
+    # M(E) over the requested energy window and collect sign-changing brackets
+    # for that parity, then refine the first n_needed brackets into actual
     # bound states. The even/odd solutions are accumulated separately here
     # and sorted together by energy after the loop.
     for parity, n_needed in [("even", n_even), ("odd", n_odd)]:
-        # Sample the inward-shooting mismatch over [e_min, e_max] for this
-        # parity sector and keep only the energy intervals where the mismatch
-        # changes sign; those intervals are the initial root brackets.
+        # For this parity sector, keep only the energy intervals where the
+        # inward mismatch changes sign. Each such bracket is a candidate
+        # eigenvalue interval for the inward-decay formulation.
         brackets = find_brackets_inward_shooting(
             x_max,
             n_grid,
@@ -1643,7 +1649,8 @@ def solve_symmetric_potential_inward_shooting(
 
         # Turn the first n_needed brackets for this parity sector into actual
         # eigenstates: each bracket is refined to one eigenvalue, then the
-        # corresponding wavefunction is reconstructed and stored.
+        # descending half-domain tail solution is recomputed, reflected to the
+        # full symmetric domain, normalized, and stored.
         for bracket in brackets[:n_needed]:
             solutions.append(
                 solve_state_from_bracket_inward_shooting(
