@@ -417,6 +417,8 @@ def run_harmonic_oscillator_Numerov(
         slopes=conv_h_slopes,
     )
 
+    # Reuse the production Numerov spacing as the nominal h for both Numerov
+    # and RK4 box-size studies, so the x_max sweep mainly measures truncation.
     target_h = x_max / (n_grid - 1)
 
     # Box-size convergence keeps h approximately fixed while x_max varies, so
@@ -482,7 +484,7 @@ def run_harmonic_oscillator_RK4(
     target_h: float | None = None,
 ) -> dict[str, np.ndarray]:
     """
-    Run the RK4 harmonic-oscillator study on the same grids as Numerov.
+    Run the RK4 harmonic-oscillator study on the same convergence grids as Numerov.
 
     Parameters
     ----------
@@ -490,7 +492,7 @@ def run_harmonic_oscillator_RK4(
         Output directory for RK4-only tables and figures.
     numerov_convergence : dict[str, np.ndarray]
         Precomputed Numerov grid-convergence data whose spacings are reused to
-        build a matched RK4 grid family.
+        build the matched RK4 grid family for the method comparison.
     omega : float, optional
         Harmonic-oscillator frequency in the potential
         ``V(x)=\\frac{1}{2}\\omega^2 x^2``.
@@ -662,16 +664,14 @@ def run_harmonic_oscillator_Numerov_VS_RK4(
     if not np.allclose(numerov_h, rk4_h):
         raise ValueError("Numerov and RK4 comparisons must use identical h values.")
 
-    # Flatten both per-state error tables into one CSV so the report can
-    # compare the two methods row by row on the same grid spacings.
     comparison_rows = []
 
     for method, h_values, errors in [
         ("Numerov", numerov_h, numerov_errors),
         ("RK4", rk4_h, rk4_errors),
     ]:
-        # Flatten both error tables into one CSV so the report can compare the
-        # methods row by row without special-case parsing.
+        # Flatten both per-state error tables into one CSV so the report can
+        # compare the two methods row by row on the same grid spacings.
         for grid_index, h_value in enumerate(h_values):
             row = {"method": method, "h": h_value}
             for state_index in range(errors.shape[1]):
