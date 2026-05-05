@@ -90,7 +90,7 @@
     % Introduction
     % ==============================================================
     \section{Introduction}
-        This project studies the one-dimensional time-independent Schr\"odinger equation using the Numerov method combined with parity-aware shooting. The aim is to validate the method on problems with known analytic spectra, quantify its numerical accuracy, and then apply it to more interesting bound-state potentials such as a double well and a finite square well. Scattering from finite barriers is included as a secondary extension. The full Python implementation is available in \href{https://github.com/alons126/Numerov-bound-states}{this repository}, and its documentation describe how to run the code and reproduce the results. \\
+        This project studies the one-dimensional time-independent Schr\"odinger equation using the Numerov method combined with parity-aware shooting. The aim is to validate the method on problems with known analytic spectra, quantify its numerical accuracy, and then apply it to more interesting bound-state potentials such as a double well and a finite square well. Scattering from finite barriers is included as a secondary extension. \\
 
         This is a boundary-value eigenvalue problem rather than a standard initial-value problem: only special energies satisfy the required boundary behavior. Numerov is well suited to this task because the equation has the second-order form $\psi''=q(x)\psi$ with no first-derivative term. The project therefore emphasizes not only the spectra, but also validation through analytic benchmarks, convergence studies, parity structure, and flux conservation. \\
         
@@ -106,11 +106,11 @@
             The wavefunction is integrated with the Numerov scheme on a uniform grid. For the symmetric bound-state potentials studied here, $V(-x)=V(x)$, so the eigenstates can be chosen to have definite parity: even states satisfy $\psi'(0)=0$ and odd states satisfy $\psi(0)=0$. This symmetry lets the solver work only on the half-domain $[0,x_{\max}]$ and reconstruct the other half by reflection. Eigenvalues are then obtained by searching for zeros of a scalar mismatch function and refining the resulting brackets with robust root finding. The implementation follows the standard Numerov-shooting strategy described in \cite{Pang_2006}.
 
         \subsection{Shooting and root finding}
-            The boundary-value problem is reformulated as a root-finding problem for a mismatch function $M(E)$. For a trial energy $E$, the Schr\"odinger equation is integrated and a boundary mismatch is evaluated. The code uses two related formulations. For the infinite square well, finite square well, and quartic double well, the solution is shot outward from $x=0$ and the mismatch is the boundary value $M(E)=\psi_E(x_{\max})$. For the harmonic oscillator and the RK4 comparison, the integration is instead started from the decaying tail at $x_{\max}$ and the parity condition is enforced at the origin:
+            The boundary-value problem is reformulated as a root-finding problem for a mismatch function $M(E)$. For a trial energy $E$, the Schr\"odinger equation is integrated and a boundary mismatch is evaluated. Two related formulations are used. For the infinite square well, finite square well, and quartic double well, the solution is shot outward from $x=0$ and the mismatch is the boundary value $M(E)=\psi_E(x_{\max})$. For the harmonic oscillator and the RK4 comparison, the integration is instead started from the decaying tail at $x_{\max}$ and the parity condition is enforced at the origin:
             \begin{align}
             \text{even states:}\quad M(E) = \psi'_E(0),\,\,\,\,\,\,\,\,\,\,\text{odd states:}\quad M(E) = \psi_E(0)
             \end{align}
-            The inward formulation is specialized to smooth confining problems where the truncation point already lies in a forbidden decaying region. In all cases, eigenvalues correspond to roots of $M(E)=0$, found by bracketing sign changes and then refining them numerically using standard root-finding ideas \cite{Pang_2006}. The outward solver uses bisection followed by a short safeguarded polishing step inside the final bracket, while the inward and RK4 solvers use straight bisection. In the inward even-state case, $\psi'(0)$ is evaluated with a fourth-order backward stencil so the boundary condition does not reduce the overall observed order of accuracy.
+            The inward formulation is specialized to smooth confining problems where the truncation point already lies in a forbidden decaying region. In all cases, eigenvalues correspond to roots of $M(E)=0$, found by bracketing sign changes and then refining them numerically using standard root-finding ideas \cite{Pang_2006}.
 
     % ==============================================================
     % Results
@@ -169,7 +169,7 @@
             \end{cases}
             \qquad \text{(implemented numerically with a large finite }V_0\text{)}
             \end{equation}
-            The production calculation uses $a=1$, $x_{\max}=1$, $n_{\text{grid}}=2500$, and $V_0=10^6$; grid refinement is then used to check convergence. \\
+        The production calculation uses $a=1$, $x_{\max}=1$, $n_{\text{grid}}=2500$, and $V_0=10^6$. \\
 
             The numerical eigenvalues agree with the analytic values to essentially machine precision, as shown in Fig.~\ref{fig:infwell_energies}; in the saved run the first four relative errors are of order $10^{-11}$--$10^{-10}$. Figure~\ref{fig:infwell_states} shows the expected parity and node structure, while Fig.~\ref{fig:infwell_shooting} illustrates the shooting mismatch used to isolate the first four roots. The convergence study in Fig.~\ref{fig:infwell_convergence} gives fitted exponents $p=3.94$, $4.00$, $3.98$, and $4.00$, so this benchmark also confirms the expected fourth-order accuracy. \\
 
@@ -190,7 +190,7 @@
                 \begin{equation}
                 E_n = \omega\left(n+\tfrac{1}{2}\right), \qquad n=0,1,2,\ldots
                 \end{equation}
-                This provides a second analytic benchmark, but on an unbounded domain. Numerically, the domain is truncated to $[-x_{\max},x_{\max}]$, and decaying boundary conditions are imposed. In the production Numerov run, the parameters are $\omega=1$, $x_{\max}=8$, and $n_{\text{grid}}=2500$. Separate studies vary the grid spacing at fixed $x_{\max}$ and the box size at approximately fixed spacing. \\
+                This provides a second analytic benchmark, but on an unbounded domain. Numerically, the domain is truncated to $[-x_{\max},x_{\max}]$, and decaying boundary conditions are imposed. In the production Numerov run, the parameters are $\omega=1$, $x_{\max}=8$, and $n_{\text{grid}}=2500$. \\
 
                 The numerical eigenvalues agree with the exact linear spectrum to extremely high precision, with first-four-state relative errors of order $10^{-12}$--$10^{-11}$ in the saved run. The convergence studies in Figs.~\ref{fig:ho_convergence_h} and \ref{fig:ho_convergence_xmax} quantify the discretization and truncation errors for this unbounded-domain benchmark. \\
 
@@ -240,7 +240,7 @@
             \begin{equation}
             V(x)=ax^4-bx^2-V_{\min}, \qquad V_{\min}=-\frac{b^2}{4a}
             \end{equation}
-            the two minima are shifted to zero. The analytic shift is used instead of the sampled grid minimum so the potential does not change slightly under grid refinement. Unlike the infinite square well and harmonic oscillator, this system does not have a simple analytic spectrum, so validation relies on internal consistency checks, convergence studies, parity structure, and physically expected tunneling behavior. The production run uses $a=1$, $b=6$, $x_{\max}=4$, and $n_{\text{grid}}=4000$; separate studies test grid refinement, box-size sensitivity, and the dependence of the lowest splitting on $b$. \\
+            the two minima are shifted to zero. The analytic shift is used instead of the sampled grid minimum so the potential does not change slightly under grid refinement. Unlike the infinite square well and harmonic oscillator, this system does not have a simple analytic spectrum, so validation relies on internal consistency checks, parity structure, and physically expected tunneling behavior. The production run uses $a=1$, $b=6$, $x_{\max}=4$, and $n_{\text{grid}}=4000$. \\
 
             Figure~\ref{fig:dw_states} shows the first four computed states together with the double-well potential. The lowest two form a nearly degenerate even-odd pair, $E_0\approx2.357273$ and $E_1\approx2.359372$, with a splitting of about $2.10\times10^{-3}$; the next pair, $E_2\approx6.548814$ and $E_3\approx6.684430$, is more strongly split. \\
 
@@ -272,7 +272,7 @@
             V_0 & ,|x|>a
             \end{cases}
             \end{equation}
-            and only states with $E<V_0$ are true bound states. In the production run, the well parameters are $a=1$ and $V_0=12$, while the outward-shooting box uses $x_{\max}=4$ and the Numerov mesh uses $n_{\text{grid}}=3000$. A supplementary grid-refinement check compares coarser solutions to the finest saved run, so the plotted quantity is $|E_N-E_{\mathrm{ref}}|$ with the $n_{\text{grid}}=3000$ spectrum acting as the practical reference. Unlike the smooth benchmark potentials, however, the finite square well is only piecewise smooth: $V(x)$ jumps at $|x|=a$. That discontinuity degrades the observed asymptotic convergence order, so this refinement study should be read mainly as a practical convergence check rather than a clean fourth-order Numerov benchmark. \\
+            and only states with $E<V_0$ are true bound states. In the production run, the well parameters are $a=1$ and $V_0=12$, while the outward-shooting box uses $x_{\max}=4$ and the Numerov mesh uses $n_{\text{grid}}=3000$. Unlike the smooth benchmark potentials, however, the finite square well is only piecewise smooth: $V(x)$ jumps at $|x|=a$. That discontinuity degrades the observed asymptotic convergence order, so the refinement study should be read mainly as a practical convergence check rather than a clean fourth-order Numerov benchmark. \\
 
             Figure~\ref{fig:finitewell_states} shows the first four computed states together with the finite well potential. For $V_0=12$ and $a=1$, the first three states are well localized inside the well, while the fourth lies close to the barrier top and shows much stronger leakage into the exterior region. \\
 
@@ -289,9 +289,7 @@
 
         \subsection{Scattering and resonant tunneling}
             \subsubsection{Single barrier potential}
-                As a secondary extension, the Numerov framework is applied to scattering from finite barriers by propagating a complex wavefunction and extracting $T(E)$ and $R(E)$ from the asymptotic incident, reflected, and transmitted components. \\
-
-                The shared scattering grid for both barrier problems is $x\in[-8,8]$ with $n_{\text{grid}}=4000$ points. For the single-barrier run, the barrier parameters are $V_0=5$, width $1.2$, and center $0$, while the incident energy is scanned over a range that covers both below-barrier and above-barrier behavior. \\
+                As a secondary extension, the Numerov framework is applied to scattering from finite barriers, yielding the transmission and reflection probabilities $T(E)$ and $R(E)$. For the single-barrier run, the barrier parameters are $V_0=5$, width $1.2$, and center $0$. \\
 
                 The single-barrier result is shown in Fig.~\ref{fig:single_barrier_scattering}. Transmission is strongly suppressed at low incident energy and increases as the energy rises through and above the barrier. Even for $E>V_0$, transmission is not exactly one because the finite interfaces still cause partial reflection. The conservation check $T(E)+R(E)$ remains numerically indistinguishable from one across the saved scan. \\
 
@@ -309,7 +307,7 @@
             \subsubsection{Double barrier potential}
                 The double-barrier potential is used to demonstrate resonant tunneling. In this case the two barriers create an intermediate well, so certain incident energies can form quasi-bound states between the barriers. At these energies, destructive reflection and constructive transmission lead to sharp peaks in the transmission coefficient. \\
 
-                For the production double-barrier run, each barrier has height $V_0=5$, the barrier width is $0.6$, the central well width is $1.4$, the structure is centered at $x=0$, and the incident energy is scanned across the resonance region below the barrier top. Resonance candidates are then identified from peaks in the transmission curve. \\
+                For the production double-barrier run, each barrier has height $V_0=5$, the barrier width is $0.6$, the central well width is $1.4$, and the structure is centered at $x=0$. \\
 
                 Figure~\ref{fig:double_barrier_resonances} shows two clear resonances in the saved transmission curve: a narrow low-energy peak near $E\approx1.13938$ and a broader high-energy peak near $E\approx4.35847$, both with transmission very close to one. The conservation check $T(E)+R(E)$ remains essentially exact across the scan. Figure~\ref{fig:double_barrier_resonant_state} shows the probability density at the first resonance, where the wavefunction is strongly enhanced in the region between the barriers, identifying the quasi-bound state responsible for resonant tunneling. \\
 
