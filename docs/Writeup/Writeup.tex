@@ -80,7 +80,7 @@
     \section{Introduction}
         This project studies the one-dimensional time-independent Schr\"odinger equation using the Numerov method combined with parity-aware shooting. The implementation is written in Python. The aim is to validate the method on problems with known analytic spectra, quantify its numerical accuracy, and then apply it to more interesting bound-state potentials such as a double well and a finite square well. Scattering from finite barriers is included as a secondary extension. \\
 
-        This is a boundary-value eigenvalue problem rather than a standard initial-value problem: only special energies satisfy the required boundary behavior. Numerov is well suited to this task because the equation has the second-order form $\psi''=q(x)\psi$ with no first-derivative term. The project therefore emphasizes not only the spectra, but also validation through analytic benchmarks, convergence studies, parity structure, and flux conservation.
+        This is a boundary-value eigenvalue problem rather than a standard initial-value problem: only special energies satisfy the required boundary behavior. In practice, such problems can also be treated with more general integrators such as Runge--Kutta shooting, finite-difference matrix diagonalization, or spectral methods, but Numerov is especially attractive when the equation has the second-order form $\psi''=q(x)\psi$ with no first-derivative term. The project therefore emphasizes not only the spectra, but also validation through analytic benchmarks, convergence studies, parity structure, and flux conservation.
         
     % ==============================================================
     % Computational approach
