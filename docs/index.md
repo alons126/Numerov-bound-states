@@ -15,4 +15,3 @@ explore transmission, reflection, and resonant tunneling.
 - [Code Structure](code_structure.md)
 - [Numerical Method](numerical_method.md)
 - [Reproducing Results](reproducing_results.md)
-- [Code Walkthrough](code_walkthrough.md)
