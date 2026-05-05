@@ -7,7 +7,13 @@ python3 scripts/run_solver.py
 ```
 
 This regenerates the numerical outputs used in the report and then runs the
-lightweight automated test suite.
+lightweight automated regression subset used by the workflow.
+
+To run the full test module directly instead of the workflow subset, use:
+
+```bash
+python3 -m pytest tests/test_solver.py
+```
 
 ## Generated experiment outputs
 

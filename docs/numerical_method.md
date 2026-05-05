@@ -1,6 +1,6 @@
 # Numerical Method
 
-We solve the one-dimensional time-independent Schrodinger equation
+We solve the one-dimensional time-independent Schrödinger equation
 
 ```text
 psi''(x) = 2 [V(x) - E] psi(x)

@@ -11,8 +11,9 @@ The project runs in a top-down pipeline:
 2. It runs each experiment in the same order used in the writeup.
 3. Each experiment solves a physical problem, saves figures and CSV outputs,
    and delegates plotting to the shared plotting and diagnostics helpers.
-4. The lightweight regression tests in `tests/test_solver.py` run at the end as
-   a numerical sanity check on the current codebase.
+4. The workflow finishes by calling `run_all_tests()` from
+   `tests/test_solver.py`, which runs a lightweight regression subset as a
+   numerical sanity check on the current codebase.
 
 ## Core solver
 
@@ -91,9 +92,10 @@ The project runs in a top-down pipeline:
 - `tests/test_solver.py`
   Contains the lightweight regression and numerical-validation tests.
 
-  These tests cover analytic benchmarks, convergence-order checks,
-  normalization, derivative-stencil correctness, parity-specific mismatch
-  behavior, and scattering probability conservation.
+  The file contains analytic benchmarks, convergence-order checks,
+  normalization tests, derivative-stencil checks, parity-specific mismatch
+  checks, and scattering sanity tests. The top-level workflow runs a smaller
+  subset through `run_all_tests()`, while `pytest` can execute the full module.
 
 - `docs/`
   Holds the user-facing documentation and the project writeup sources.

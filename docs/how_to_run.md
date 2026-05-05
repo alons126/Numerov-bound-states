@@ -25,6 +25,12 @@ configuration, use:
 PYTHONPATH=. python3 scripts/run_solver.py
 ```
 
+To run the full pytest-discovered test module directly, use:
+
+```bash
+python3 -m pytest tests/test_solver.py
+```
+
 ## Output
 
 All generated outputs are written under:

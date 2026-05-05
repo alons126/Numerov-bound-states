@@ -18,7 +18,7 @@ python3 -m pip install -r requirements.txt
 ## Run the project
 
 ```bash
-python scripts/run_solver.py
+python3 scripts/run_solver.py
 ```
 
 ## Output
