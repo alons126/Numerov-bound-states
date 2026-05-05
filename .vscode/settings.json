@@ -11,7 +11,7 @@
     },
     {
       "name": "Writeup",
-      "tools": ["writeup-latexmk", "copy-writeup-pdf", "copy-writeup-pdf-to-writeup"]
+      "tools": ["writeup-latexmk"]
     },
     {
       "name": "proposal",
@@ -28,40 +28,25 @@
       "command": "sh",
       "args": [
         "-c",
-        "latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"$1\" && if [ \"$2\" = \"Writeup.tex\" ]; then cp \"$3/build/Writeup.pdf\" \"$3/../Writeup.pdf\"; fi",
+        "latexmk -e '$max_repeat=8' -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"$1\"; status=$?; if [ -f \"docs/Writeup/build/Writeup.pdf\" ]; then cp \"docs/Writeup/build/Writeup.pdf\" \"Writeup - final assignment - Alon Sportes.pdf\"; fi; exit $status",
         "latexmk-active",
-        "%DOC%",
-        "%DOCFILE%",
-        "%DIR%"
+        "%DOC%"
       ]
     },
     {
       "name": "writeup-latexmk",
-      "command": "latexmk",
+      "command": "sh",
       "args": [
-        "-cd",
-        "-outdir=build",
-        "-pdf",
-        "-interaction=nonstopmode",
-        "-synctex=1",
-        "-f",
-        "docs/Writeup/Writeup.tex"
+        "-c",
+        "latexmk -e '$max_repeat=8' -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f docs/Writeup/Writeup.tex; status=$?; if [ -f \"docs/Writeup/build/Writeup.pdf\" ]; then cp \"docs/Writeup/build/Writeup.pdf\" \"Writeup - final assignment - Alon Sportes.pdf\"; fi; exit $status"
       ]
-    },
-    {
-      "name": "copy-writeup-pdf",
-      "command": "cp",
-      "args": ["docs/Writeup/build/Writeup.pdf", "docs/Writeup.pdf"]
-    },
-    {
-      "name": "copy-writeup-pdf-to-writeup",
-      "command": "cp",
-      "args": ["docs/Writeup/build/Writeup.pdf", "docs/Writeup/Writeup.pdf"]
     },
     {
       "name": "proposal-latexmk",
       "command": "latexmk",
       "args": [
+        "-e",
+        "$max_repeat=8",
         "-cd",
         "-outdir=build",
         "-pdf",
@@ -75,6 +60,8 @@
       "name": "project-outline-latexmk",
       "command": "latexmk",
       "args": [
+        "-e",
+        "$max_repeat=8",
         "-cd",
         "-outdir=build",
         "-pdf",
@@ -86,12 +73,6 @@
     }
   ],
   "emeraldwalk.runonsave": {
-    "commands": [
-      {
-        "match": ".*",
-        "isAsync": true,
-        "cmd": "cd \"${workspaceFolder}\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Writeup/Writeup.tex\" && cp \"docs/Writeup/build/Writeup.pdf\" \"${workspaceFolder}/docs/Writeup.pdf\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Proposal/proposal.tex\" && latexmk -cd -outdir=build -pdf -interaction=nonstopmode -synctex=1 -f \"docs/Project_outline_and_motivation/Project_outline_and_motivation.tex\""
-      }
-    ]
+    "commands": []
   }
 }
