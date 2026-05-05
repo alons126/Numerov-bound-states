@@ -80,7 +80,7 @@
     \section{Introduction}
         This project studies the one-dimensional time-independent Schr\"odinger equation using the Numerov method combined with parity-aware shooting. The implementation is written in Python. The aim is to validate the method on problems with known analytic spectra, quantify its numerical accuracy, and then apply it to more interesting bound-state potentials such as a double well and a finite square well. Scattering from finite barriers is included as a secondary extension. \\
 
-        This is a boundary-value eigenvalue problem rather than a standard initial-value problem: only special energies satisfy the required boundary behavior. Numerov is well suited to this task because the equation has the second-order form $\psi''=q(x)\psi$ with no first-derivative term. The project therefore emphasizes not only the spectra, but also validation through analytic benchmarks, convergence studies, parity structure, and flux conservation. \\
+        This is a boundary-value eigenvalue problem rather than a standard initial-value problem: only special energies satisfy the required boundary behavior. Numerov is well suited to this task because the equation has the second-order form $\psi''=q(x)\psi$ with no first-derivative term. The project therefore emphasizes not only the spectra, but also validation through analytic benchmarks, convergence studies, parity structure, and flux conservation.
         
     % ==============================================================
     % Computational approach
@@ -215,7 +215,7 @@
         \subsection{Finite square well}
             The finite square well is included as an additional nontrivial bound-state test. Unlike the infinite square well, the potential walls are finite, so bound states can leak into the classically forbidden region. Here, $V(x)=0$ for $|x|\le a$ and $V(x)=V_0$ for $|x|>a$, and only states with $E<V_0$ are true bound states. In the production run, the well parameters are $a=1$ and $V_0=12$, while the outward-shooting box uses $x_{\max}=4$ and the Numerov mesh uses $n_{\text{grid}}=3000$. Unlike the smooth benchmark potentials, however, the finite square well is only piecewise smooth: $V(x)$ jumps at $|x|=a$. That discontinuity degrades the observed asymptotic convergence order, so the refinement study should be read mainly as a practical convergence check rather than a clean fourth-order Numerov benchmark. \\
 
-            Figure~\ref{fig:finitewell_states} shows the first four computed states together with the finite well potential. For $V_0=12$ and $a=1$, the first three states are well localized inside the well, while the fourth lies close to the barrier top and shows much stronger leakage into the exterior region. \\
+            Figure~\ref{fig:finitewell_states} shows the first four computed states together with the finite well potential. For $V_0=12$ and $a=1$, the first three states are well localized inside the well, while the fourth lies close to the barrier top and shows much stronger leakage into the exterior region.
 
             \begin{figure}[!h]
                 \centering
@@ -274,7 +274,7 @@
     \section{Discussion}
         The calculation was checked in four complementary ways: automated tests of key numerical components, analytic benchmark spectra for the infinite square well and harmonic oscillator, inspection of parity and node structure in the wavefunctions, and convergence studies with respect to both grid spacing and domain size. Taken together, these checks show that the method is reliable when the boundary treatment is handled with the same care as the integration formula itself. \\
 
-        The convergence studies identify the main numerical limitations: domain truncation, boundary-condition accuracy, discontinuities in the potential, and floating-point floors. The RK4 comparison shows that method order alone is not enough; boundary diagnostics must be treated with comparable accuracy. The finite well and scattering extensions show that the same framework also handles barrier penetration and resonant tunneling while preserving qualitative physical consistency. \\
+        The convergence studies identify the main numerical limitations: domain truncation, boundary-condition accuracy, discontinuities in the potential, and floating-point floors. The RK4 comparison shows that method order alone is not enough; boundary diagnostics must be treated with comparable accuracy. The finite well and scattering extensions show that the same framework also handles barrier penetration and resonant tunneling while preserving qualitative physical consistency.
 
     % ==============================================================
     % Conclusion
