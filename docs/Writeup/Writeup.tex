@@ -92,7 +92,7 @@
     \section{Introduction}
         This project studies the one-dimensional time-independent Schr\"odinger equation using the Numerov method combined with parity-aware shooting. The aim is to validate the method on problems with known analytic spectra, quantify its numerical accuracy, and then apply it to more interesting bound-state potentials such as a double well and a finite square well. Scattering from finite barriers is included as a secondary extension. \\
 
-        This is a boundary-value eigenvalue problem rather than a standard initial-value problem: only special energies satisfy the required boundary behavior. Numerov is well suited to this task because the equation has the second-order form $\psi''=q(x)\psi$ with no first-derivative term. The project therefore emphasizes both the computed spectra and the numerical checks behind them, including analytic benchmarks, convergence studies, parity and node structure, and probability conservation in the scattering extension. \\
+        This is a boundary-value eigenvalue problem rather than a standard initial-value problem: only special energies satisfy the required boundary behavior. Numerov is well suited to this task because the equation has the second-order form $\psi''=q(x)\psi$ with no first-derivative term. The project therefore emphasizes not only the spectra, but also validation through analytic benchmarks, convergence studies, parity structure, and flux conservation. \\
         
         The full Python implementation is available in \href{https://github.com/alons126/Numerov-bound-states}{this repository}. The accompanying \href{https://github.com/alons126/Numerov-bound-states/blob/main/README.md}{\texttt{README.md}} and documentation describe how to run the code and reproduce the results.
 
@@ -171,7 +171,7 @@
             \end{cases}
             \qquad \text{(implemented numerically with a large finite }V_0\text{)}
             \end{equation}
-            In the production calculation, the well half-width is $a=1$, the outward-shooting half-domain uses $x_{\max}=a=1$, the Numerov grid uses $n_{\text{grid}}=2500$ points, and the numerical wall height is set to $V_0=10^6$. A separate grid-refinement study is used to check convergence at fixed $x_{\max}=1$. \\
+            The production calculation uses $a=1$, $x_{\max}=1$, $n_{\text{grid}}=2500$, and $V_0=10^6$; grid refinement is then used to check convergence. \\
 
             The numerical eigenvalues agree with the analytic values to essentially machine precision, as shown in Fig.~\ref{fig:infwell_energies}; in the saved run the first four relative errors are of order $10^{-11}$--$10^{-10}$. Figure~\ref{fig:infwell_states} shows the expected parity and node structure, while Fig.~\ref{fig:infwell_shooting} illustrates the shooting mismatch used to isolate the first four roots. The convergence study in Fig.~\ref{fig:infwell_convergence} gives fitted exponents $p=3.94$, $4.00$, $3.98$, and $4.00$, so this benchmark also confirms the expected fourth-order accuracy. \\
 
@@ -214,7 +214,7 @@
                     \end{minipage}
                 \end{figure}
 
-                The convergence study versus grid spacing in Fig.~\ref{fig:ho_convergence_h} is consistent with fourth-order behavior. The saved fits give $p\approx5.30$, $3.97$, $4.57$, and $4.00$ for the first four states; the values above four occur only once the errors are already near the numerical floor and are therefore not interpreted as true superconvergence. The box-size study in Fig.~\ref{fig:ho_convergence_xmax} shows the expected truncation-to-discretization crossover: enlarging the domain rapidly reduces the error at first, after which the curves flatten once truncation error is no longer dominant. \\
+                The $h$-convergence in Fig.~\ref{fig:ho_convergence_h} is consistent with fourth-order behavior; fitted slopes above four occur only near the numerical floor and are not interpreted as true superconvergence. The $x_{\max}$ study in Fig.~\ref{fig:ho_convergence_xmax} shows the expected transition from truncation-dominated error to a discretization plateau. \\
 
             \subsubsection{Numerov versus Runge--Kutta}
                 As an additional method comparison, the harmonic oscillator was also solved using a fourth-order Runge--Kutta (RK4) shooting method \cite{Pang_2006}. In this formulation the second-order Schr\"odinger equation is rewritten as the first-order system:
@@ -222,7 +222,7 @@
                 \psi' = \phi, \qquad
                 \phi' = 2[V(x)-E]\psi
                 \end{equation}
-                This makes RK4 a useful general-purpose comparison for Numerov, which instead exploits the special second-order structure of the Schr\"odinger equation directly. The RK4 comparison uses the same physical parameters $\omega=1$ and $x_{\max}=8$ as the Numerov run, and it reuses the same family of grid spacings derived from the Numerov convergence study so the two methods are compared on matched meshes. \\
+                This makes RK4 a useful general-purpose comparison for Numerov, which instead exploits the special second-order structure of the Schr\"odinger equation directly. The comparison is performed on matched grids, so the difference reflects the integration and boundary-treatment choices rather than a different physical setup. \\
 
                 Figure~\ref{fig:ho_numerov_vs_rk4} compares the maximum energy error over the computed harmonic-oscillator states as a function of grid spacing. Both methods show approximately fourth-order convergence, but Numerov gives the smaller error on the matched grids, typically by a factor of about $2$--$4$. The RK4 slopes are also more uniformly close to four, while the Numerov fit is affected more strongly once the errors approach the numerical floor. This comparison is included mainly to show the benefit of using a method specialized to second-order equations when the boundary diagnostics are implemented with comparable care.
 
@@ -242,7 +242,7 @@
             \begin{equation}
             V(x)=ax^4-bx^2-V_{\min}, \qquad V_{\min}=-\frac{b^2}{4a}
             \end{equation}
-            the two minima are shifted to zero. This shift is applied using the analytic minimum $V_{\min}=-b^2/{4a}$ rather than the sampled grid minimum $\min_i(V(x_i))$ taken over the current mesh points, because the sampled minimum drifts slightly as the grid changes and would otherwise contaminate convergence studies. The analytic shift also gives a cleaner energy reference: the well bottoms sit at zero, so the reported low-lying energies can be read directly relative to the bottoms of the wells, while the potential shape and tunneling splittings remain unchanged. Unlike the infinite square well and harmonic oscillator, this system does not have a simple analytic spectrum, so the validation relies on internal consistency checks, convergence studies, parity structure, and physically expected tunneling behavior. The production run uses $a=1$, $b=6$, the analytic minimum shift $V_{\min}=-b^2/{4a}$, a box size $x_{\max}=4$, and $n_{\text{grid}}=4000$. Separate studies are used to test grid refinement, box-size sensitivity, and the dependence of the lowest splitting on the parameter $b$. \\
+            the two minima are shifted to zero. The analytic shift is used instead of the sampled grid minimum so the potential does not change slightly under grid refinement. Unlike the infinite square well and harmonic oscillator, this system does not have a simple analytic spectrum, so validation relies on internal consistency checks, convergence studies, parity structure, and physically expected tunneling behavior. The production run uses $a=1$, $b=6$, $x_{\max}=4$, and $n_{\text{grid}}=4000$; separate studies test grid refinement, box-size sensitivity, and the dependence of the lowest splitting on $b$. \\
 
             Figure~\ref{fig:dw_states} shows the first four computed states together with the double-well potential. The lowest two form a nearly degenerate even-odd pair, $E_0\approx2.357273$ and $E_1\approx2.359372$, with a splitting of about $2.10\times10^{-3}$; the next pair, $E_2\approx6.548814$ and $E_3\approx6.684430$, is more strongly split. \\
 
@@ -278,7 +278,6 @@
 
             Figure~\ref{fig:finitewell_states} shows the first four computed states together with the finite well potential. For $V_0=12$ and $a=1$, the first three states are well localized inside the well, while the fourth lies close to the barrier top and shows much stronger leakage into the exterior region. \\
 
-            As $E\to V_0^{-}$, the exterior decay constant tends to zero, so near-threshold states are the most sensitive part of the finite-well spectrum. The grid-refinement study is included mainly as a practical convergence check, since the discontinuity at the well edge lowers the observed asymptotic order relative to the smooth benchmark cases. \\
 
             \begin{figure}[h]
                 \centering
@@ -293,7 +292,7 @@
 
         \subsection{Scattering and resonant tunneling}
             \subsubsection{Single barrier potential}
-                As a secondary extension beyond bound states, the Numerov framework is also applied to one-dimensional scattering from a finite rectangular barrier. For each incident energy $E$, the complex wavefunction is propagated through the barrier region and decomposed into incident, reflected, and transmitted waves. This gives the transmission and reflection probabilities $T(E)$ and $R(E)$. The integration is started from the right free region, not the left, because the right boundary condition is the simplest one to impose directly: for a left-incident scattering state, the far-right asymptotic solution contains only the transmitted outgoing wave $e^{ikx}$. The left asymptotic region is more complicated because it contains a superposition of incident and reflected waves, so those amplitudes are recovered afterward by decomposing the numerically propagated left solution. \\
+                As a secondary extension, the Numerov framework is applied to scattering from finite barriers by propagating a complex wavefunction and extracting $T(E)$ and $R(E)$ from the asymptotic incident, reflected, and transmitted components. \\
 
                 The shared scattering grid for both barrier problems is $x\in[-8,8]$ with $n_{\text{grid}}=4000$ points. For the single-barrier run, the barrier parameters are $V_0=5$, width $1.2$, and center $0$, while the incident energy is scanned over a range that covers both below-barrier and above-barrier behavior. \\
 
@@ -341,7 +340,7 @@
     \section{Discussion}
         The calculation was checked in four complementary ways: automated tests of key numerical components, analytic benchmark spectra for the infinite square well and harmonic oscillator, inspection of parity and node structure in the wavefunctions, and convergence studies with respect to both grid spacing and domain size. Taken together, these checks show that the method is reliable when the boundary treatment is handled with the same care as the integration formula itself. \\
 
-        The convergence studies also identify the main practical limitations. In the smooth benchmark problems, the observed behavior is consistent with fourth-order accuracy, while slopes slightly above four occur only once the errors are already near the numerical floor. The harmonic-oscillator box-size study separates domain truncation from discretization error, and the RK4 comparison shows that method order alone is not enough: once the inward boundary derivative is evaluated accurately, Numerov gives smaller errors than RK4 at matched grid spacing. For the quartic double well, where no exact spectrum is available, correctness is established through self-consistency, parity-separated diagnostics, and stable refinement behavior. The finite well and scattering extensions show that the same framework also handles barrier penetration and resonant tunneling without losing flux conservation or qualitative physical consistency. \\
+        The convergence studies identify the main numerical limitations: domain truncation, boundary-condition accuracy, discontinuities in the potential, and floating-point floors. The RK4 comparison shows that method order alone is not enough; boundary diagnostics must be treated with comparable accuracy. The finite well and scattering extensions show that the same framework also handles barrier penetration and resonant tunneling while preserving qualitative physical consistency. \\
 
     % ==============================================================
     % Conclusion
