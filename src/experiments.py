@@ -656,6 +656,8 @@ def run_harmonic_oscillator_Numerov_VS_RK4(
     numerov_errors = np.asarray(numerov_convergence["energy_errors"], dtype=float)
     rk4_h = np.asarray(rk4_convergence["h"], dtype=float)
     rk4_errors = np.asarray(rk4_convergence["energy_errors"], dtype=float)
+    numerov_max_errors = np.max(numerov_errors, axis=1, keepdims=True)
+    rk4_max_errors = np.max(rk4_errors, axis=1, keepdims=True)
 
     if not np.allclose(numerov_h, rk4_h):
         raise ValueError("Numerov and RK4 comparisons must use identical h values.")
@@ -680,6 +682,13 @@ def run_harmonic_oscillator_Numerov_VS_RK4(
         comparison_rows,
     )
 
+    numerov_max_slope = estimate_convergence_slopes(numerov_h, numerov_max_errors)[0][
+        "convergence_exponent_p"
+    ]
+    rk4_max_slope = estimate_convergence_slopes(rk4_h, rk4_max_errors)[0][
+        "convergence_exponent_p"
+    ]
+
     plot_numerov_vs_RK4_errors(
         numerov_h,
         numerov_errors,
@@ -688,6 +697,8 @@ def run_harmonic_oscillator_Numerov_VS_RK4(
         comparison_results_dir
         / "2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png",
         "Harmonic oscillator - Numerov vs RK4 state error comparison",
+        numerov_slope=numerov_max_slope,
+        rk4_slope=rk4_max_slope,
     )
 
 

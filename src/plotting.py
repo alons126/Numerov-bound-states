@@ -666,6 +666,8 @@ def plot_numerov_vs_RK4_errors(
     rk4_errors: np.ndarray,
     path: str | Path,
     title: str,
+    numerov_slope: float | None = None,
+    rk4_slope: float | None = None,
 ) -> None:
     """
     Compare Numerov and RK4 harmonic-oscillator energy errors.
@@ -690,6 +692,10 @@ def plot_numerov_vs_RK4_errors(
         Output file path where the comparison figure is written.
     title : str
         Figure title displayed above the plot.
+    numerov_slope : float, optional
+        Fitted convergence exponent for the Numerov max-error curve.
+    rk4_slope : float, optional
+        Fitted convergence exponent for the RK4 max-error curve.
     """
 
     # Collapse the per-state error tables to one conservative curve per method
@@ -703,8 +709,17 @@ def plot_numerov_vs_RK4_errors(
     # Create a new Matplotlib figure
     plt.figure(figsize=(8, 6))
 
-    plt.loglog(h_numerov, numerov_max, marker="o", label="Numerov, max state error")
-    plt.loglog(h_rk4, rk4_max, marker="s", label="RK4, max state error")
+    numerov_label = "Numerov, max state error"
+    rk4_label = "RK4, max state error"
+
+    if numerov_slope is not None and np.isfinite(numerov_slope):
+        numerov_label = f"Numerov, max state error, $p = {numerov_slope:.2f}$"
+
+    if rk4_slope is not None and np.isfinite(rk4_slope):
+        rk4_label = f"RK4, max state error, $p = {rk4_slope:.2f}$"
+
+    plt.loglog(h_numerov, numerov_max, marker="o", label=numerov_label)
+    plt.loglog(h_rk4, rk4_max, marker="s", label=rk4_label)
     plt.xlabel("Grid spacing $h$")
     plt.ylabel("Max absolute energy error")
     plt.title(title)
