@@ -112,7 +112,7 @@
             \begin{align}
             \text{even states:}\quad M(E) = \psi'_E(0),\,\,\,\,\,\,\,\,\,\,\text{odd states:}\quad M(E) = \psi_E(0)
             \end{align}
-            The inward formulation is specialized to smooth confining problems where the truncation point already lies in a forbidden decaying region. In all cases, eigenvalues correspond to roots of $M(E)=0$, found by bracketing sign changes and then refining them numerically. The outward solver uses bisection followed by a short safeguarded polishing step inside the final bracket, while the inward and RK4 solvers use straight bisection. In the inward even-state case, $\psi'(0)$ is evaluated with a fourth-order backward stencil so the boundary condition does not reduce the overall observed order of accuracy.
+            The inward formulation is specialized to smooth confining problems where the truncation point already lies in a forbidden decaying region. In all cases, eigenvalues correspond to roots of $M(E)=0$, found by bracketing sign changes and then refining them numerically using standard root-finding ideas \cite{Pang_2006}. The outward solver uses bisection followed by a short safeguarded polishing step inside the final bracket, while the inward and RK4 solvers use straight bisection. In the inward even-state case, $\psi'(0)$ is evaluated with a fourth-order backward stencil so the boundary condition does not reduce the overall observed order of accuracy.
 
     % ==============================================================
     % Results
@@ -223,7 +223,7 @@
                 \end{figure}
 
             \subsubsection{Numerov versus Runge--Kutta}
-                As an additional method comparison, the harmonic oscillator was also solved using a fourth-order Runge--Kutta (RK4) \cite{Pang_2006} shooting method. In this formulation the second-order Schr\"odinger equation is rewritten as the first-order system:
+                As an additional method comparison, the harmonic oscillator was also solved using a fourth-order Runge--Kutta (RK4) shooting method \cite{Pang_2006}. In this formulation the second-order Schr\"odinger equation is rewritten as the first-order system:
                 \begin{equation}
                 \psi' = \phi, \qquad
                 \phi' = 2[V(x)-E]\psi

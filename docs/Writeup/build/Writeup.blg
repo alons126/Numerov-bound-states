@@ -1,17 +1,17 @@
 [0] Config.pm:328> INFO - This is Biber 2.21
 [0] Config.pm:331> INFO - Logfile is 'build/Writeup.blg'
-[27] biber-darwin:342> INFO - === Tue May  5, 2026, 15:50:22
+[27] biber-darwin:342> INFO - === Tue May  5, 2026, 15:53:55
 [33] Biber.pm:421> INFO - Reading 'build/Writeup.bcf'
 [66] Biber.pm:1002> INFO - Found 0 citekeys in bib section 0
 [66] Biber.pm:1002> INFO - Found 1 citekeys in bib section 1
 [66] Biber.pm:1002> INFO - Found 0 citekeys in bib section 0
-[75] Biber.pm:4487> INFO - Processing section 1
-[78] Biber.pm:4678> INFO - Looking for bibtex file 'references.bib' for section 1
+[74] Biber.pm:4487> INFO - Processing section 1
+[79] Biber.pm:4678> INFO - Looking for bibtex file 'references.bib' for section 1
 [79] bibtex.pm:1713> INFO - LaTeX decoding ...
 [80] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
-[94] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[94] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[94] Biber.pm:4307> INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
-[94] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
-[95] bbl.pm:676> INFO - Writing 'build/Writeup.bbl' with encoding 'UTF-8'
-[95] bbl.pm:779> INFO - Output to build/Writeup.bbl
+[95] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[95] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[95] Biber.pm:4307> INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
+[95] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[96] bbl.pm:676> INFO - Writing 'build/Writeup.bbl' with encoding 'UTF-8'
+[96] bbl.pm:779> INFO - Output to build/Writeup.bbl
