@@ -1,6 +1,13 @@
 # Documentation
 
-This documentation provides a minimal guide to understanding and running the project.
+This documentation supports the course-project submission by explaining how to
+run the code, how the solver is organized, and how the numerical results are
+generated and validated.
+
+The project studies the one-dimensional time-independent Schrodinger equation
+with the Numerov method and parity-based shooting. Its main focus is bound
+states of symmetric potentials, with a smaller scattering extension used to
+explore transmission, reflection, and resonant tunneling.
 
 ## Contents
 
@@ -8,3 +15,4 @@ This documentation provides a minimal guide to understanding and running the pro
 - [Code Structure](code_structure.md)
 - [Numerical Method](numerical_method.md)
 - [Reproducing Results](reproducing_results.md)
+- [Code Walkthrough](code_walkthrough.md)

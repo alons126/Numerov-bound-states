@@ -1,26 +1,59 @@
 # Reproducing Results
 
-Run:
+Run the full project workflow with:
 
 ```bash
-python scripts/run_solver.py
+python3 scripts/run_solver.py
 ```
 
-This regenerates the numerical outputs used in the report.
+This regenerates the numerical outputs used in the report and then runs the
+lightweight automated test suite.
 
-## Main results
+## Generated experiment outputs
 
-- Infinite square well: validation against the analytic spectrum
-- Harmonic oscillator: validation and Numerov versus RK4 comparison
-- Finite square well: bound states and convergence check
-- Quartic double well: tunneling doublet and splitting study
-- Single barrier: transmission, reflection, and flux conservation
-- Double barrier: resonant tunneling and resonance-state plot
-
-All outputs are saved under:
+The workflow writes experiment-specific outputs under:
 
 ```text
 results/
 ```
 
-The `results/` directory is organized into experiment-specific subdirectories, matching the structure of the report.
+The directory structure is:
+
+- `results/1_infinite_square_well_Numerov/`
+- `results/2a_harmonic_oscillator_Numerov/`
+- `results/2b_harmonic_oscillator_RK4/`
+- `results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/`
+- `results/3_double_well_Numerov/`
+- `results/4_finite_square_well_Numerov/`
+- `results/5_scattering_single_barrier_Numerov/`
+- `results/6_scattering_double_barrier_Numerov/`
+
+## Main results
+
+- Infinite square well:
+  analytic benchmark, parity-separated root diagnostics, and convergence versus
+  grid spacing.
+
+- Harmonic oscillator:
+  analytic benchmark, inward-shooting diagnostics, convergence versus grid
+  spacing and box size, and a matched-grid Numerov versus RK4 comparison.
+
+- Quartic double well:
+  low-lying states, tunneling splitting, successive-refinement convergence, and
+  box-size sensitivity.
+
+- Finite square well:
+  bound states, near-threshold diagnostics, and a practical grid-refinement
+  study against the finest saved run.
+
+- Single barrier:
+  transmission, reflection, and flux-conservation validation.
+
+- Double barrier:
+  resonant-tunneling transmission peaks and a resonant-state probability plot.
+
+## File conventions
+
+Each experiment directory contains the plots and CSV tables for that case. The
+filenames repeat the experiment prefix so the outputs remain self-describing
+when viewed outside the directory tree.

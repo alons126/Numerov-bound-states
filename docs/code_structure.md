@@ -1,81 +1,62 @@
-}
 # Code Structure
 
-The project is organized into modular components:
+The project is organized into modular components so the numerical method, the
+physics definitions, and the reporting pipeline remain separate.
 
 ## Core solver
 
-- numerov.py  
-  Numerov integration and wavefunction normalization
+- `numerov.py`
+  Implements Numerov integration, wavefunction normalization, and boundary
+  derivative utilities.
 
-- shooting.py  
-  Shooting method and eigenvalue search (bisection)
-
-## Physics definitions
-
-- potentials.py  
-  Defines all potentials used in the project
-
-## Experiments
-
-- experiments.py  
-  Runs all physical cases and generates results
-
-## Analysis and visualization
-
-- analysis.py  
-  Convergence studies and error analysis
-
-- plotting.py  
-  Plot generation
-
-- diagnostics.py  
-  Root-finding and debugging diagnostics
-
-## Extensions
-
-- scattering.py  
-  Barrier transmission and resonances
-
-- RK4_harmonic_oscillator.py  
-  RK4 comparison for the harmonic oscillato
-# Code Structure
-
-The project is organized into modular components.
-
-## Core solver
-
-- `numerov.py`  
-  Implements Numerov integration, wavefunction normalization, and boundary derivative utilities.
-
-- `shooting.py`  
-  Implements parity-based shooting, boundary mismatch functions, bracketing, and bisection-based eigenvalue search.
+- `shooting.py`
+  Implements parity-based shooting, mismatch functions, bracketing, and
+  eigenvalue refinement for symmetric bound-state problems.
 
 ## Physics definitions
 
-- `potentials.py`  
-  Defines all potentials used in the project, including validation potentials, double-well potentials, and scattering barriers.
+- `potentials.py`
+  Defines the benchmark and exploration potentials used in the project,
+  including square wells, the harmonic oscillator, the quartic double well, and
+  scattering barriers.
 
 ## Experiments
 
-- `experiments.py`  
-  Runs the main physical cases, generates numerical results, and saves plots and CSV files.
+- `experiments.py`
+  Runs the main physical cases, performs the analysis steps used in the
+  writeup, and saves plots and CSV outputs.
 
 ## Analysis and visualization
 
-- `analysis.py`  
-  Provides exact benchmark energies, convergence studies, error analysis, and parameter sweeps.
+- `analysis.py`
+  Provides exact benchmark energies, convergence studies, error analysis, CSV
+  export, and parameter sweeps.
 
-- `plotting.py`  
-  Generates report-ready figures for spectra, wavefunctions, densities, convergence, tunneling, and scattering.
+- `plotting.py`
+  Generates report-ready plots for spectra, wavefunctions, densities,
+  convergence, tunneling, and scattering.
 
-- `diagnostics.py`  
-  Generates root-finding diagnostics, including global mismatch scans and zoomed bisection views.
+- `diagnostics.py`
+  Builds the root-finding diagnostic figures, including global mismatch scans
+  and zoomed bisection views.
 
 ## Extensions
 
-- `scattering.py`  
-  Computes transmission, reflection, and resonant tunneling behavior for barrier potentials.
+- `scattering.py`
+  Computes transmission, reflection, and resonant-tunneling behavior using a
+  complex Numerov formulation.
 
-- `RK4_harmonic_oscillator.py`  
-  Provides the RK4 harmonic-oscillator comparison used to benchmark Numerov against a general fourth-order ODE method.
+- `RK4_harmonic_oscillator.py`
+  Provides the RK4 harmonic-oscillator comparison used to benchmark Numerov
+  against a general fourth-order ODE method.
+
+## Supporting files
+
+- `scripts/run_solver.py`
+  Runs the full project workflow in the same order as the writeup.
+
+- `tests/test_solver.py`
+  Contains the lightweight regression and numerical-validation tests.
+
+- `docs/`
+  Holds the user-facing documentation and the project writeup sources.
