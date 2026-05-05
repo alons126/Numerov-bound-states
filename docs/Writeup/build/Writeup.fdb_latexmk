@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber build/Writeup"] 1777986164.45167 "build/Writeup.bcf" "build/Writeup.bbl" "build/Writeup" 1777986556.75253 0
-  "build/Writeup.bcf" 1777986556.67933 108217 a34821f84225923f2f06b026c3e0b052 "pdflatex"
+["biber build/Writeup"] 1777986164.45167 "build/Writeup.bcf" "build/Writeup.bbl" "build/Writeup" 1777986962.27448 0
+  "build/Writeup.bcf" 1777986962.20381 108217 a34821f84225923f2f06b026c3e0b052 "pdflatex"
   "references.bib" 1777985423.42519 633 22d50d09cb129c367c06b7c470e44960 ""
   (generated)
   "build/Writeup.bbl"
   "build/Writeup.blg"
   (rewritten before read)
-["pdflatex"] 1777986554.86834 "Writeup.tex" "build/Writeup.pdf" "Writeup" 1777986556.75277 0
+["pdflatex"] 1777986960.39837 "Writeup.tex" "build/Writeup.pdf" "Writeup" 1777986962.27471 0
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png" 1777962200.4754 91320 413c2f90117309a0dff95b04e933d3ba ""
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png" 1777962195.75571 67832 bd19790332caffd6dbe16aa3d9d26039 ""
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png" 1777962198.4936 64329 3c6bd5505f80867e56e4daa808db692c ""
@@ -55,7 +55,6 @@
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1248133631 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
-  "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1248133631 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb" 1248133631 33993 9b89b85fd2d9df0482bd47194d1d3bf3 ""
@@ -166,12 +165,12 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774538740 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774538681 3636776 dfeaead9e2e9c793969724e130e444cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "Writeup.tex" 1777986554.74062 31269 585aedd084d904fc8ce085929c1d0e14 ""
-  "build/Writeup.aux" 1777986556.67699 7235 9089214efbf8ad1aa9be15e81c98024b "pdflatex"
+  "Writeup.tex" 1777986958.41783 31326 d97d4d4ae5f04ce0d26d72d4a7019eca ""
+  "build/Writeup.aux" 1777986962.20149 7257 40c65ee7a1bbfec5274f6ef669c51291 "pdflatex"
   "build/Writeup.bbl" 1777986165.66842 1666 1d08ed8c5ef7e023b792ac2be9f0f476 "biber build/Writeup"
-  "build/Writeup.out" 1777986556.67855 3295 e9bbae9d10e22b55df504258104be03e "pdflatex"
-  "build/Writeup.run.xml" 1777986556.67991 2326 0420a52dd60034812f54fe4fcedc36c6 "pdflatex"
-  "build/Writeup.toc" 1777986556.67998 1541 617bd744debc95d2639d9e1d9ec89d23 "pdflatex"
+  "build/Writeup.out" 1777986962.20304 3296 cdfd21eff3a294f5f3d8d309c8c3c867 "pdflatex"
+  "build/Writeup.run.xml" 1777986962.20437 2326 0420a52dd60034812f54fe4fcedc36c6 "pdflatex"
+  "build/Writeup.toc" 1777986962.20443 1540 aaa51cc6c75947ae0454d5c4ed48b132 "pdflatex"
   (generated)
   "build/Writeup.aux"
   "build/Writeup.bcf"

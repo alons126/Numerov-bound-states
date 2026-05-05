@@ -196,9 +196,7 @@
 
                 The numerical eigenvalues agree with the exact linear spectrum to extremely high precision, with first-four-state relative errors of order $10^{-12}$--$10^{-11}$ in the saved run. The convergence studies in Figs.~\ref{fig:ho_convergence_h} and \ref{fig:ho_convergence_xmax} quantify the discretization and truncation errors for this unbounded-domain benchmark. \\
 
-                The convergence study versus grid spacing in Fig.~\ref{fig:ho_convergence_h} is consistent with fourth-order behavior. The saved fits give $p\approx5.30$, $3.97$, $4.57$, and $4.00$ for the first four states; the values above four occur only once the errors are already near the numerical floor and are therefore not interpreted as true superconvergence. The box-size study in Fig.~\ref{fig:ho_convergence_xmax} shows the expected truncation-to-discretization crossover: enlarging the domain rapidly reduces the error at first, after which the curves flatten once truncation error is no longer dominant. \\
-
-                \begin{figure}[p]
+                \begin{figure}[!b]
                     \centering
 
                     \begin{minipage}[t]{0.48\textwidth}
@@ -214,15 +212,9 @@
                         \captionof{figure}{Energy error versus domain size $x_{\max}$ for the harmonic oscillator.}
                         \label{fig:ho_convergence_xmax}
                     \end{minipage}
-
-                    \vspace{1em}
-                    \begin{minipage}[t]{\textwidth}
-                        \centering
-                        \includegraphics[width=\textwidth]{../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png}
-                        \captionof{figure}{Maximum energy error versus grid spacing for Numerov and RK4.}
-                        \label{fig:ho_numerov_vs_rk4}
-                    \end{minipage}
                 \end{figure}
+
+                The convergence study versus grid spacing in Fig.~\ref{fig:ho_convergence_h} is consistent with fourth-order behavior. The saved fits give $p\approx5.30$, $3.97$, $4.57$, and $4.00$ for the first four states; the values above four occur only once the errors are already near the numerical floor and are therefore not interpreted as true superconvergence. The box-size study in Fig.~\ref{fig:ho_convergence_xmax} shows the expected truncation-to-discretization crossover: enlarging the domain rapidly reduces the error at first, after which the curves flatten once truncation error is no longer dominant. \\
 
             \subsubsection{Numerov versus Runge--Kutta}
                 As an additional method comparison, the harmonic oscillator was also solved using a fourth-order Runge--Kutta (RK4) shooting method \cite{Pang_2006}. In this formulation the second-order Schr\"odinger equation is rewritten as the first-order system:
@@ -234,18 +226,29 @@
 
                 Figure~\ref{fig:ho_numerov_vs_rk4} compares the maximum energy error over the computed harmonic-oscillator states as a function of grid spacing. Both methods show approximately fourth-order convergence, but Numerov gives the smaller error on the matched grids, typically by a factor of about $2$--$4$. The RK4 slopes are also more uniformly close to four, while the Numerov fit is affected more strongly once the errors approach the numerical floor. This comparison is included mainly to show the benefit of using a method specialized to second-order equations when the boundary diagnostics are implemented with comparable care.
 
+                \begin{figure}[!h]
+                    \centering
+
+                    \begin{minipage}[t]{0.48\textwidth}
+                        \centering
+                        \includegraphics[width=\textwidth]{../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png}
+                        \captionof{figure}{Maximum energy error versus grid spacing for Numerov and RK4.}
+                        \label{fig:ho_numerov_vs_rk4}
+                    \end{minipage}
+                \end{figure}
+
         \subsection{Double-well potential}
             The quartic double-well potential is used as the main nontrivial bound-state example. In the shifted form used here:
             \begin{equation}
             V(x)=ax^4-bx^2-V_{\min}, \qquad V_{\min}=-\frac{b^2}{4a}
             \end{equation}
-            the two minima are shifted to zero. This shift is applied using the analytic minimum $V_{\min}=-\frac{b^2}{4a}$ rather than the sampled grid minimum $\min_i V(x_i)$ taken over the current mesh points, because the sampled minimum drifts slightly as the grid changes and would otherwise contaminate convergence studies. The analytic shift also gives a cleaner energy reference: the well bottoms sit at zero, so the reported low-lying energies can be read directly relative to the bottoms of the wells, while the potential shape and tunneling splittings remain unchanged. Unlike the infinite square well and harmonic oscillator, this system does not have a simple analytic spectrum, so the validation relies on internal consistency checks, convergence studies, parity structure, and physically expected tunneling behavior. The production run uses $a=1$, $b=6$, the analytic minimum shift $V_{\min}=-\frac{b^2}{4a}$, a box size $x_{\max}=4$, and $n_{\text{grid}}=4000$. Separate studies are used to test grid refinement, box-size sensitivity, and the dependence of the lowest splitting on the parameter $b$. \\
+            the two minima are shifted to zero. This shift is applied using the analytic minimum $V_{\min}=-b^2/{4a}$ rather than the sampled grid minimum $\min_i(V(x_i))$ taken over the current mesh points, because the sampled minimum drifts slightly as the grid changes and would otherwise contaminate convergence studies. The analytic shift also gives a cleaner energy reference: the well bottoms sit at zero, so the reported low-lying energies can be read directly relative to the bottoms of the wells, while the potential shape and tunneling splittings remain unchanged. Unlike the infinite square well and harmonic oscillator, this system does not have a simple analytic spectrum, so the validation relies on internal consistency checks, convergence studies, parity structure, and physically expected tunneling behavior. The production run uses $a=1$, $b=6$, the analytic minimum shift $V_{\min}=-b^2/{4a}$, a box size $x_{\max}=4$, and $n_{\text{grid}}=4000$. Separate studies are used to test grid refinement, box-size sensitivity, and the dependence of the lowest splitting on the parameter $b$. \\
 
             Figure~\ref{fig:dw_states} shows the first four computed states together with the double-well potential. The lowest two form a nearly degenerate even-odd pair, $E_0\approx2.357273$ and $E_1\approx2.359372$, with a splitting of about $2.10\times10^{-3}$; the next pair, $E_2\approx6.548814$ and $E_3\approx6.684430$, is more strongly split. \\
 
             Since no closed-form spectrum is available, grid convergence is measured through successive refinements at fixed domain size using the surrogate error $|E(h_i)-E(h_{i+1})|$. Figure~\ref{fig:dw_splitting} shows the main physical trend of the section: as $b$ increases from $3$ to $8$, the lowest even-odd splitting falls from about $3.52\times10^{-1}$ to $1.59\times10^{-5}$, indicating tunneling suppression as the wells deepen and separate. \\
 
-            \begin{figure}[p]
+            \begin{figure}[h]
                 \centering
 
                 \begin{minipage}[t]{0.48\textwidth}
