@@ -85,3 +85,36 @@ Two implementation details are especially important for the observed accuracy:
   Numerov step does not reduce the overall order
 - the inward even-state derivative condition uses a higher-order one-sided
   stencil so the boundary evaluation does not degrade the Numerov solve
+
+## Important numerical checks
+
+- The Numerov derivative stencil is fourth order when enough points are
+  available. This matters because even-state inward shooting uses the condition
+  `psi'(0) = 0`, so a low-order derivative estimate would degrade the full
+  eigenvalue solve.
+
+- Harmonic-oscillator inward shooting starts from a decaying forbidden-region
+  tail and integrates toward the origin. This suppresses contamination by the
+  unphysical growing exponential mode that can spoil outward shooting on a
+  truncated infinite domain.
+
+- The quartic double well can shift its analytic minima to zero. Using the
+  analytic minimum instead of the sampled grid minimum keeps the physical
+  potential fixed across grid refinements and avoids fake convergence effects.
+
+- Convergence studies are split deliberately:
+  grid-refinement studies vary `h` at fixed domain size, while box-size studies
+  keep `h` approximately fixed and vary `x_max`. This separates discretization
+  error from boundary-truncation error.
+
+- The RK4 comparison uses the same harmonic-oscillator setup and matched grid
+  family as the Numerov study, so the comparison isolates the integration
+  method rather than changing the physical problem.
+
+- The outward bound-state solver finishes with a short safeguarded polishing
+  step inside the final bracket to reduce the reported wall mismatch without
+  giving up the robustness of a bracketed solve.
+
+- Normalization is part of the physical result, not just presentation. The code
+  uses numerical quadrature so the returned wavefunctions satisfy
+  `integral |psi|^2 dx = 1` on the computational grid.

@@ -28,6 +28,14 @@ The directory structure is:
 - `results/5_scattering_single_barrier_Numerov/`
 - `results/6_scattering_double_barrier_Numerov/`
 
+The execution order matches the report structure:
+
+1. infinite square well
+2. harmonic oscillator
+3. quartic double well
+4. finite square well
+5. scattering and resonant tunneling
+
 ## Main results
 
 - Infinite square well:
@@ -57,3 +65,11 @@ The directory structure is:
 Each experiment directory contains the plots and CSV tables for that case. The
 filenames repeat the experiment prefix so the outputs remain self-describing
 when viewed outside the directory tree.
+
+For the bound-state experiments, the saved files typically include:
+
+- state-energy CSV tables
+- state and probability-density plots
+- convergence plots versus `h` and, where relevant, `x_max`
+- global root-finding mismatch scans
+- zoomed root-bracket plots with bisection history

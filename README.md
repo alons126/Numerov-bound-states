@@ -10,7 +10,9 @@ It computes bound states for several potentials, validates against analytic solu
 ## Installation
 
 ```bash
-pip install -r requirements.txt
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
 ```
 
 ## Run the project
@@ -38,3 +40,7 @@ including:
 See the documentation index:
 
 [docs/index.md](docs/index.md)
+
+The `docs/` directory contains the detailed run instructions, code structure,
+numerical-method overview, and result-reproduction guide for the course project.
+Additional information is explained in the code itself.
