@@ -280,7 +280,7 @@
 
             As $E\to V_0^{-}$, the exterior decay constant tends to zero, so near-threshold states are the most sensitive part of the finite-well spectrum. The grid-refinement study is included mainly as a practical convergence check, since the discontinuity at the well edge lowers the observed asymptotic order relative to the smooth benchmark cases. \\
 
-            \begin{figure}[p]
+            \begin{figure}[h]
                 \centering
 
                 \begin{minipage}[t]{0.48\textwidth}
@@ -301,9 +301,13 @@
 
                 \begin{figure}[h]
                     \centering
-                    \includegraphics[height=5cm]{../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png}
-                    \caption{Transmission and reflection probabilities for a finite rectangular barrier.}
-                    \label{fig:single_barrier_scattering}
+
+                    \begin{minipage}[t]{0.48\textwidth}
+                        \centering
+                        \includegraphics[height=5cm]{../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png}
+                        \caption{Transmission and reflection probabilities for a finite rectangular barrier.}
+                        \label{fig:single_barrier_scattering}
+                    \end{minipage}
                 \end{figure}
 
             \subsubsection{Double barrier potential}
@@ -313,20 +317,23 @@
 
                 Figure~\ref{fig:double_barrier_resonances} shows two clear resonances in the saved transmission curve: a narrow low-energy peak near $E\approx1.13938$ and a broader high-energy peak near $E\approx4.35847$, both with transmission very close to one. The conservation check $T(E)+R(E)$ remains essentially exact across the scan. Figure~\ref{fig:double_barrier_resonant_state} shows the probability density at the first resonance, where the wavefunction is strongly enhanced in the region between the barriers, identifying the quasi-bound state responsible for resonant tunneling. \\
 
-                \noindent
-                \begin{minipage}[t]{0.48\textwidth}
+                \begin{figure}[h]
                     \centering
-                    \includegraphics[width=\textwidth]{../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png}
-                    \captionof{figure}{Transmission and reflection probabilities for the double-barrier potential.}
-                    \label{fig:double_barrier_resonances}
-                \end{minipage}
-                \hfill
-                \begin{minipage}[t]{0.48\textwidth}
-                    \centering
-                    \includegraphics[width=\textwidth]{../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png}
-                    \captionof{figure}{Probability density at the first resonant energy.}
-                    \label{fig:double_barrier_resonant_state}
-                \end{minipage}
+
+                    \begin{minipage}[t]{0.48\textwidth}
+                        \centering
+                        \includegraphics[width=\textwidth]{../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png}
+                        \captionof{figure}{Transmission and reflection probabilities for the double-barrier potential.}
+                        \label{fig:double_barrier_resonances}
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[t]{0.48\textwidth}
+                        \centering
+                        \includegraphics[width=\textwidth]{../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png}
+                        \captionof{figure}{Probability density at the first resonant energy.}
+                        \label{fig:double_barrier_resonant_state}
+                    \end{minipage}
+                \end{figure}
 
     % ==============================================================
     % Discussion

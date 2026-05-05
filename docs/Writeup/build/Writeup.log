@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  5 MAY 2026 16:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  5 MAY 2026 16:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -976,94 +976,80 @@ Underfull \hbox (badness 10000) in paragraph at lines 300--301
 <../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png, id=187, 578.16pt x 433.62pt>
 File: ../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png Graphic file (type png)
 <use ../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png>
-Package pdftex.def Info: ../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png  used on input line 304.
+Package pdftex.def Info: ../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png  used on input line 307.
 (pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 310--311
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 312--313
-
- []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 314--315
 
  []
 
-[7]
-<../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png, id=199, 578.16pt x 433.62pt>
+[7 <../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 316--317
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 318--319
+
+ []
+
+<../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png, id=198, 578.16pt x 433.62pt>
 File: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png Graphic file (type png)
 <use ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png>
-Package pdftex.def Info: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png  used on input line 319.
+Package pdftex.def Info: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png  used on input line 325.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 320.
-See the caption package documentation for explanation.
-
-<../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png, id=200, 578.16pt x 433.62pt>
+<../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png, id=199, 578.16pt x 433.62pt>
 File: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png Graphic file (type png)
 <use ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png>
-Package pdftex.def Info: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png  used on input line 326.
+Package pdftex.def Info: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png  used on input line 332.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
 
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 327.
-See the caption package documentation for explanation.
+Underfull \hbox (badness 10000) in paragraph at lines 342--343
 
+ []
 
-Underfull \hbox (badness 10000) in paragraph at lines 335--336
+[8 <../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png> <../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png> <../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 344--345
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 337--338
+Underfull \hbox (badness 10000) in paragraph at lines 350--351
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 343--344
-
- []
-
-[8 <../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png> <../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png>]
-Package biblatex Info: Reference section=0 on input line 351.
-
+Package biblatex Info: Reference section=0 on input line 358.
 
 Package caption Warning: Unused \captionsetup[table] on input line 15.
 See the caption package documentation for explanation.
 
-[9] [10 <../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png> <../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png>] (build/Writeup.aux)
+[9] (build/Writeup.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `Writeup.out' has not changed.
-(rerunfilecheck)             Checksum: CDFD21EFF3A294F5F3D8D309C8C3C867;3296.
+(rerunfilecheck)             Checksum: 98D13249D1A11195F043B3E4E86C29D1;3296.
 Package logreq Info: Writing requests to 'Writeup.run.xml'.
 \openout1 = `Writeup.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24703 strings out of 467525
- 433355 string characters out of 5418982
- 1288595 words of memory out of 5000000
+ 24701 strings out of 467525
+ 433347 string characters out of 5418982
+ 1288607 words of memory out of 5000000
  53281 multiletter control sequences out of 15000+600000
  637620 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,10n,90p,1139b,1911s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on build/Writeup.pdf (10 pages, 1083779 bytes).
+Output written on build/Writeup.pdf (9 pages, 1083656 bytes).
 PDF statistics:
- 292 PDF objects out of 1000 (max. 8388607)
- 221 compressed objects within 3 object streams
- 48 named destinations out of 1000 (max. 500000)
+ 287 PDF objects out of 1000 (max. 8388607)
+ 217 compressed objects within 3 object streams
+ 46 named destinations out of 1000 (max. 500000)
  215 words of extra memory for PDF output out of 10000 (max. 10000000)
 

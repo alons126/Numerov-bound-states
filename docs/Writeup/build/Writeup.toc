@@ -13,7 +13,7 @@
 \contentsline {subsection}{\numberline {3.4}Finite square well}{6}{subsection.3.4}%
 \contentsline {subsection}{\numberline {3.5}Scattering and resonant tunneling}{7}{subsection.3.5}%
 \contentsline {subsubsection}{\numberline {3.5.1}Single barrier potential}{7}{subsubsection.3.5.1}%
-\contentsline {subsubsection}{\numberline {3.5.2}Double barrier potential}{7}{subsubsection.3.5.2}%
-\contentsline {section}{\numberline {4}Discussion}{8}{section.4}%
-\contentsline {section}{\numberline {5}Conclusion}{8}{section.5}%
-\contentsline {section}{References}{9}{section*.10}%
+\contentsline {subsubsection}{\numberline {3.5.2}Double barrier potential}{8}{subsubsection.3.5.2}%
+\contentsline {section}{\numberline {4}Discussion}{9}{section.4}%
+\contentsline {section}{\numberline {5}Conclusion}{9}{section.5}%
+\contentsline {section}{References}{9}{section*.11}%
