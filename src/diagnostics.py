@@ -26,7 +26,7 @@ from src.potentials import (
 
 # Import the RK4 mismatch sampling, bracketing, and history helpers so the RK4
 # harmonic-oscillator diagnostics follow the same plotting flow as Numerov.
-from src.rk4_compare import (
+from src.RK4_harmonic_oscillator import (
     RK4_bisection_history,
     RK4_find_brackets,
     RK4_sample_mismatch,

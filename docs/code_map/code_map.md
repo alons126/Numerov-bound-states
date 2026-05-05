@@ -49,25 +49,25 @@ Generated from AST analysis of the local Python files in `src/`, `scripts/`, and
 flowchart LR
     scripts_run_solver[scripts.run_solver] --> src_experiments[src.experiments]
     scripts_run_solver[scripts.run_solver] --> tests_test_solver[tests.test_solver]
+    src_RK4_harmonic_oscillator[src.RK4_harmonic_oscillator] --> src_analysis[src.analysis]
     src_analysis[src.analysis] --> src_shooting[src.shooting]
+    src_diagnostics[src.diagnostics] --> src_RK4_harmonic_oscillator[src.RK4_harmonic_oscillator]
     src_diagnostics[src.diagnostics] --> src_plotting[src.plotting]
     src_diagnostics[src.diagnostics] --> src_potentials[src.potentials]
-    src_diagnostics[src.diagnostics] --> src_rk4_compare[src.rk4_compare]
     src_diagnostics[src.diagnostics] --> src_shooting[src.shooting]
+    src_experiments[src.experiments] --> src_RK4_harmonic_oscillator[src.RK4_harmonic_oscillator]
     src_experiments[src.experiments] --> src_analysis[src.analysis]
     src_experiments[src.experiments] --> src_diagnostics[src.diagnostics]
     src_experiments[src.experiments] --> src_plotting[src.plotting]
     src_experiments[src.experiments] --> src_potentials[src.potentials]
-    src_experiments[src.experiments] --> src_rk4_compare[src.rk4_compare]
     src_experiments[src.experiments] --> src_scattering[src.scattering]
     src_experiments[src.experiments] --> src_shooting[src.shooting]
-    src_rk4_compare[src.rk4_compare] --> src_analysis[src.analysis]
     src_scattering[src.scattering] --> src_numerov[src.numerov]
     src_shooting[src.shooting] --> src_numerov[src.numerov]
+    tests_test_solver[tests.test_solver] --> src_RK4_harmonic_oscillator[src.RK4_harmonic_oscillator]
     tests_test_solver[tests.test_solver] --> src_analysis[src.analysis]
     tests_test_solver[tests.test_solver] --> src_numerov[src.numerov]
     tests_test_solver[tests.test_solver] --> src_potentials[src.potentials]
-    tests_test_solver[tests.test_solver] --> src_rk4_compare[src.rk4_compare]
     tests_test_solver[tests.test_solver] --> src_scattering[src.scattering]
     tests_test_solver[tests.test_solver] --> src_shooting[src.shooting]
 ```
@@ -76,34 +76,34 @@ flowchart LR
 
 ```mermaid
 flowchart TD
+    src_RK4_harmonic_oscillator_RK4_bisect_energy[RK4_bisect_energy]
+    src_RK4_harmonic_oscillator_RK4_bisect_energy --> src_RK4_harmonic_oscillator_RK4_inward_mismatch[RK4_inward_mismatch]
+    src_RK4_harmonic_oscillator_RK4_bisection_history[RK4_bisection_history]
+    src_RK4_harmonic_oscillator_RK4_bisection_history --> src_RK4_harmonic_oscillator_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
+    src_RK4_harmonic_oscillator_RK4_bisection_history --> src_RK4_harmonic_oscillator_RK4_inward_mismatch[RK4_inward_mismatch]
+    src_RK4_harmonic_oscillator_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
+    src_RK4_harmonic_oscillator_RK4_diagnostic_mismatch --> src_RK4_harmonic_oscillator_RK4_step[RK4_step]
+    src_RK4_harmonic_oscillator_RK4_find_brackets[RK4_find_brackets]
+    src_RK4_harmonic_oscillator_RK4_find_brackets --> src_RK4_harmonic_oscillator_RK4_inward_mismatch[RK4_inward_mismatch]
+    src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_box_size_fixed_spacing[RK4_harmonic_convergence_vs_box_size_fixed_spacing]
+    src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_box_size_fixed_spacing --> src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
+    src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_grid[RK4_harmonic_convergence_vs_grid]
+    src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_grid --> src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
+    src_RK4_harmonic_oscillator_RK4_inward_mismatch[RK4_inward_mismatch]
+    src_RK4_harmonic_oscillator_RK4_inward_mismatch --> src_RK4_harmonic_oscillator_RK4_step[RK4_step]
+    src_RK4_harmonic_oscillator_RK4_sample_mismatch[RK4_sample_mismatch]
+    src_RK4_harmonic_oscillator_RK4_sample_mismatch --> src_RK4_harmonic_oscillator_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
+    src_RK4_harmonic_oscillator_RK4_sample_mismatch --> src_RK4_harmonic_oscillator_RK4_inward_mismatch[RK4_inward_mismatch]
+    src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
+    src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies --> src_RK4_harmonic_oscillator_RK4_bisect_energy[RK4_bisect_energy]
+    src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies --> src_RK4_harmonic_oscillator_RK4_find_brackets[RK4_find_brackets]
+    src_RK4_harmonic_oscillator_RK4_step[RK4_step]
+    src_RK4_harmonic_oscillator_RK4_step --> src_RK4_harmonic_oscillator__harmonic_rhs[_harmonic_rhs]
+    src_RK4_harmonic_oscillator__harmonic_rhs[_harmonic_rhs]
     src_numerov_derivative_at_right_edge[derivative_at_right_edge]
     src_numerov_normalize_wavefunction[normalize_wavefunction]
     src_numerov_numerov_march[numerov_march]
     src_numerov_q_from_energy[q_from_energy]
-    src_rk4_compare_RK4_bisect_energy[RK4_bisect_energy]
-    src_rk4_compare_RK4_bisect_energy --> src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
-    src_rk4_compare_RK4_bisection_history[RK4_bisection_history]
-    src_rk4_compare_RK4_bisection_history --> src_rk4_compare_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
-    src_rk4_compare_RK4_bisection_history --> src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
-    src_rk4_compare_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
-    src_rk4_compare_RK4_diagnostic_mismatch --> src_rk4_compare_RK4_step[RK4_step]
-    src_rk4_compare_RK4_find_brackets[RK4_find_brackets]
-    src_rk4_compare_RK4_find_brackets --> src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
-    src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing[RK4_harmonic_convergence_vs_box_size_fixed_spacing]
-    src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing --> src_rk4_compare_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
-    src_rk4_compare_RK4_harmonic_convergence_vs_grid[RK4_harmonic_convergence_vs_grid]
-    src_rk4_compare_RK4_harmonic_convergence_vs_grid --> src_rk4_compare_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
-    src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
-    src_rk4_compare_RK4_inward_mismatch --> src_rk4_compare_RK4_step[RK4_step]
-    src_rk4_compare_RK4_sample_mismatch[RK4_sample_mismatch]
-    src_rk4_compare_RK4_sample_mismatch --> src_rk4_compare_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
-    src_rk4_compare_RK4_sample_mismatch --> src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
-    src_rk4_compare_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
-    src_rk4_compare_RK4_solve_harmonic_oscillator_energies --> src_rk4_compare_RK4_bisect_energy[RK4_bisect_energy]
-    src_rk4_compare_RK4_solve_harmonic_oscillator_energies --> src_rk4_compare_RK4_find_brackets[RK4_find_brackets]
-    src_rk4_compare_RK4_step[RK4_step]
-    src_rk4_compare_RK4_step --> src_rk4_compare__harmonic_rhs[_harmonic_rhs]
-    src_rk4_compare__harmonic_rhs[_harmonic_rhs]
     src_scattering_decompose_left_asymptotic[decompose_left_asymptotic]
     src_scattering_find_transmission_peaks[find_transmission_peaks]
     src_scattering_integrate_from_right[integrate_from_right]
@@ -415,6 +415,32 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+    src_RK4_harmonic_oscillator_RK4_bisect_energy[RK4_bisect_energy]
+    src_RK4_harmonic_oscillator_RK4_bisect_energy --> src_RK4_harmonic_oscillator_RK4_inward_mismatch[RK4_inward_mismatch]
+    src_RK4_harmonic_oscillator_RK4_bisection_history[RK4_bisection_history]
+    src_RK4_harmonic_oscillator_RK4_bisection_history --> src_RK4_harmonic_oscillator_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
+    src_RK4_harmonic_oscillator_RK4_bisection_history --> src_RK4_harmonic_oscillator_RK4_inward_mismatch[RK4_inward_mismatch]
+    src_RK4_harmonic_oscillator_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
+    src_RK4_harmonic_oscillator_RK4_diagnostic_mismatch --> src_RK4_harmonic_oscillator_RK4_step[RK4_step]
+    src_RK4_harmonic_oscillator_RK4_find_brackets[RK4_find_brackets]
+    src_RK4_harmonic_oscillator_RK4_find_brackets --> src_RK4_harmonic_oscillator_RK4_inward_mismatch[RK4_inward_mismatch]
+    src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_box_size_fixed_spacing[RK4_harmonic_convergence_vs_box_size_fixed_spacing]
+    src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_box_size_fixed_spacing --> src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
+    src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_box_size_fixed_spacing --> src_analysis_exact_harmonic_oscillator_energies[exact_harmonic_oscillator_energies]
+    src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_grid[RK4_harmonic_convergence_vs_grid]
+    src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_grid --> src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
+    src_RK4_harmonic_oscillator_RK4_inward_mismatch[RK4_inward_mismatch]
+    src_RK4_harmonic_oscillator_RK4_inward_mismatch --> src_RK4_harmonic_oscillator_RK4_step[RK4_step]
+    src_RK4_harmonic_oscillator_RK4_sample_mismatch[RK4_sample_mismatch]
+    src_RK4_harmonic_oscillator_RK4_sample_mismatch --> src_RK4_harmonic_oscillator_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
+    src_RK4_harmonic_oscillator_RK4_sample_mismatch --> src_RK4_harmonic_oscillator_RK4_inward_mismatch[RK4_inward_mismatch]
+    src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
+    src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies --> src_RK4_harmonic_oscillator_RK4_bisect_energy[RK4_bisect_energy]
+    src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies --> src_RK4_harmonic_oscillator_RK4_find_brackets[RK4_find_brackets]
+    src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies --> src_analysis_exact_harmonic_oscillator_energies[exact_harmonic_oscillator_energies]
+    src_RK4_harmonic_oscillator_RK4_step[RK4_step]
+    src_RK4_harmonic_oscillator_RK4_step --> src_RK4_harmonic_oscillator__harmonic_rhs[_harmonic_rhs]
+    src_RK4_harmonic_oscillator__harmonic_rhs[_harmonic_rhs]
     src_analysis_convergence_vs_box_size_fixed_spacing[convergence_vs_box_size_fixed_spacing]
     src_analysis_convergence_vs_box_size_fixed_spacing --> src_analysis_energies_from_states[energies_from_states]
     src_analysis_convergence_vs_grid[convergence_vs_grid]
@@ -432,12 +458,12 @@ flowchart TD
     src_diagnostics__plot_inward_root_diagnostics --> src_shooting_find_brackets_inward_shooting[find_brackets_inward_shooting]
     src_diagnostics__plot_inward_root_diagnostics --> src_shooting_sample_mismatch_inward_shooting[sample_mismatch_inward_shooting]
     src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics[plot_harmonic_oscillator_RK4_root_diagnostics]
+    src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics --> src_RK4_harmonic_oscillator_RK4_bisection_history[RK4_bisection_history]
+    src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics --> src_RK4_harmonic_oscillator_RK4_find_brackets[RK4_find_brackets]
+    src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics --> src_RK4_harmonic_oscillator_RK4_sample_mismatch[RK4_sample_mismatch]
     src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics --> src_diagnostics__diagnostic_label_slug[_diagnostic_label_slug]
     src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics --> src_plotting_plot_root_finding_diagnostic[plot_root_finding_diagnostic]
     src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics --> src_plotting_plot_root_finding_zoom[plot_root_finding_zoom]
-    src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics --> src_rk4_compare_RK4_bisection_history[RK4_bisection_history]
-    src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics --> src_rk4_compare_RK4_find_brackets[RK4_find_brackets]
-    src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics --> src_rk4_compare_RK4_sample_mismatch[RK4_sample_mismatch]
     src_diagnostics_plot_harmonic_oscillator_root_diagnostics[plot_harmonic_oscillator_root_diagnostics]
     src_diagnostics_plot_harmonic_oscillator_root_diagnostics --> src_diagnostics__plot_inward_root_diagnostics[_plot_inward_root_diagnostics]
     src_experiments__experiment_results_dir[_experiment_results_dir]
@@ -463,14 +489,14 @@ flowchart TD
     src_experiments_run_harmonic_oscillator_Numerov_VS_RK4 --> src_analysis_save_csv_rows[save_csv_rows]
     src_experiments_run_harmonic_oscillator_Numerov_VS_RK4 --> src_plotting_plot_numerov_vs_RK4_errors[plot_numerov_vs_RK4_errors]
     src_experiments_run_harmonic_oscillator_RK4[run_harmonic_oscillator_RK4]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_box_size_fixed_spacing[RK4_harmonic_convergence_vs_box_size_fixed_spacing]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_RK4_harmonic_oscillator_RK4_harmonic_convergence_vs_grid[RK4_harmonic_convergence_vs_grid]
+    src_experiments_run_harmonic_oscillator_RK4 --> src_RK4_harmonic_oscillator_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
     src_experiments_run_harmonic_oscillator_RK4 --> src_analysis_estimate_convergence_slopes[estimate_convergence_slopes]
     src_experiments_run_harmonic_oscillator_RK4 --> src_analysis_save_csv_rows[save_csv_rows]
     src_experiments_run_harmonic_oscillator_RK4 --> src_diagnostics_plot_harmonic_oscillator_RK4_root_diagnostics[plot_harmonic_oscillator_RK4_root_diagnostics]
     src_experiments_run_harmonic_oscillator_RK4 --> src_plotting_plot_energy_comparison[plot_energy_comparison]
     src_experiments_run_harmonic_oscillator_RK4 --> src_plotting_plot_error_curve[plot_error_curve]
-    src_experiments_run_harmonic_oscillator_RK4 --> src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing[RK4_harmonic_convergence_vs_box_size_fixed_spacing]
-    src_experiments_run_harmonic_oscillator_RK4 --> src_rk4_compare_RK4_harmonic_convergence_vs_grid[RK4_harmonic_convergence_vs_grid]
-    src_experiments_run_harmonic_oscillator_RK4 --> src_rk4_compare_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
     src_numerov_derivative_at_right_edge[derivative_at_right_edge]
     src_numerov_normalize_wavefunction[normalize_wavefunction]
     src_numerov_numerov_march[numerov_march]
@@ -494,32 +520,6 @@ flowchart TD
     src_plotting_plot_root_finding_zoom --> src_plotting__ensure_parent[_ensure_parent]
     src_plotting_plot_root_finding_zoom --> src_plotting__symlog_linthresh[_symlog_linthresh]
     src_potentials_harmonic_oscillator[harmonic_oscillator]
-    src_rk4_compare_RK4_bisect_energy[RK4_bisect_energy]
-    src_rk4_compare_RK4_bisect_energy --> src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
-    src_rk4_compare_RK4_bisection_history[RK4_bisection_history]
-    src_rk4_compare_RK4_bisection_history --> src_rk4_compare_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
-    src_rk4_compare_RK4_bisection_history --> src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
-    src_rk4_compare_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
-    src_rk4_compare_RK4_diagnostic_mismatch --> src_rk4_compare_RK4_step[RK4_step]
-    src_rk4_compare_RK4_find_brackets[RK4_find_brackets]
-    src_rk4_compare_RK4_find_brackets --> src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
-    src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing[RK4_harmonic_convergence_vs_box_size_fixed_spacing]
-    src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing --> src_analysis_exact_harmonic_oscillator_energies[exact_harmonic_oscillator_energies]
-    src_rk4_compare_RK4_harmonic_convergence_vs_box_size_fixed_spacing --> src_rk4_compare_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
-    src_rk4_compare_RK4_harmonic_convergence_vs_grid[RK4_harmonic_convergence_vs_grid]
-    src_rk4_compare_RK4_harmonic_convergence_vs_grid --> src_rk4_compare_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
-    src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
-    src_rk4_compare_RK4_inward_mismatch --> src_rk4_compare_RK4_step[RK4_step]
-    src_rk4_compare_RK4_sample_mismatch[RK4_sample_mismatch]
-    src_rk4_compare_RK4_sample_mismatch --> src_rk4_compare_RK4_diagnostic_mismatch[RK4_diagnostic_mismatch]
-    src_rk4_compare_RK4_sample_mismatch --> src_rk4_compare_RK4_inward_mismatch[RK4_inward_mismatch]
-    src_rk4_compare_RK4_solve_harmonic_oscillator_energies[RK4_solve_harmonic_oscillator_energies]
-    src_rk4_compare_RK4_solve_harmonic_oscillator_energies --> src_analysis_exact_harmonic_oscillator_energies[exact_harmonic_oscillator_energies]
-    src_rk4_compare_RK4_solve_harmonic_oscillator_energies --> src_rk4_compare_RK4_bisect_energy[RK4_bisect_energy]
-    src_rk4_compare_RK4_solve_harmonic_oscillator_energies --> src_rk4_compare_RK4_find_brackets[RK4_find_brackets]
-    src_rk4_compare_RK4_step[RK4_step]
-    src_rk4_compare_RK4_step --> src_rk4_compare__harmonic_rhs[_harmonic_rhs]
-    src_rk4_compare__harmonic_rhs[_harmonic_rhs]
     src_shooting_bisect_energy_inward_shooting[bisect_energy_inward_shooting]
     src_shooting_bisect_energy_inward_shooting --> src_shooting_boundary_mismatch_inward_shooting[boundary_mismatch_inward_shooting]
     src_shooting_bisection_history_inward_shooting[bisection_history_inward_shooting]
@@ -798,6 +798,20 @@ flowchart TD
 
 - `main` -> run_finite_square_well, run_harmonic_oscillator, run_quartic_double_well, run_scattering, run_square_well, run_all_tests
 
+### src.RK4_harmonic_oscillator
+
+- `RK4_bisect_energy` -> RK4_inward_mismatch
+- `RK4_bisection_history` -> RK4_diagnostic_mismatch, RK4_inward_mismatch
+- `RK4_diagnostic_mismatch` -> RK4_step
+- `RK4_find_brackets` -> RK4_inward_mismatch
+- `RK4_harmonic_convergence_vs_box_size_fixed_spacing` -> RK4_solve_harmonic_oscillator_energies, exact_harmonic_oscillator_energies
+- `RK4_harmonic_convergence_vs_grid` -> RK4_solve_harmonic_oscillator_energies
+- `RK4_inward_mismatch` -> RK4_step
+- `RK4_sample_mismatch` -> RK4_diagnostic_mismatch, RK4_inward_mismatch
+- `RK4_solve_harmonic_oscillator_energies` -> RK4_bisect_energy, RK4_find_brackets, exact_harmonic_oscillator_energies
+- `RK4_step` -> _harmonic_rhs
+- `_harmonic_rhs` -> (no direct project-function calls)
+
 ### src.analysis
 
 - `convergence_vs_box_size_fixed_spacing` -> energies_from_states
@@ -817,7 +831,7 @@ flowchart TD
 - `_plot_outward_root_diagnostics` -> _diagnostic_label_slug, plot_root_finding_diagnostic, plot_root_finding_zoom, bisection_history_outward_shooting, find_brackets_outward_shooting, sample_mismatch_outward_shooting
 - `plot_double_well_root_diagnostics` -> _plot_outward_root_diagnostics, quartic_double_well
 - `plot_finite_square_well_root_diagnostics` -> _plot_outward_root_diagnostics, finite_square_well
-- `plot_harmonic_oscillator_RK4_root_diagnostics` -> _diagnostic_label_slug, plot_root_finding_diagnostic, plot_root_finding_zoom, RK4_bisection_history, RK4_find_brackets, RK4_sample_mismatch
+- `plot_harmonic_oscillator_RK4_root_diagnostics` -> RK4_bisection_history, RK4_find_brackets, RK4_sample_mismatch, _diagnostic_label_slug, plot_root_finding_diagnostic, plot_root_finding_zoom
 - `plot_harmonic_oscillator_root_diagnostics` -> _plot_inward_root_diagnostics
 - `plot_infinite_well_root_diagnostics` -> _plot_outward_root_diagnostics, infinite_square_well_numeric
 
@@ -828,7 +842,7 @@ flowchart TD
 - `run_harmonic_oscillator` -> _experiment_results_dir, run_harmonic_oscillator_Numerov, run_harmonic_oscillator_Numerov_VS_RK4, run_harmonic_oscillator_RK4
 - `run_harmonic_oscillator_Numerov` -> convergence_vs_box_size_fixed_spacing, convergence_vs_grid, estimate_convergence_slopes, exact_harmonic_oscillator_energies, save_csv_rows, plot_harmonic_oscillator_root_diagnostics, plot_energy_comparison, plot_error_curve, plot_potential_and_states, plot_probability_densities, harmonic_oscillator, solve_symmetric_potential_inward_shooting
 - `run_harmonic_oscillator_Numerov_VS_RK4` -> save_csv_rows, plot_numerov_vs_RK4_errors
-- `run_harmonic_oscillator_RK4` -> estimate_convergence_slopes, save_csv_rows, plot_harmonic_oscillator_RK4_root_diagnostics, plot_energy_comparison, plot_error_curve, RK4_harmonic_convergence_vs_box_size_fixed_spacing, RK4_harmonic_convergence_vs_grid, RK4_solve_harmonic_oscillator_energies
+- `run_harmonic_oscillator_RK4` -> RK4_harmonic_convergence_vs_box_size_fixed_spacing, RK4_harmonic_convergence_vs_grid, RK4_solve_harmonic_oscillator_energies, estimate_convergence_slopes, save_csv_rows, plot_harmonic_oscillator_RK4_root_diagnostics, plot_energy_comparison, plot_error_curve
 - `run_quartic_double_well` -> convergence_vs_box_size_fixed_spacing, convergence_vs_grid_successive, estimate_convergence_slopes, save_csv_rows, splitting_vs_parameter, plot_double_well_root_diagnostics, _experiment_results_dir, plot_error_curve, plot_potential_and_states, plot_probability_densities, plot_splitting_curve, quartic_double_well, solve_symmetric_potential_outward_shooting
 - `run_scattering` -> save_csv_rows, _experiment_results_dir, plot_scattering_coefficients, plot_scattering_potential_and_probability, double_square_barrier, square_barrier, find_transmission_peaks, scattering_wavefunction, sweep_scattering
 - `run_square_well` -> convergence_vs_grid, estimate_convergence_slopes, exact_square_well_energies, save_csv_rows, plot_infinite_well_root_diagnostics, _experiment_results_dir, plot_energy_comparison, plot_error_curve, plot_potential_and_states, plot_probability_densities, infinite_square_well_numeric, solve_symmetric_potential_outward_shooting
@@ -863,20 +877,6 @@ flowchart TD
 - `infinite_square_well_numeric` -> (no direct project-function calls)
 - `quartic_double_well` -> (no direct project-function calls)
 - `square_barrier` -> (no direct project-function calls)
-
-### src.rk4_compare
-
-- `RK4_bisect_energy` -> RK4_inward_mismatch
-- `RK4_bisection_history` -> RK4_diagnostic_mismatch, RK4_inward_mismatch
-- `RK4_diagnostic_mismatch` -> RK4_step
-- `RK4_find_brackets` -> RK4_inward_mismatch
-- `RK4_harmonic_convergence_vs_box_size_fixed_spacing` -> exact_harmonic_oscillator_energies, RK4_solve_harmonic_oscillator_energies
-- `RK4_harmonic_convergence_vs_grid` -> RK4_solve_harmonic_oscillator_energies
-- `RK4_inward_mismatch` -> RK4_step
-- `RK4_sample_mismatch` -> RK4_diagnostic_mismatch, RK4_inward_mismatch
-- `RK4_solve_harmonic_oscillator_energies` -> exact_harmonic_oscillator_energies, RK4_bisect_energy, RK4_find_brackets
-- `RK4_step` -> _harmonic_rhs
-- `_harmonic_rhs` -> (no direct project-function calls)
 
 ### src.scattering
 

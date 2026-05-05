@@ -878,7 +878,12 @@ def build_markdown(graph: dict[str, list[str]]) -> str:
         render_focus_graph(
             "Bound-State and Scattering Core",
             graph,
-            {"src.numerov", "src.shooting", "src.scattering", "src.rk4_compare"},
+            {
+                "src.numerov",
+                "src.shooting",
+                "src.scattering",
+                "src.RK4_harmonic_oscillator",
+            },
         )
     )
     lines.append("")
@@ -939,7 +944,12 @@ def main() -> None:
         render_dot_graph(
             "Bound-State and Scattering Core",
             graph,
-            {"src.numerov", "src.shooting", "src.scattering", "src.rk4_compare"},
+            {
+                "src.numerov",
+                "src.shooting",
+                "src.scattering",
+                "src.RK4_harmonic_oscillator",
+            },
         )
     )
     EXPERIMENTS_DOT_PATH.write_text(

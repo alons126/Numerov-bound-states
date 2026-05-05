@@ -86,7 +86,7 @@ from src.scattering import (
 )
 
 # Import RK4-based harmonic-oscillator comparison routines and diagnostics
-from src.rk4_compare import (
+from src.RK4_harmonic_oscillator import (
     RK4_harmonic_convergence_vs_grid,
     RK4_harmonic_convergence_vs_box_size_fixed_spacing,
     RK4_solve_harmonic_oscillator_energies,

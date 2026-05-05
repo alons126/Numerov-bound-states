@@ -72,7 +72,7 @@ Bound-state shooting solvers, including parity-based outward shooting and stable
 | 1501-1640 | `function solve_symmetric_potential_inward_shooting` | Solve symmetric confining infinite-domain problems by shooting inward from x_max when a decaying tail model is appropriate. |
 | 1641-1748 | `function solve_symmetric_potential_outward_shooting` | Solve for multiple bound states of a symmetric potential. |
 
-### `src/rk4_compare.py`
+### `src/RK4_harmonic_oscillator.py`
 Fourth-order Runge-Kutta implementation used only for the harmonic-oscillator method comparison.
 | Lines | Block | Purpose |
 |---:|---|---|

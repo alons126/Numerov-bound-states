@@ -58,7 +58,7 @@ from src.potentials import (
 )
 
 # Alternate RK4 reference implementation used for cross-checking bracketing.
-import src.rk4_compare as rk4_compare
+import src.RK4_harmonic_oscillator as rk4_harmonic_oscillator
 
 # Scattering sweep helper used to test probability conservation.
 from src.scattering import sweep_scattering
@@ -110,7 +110,7 @@ def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
     Check that RK4 bracketing keeps roots that land exactly on a scan point.
     """
 
-    original = rk4_compare.RK4_inward_mismatch
+    original = rk4_harmonic_oscillator.RK4_inward_mismatch
 
     def fake_mismatch(
         energy: float, parity: str, x_max: float, n_grid: int, omega: float = 1.0
@@ -120,9 +120,9 @@ def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
 
         return values[round(float(energy), 1)]
 
-    rk4_compare.RK4_inward_mismatch = fake_mismatch
+    rk4_harmonic_oscillator.RK4_inward_mismatch = fake_mismatch
     try:
-        brackets = rk4_compare.RK4_find_brackets(
+        brackets = rk4_harmonic_oscillator.RK4_find_brackets(
             parity="even",
             x_max=8.0,
             n_grid=500,
@@ -131,7 +131,7 @@ def test_find_rk4_brackets_accepts_exact_zero_hit() -> None:
             n_scan=5,
         )
     finally:
-        rk4_compare.RK4_inward_mismatch = original
+        rk4_harmonic_oscillator.RK4_inward_mismatch = original
 
     assert any(lo < 0.5 < hi for lo, hi in brackets)
 
