@@ -90,12 +90,10 @@
     % Introduction
     % ==============================================================
     \section{Introduction}
-        This project studies the one-dimensional time-independent Schr\"odinger equation using the Numerov method combined with parity-aware shooting. The aim is to validate the method on problems with known analytic spectra, quantify its numerical accuracy, and then apply it to more interesting bound-state potentials such as a double well and a finite square well. Scattering from finite barriers is included as a secondary extension. \\
+        This project studies the one-dimensional time-independent Schr\"odinger equation using the Numerov method combined with parity-aware shooting. The aim is to validate the method on problems with known analytic spectra, quantify its numerical accuracy, and then apply it to more interesting bound-state potentials such as a double well and a finite square well. Scattering from finite barriers is included as a secondary extension. The full Python implementation is available in \href{https://github.com/alons126/Numerov-bound-states}{this repository}, and its documentation describe how to run the code and reproduce the results. \\
 
         This is a boundary-value eigenvalue problem rather than a standard initial-value problem: only special energies satisfy the required boundary behavior. Numerov is well suited to this task because the equation has the second-order form $\psi''=q(x)\psi$ with no first-derivative term. The project therefore emphasizes not only the spectra, but also validation through analytic benchmarks, convergence studies, parity structure, and flux conservation. \\
         
-        The full Python implementation is available in \href{https://github.com/alons126/Numerov-bound-states}{this repository}. The accompanying \href{https://github.com/alons126/Numerov-bound-states/blob/main/README.md}{\texttt{README.md}} and documentation describe how to run the code and reproduce the results.
-
     % ==============================================================
     % Computational approach
     % ==============================================================
@@ -277,7 +275,6 @@
             and only states with $E<V_0$ are true bound states. In the production run, the well parameters are $a=1$ and $V_0=12$, while the outward-shooting box uses $x_{\max}=4$ and the Numerov mesh uses $n_{\text{grid}}=3000$. A supplementary grid-refinement check compares coarser solutions to the finest saved run, so the plotted quantity is $|E_N-E_{\mathrm{ref}}|$ with the $n_{\text{grid}}=3000$ spectrum acting as the practical reference. Unlike the smooth benchmark potentials, however, the finite square well is only piecewise smooth: $V(x)$ jumps at $|x|=a$. That discontinuity degrades the observed asymptotic convergence order, so this refinement study should be read mainly as a practical convergence check rather than a clean fourth-order Numerov benchmark. \\
 
             Figure~\ref{fig:finitewell_states} shows the first four computed states together with the finite well potential. For $V_0=12$ and $a=1$, the first three states are well localized inside the well, while the fourth lies close to the barrier top and shows much stronger leakage into the exterior region. \\
-
 
             \begin{figure}[h]
                 \centering
