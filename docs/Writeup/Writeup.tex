@@ -34,7 +34,7 @@
 
 \usepackage{authblk}                                    % Manage authors and affiliations in a structured way
 % Make only the author and/or affiliation smaller
-% \renewcommand\Authfont{\small}                        % Set the Author font size (e.g. small or footnotesize)
+\renewcommand\Authfont{\small}                        % Set the Author font size (e.g. small or footnotesize)
 \renewcommand\Affilfont{\small}                         % Set the affiliation font size (e.g. small or footnotesize)
 \renewcommand\Authand{}        % <-- add this
 
@@ -43,7 +43,7 @@
 \usepackage{lineno}                                     % Add optional line numbers to the document
 % \usepackage[backend=biber, style=numeric-comp, citestyle=numeric-comp, sorting=none]{biblatex} % Modern bibliography management with biber backend
 \usepackage[backend=biber, sorting=none, style=numeric, citestyle=numeric]{biblatex} % Modern bibliography management with biber backend
-\addbibresource{references.bib}                     % Load bibliography entries for citations and references
+\addbibresource{references.bib}                    % Load bibliography entries for citations and references
 % Make bibliography font smaller
 \renewcommand*{\bibfont}{\footnotesize}                 % Reduce font size in the bibliography
 \usepackage{multirow}                                   % Enable table cells that span multiple rows
