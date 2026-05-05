@@ -121,23 +121,7 @@
         Each potential is used to validate, test, or demonstrate different aspects of the numerical method, ranging from analytic benchmarks to nontrivial quantum behavior.
 
         \subsection{Infinite square well}
-            The infinite square well serves as a benchmark problem with known analytic spectrum:
-            \begin{equation}
-            E_n = \frac{(n+1)^2\pi^2}{8a^2}
-            \end{equation}
-            The potential is:
-            \begin{equation}
-            V(x)=\begin{cases}
-            0 & ,|x|\le a\\
-            \infty & ,|x|>a
-            \end{cases}
-            \qquad \text{(implemented numerically with a large finite }V_0\text{)}
-            \end{equation}
-            In the production calculation, the well half-width is $a=1$, the outward-shooting half-domain uses $x_{\max}=a=1$, the Numerov grid uses $n_{\text{grid}}=2500$ points, and the numerical wall height is set to $V_0=10^6$. A separate grid-refinement study is used to check convergence at fixed $x_{\max}=1$. \\
-
-            The numerical eigenvalues agree with the analytic values to essentially machine precision, as shown in Fig.~\ref{fig:infwell_energies}; in the saved run the first four relative errors are of order $10^{-11}$--$10^{-10}$. Figure~\ref{fig:infwell_states} shows the expected parity and node structure, while Fig.~\ref{fig:infwell_shooting} illustrates the shooting mismatch used to isolate the first four roots. The convergence study in Fig.~\ref{fig:infwell_convergence} gives fitted exponents $p=3.94$, $4.00$, $3.98$, and $4.00$, so this benchmark also confirms the expected fourth-order accuracy. \\
-
-            \begin{figure}[p]
+            \begin{figure}[!b]
                 \centering
                 
                 \begin{minipage}[t]{0.48\textwidth}
@@ -173,9 +157,27 @@
                     \captionof{figure}{Root-finding mismatch function; zeros correspond to eigenvalues.}
                     \label{fig:infwell_shooting}
                 \end{minipage}
+            \end{figure}
 
-                \vspace{1em}
+            The infinite square well serves as a benchmark problem with known analytic spectrum:
+            \begin{equation}
+            E_n = \frac{(n+1)^2\pi^2}{8a^2}
+            \end{equation}
+            The potential is:
+            \begin{equation}
+            V(x)=\begin{cases}
+            0 & ,|x|\le a\\
+            \infty & ,|x|>a
+            \end{cases}
+            \qquad \text{(implemented numerically with a large finite }V_0\text{)}
+            \end{equation}
+            In the production calculation, the well half-width is $a=1$, the outward-shooting half-domain uses $x_{\max}=a=1$, the Numerov grid uses $n_{\text{grid}}=2500$ points, and the numerical wall height is set to $V_0=10^6$. A separate grid-refinement study is used to check convergence at fixed $x_{\max}=1$. \\
 
+            The numerical eigenvalues agree with the analytic values to essentially machine precision, as shown in Fig.~\ref{fig:infwell_energies}; in the saved run the first four relative errors are of order $10^{-11}$--$10^{-10}$. Figure~\ref{fig:infwell_states} shows the expected parity and node structure, while Fig.~\ref{fig:infwell_shooting} illustrates the shooting mismatch used to isolate the first four roots. The convergence study in Fig.~\ref{fig:infwell_convergence} gives fitted exponents $p=3.94$, $4.00$, $3.98$, and $4.00$, so this benchmark also confirms the expected fourth-order accuracy. \\
+
+            \begin{figure}[t]
+                \centering
+                
                 \begin{minipage}[t]{0.48\textwidth}
                     \centering
                     \includegraphics[width=\textwidth]{../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png}
