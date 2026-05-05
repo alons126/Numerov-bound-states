@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  5 MAY 2026 15:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.26)  5 MAY 2026 15:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -851,327 +851,213 @@ Underfull \hbox (badness 10000) in paragraph at lines 138--139
 
  []
 
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png, id=124, 578.16pt x 433.62pt>
+<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png, id=123, 578.16pt x 433.62pt>
 File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png Graphic file (type png)
 <use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png>
 Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png  used on input line 145.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_densities.png, id=126, 578.16pt x 433.62pt>
-File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_densities.png Graphic file (type png)
-<use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_densities.png>
-Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_densities.png  used on input line 152.
+<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png, id=125, 578.16pt x 433.62pt>
+File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png Graphic file (type png)
+<use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png>
+Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png  used on input line 152.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png, id=127, 578.16pt x 433.62pt>
+<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png, id=126, 578.16pt x 433.62pt>
 File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png Graphic file (type png)
 <use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png>
 Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png  used on input line 163.
 (pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png, id=128, 578.16pt x 433.62pt>
+<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png, id=127, 578.16pt x 433.62pt>
 File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png Graphic file (type png)
 <use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png>
 Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png  used on input line 169.
 (pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_0_even_zoom.png, id=129, 578.16pt x 433.62pt>
-File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_0_even_zoom.png Graphic file (type png)
-<use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_0_even_zoom.png>
-Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_0_even_zoom.png  used on input line 183.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_1_odd_zoom.png, id=130, 578.16pt x 433.62pt>
-File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_1_odd_zoom.png Graphic file (type png)
-<use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_1_odd_zoom.png>
-Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_1_odd_zoom.png  used on input line 189.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png, id=131, 578.16pt x 433.62pt>
+<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png, id=128, 578.16pt x 433.62pt>
 File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png Graphic file (type png)
 <use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png>
-Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png  used on input line 201.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png, id=132, 578.16pt x 433.62pt>
-File: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png Graphic file (type png)
-<use ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png>
-Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png  used on input line 208.
+Package pdftex.def Info: ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png  used on input line 181.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
 
-LaTeX Warning: Float too large for page by 134.90996pt on input line 212.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 219--221
+Underfull \hbox (badness 10000) in paragraph at lines 192--194
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 222--223
+Underfull \hbox (badness 10000) in paragraph at lines 195--196
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--225
+Underfull \hbox (badness 10000) in paragraph at lines 197--198
 
  []
 
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_energy_comparison.png, id=139, 578.16pt x 433.62pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_energy_comparison.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_energy_comparison.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_energy_comparison.png  used on input line 231.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_densities.png, id=140, 578.16pt x 433.62pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_densities.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_densities.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_densities.png  used on input line 238.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png, id=141, 578.16pt x 433.62pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png  used on input line 249.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png, id=142, 578.16pt x 433.62pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png  used on input line 255.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_0_even_zoom.png, id=143, 578.16pt x 433.62pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_0_even_zoom.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_0_even_zoom.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_0_even_zoom.png  used on input line 269.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_1_odd_zoom.png, id=144, 578.16pt x 433.62pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_1_odd_zoom.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_1_odd_zoom.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_1_odd_zoom.png  used on input line 275.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png, id=145, 578.16pt x 433.62pt>
+<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png, id=133, 578.16pt x 433.62pt>
 File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png Graphic file (type png)
 <use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png  used on input line 289.
+Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png  used on input line 204.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png, id=146, 578.16pt x 433.62pt>
+<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png, id=134, 578.16pt x 433.62pt>
 File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png Graphic file (type png)
 <use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png  used on input line 296.
+Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png  used on input line 211.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png, id=147, 578.16pt x 433.62pt>
-File: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png Graphic file (type png)
-<use ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png>
-Package pdftex.def Info: ../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png  used on input line 305.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png, id=148, 578.16pt x 433.62pt>
+<../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png, id=135, 578.16pt x 433.62pt>
 File: ../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png Graphic file (type png)
 <use ../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png>
-Package pdftex.def Info: ../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png  used on input line 312.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-[3] [4 <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_densities.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_0_even_zoom.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_state_1_odd_zoom.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png>] [5 <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_energy_comparison.png> <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_state_densities.png> <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_even.png> <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_odd.png> <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_0_even_zoom.png> <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_root_finding_state_1_odd_zoom.png>] [6 <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png> <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png> <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_states.png> <../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 323--325
+Package pdftex.def Info: ../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png  used on input line 219.
+(pdftex.def)             Requested size: 455.24411pt x 341.43124pt.
+[3] [4 <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_states.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png> <../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png>] [5 <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_h.png> <../../results/2a_harmonic_oscillator_Numerov/2a_harmonic_oscillator_Numerov_energy_convergence_vs_x_max.png> <../../results/2c_harmonic_oscillator_Numerov_VS_RK4_comparison/2c_harmonic_oscillator_Numerov_VS_RK4_state_error_comparison.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 230--232
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 332--334
+Underfull \hbox (badness 10000) in paragraph at lines 239--241
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 335--336
+Underfull \hbox (badness 10000) in paragraph at lines 242--243
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 337--338
+Underfull \hbox (badness 10000) in paragraph at lines 244--245
 
  []
 
-<../../results/3_double_well_Numerov/3_double_well_Numerov_states.png, id=201, 578.16pt x 433.62pt>
+<../../results/3_double_well_Numerov/3_double_well_Numerov_states.png, id=168, 578.16pt x 433.62pt>
 File: ../../results/3_double_well_Numerov/3_double_well_Numerov_states.png Graphic file (type png)
 <use ../../results/3_double_well_Numerov/3_double_well_Numerov_states.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_states.png  used on input line 344.
+Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_states.png  used on input line 251.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_state_densities.png, id=202, 578.16pt x 433.62pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_state_densities.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_state_densities.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_state_densities.png  used on input line 351.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png, id=203, 578.16pt x 433.62pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png  used on input line 362.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png, id=204, 578.16pt x 433.62pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png  used on input line 368.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_0_even_zoom.png, id=205, 578.16pt x 433.62pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_0_even_zoom.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_0_even_zoom.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_0_even_zoom.png  used on input line 382.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_1_odd_zoom.png, id=206, 578.16pt x 433.62pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_1_odd_zoom.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_1_odd_zoom.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_1_odd_zoom.png  used on input line 388.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-[7]
-<../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_h.png, id=216, 578.16pt x 433.62pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_h.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_h.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_h.png  used on input line 402.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_x_max.png, id=217, 578.16pt x 433.62pt>
-File: ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_x_max.png Graphic file (type png)
-<use ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_x_max.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_x_max.png  used on input line 409.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting_vs_b.png, id=218, 578.16pt x 433.62pt>
+<../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting_vs_b.png, id=169, 578.16pt x 433.62pt>
 File: ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting_vs_b.png Graphic file (type png)
 <use ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting_vs_b.png>
-Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting_vs_b.png  used on input line 418.
+Package pdftex.def Info: ../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting_vs_b.png  used on input line 258.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 431--433
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 434--435
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 271--273
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 436--437
+Underfull \hbox (badness 10000) in paragraph at lines 274--275
 
  []
 
-<../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png, id=223, 578.16pt x 433.62pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--277
+
+ []
+
+<../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png, id=180, 578.16pt x 433.62pt>
 File: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png Graphic file (type png)
 <use ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png>
-Package pdftex.def Info: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png  used on input line 443.
+Package pdftex.def Info: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png  used on input line 283.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_state_densities.png, id=224, 578.16pt x 433.62pt>
-File: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_state_densities.png Graphic file (type png)
-<use ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_state_densities.png>
-Package pdftex.def Info: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_state_densities.png  used on input line 450.
-(pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
-<../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_even.png, id=225, 578.16pt x 433.62pt>
-File: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_even.png Graphic file (type png)
-<use ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_even.png>
-Package pdftex.def Info: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_even.png  used on input line 461.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_odd.png, id=226, 578.16pt x 433.62pt>
-File: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_odd.png Graphic file (type png)
-<use ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_odd.png>
-Package pdftex.def Info: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_odd.png  used on input line 467.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_2_even_zoom.png, id=227, 578.16pt x 433.62pt>
-File: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_2_even_zoom.png Graphic file (type png)
-<use ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_2_even_zoom.png>
-Package pdftex.def Info: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_2_even_zoom.png  used on input line 481.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
-<../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_3_odd_zoom.png, id=228, 578.16pt x 433.62pt>
-File: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_3_odd_zoom.png Graphic file (type png)
-<use ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_3_odd_zoom.png>
-Package pdftex.def Info: ../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_3_odd_zoom.png  used on input line 487.
-(pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 498--499
+Underfull \hbox (badness 10000) in paragraph at lines 291--292
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 500--501
+Underfull \hbox (badness 10000) in paragraph at lines 293--294
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 502--503
+Underfull \hbox (badness 10000) in paragraph at lines 295--296
 
  []
 
-[8] [9 <../../results/3_double_well_Numerov/3_double_well_Numerov_states.png> <../../results/3_double_well_Numerov/3_double_well_Numerov_state_densities.png> <../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_even.png> <../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_odd.png> <../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_0_even_zoom.png> <../../results/3_double_well_Numerov/3_double_well_Numerov_root_finding_state_1_odd_zoom.png>] [10 <../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_h.png> <../../results/3_double_well_Numerov/3_double_well_Numerov_energy_convergence_vs_x_max.png> <../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting_vs_b.png>] [11 <../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png> <../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_state_densities.png> <../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_even.png> <../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_odd.png> <../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_2_even_zoom.png> <../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_root_finding_state_3_odd_zoom.png>]
-<../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png, id=265, 578.16pt x 433.62pt>
+<../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png, id=182, 578.16pt x 433.62pt>
 File: ../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png Graphic file (type png)
 <use ../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png>
-Package pdftex.def Info: ../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png  used on input line 506.
+Package pdftex.def Info: ../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png  used on input line 299.
 (pdftex.def)             Requested size: 189.68181pt x 142.26378pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 512--513
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 305--306
+
+ []
+
+[7] [8 <../../results/3_double_well_Numerov/3_double_well_Numerov_states.png> <../../results/3_double_well_Numerov/3_double_well_Numerov_energy_splitting_vs_b.png> <../../results/4_finite_square_well_Numerov/4_finite_square_well_Numerov_states.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 307--308
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 514--515
+Underfull \hbox (badness 10000) in paragraph at lines 309--310
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 516--517
-
- []
-
-<../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png, id=268, 578.16pt x 433.62pt>
+<../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png, id=200, 578.16pt x 433.62pt>
 File: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png Graphic file (type png)
 <use ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png>
-Package pdftex.def Info: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png  used on input line 521.
+Package pdftex.def Info: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png  used on input line 314.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 522.
+(caption)                particular \caption on input line 315.
 See the caption package documentation for explanation.
 
-<../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png, id=269, 578.16pt x 433.62pt>
+<../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png, id=201, 578.16pt x 433.62pt>
 File: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png Graphic file (type png)
 <use ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png>
-Package pdftex.def Info: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png  used on input line 528.
+Package pdftex.def Info: ../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png  used on input line 321.
 (pdftex.def)             Requested size: 218.51521pt x 163.88408pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 529.
+(caption)                particular \caption on input line 322.
 See the caption package documentation for explanation.
 
-[12 <../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 537--538
+
+Underfull \hbox (badness 10000) in paragraph at lines 330--331
+
+ []
+
+[9 <../../results/5_scattering_single_barrier_Numerov/5_scattering_single_barrier_Numerov_transmission_reflection.png> <../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png> <../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 332--333
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 539--540
+Underfull \hbox (badness 10000) in paragraph at lines 338--339
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 545--546
-
- []
-
-[13 <../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_transmission_reflection.png> <../../results/6_scattering_double_barrier_Numerov/6_scattering_double_barrier_Numerov_state_probability_density.png>]
-Package biblatex Info: Reference section=0 on input line 553.
-
+Package biblatex Info: Reference section=0 on input line 346.
 
 Package caption Warning: Unused \captionsetup[table] on input line 15.
 See the caption package documentation for explanation.
 
-[14] (build/Writeup.aux)
+[10] (build/Writeup.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `Writeup.out' has not changed.
-(rerunfilecheck)             Checksum: CDFD21EFF3A294F5F3D8D309C8C3C867;3296.
+(rerunfilecheck)             Checksum: FDE5501006EA269DB1AE1329A812C6AE;3295.
 Package logreq Info: Writing requests to 'Writeup.run.xml'.
 \openout1 = `Writeup.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24876 strings out of 467525
- 449379 string characters out of 5418982
- 1303058 words of memory out of 5000000
- 53450 multiletter control sequences out of 15000+600000
+ 24701 strings out of 467525
+ 433321 string characters out of 5418982
+ 1292593 words of memory out of 5000000
+ 53281 multiletter control sequences out of 15000+600000
  637620 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,90p,1115b,1911s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on build/Writeup.pdf (14 pages, 2697195 bytes).
+ 75i,10n,90p,1150b,1911s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on build/Writeup.pdf (10 pages, 1091606 bytes).
 PDF statistics:
- 368 PDF objects out of 1000 (max. 8388607)
- 247 compressed objects within 3 object streams
- 52 named destinations out of 1000 (max. 500000)
- 325 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 294 PDF objects out of 1000 (max. 8388607)
+ 221 compressed objects within 3 object streams
+ 46 named destinations out of 1000 (max. 500000)
+ 215 words of extra memory for PDF output out of 10000 (max. 10000000)
 
