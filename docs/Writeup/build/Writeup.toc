@@ -16,4 +16,4 @@
 \contentsline {subsubsection}{\numberline {3.5.2}Double barrier potential}{7}{subsubsection.3.5.2}%
 \contentsline {section}{\numberline {4}Discussion}{8}{section.4}%
 \contentsline {section}{\numberline {5}Conclusion}{8}{section.5}%
-\contentsline {section}{References}{9}{section*.11}%
+\contentsline {section}{References}{8}{section*.11}%
