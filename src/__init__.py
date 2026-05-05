@@ -1,8 +1,6 @@
 """
 Package marker for the Numerov bound-state project.
 
-Reviewer guide
---------------
 The `src` package is intentionally split into layers:
 - `numerov.py`: low-level recurrence, normalization, and derivative helpers
 - `shooting.py`: bound-state eigenvalue search built on top of Numerov
