@@ -30,7 +30,19 @@ That symmetry allows the solver to integrate only on the half-domain $[0, x_{\ma
 3. Integrate the wavefunction with the Numerov method.
 4. Evaluate a boundary mismatch function.
 5. Use bracketing and bisection to locate energies where the mismatch vanishes.
-6. Reconstruct and normalize the full wavefunction.
+6. Reconstruct and normalize the full wavefunction so that $\int |\psi|^2\,dx = 1$ on the computational grid.
+
+## Normalization
+
+The Numerov and shooting steps determine the shape of the wavefunction, but not its physically meaningful overall amplitude. A bound-state eigenfunction must satisfy
+
+$$
+\int |\psi(x)|^2\,dx = 1,
+$$
+
+so normalization is part of the final physical result rather than just presentation. The code therefore rescales each solved state after reconstruction on the full grid.
+
+In practice, the normalization integral is evaluated on the sampled mesh [with the trapezoid rule](../src/numerov.py#L188) in `numerov.py`. This is a natural choice here because the wavefunction is already known only at discrete grid points, and the quadrature is used only for the final rescaling step rather than to drive the eigenvalue search itself. The implementation also scales the raw wavefunction before squaring it, which helps avoid overflow when a trial shooting solution has grown very large away from an eigenvalue.
 
 ## Shooting formulations
 
@@ -38,7 +50,7 @@ That symmetry allows the solver to integrate only on the half-domain $[0, x_{\ma
 
 - **Inward shooting:** Starts from a decaying tail near $x_{\max}$ and integrates toward the origin. It is used for unbounded confining problems such as the harmonic oscillator, where outward shooting is numerically less stable.
 
-The outward formulation is the more general one in this project because its startup comes directly from symmetry at the origin. The inward formulation is more specialized because it assumes the chosen $x_{\max}$ already lies in a forbidden decaying region.
+The outward formulation is the more general one in this project because its startup comes directly from symmetry at the origin. The inward formulation is more specialized because it assumes the chosen $x_{\max}$ already lies in a forbidden decaying region. For the harmonic oscillator, this inward setup suppresses contamination by the unphysical growing exponential mode that can spoil outward shooting on a truncated infinite domain.
 
 ## Root finding and diagnostics
 
@@ -66,20 +78,8 @@ The solver is validated using:
 Two implementation details are especially important for the observed accuracy:
 
 - The parity-based startup includes [higher-order Taylor terms](../src/shooting.py#L125) so the first Numerov step does not reduce the overall order
-- The inward even-state derivative condition uses [a higher-order one-sided stencil](../src/numerov.py#L234) so the boundary evaluation does not degrade the Numerov solve
+- The inward even-state derivative condition uses [a higher-order one-sided stencil](../src/numerov.py#L234) so the boundary evaluation does not degrade the Numerov solve. This derivative estimate is fourth order when enough points are available, which matters because even-state inward shooting enforces $\psi'(0) = 0$.
 
-## Important numerical checks
+Convergence studies are split deliberately: grid-refinement studies vary $h$ at fixed domain size, while box-size studies keep $h$ approximately fixed and vary $x_{\max}$. This separates discretization error from boundary-truncation error. The quartic double well also [shifts its analytic minima to zero](../src/potentials.py#L168), using the analytic minimum rather than the sampled grid minimum so the physical potential does not drift across grid refinements.
 
-- The Numerov derivative stencil is fourth order when enough points are available. This matters because even-state inward shooting uses the condition $\psi'(0) = 0$, so a low-order derivative estimate would degrade the full eigenvalue solve.
-
-- Harmonic-oscillator inward shooting starts from a decaying forbidden-region tail and integrates toward the origin. This suppresses contamination by the unphysical growing exponential mode that can spoil outward shooting on a truncated infinite domain.
-
-- The quartic double well can [shift its analytic minima to zero](../src/potentials.py#L168). Using the analytic minimum instead of the sampled grid minimum keeps the physical potential fixed across grid refinements and avoids fake convergence effects.
-
-- Convergence studies are split deliberately: grid-refinement studies vary $h$ at fixed domain size, while box-size studies keep $h$ approximately fixed and vary $x_{\max}$. This separates discretization error from boundary-truncation error.
-
-- The RK4 comparison uses the same harmonic-oscillator setup and matched grid family as the Numerov study, so the comparison isolates the integration method rather than changing the physical problem.
-
-- The outward bound-state solver finishes with a short safeguarded polishing step inside the final bracket to reduce the reported wall mismatch without giving up the robustness of a bracketed solve.
-
-- Normalization is part of the physical result, not just presentation. The code uses numerical quadrature so the returned wavefunctions satisfy $\int |\psi|^2\,dx = 1$ on the computational grid.
+The RK4 comparison uses the same harmonic-oscillator setup and matched grid family as the Numerov study, so the comparison isolates the integration method rather than changing the physical problem.
