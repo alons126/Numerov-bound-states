@@ -274,7 +274,6 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm1
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
-INPUT /usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png
 INPUT ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png
 INPUT ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_state_energy_comparison.png
@@ -297,6 +296,7 @@ INPUT ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numero
 INPUT ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png
 INPUT ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png
 INPUT ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png
+INPUT /usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png
 INPUT ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png
 INPUT ../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png

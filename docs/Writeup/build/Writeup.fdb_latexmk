@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber build/Writeup"] 1777993668.79753 "build/Writeup.bcf" "build/Writeup.bbl" "build/Writeup" 1777995436.19384 0
-  "build/Writeup.bcf" 1777995436.12696 108217 a34821f84225923f2f06b026c3e0b052 "pdflatex"
-  "references.bib" 1777985423.42519 633 22d50d09cb129c367c06b7c470e44960 ""
+["biber build/Writeup"] 1778051986.6871 "build/Writeup.bcf" "build/Writeup.bbl" "build/Writeup" 1778051990.09252 0
+  "build/Writeup.bcf" 1778051990.02496 108867 1fbf9181135edbfa1882112828b81341 "pdflatex"
+  "references.bib" 1778050747.62454 1141 d3775b4b654f6091951e04903c4e5715 ""
   (generated)
   "build/Writeup.bbl"
   "build/Writeup.blg"
   (rewritten before read)
-["pdflatex"] 1777995434.38736 "Writeup.tex" "build/Writeup.pdf" "Writeup" 1777995436.19409 0
+["pdflatex"] 1778051988.29333 "Writeup.tex" "build/Writeup.pdf" "Writeup" 1778051990.09275 0
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_energy_convergence_vs_h.png" 1777993364.33892 91320 413c2f90117309a0dff95b04e933d3ba ""
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_even.png" 1777993359.58839 67832 bd19790332caffd6dbe16aa3d9d26039 ""
   "../../results/1_infinite_square_well_Numerov/1_infinite_square_well_Numerov_root_finding_odd.png" 1777993362.33494 64329 3c6bd5505f80867e56e4daa808db692c ""
@@ -163,11 +163,11 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1774538740 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774538681 3636776 dfeaead9e2e9c793969724e130e444cc ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "Writeup.tex" 1777995434.27677 26931 1cb48d6bf6b4460ee7985a122ca6d21d ""
-  "build/Writeup.aux" 1777995436.12484 7076 a272c96d3e7207364dfc7122adab0555 "pdflatex"
-  "build/Writeup.bbl" 1777993670.42686 1666 1d08ed8c5ef7e023b792ac2be9f0f476 "biber build/Writeup"
-  "build/Writeup.out" 1777995436.12625 3160 c3e324c89e7bed82fa1de52104fcf644 "pdflatex"
-  "build/Writeup.run.xml" 1777995436.12745 2326 0420a52dd60034812f54fe4fcedc36c6 "pdflatex"
+  "Writeup.tex" 1778051984.67772 27099 67a289ec59203f592c3aa949118a3905 ""
+  "build/Writeup.aux" 1778051990.02264 8010 597f921de303d90a9f21cc13b2dd170b "pdflatex"
+  "build/Writeup.bbl" 1778051988.28002 4592 7cba4d6cd58416570176a6d28c224cb3 "biber build/Writeup"
+  "build/Writeup.out" 1778051990.0242 3160 c3e324c89e7bed82fa1de52104fcf644 "pdflatex"
+  "build/Writeup.run.xml" 1778051990.02546 2326 0420a52dd60034812f54fe4fcedc36c6 "pdflatex"
   (generated)
   "build/Writeup.aux"
   "build/Writeup.bcf"

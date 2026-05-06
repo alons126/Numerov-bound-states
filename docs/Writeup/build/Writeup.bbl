@@ -46,6 +46,78 @@
       \field{title}{An Introduction to Computational Physics}
       \field{year}{2006}
     \endentry
+    \entry{Griffiths_Schroeter_2018}{book}{}{}
+      \name{author}{2}{}{%
+        {{hash=a00328547222c4a2a201442ee59dccfd}{%
+           family={Griffiths},
+           familyi={G\bibinitperiod},
+           given={David\bibnamedelima J.},
+           giveni={D\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=7a89e36dbf4f2fc28b7fa782d433b9e9}{%
+           family={Schroeter},
+           familyi={S\bibinitperiod},
+           given={Darrell\bibnamedelima F.},
+           giveni={D\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{53401a5b91631c47aa1d458117bf3f6f}
+      \strng{fullhash}{53401a5b91631c47aa1d458117bf3f6f}
+      \strng{fullhashraw}{53401a5b91631c47aa1d458117bf3f6f}
+      \strng{bibnamehash}{53401a5b91631c47aa1d458117bf3f6f}
+      \strng{authorbibnamehash}{53401a5b91631c47aa1d458117bf3f6f}
+      \strng{authornamehash}{53401a5b91631c47aa1d458117bf3f6f}
+      \strng{authorfullhash}{53401a5b91631c47aa1d458117bf3f6f}
+      \strng{authorfullhashraw}{53401a5b91631c47aa1d458117bf3f6f}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{3}
+      \field{title}{Introduction to Quantum Mechanics}
+      \field{year}{2018}
+    \endentry
+    \entry{CohenTannoudji_Diu_Laloe_1977_v1}{book}{}{}
+      \name{author}{3}{}{%
+        {{hash=b424d6eadf894bf83fcb843c19382d7a}{%
+           family={Cohen-Tannoudji},
+           familyi={C\bibinithyphendelim T\bibinitperiod},
+           given={Claude},
+           giveni={C\bibinitperiod}}}%
+        {{hash=1b77617a288ff1ae2dd6c4b93ff6c21c}{%
+           family={Diu},
+           familyi={D\bibinitperiod},
+           given={Bernard},
+           giveni={B\bibinitperiod}}}%
+        {{hash=bc88c0350af8e4f57c2ce6799c84f28f}{%
+           family={Laloë},
+           familyi={L\bibinitperiod},
+           given={Franck},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{e5d4f56e984ae30c9e3f05c877895ee1}
+      \strng{fullhash}{e5d4f56e984ae30c9e3f05c877895ee1}
+      \strng{fullhashraw}{e5d4f56e984ae30c9e3f05c877895ee1}
+      \strng{bibnamehash}{e5d4f56e984ae30c9e3f05c877895ee1}
+      \strng{authorbibnamehash}{e5d4f56e984ae30c9e3f05c877895ee1}
+      \strng{authornamehash}{e5d4f56e984ae30c9e3f05c877895ee1}
+      \strng{authorfullhash}{e5d4f56e984ae30c9e3f05c877895ee1}
+      \strng{authorfullhashraw}{e5d4f56e984ae30c9e3f05c877895ee1}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Quantum Mechanics}
+      \field{volume}{1}
+      \field{year}{1977}
+    \endentry
   \enddatalist
 \endrefsection
 \endinput
