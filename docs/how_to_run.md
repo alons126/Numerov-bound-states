@@ -20,7 +20,7 @@ Run all experiments and the lightweight automated tests with:
 python3 scripts/run_solver.py
 ```
 
-**NOTE:** This command clears and regenerates `results/`, so it will overwrite any saved output files in that directory.
+**NOTE:** This command clears and regenerates `results/`, so it will overwrite any saved output files in that directory. At the end of the run, it also removes generated `test_env/` and project `__pycache__/` directories.
 
 If Python cannot resolve the local modules when running from your shell configuration, use:
 

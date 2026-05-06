@@ -31,7 +31,7 @@ Results are saved in `results/`, including:
 - Convergence plots
 - Tunneling and scattering results
 
-The submitted project files include the output used in the writeup. **NOTE:** `python3 scripts/run_solver.py` clears and regenerates `results/`, so running it will overwrite those saved outputs.
+The submitted project files include the output used in the writeup. **NOTE:** `python3 scripts/run_solver.py` clears and regenerates `results/`, so running it will overwrite those saved outputs. At the end of the run, it also removes generated `test_env/` and project `__pycache__/` directories.
 
 ## Project structure
 

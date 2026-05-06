@@ -111,10 +111,15 @@ def main() -> None:
     # Some tests create a temporary virtual-environment-style directory under
     # the project root. Remove it at the end of the workflow so reruns do not
     # leave behind a large generated folder unrelated to the saved results.
+    print("\nCleaning up generated files...")
+    print("------------------------------------------------------------------\n")
+
     shutil.rmtree(TEST_ENV, ignore_errors=True)
 
     # Also remove Python bytecode caches generated during the workflow.
     for pycache_dir in PROJECT_ROOT.rglob("__pycache__"):
+        if ".venv" in pycache_dir.parts:
+            continue
         if pycache_dir.is_dir():
             shutil.rmtree(pycache_dir, ignore_errors=True)
 
