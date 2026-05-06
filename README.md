@@ -1,6 +1,6 @@
 # Numerov Schrödinger Solver
 
-**Author:** Alon Sportes
+**Author:** Alon Sportes  
 **Written for the course:** Numerical methods in astrophysics (0321488101)
 
 This project solves the one-dimensional time-independent Schrödinger equation using the Numerov method combined with shooting and root finding.
