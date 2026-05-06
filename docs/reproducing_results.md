@@ -6,8 +6,7 @@ Run the full project workflow with:
 python3 scripts/run_solver.py
 ```
 
-This regenerates the numerical outputs used in the report and then runs the
-lightweight automated regression subset used by the workflow.
+This regenerates the numerical outputs used in the report and then runs the lightweight automated regression subset used by the workflow.
 
 To run the full test module directly instead of the workflow subset, use:
 
@@ -44,33 +43,21 @@ The execution order matches the report structure:
 
 ## Main results
 
-- Infinite square well:
-  analytic benchmark, parity-separated root diagnostics, and convergence versus
-  grid spacing.
+- Infinite square well: analytic benchmark, parity-separated root diagnostics, and convergence versus grid spacing.
 
-- Harmonic oscillator:
-  analytic benchmark, inward-shooting diagnostics, convergence versus grid
-  spacing and box size, and a matched-grid Numerov versus RK4 comparison.
+- Harmonic oscillator: analytic benchmark, inward-shooting diagnostics, convergence versus grid spacing and box size, and a matched-grid Numerov versus RK4 comparison.
 
-- Quartic double well:
-  low-lying states, tunneling splitting, successive-refinement convergence, and
-  box-size sensitivity.
+- Quartic double well: low-lying states, tunneling splitting, successive-refinement convergence, and box-size sensitivity.
 
-- Finite square well:
-  bound states, near-threshold diagnostics, and a practical grid-refinement
-  study against the finest saved run.
+- Finite square well: bound states, near-threshold diagnostics, and a practical grid-refinement study against the finest saved run.
 
-- Single barrier:
-  transmission, reflection, and flux-conservation validation.
+- Single barrier: transmission, reflection, and flux-conservation validation.
 
-- Double barrier:
-  resonant-tunneling transmission peaks and a resonant-state probability plot.
+- Double barrier: resonant-tunneling transmission peaks and a resonant-state probability plot.
 
 ## File conventions
 
-Each experiment directory contains the plots and CSV tables for that case. The
-filenames repeat the experiment prefix so the outputs remain self-describing
-when viewed outside the directory tree.
+Each experiment directory contains the plots and CSV tables for that case. The filenames repeat the experiment prefix so the outputs remain self-describing when viewed outside the directory tree.
 
 For the bound-state experiments, the saved files typically include:
 

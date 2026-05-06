@@ -20,14 +20,15 @@ Run all experiments and the lightweight automated tests with:
 python3 scripts/run_solver.py
 ```
 
-If Python cannot resolve the local modules when running from your shell
-configuration, use:
+**NOTE:** This command clears and regenerates `results/`, so it will overwrite any saved output files in that directory.
+
+If Python cannot resolve the local modules when running from your shell configuration, use:
 
 ```bash
 PYTHONPATH=. python3 scripts/run_solver.py
 ```
 
-To run the full pytest-discovered test module directly, use:
+To run the full test file directly with `pytest`, use:
 
 ```bash
 python3 -m pytest tests/test_solver.py
@@ -43,10 +44,10 @@ results/
 
 This includes:
 
-- bound-state energies and normalized wavefunctions
-- probability-density and spectrum plots
-- convergence studies versus grid spacing and box size
-- root-finding diagnostic plots
+- Bound-state energies and normalized wavefunctions
+- Probability-density and spectrum plots
+- Convergence studies versus grid spacing and box size
+- Root-finding diagnostic plots
 - Numerov versus RK4 comparison outputs for the harmonic oscillator
-- double-well splitting data
-- scattering transmission and reflection data
+- Double-well splitting data
+- Scattering transmission and reflection data
