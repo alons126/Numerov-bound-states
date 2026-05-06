@@ -12,3 +12,6 @@
 
 # Old results and diagnostics (keep the latest ones for reference)
 old_results/
+
+# Matplotlib configuration file (if you have one)
+.mplconfig
