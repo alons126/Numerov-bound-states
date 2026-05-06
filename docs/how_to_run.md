@@ -10,7 +10,7 @@ source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 ```
 
-The project was tested on macOS with Python 3.12.
+The project was tested on macOS with Python 3.14.4.
 
 ## Run the full workflow
 

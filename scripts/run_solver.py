@@ -39,6 +39,7 @@ for path in (PROJECT_ROOT, TESTS_DIR):
 from test_solver import run_all_tests
 
 RESULTS = PROJECT_ROOT / "results"
+TEST_ENV = PROJECT_ROOT / "test_env"
 
 
 # ===========================================================================
@@ -106,6 +107,16 @@ def main() -> None:
     print("\nRunning tests")
     print("------------------------------------------------------------------\n")
     run_all_tests()
+
+    # Some tests create a temporary virtual-environment-style directory under
+    # the project root. Remove it at the end of the workflow so reruns do not
+    # leave behind a large generated folder unrelated to the saved results.
+    shutil.rmtree(TEST_ENV, ignore_errors=True)
+
+    # Also remove Python bytecode caches generated during the workflow.
+    for pycache_dir in PROJECT_ROOT.rglob("__pycache__"):
+        if pycache_dir.is_dir():
+            shutil.rmtree(pycache_dir, ignore_errors=True)
 
     if experiments_import_error is None:
         # If the experiments ran successfully, print the path to the generated results.
